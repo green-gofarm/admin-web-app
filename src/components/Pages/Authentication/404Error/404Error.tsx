@@ -15,7 +15,7 @@ export const Error404 = () => {
         className="page"
         onClick={() => Switcherdatacustam.Swichermainrightremove()}
       >
-        
+
         {/* <!-- Main-error-wrapper --> */}
         <div className="main-error-wrapper page page-h">
           <div>
@@ -23,16 +23,16 @@ export const Error404 = () => {
               404<span className="tx-20">error</span>
             </h1>
             <h2 className="text-white">
-              Oopps. The page you were looking for doesn't exist.
+              Trang bạn đang tìm không tồn tại.
             </h2>
             <h6 className="tx-white-6">
-              You may have mistyped the address or the page may have moved.
+              Bạn có thể đã điền sai đường dẫn hoặc trang này đã bị xóa.
             </h6>
             <Link
               className="btn btn-light"
-              to={`${process.env.PUBLIC_URL}/dashboard/dashboard-1/`}
+              to="/dashboard"
             >
-              Back to Home
+              Quay lại trang chủ
             </Link>
           </div>
         </div>

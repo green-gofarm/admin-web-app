@@ -1,7 +1,6 @@
 {
-  "name": "nowa",
+  "name": "gofarm",
   "version": "0.1.0",
-  "homepage": "https://react.spurko.com/nowa-ts/preview/",
   "private": true,
   "dependencies": {
     "@coreui/react": "^4.3.1",
@@ -16,6 +15,7 @@
     "@mui/icons-material": "^5.10.3",
     "@mui/lab": "^5.0.0-alpha.97",
     "@mui/material": "5.10.3",
+    "@mui/styles": "5.10.3",
     "@simonwep/pickr": "^1.8.2",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.3.0",
@@ -39,6 +39,7 @@
     "echarts": "^5.3.3",
     "echarts-for-react": "^3.0.2",
     "firebase": "^9.9.3",
+    "firebaseui": "^6.0.2",
     "hh-mm-ss": "^1.2.0",
     "leaflet": "^1.8.0",
     "lodash": "^4.17.21",
@@ -57,6 +58,7 @@
     "react-draft-wysiwyg": "^1.15.0",
     "react-draggable": "^4.4.5",
     "react-dropzone": "^14.2.2",
+    "react-firebaseui": "^6.0.0",
     "react-hook-form": "^7.34.2",
     "react-image-lightbox": "^5.1.4",
     "react-intl-tel-input": "^8.2.0",

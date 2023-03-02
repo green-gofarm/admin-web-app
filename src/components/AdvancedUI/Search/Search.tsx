@@ -324,19 +324,19 @@ const Search = () => (
         <div className="text-center search">
           <Pagination className="pagination">
             <Pagination.Item className="page-item">
-                <i className="icon ion-ios-arrow-back"></i>
+              <i className="icon ion-ios-arrow-back"></i>
             </Pagination.Item>
             <Pagination.Item className="page-item active">
-                1
+              1
             </Pagination.Item>
             <Pagination.Item className="page-item">
-                2
+              2
             </Pagination.Item>
             <Pagination.Item className="page-item">
-                3
+              3
             </Pagination.Item>
             <Pagination.Item className="page-item">
-                <i className="icon ion-ios-arrow-forward"></i>
+              <i className="icon ion-ios-arrow-forward"></i>
             </Pagination.Item>
           </Pagination>
         </div>

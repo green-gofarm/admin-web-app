@@ -1,30 +1,31 @@
 import React from "react";
-import { Navbar, Dropdown, Button, Form,Col,Row,Modal } from "react-bootstrap";
+import { Navbar, Dropdown, Button, Form, Col, Row, Modal } from "react-bootstrap";
 import { Scrollbars } from 'react-custom-scrollbars';
-import { Link,useParams,useNavigate } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { auth } from "../../Firebase/firebase";
 import { useDispatch, useSelector } from 'react-redux';
 import { Delete } from '../../redux/actions/action';
 import ProductService from '../../services/ProductService';
+import { Box } from "@mui/material";
 
 export default function Header() {
   const [Lang, setLang] = React.useState(false);
   const [fullscreens, setFullscreen] = React.useState(true);
 
-// FullScreen
-var elem: any = document.documentElement;
-const Fullscreen: any = (vale: any) => {
-  switch (vale) {
-    case true:
+  // FullScreen
+  var elem: any = document.documentElement;
+  const Fullscreen: any = (vale: any) => {
+    switch (vale) {
+      case true:
         elem.requestFullscreen();
         setFullscreen(false)
-    break;
-    case false:
-      document.exitFullscreen()
-      setFullscreen(true)
-    break;
+        break;
+      case false:
+        document.exitFullscreen()
+        setFullscreen(true)
+        break;
+    }
   }
-}
 
 
   //leftsidemenu
@@ -47,20 +48,20 @@ const Fullscreen: any = (vale: any) => {
   //swichermainright
   const swichermainright = () => {
     document.querySelector(".demo_changer")?.classList.toggle("active");
-    let rightSidebar:any =  document.querySelector(".demo_changer")
+    let rightSidebar: any = document.querySelector(".demo_changer")
     rightSidebar.style.right = "0px";
   };
   const [price, setPrice] = React.useState(0);
   // console.log(price);
 
-let getdata:any = useSelector((state:any) => state.cartreducer.carts);
+  let getdata: any = useSelector((state: any) => state.cartreducer.carts);
 
-  
+
   const dispatch = useDispatch();
 
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const open:any = Boolean(anchorEl);
-  const handleClick = (event:any) => {
+  const open: any = Boolean(anchorEl);
+  const handleClick = (event: any) => {
     setAnchorEl(event.currentTarget);
     console.log(open)
   };
@@ -73,27 +74,27 @@ let getdata:any = useSelector((state:any) => state.cartreducer.carts);
   // console.log(getdata);
 
   const compare = () => {
-    let comparedata= getdata.map((e:any) => {
+    let comparedata = getdata.map((e: any) => {
       console.log(e, id)
       return e.id === id
     });
     setData(comparedata);
     console.log(comparedata, Data);
-   
+
   }
 
   React.useEffect(() => {
     compare();
     // eslint-disable-next-line 
   }, [id])
-  const ondelete = (id:any) => {
+  const ondelete = (id: any) => {
     dispatch(Delete(id))
   }
 
 
-  function total () {
+  function total() {
     let price = 0;
-    getdata.map((ele:any) => {
+    getdata.map((ele: any) => {
       price = ele.price * ele.qnty + price
       return price;
     });
@@ -101,11 +102,11 @@ let getdata:any = useSelector((state:any) => state.cartreducer.carts);
   };
 
   React.useEffect(() => {
-    total(); 
+    total();
   })
-  let navigate = useNavigate(); 
-  const routeChange = () =>{ 
-    let path = `${process.env.PUBLIC_URL}/`; 
+  let navigate = useNavigate();
+  const routeChange = () => {
+    let path = `${process.env.PUBLIC_URL}/`;
     navigate(path);
   }
   return (
@@ -113,16 +114,24 @@ let getdata:any = useSelector((state:any) => state.cartreducer.carts);
       <div className="main-container container-fluid">
         <div className="main-header-left ">
           <div className="responsive-logo">
-            <Link to={`${process.env.PUBLIC_URL}/dashboard/dashboard-1`} className="header-logo">
-              <img
+            <Link to="/" className="header-logo">
+              <Box
+                component="img"
                 src={require("../../assets/img/brand/logo.png")}
                 className="mobile-logo logo-1"
                 alt="logo"
+                sx={{
+                  maxHeight: "36px"
+                }}
               />
-              <img
+              <Box
+                component="img"
                 src={require("../../assets/img/brand/logo-white.png")}
                 className="mobile-logo dark-logo-1"
                 alt="logo"
+                sx={{
+                  maxHeight: "36px"
+                }}
               />
             </Link>
           </div>
@@ -139,7 +148,7 @@ let getdata:any = useSelector((state:any) => state.cartreducer.carts);
             </Link>
           </div>
           <div className="logo-horizontal">
-            <Link to={`${process.env.PUBLIC_URL}/dashboard/dashboard-1`} className="header-logo">
+            <Link to="/" className="header-logo">
               <img
                 src={require("../../assets/img/brand/logo.png")}
                 className="mobile-logo logo-1"
@@ -152,7 +161,7 @@ let getdata:any = useSelector((state:any) => state.cartreducer.carts);
               />
             </Link>
           </div>
-          <div className="main-header-center ms-4 d-sm-none d-md-none d-lg-block form-group">
+          {/* <div className="main-header-center ms-4 d-sm-none d-md-none d-lg-block form-group">
             <input
               className="form-control"
               placeholder="Search..."
@@ -161,7 +170,7 @@ let getdata:any = useSelector((state:any) => state.cartreducer.carts);
             <Button variant="" className="btn">
               <i className="fas fa-search"></i>
             </Button>
-          </div>
+          </div> */}
         </div>
         <div className="main-header-right">
           <Navbar.Toggle
@@ -173,301 +182,301 @@ let getdata:any = useSelector((state:any) => state.cartreducer.carts);
           <div className="mb-0 navbar navbar-expand-lg   navbar-nav-right responsive-navbar navbar-dark p-0">
             <Navbar.Collapse className="collapse" id="navbarSupportedContent-4">
               <ul className="nav nav-item header-icons navbar-nav-right ">
-                <li className="dropdown nav-item">
-                <>
-            <Link
-                className="new nav-link"
-                data-bs-target="#country-selector"
-                data-bs-toggle="modal"
-                to="#"
-                onClick={() => setLang(true)}
-            >
-                <svg
-                    className="header-icon-svgs"
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                >
-                    <path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm7.931 9h-2.764a14.67 14.67 0 0 0-1.792-6.243A8.013 8.013 0 0 1 19.931 11zM12.53 4.027c1.035 1.364 2.427 3.78 2.627 6.973H9.03c.139-2.596.994-5.028 2.451-6.974.172-.01.344-.026.519-.026.179 0 .354.016.53.027zm-3.842.7C7.704 6.618 7.136 8.762 7.03 11H4.069a8.013 8.013 0 0 1 4.619-6.273zM4.069 13h2.974c.136 2.379.665 4.478 1.556 6.23A8.01 8.01 0 0 1 4.069 13zm7.381 6.973C10.049 18.275 9.222 15.896 9.041 13h6.113c-.208 2.773-1.117 5.196-2.603 6.972-.182.012-.364.028-.551.028-.186 0-.367-.016-.55-.027zm4.011-.772c.955-1.794 1.538-3.901 1.691-6.201h2.778a8.005 8.005 0 0 1-4.469 6.201z" />
-                </svg>
-            </Link>
-            <Modal
-                show={Lang}
-                onHide={() => setLang(false)}
-                centered
-                id="country-selector"
-            >
-                <Modal.Header>
-                    <h6 className="modal-title">Choose Country</h6>
-                    <Button variant=""
-                        type="button"
-                        onClick={() => setLang(false)}
+                {/* <li className="dropdown nav-item">
+                  <>
+                    <Link
+                      className="new nav-link"
+                      data-bs-target="#country-selector"
+                      data-bs-toggle="modal"
+                      to="#"
+                      onClick={() => setLang(true)}
                     >
-                        <span aria-hidden="true" className="text-dark">X</span>
-                    </Button>
-                </Modal.Header>
-                <Modal.Body>
-                    <Row as="ul" className=" p-3">
-                        <Col lg={6} as="li" className="mb-2">
+                      <svg
+                        className="header-icon-svgs"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                      >
+                        <path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm7.931 9h-2.764a14.67 14.67 0 0 0-1.792-6.243A8.013 8.013 0 0 1 19.931 11zM12.53 4.027c1.035 1.364 2.427 3.78 2.627 6.973H9.03c.139-2.596.994-5.028 2.451-6.974.172-.01.344-.026.519-.026.179 0 .354.016.53.027zm-3.842.7C7.704 6.618 7.136 8.762 7.03 11H4.069a8.013 8.013 0 0 1 4.619-6.273zM4.069 13h2.974c.136 2.379.665 4.478 1.556 6.23A8.01 8.01 0 0 1 4.069 13zm7.381 6.973C10.049 18.275 9.222 15.896 9.041 13h6.113c-.208 2.773-1.117 5.196-2.603 6.972-.182.012-.364.028-.551.028-.186 0-.367-.016-.55-.027zm4.011-.772c.955-1.794 1.538-3.901 1.691-6.201h2.778a8.005 8.005 0 0 1-4.469 6.201z" />
+                      </svg>
+                    </Link>
+                    <Modal
+                      show={Lang}
+                      onHide={() => setLang(false)}
+                      centered
+                      id="country-selector"
+                    >
+                      <Modal.Header>
+                        <h6 className="modal-title">Choose Country</h6>
+                        <Button variant=""
+                          type="button"
+                          onClick={() => setLang(false)}
+                        >
+                          <span aria-hidden="true" className="text-dark">X</span>
+                        </Button>
+                      </Modal.Header>
+                      <Modal.Body>
+                        <Row as="ul" className=" p-3">
+                          <Col lg={6} as="li" className="mb-2">
                             <Link
-                                to="#"
-                                className="btn btn-country btn-lg btn-block active"
+                              to="#"
+                              className="btn btn-country btn-lg btn-block active"
                             >
-                                <span className="country-selector">
-                                    <img
-                                        alt=""
-                                        src={require("../../assets/img/flags/us_flag.jpg")}
-                                        className="me-3 language"
-                                    />
-                                </span>
-                                Usa{" "}
+                              <span className="country-selector">
+                                <img
+                                  alt=""
+                                  src={require("../../assets/img/flags/us_flag.jpg")}
+                                  className="me-3 language"
+                                />
+                              </span>
+                              Usa{" "}
                             </Link>{" "}
-                        </Col>{" "}
-                        <Col lg={6} as="li" className="mb-2 mb-2">
+                          </Col>{" "}
+                          <Col lg={6} as="li" className="mb-2 mb-2">
                             {" "}
                             <Link to="#" className="btn btn-country btn-lg btn-block">
-                                {" "}
-                                <span className="country-selector">
-                                    <img
-                                        alt=""
-                                        src={require("../../assets/img/flags/italy_flag.jpg")}
-                                        className="me-3 language"
-                                    />
-                                </span>
-                                Italy{" "}
+                              {" "}
+                              <span className="country-selector">
+                                <img
+                                  alt=""
+                                  src={require("../../assets/img/flags/italy_flag.jpg")}
+                                  className="me-3 language"
+                                />
+                              </span>
+                              Italy{" "}
                             </Link>{" "}
-                        </Col>{" "}
-                        <Col lg={6} as="li" className="mb-2">
+                          </Col>{" "}
+                          <Col lg={6} as="li" className="mb-2">
                             {" "}
                             <Link to="#" className="btn btn-country btn-lg btn-block">
-                                {" "}
-                                <span className="country-selector">
-                                    <img
-                                        alt=""
-                                        src={require("../../assets/img/flags/spain_flag.jpg")}
-                                        className="me-3 language"
-                                    />
-                                </span>
-                                Spain{" "}
+                              {" "}
+                              <span className="country-selector">
+                                <img
+                                  alt=""
+                                  src={require("../../assets/img/flags/spain_flag.jpg")}
+                                  className="me-3 language"
+                                />
+                              </span>
+                              Spain{" "}
                             </Link>{" "}
-                        </Col>{" "}
-                        <Col lg={6} as="li" className="mb-2">
+                          </Col>{" "}
+                          <Col lg={6} as="li" className="mb-2">
                             {" "}
                             <Link to="#" className="btn btn-country btn-lg btn-block">
-                                {" "}
-                                <span className="country-selector">
-                                    <img
-                                        alt=""
-                                        src={require("../../assets/img/flags/india_flag.jpg")}
-                                        className="me-3 language"
-                                    />
-                                </span>
-                                India{" "}
+                              {" "}
+                              <span className="country-selector">
+                                <img
+                                  alt=""
+                                  src={require("../../assets/img/flags/india_flag.jpg")}
+                                  className="me-3 language"
+                                />
+                              </span>
+                              India{" "}
                             </Link>{" "}
-                        </Col>{" "}
-                        <Col lg={6} as="li" className="mb-2">
+                          </Col>{" "}
+                          <Col lg={6} as="li" className="mb-2">
                             {" "}
                             <Link to="#" className="btn btn-country btn-lg btn-block">
-                                {" "}
-                                <span className="country-selector">
-                                    <img
-                                        alt=""
-                                        src={require("../../assets/img/flags/french_flag.jpg")}
-                                        className="me-3 language"
-                                    />
-                                </span>
-                                France{" "}
+                              {" "}
+                              <span className="country-selector">
+                                <img
+                                  alt=""
+                                  src={require("../../assets/img/flags/french_flag.jpg")}
+                                  className="me-3 language"
+                                />
+                              </span>
+                              France{" "}
                             </Link>{" "}
-                        </Col>{" "}
-                        <Col lg={6} as="li" className="mb-2">
+                          </Col>{" "}
+                          <Col lg={6} as="li" className="mb-2">
                             {" "}
                             <Link to="#" className="btn btn-country btn-lg btn-block">
-                                {" "}
-                                <span className="country-selector">
-                                    <img
-                                        alt=""
-                                        src={require("../../assets/img/flags/mexico.jpg")}
-                                        className="me-3 language"
-                                    />
-                                </span>
-                                Mexico{" "}
+                              {" "}
+                              <span className="country-selector">
+                                <img
+                                  alt=""
+                                  src={require("../../assets/img/flags/mexico.jpg")}
+                                  className="me-3 language"
+                                />
+                              </span>
+                              Mexico{" "}
                             </Link>{" "}
-                        </Col>{" "}
-                        <Col lg={6} as="li" className="mb-2">
+                          </Col>{" "}
+                          <Col lg={6} as="li" className="mb-2">
                             {" "}
                             <Link to="#" className="btn btn-country btn-lg btn-block">
-                                {" "}
-                                <span className="country-selector">
-                                    <img
-                                        alt=""
-                                        src={require("../../assets/img/flags/singapore.jpg")}
-                                        className="me-3 language"
-                                    />
-                                </span>
-                                Singapore{" "}
+                              {" "}
+                              <span className="country-selector">
+                                <img
+                                  alt=""
+                                  src={require("../../assets/img/flags/singapore.jpg")}
+                                  className="me-3 language"
+                                />
+                              </span>
+                              Singapore{" "}
                             </Link>{" "}
-                        </Col>{" "}
-                        <Col lg={6} as="li" className="mb-2">
+                          </Col>{" "}
+                          <Col lg={6} as="li" className="mb-2">
                             {" "}
                             <Link to="#" className="btn btn-country btn-lg btn-block">
-                                {" "}
-                                <span className="country-selector">
-                                    <img
-                                        alt=""
-                                        src={require("../../assets/img/flags/poland.jpg")}
-                                        className="me-3 language"
-                                    />
-                                </span>
-                                Poland{" "}
+                              {" "}
+                              <span className="country-selector">
+                                <img
+                                  alt=""
+                                  src={require("../../assets/img/flags/poland.jpg")}
+                                  className="me-3 language"
+                                />
+                              </span>
+                              Poland{" "}
                             </Link>{" "}
-                        </Col>{" "}
-                        <Col lg={6} as="li" className="mb-2">
+                          </Col>{" "}
+                          <Col lg={6} as="li" className="mb-2">
                             {" "}
                             <Link to="#" className="btn btn-country btn-lg btn-block">
-                                {" "}
-                                <span className="country-selector">
-                                    <img
-                                        alt=""
-                                        src={require("../../assets/img/flags/austria.jpg")}
-                                        className="me-3 language"
-                                    />
-                                </span>
-                                Austria{" "}
+                              {" "}
+                              <span className="country-selector">
+                                <img
+                                  alt=""
+                                  src={require("../../assets/img/flags/austria.jpg")}
+                                  className="me-3 language"
+                                />
+                              </span>
+                              Austria{" "}
                             </Link>{" "}
-                        </Col>{" "}
-                        <Col lg={6} as="li" className="mb-2">
+                          </Col>{" "}
+                          <Col lg={6} as="li" className="mb-2">
                             {" "}
                             <Link to="#" className="btn btn-country btn-lg btn-block">
-                                {" "}
-                                <span className="country-selector">
-                                    <img
-                                        alt=""
-                                        src={require("../../assets/img/flags/russia_flag.jpg")}
-                                        className="me-3 language"
-                                    />
-                                </span>
-                                Russia{" "}
+                              {" "}
+                              <span className="country-selector">
+                                <img
+                                  alt=""
+                                  src={require("../../assets/img/flags/russia_flag.jpg")}
+                                  className="me-3 language"
+                                />
+                              </span>
+                              Russia{" "}
                             </Link>{" "}
-                        </Col>{" "}
-                        <Col lg={6} as="li" className="mb-2">
+                          </Col>{" "}
+                          <Col lg={6} as="li" className="mb-2">
                             {" "}
                             <Link to="#" className="btn btn-country btn-lg btn-block">
-                                {" "}
-                                <span className="country-selector">
-                                    <img
-                                        alt=""
-                                        src={require("../../assets/img/flags/germany_flag.jpg")}
-                                        className="me-3 language"
-                                    />
-                                </span>
-                                Germany{" "}
+                              {" "}
+                              <span className="country-selector">
+                                <img
+                                  alt=""
+                                  src={require("../../assets/img/flags/germany_flag.jpg")}
+                                  className="me-3 language"
+                                />
+                              </span>
+                              Germany{" "}
                             </Link>{" "}
-                        </Col>{" "}
-                        <Col lg={6} as="li" className="mb-2">
+                          </Col>{" "}
+                          <Col lg={6} as="li" className="mb-2">
                             {" "}
                             <Link to="#" className="btn btn-country btn-lg btn-block">
-                                {" "}
-                                <span className="country-selector">
-                                    <img
-                                        alt=""
-                                        src={require("../../assets/img/flags/argentina.jpg")}
-                                        className="me-3 language"
-                                    />
-                                </span>
-                                Argentina{" "}
+                              {" "}
+                              <span className="country-selector">
+                                <img
+                                  alt=""
+                                  src={require("../../assets/img/flags/argentina.jpg")}
+                                  className="me-3 language"
+                                />
+                              </span>
+                              Argentina{" "}
                             </Link>{" "}
-                        </Col>{" "}
-                        <Col lg={6} as="li" className="mb-2">
+                          </Col>{" "}
+                          <Col lg={6} as="li" className="mb-2">
                             {" "}
                             <Link to="#" className="btn btn-country btn-lg btn-block">
-                                {" "}
-                                <span className="country-selector">
-                                    <img
-                                        alt=""
-                                        src={require("../../assets/img/flags/brazil.jpg")}
-                                        className="me-3 language"
-                                    />
-                                </span>
-                                Brazil{" "}
+                              {" "}
+                              <span className="country-selector">
+                                <img
+                                  alt=""
+                                  src={require("../../assets/img/flags/brazil.jpg")}
+                                  className="me-3 language"
+                                />
+                              </span>
+                              Brazil{" "}
                             </Link>{" "}
-                        </Col>{" "}
-                        <Col lg={6} as="li" className="mb-2">
+                          </Col>{" "}
+                          <Col lg={6} as="li" className="mb-2">
                             {" "}
                             <Link to="#" className="btn btn-country btn-lg btn-block">
-                                {" "}
-                                <span className="country-selector">
-                                    <img
-                                        alt=""
-                                        src={require("../../assets/img/flags/uae.jpg")}
-                                        className="me-3 language"
-                                    />
-                                </span>
-                                U.A.E{" "}
+                              {" "}
+                              <span className="country-selector">
+                                <img
+                                  alt=""
+                                  src={require("../../assets/img/flags/uae.jpg")}
+                                  className="me-3 language"
+                                />
+                              </span>
+                              U.A.E{" "}
                             </Link>{" "}
-                        </Col>{" "}
-                        <Col lg={6} as="li" className="mb-2">
+                          </Col>{" "}
+                          <Col lg={6} as="li" className="mb-2">
                             {" "}
                             <Link to="#" className="btn btn-country btn-lg btn-block">
-                                {" "}
-                                <span className="country-selector">
-                                    <img
-                                        alt=""
-                                        src={require("../../assets/img/flags/china.jpg")}
-                                        className="me-3 language"
-                                    />
-                                </span>
-                                China{" "}
+                              {" "}
+                              <span className="country-selector">
+                                <img
+                                  alt=""
+                                  src={require("../../assets/img/flags/china.jpg")}
+                                  className="me-3 language"
+                                />
+                              </span>
+                              China{" "}
                             </Link>{" "}
-                        </Col>{" "}
-                        <Col lg={6} as="li" className="mb-2">
+                          </Col>{" "}
+                          <Col lg={6} as="li" className="mb-2">
                             {" "}
                             <Link to="#" className="btn btn-country btn-lg btn-block">
-                                {" "}
-                                <span className="country-selector">
-                                    <img
-                                        alt=""
-                                        src={require("../../assets/img/flags/uk.jpg")}
-                                        className="me-3 language"
-                                    />
-                                </span>
-                                U.K{" "}
+                              {" "}
+                              <span className="country-selector">
+                                <img
+                                  alt=""
+                                  src={require("../../assets/img/flags/uk.jpg")}
+                                  className="me-3 language"
+                                />
+                              </span>
+                              U.K{" "}
                             </Link>{" "}
-                        </Col>{" "}
-                        <Col lg={6} as="li" className="mb-2">
+                          </Col>{" "}
+                          <Col lg={6} as="li" className="mb-2">
                             {" "}
                             <Link to="#" className="btn btn-country btn-lg btn-block">
-                                {" "}
-                                <span className="country-selector">
-                                    <img
-                                        alt=""
-                                        src={require("../../assets/img/flags/malaysia.jpg")}
-                                        className="me-3 language"
-                                    />
-                                </span>
-                                Malaysia{" "}
+                              {" "}
+                              <span className="country-selector">
+                                <img
+                                  alt=""
+                                  src={require("../../assets/img/flags/malaysia.jpg")}
+                                  className="me-3 language"
+                                />
+                              </span>
+                              Malaysia{" "}
                             </Link>{" "}
-                        </Col>{" "}
-                        <Col lg={6} as="li" className="mb-2">
+                          </Col>{" "}
+                          <Col lg={6} as="li" className="mb-2">
                             {" "}
                             <Link to="#" className="btn btn-country btn-lg btn-block">
-                                {" "}
-                                <span className="country-selector">
-                                    <img
-                                        alt=""
-                                        src={require("../../assets/img/flags/canada.jpg")}
-                                        className="me-3 language"
-                                    />
-                                </span>
-                                Canada{" "}
+                              {" "}
+                              <span className="country-selector">
+                                <img
+                                  alt=""
+                                  src={require("../../assets/img/flags/canada.jpg")}
+                                  className="me-3 language"
+                                />
+                              </span>
+                              Canada{" "}
                             </Link>{" "}
-                        </Col>{" "}
-                    </Row>
-                </Modal.Body>
-            </Modal>
-        </>
-                </li>
-                <li className="dropdown nav-item">
+                          </Col>{" "}
+                        </Row>
+                      </Modal.Body>
+                    </Modal>
+                  </>
+                </li> */}
+                {/* <li className="dropdown nav-item">
                   <Link
                     to="#"
                     className="new nav-link theme-layout nav-link-bg layout-setting"
@@ -496,40 +505,39 @@ let getdata:any = useSelector((state:any) => state.cartreducer.carts);
                       </svg>
                     </span>
                   </Link>
-                </li>
-                <Dropdown className=" nav-item main-header-notification d-flex">
-                  <Dropdown.Toggle className="new nav-link"variant="">
-                      {
-                        getdata.length ?
-                          <>
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              className="header-icon-svgs"
-                              width="24"
-                              height="24"
-                              viewBox="0 0 24 24"
-                            >
-                              <path d="M21.822 7.431A1 1 0 0 0 21 7H7.333L6.179 4.23A1.994 1.994 0 0 0 4.333 3H2v2h2.333l4.744 11.385A1 1 0 0 0 10 17h8c.417 0 .79-.259.937-.648l3-8a1 1 0 0 0-.115-.921zM17.307 15h-6.64l-2.5-6h11.39l-2.25 6z" />
-                              <circle cx="10.5" cy="19.5" r="1.5" />
-                              <circle cx="17.5" cy="19.5" r="1.5" />
-                            </svg>
-                            <span className="badge bg-warning header-badge" onClick={handleClick} >{getdata.length}</span>
-                          </> :
-                           <>
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              className="header-icon-svgs"
-                              width="24"
-                              height="24"
-                              viewBox="0 0 24 24"
-                            >
-                              <path d="M21.822 7.431A1 1 0 0 0 21 7H7.333L6.179 4.23A1.994 1.994 0 0 0 4.333 3H2v2h2.333l4.744 11.385A1 1 0 0 0 10 17h8c.417 0 .79-.259.937-.648l3-8a1 1 0 0 0-.115-.921zM17.307 15h-6.64l-2.5-6h11.39l-2.25 6z" />
-                              <circle cx="10.5" cy="19.5" r="1.5" />
-                              <circle cx="17.5" cy="19.5" r="1.5" />
-                            </svg>
-                            <span className="badge bg-warning header-badge">7</span>
-                          </>
-                       } 
+                </li> */}
+                {/* <Dropdown className=" nav-item main-header-notification d-flex">
+                  <Dropdown.Toggle className="new nav-link" variant="">
+                    {getdata.length ?
+                      <>
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="header-icon-svgs"
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                        >
+                          <path d="M21.822 7.431A1 1 0 0 0 21 7H7.333L6.179 4.23A1.994 1.994 0 0 0 4.333 3H2v2h2.333l4.744 11.385A1 1 0 0 0 10 17h8c.417 0 .79-.259.937-.648l3-8a1 1 0 0 0-.115-.921zM17.307 15h-6.64l-2.5-6h11.39l-2.25 6z" />
+                          <circle cx="10.5" cy="19.5" r="1.5" />
+                          <circle cx="17.5" cy="19.5" r="1.5" />
+                        </svg>
+                        <span className="badge bg-warning header-badge" onClick={handleClick} >{getdata.length}</span>
+                      </> :
+                      <>
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="header-icon-svgs"
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                        >
+                          <path d="M21.822 7.431A1 1 0 0 0 21 7H7.333L6.179 4.23A1.994 1.994 0 0 0 4.333 3H2v2h2.333l4.744 11.385A1 1 0 0 0 10 17h8c.417 0 .79-.259.937-.648l3-8a1 1 0 0 0-.115-.921zM17.307 15h-6.64l-2.5-6h11.39l-2.25 6z" />
+                          <circle cx="10.5" cy="19.5" r="1.5" />
+                          <circle cx="17.5" cy="19.5" r="1.5" />
+                        </svg>
+                        <span className="badge bg-warning header-badge">7</span>
+                      </>
+                    }
                   </Dropdown.Toggle>
                   <Dropdown.Menu>
                     <div className="menu-header-content text-start border-bottom">
@@ -539,28 +547,28 @@ let getdata:any = useSelector((state:any) => state.cartreducer.carts);
                         </h6>
                         <span className="badge badge-pill bg-indigo ms-auto my-auto float-end">
                           {
-                            getdata.length ? <>Items ({getdata.length})</> 
-                            : 
-                            <>Items (07)</>
-                          } 
+                            getdata.length ? <>Items ({getdata.length})</>
+                              :
+                              <>Items (07)</>
+                          }
                         </span>
                       </div>
                     </div>
                     <div className="main-cart-list cart-scroll">
-                       {
+                      {
                         getdata.length ?
                           <div>
                             <Scrollbars style={{ height: "200px" }}>
                               {
-                                getdata.map((item:any) => {
+                                getdata.map((item: any) => {
                                   return (
                                     <React.Fragment key={item.id}>
 
-                                      <div  onClick={handleClick} className="dropdown-item d-flex border-bottom main-cart-item">
-                                        
-                                        <Link to={`${process.env.PUBLIC_URL}/pages/e-commerce/productDetails/`} 
-                                         onClick={()=>ProductService.getidfronShop(item.id)}
-                                         >
+                                      <div onClick={handleClick} className="dropdown-item d-flex border-bottom main-cart-item">
+
+                                        <Link to={`${process.env.PUBLIC_URL}/pages/e-commerce/productDetails/`}
+                                          onClick={() => ProductService.getidfronShop(item.id)}
+                                        >
                                           <img src={(item.src)} className="drop-img cover-image" alt="" />
                                         </Link>
                                         <div className="ms-3 text-start">
@@ -582,98 +590,23 @@ let getdata:any = useSelector((state:any) => state.cartreducer.carts);
                               }
                             </Scrollbars>
                           </div>
-                          : 
-                         <><Dropdown.Item
-                          className="d-flex border-bottom  main-cart-item"
-                          href={`${process.env.PUBLIC_URL}/pages/e-commerce/productDetails`}
-                        >
-
-                          <img
-                            className="drop-img cover-image"
-                            src={require("../../assets/img/ecommerce/05.jpg")}
-                            alt=""
-                          />
-                          <div className="ms-3 text-start">
-                            <h5 className="mb-1 text-muted tx-13">
-                              Lence Camera
-                            </h5>
-                            <div className="text-dark tx-semibold tx-12">
-                              1 * $ 189.00
-                            </div>
-                          </div>
-
-                          <div className="ms-auto my-auto">
-                            <div className="">
-                              <i className="fe fe-trash-2 text-end text-danger"></i>
-                            </div>
-                          </div>
-                        </Dropdown.Item>
-                          <Dropdown.Item
-                            className="d-flex border-bottom main-cart-item"
+                          :
+                          <><Dropdown.Item
+                            className="d-flex border-bottom  main-cart-item"
                             href={`${process.env.PUBLIC_URL}/pages/e-commerce/productDetails`}
                           >
 
                             <img
-                              alt=""
                               className="drop-img cover-image"
-                              src={require("../../assets/img/ecommerce/02.jpg")}
+                              src={require("../../assets/img/ecommerce/05.jpg")}
+                              alt=""
                             />
                             <div className="ms-3 text-start">
                               <h5 className="mb-1 text-muted tx-13">
-                                White Ear Buds
+                                Lence Camera
                               </h5>
                               <div className="text-dark tx-semibold tx-12">
-                                3 * $ 59.00
-                              </div>
-                            </div>
-
-
-                            <div className="ms-auto my-auto">
-                              <div className="">
-                                <i className="fe fe-trash-2 text-end text-danger"></i>
-                              </div>
-                            </div>
-                          </Dropdown.Item>
-                          <Dropdown.Item
-                            className="d-flex border-bottom main-cart-item"
-                            href={`${process.env.PUBLIC_URL}/pages/e-commerce/productDetails`}
-                          >
-
-                            <img
-                              alt=""
-                              className="drop-img cover-image"
-                              src={require("../../assets/img/ecommerce/12.jpg")}
-                            />
-                            <div className="ms-3 text-start">
-                              <h5 className="mb-1 text-muted tx-13">
-                                Branded Black Headset
-                              </h5>
-                              <div className="text-dark tx-semibold tx-12">
-                                2 * $ 39.99
-                              </div>
-                            </div>
-                            <div className="ms-auto my-auto">
-                              <div className="">
-                                <i className="fe fe-trash-2 text-end text-danger"></i>
-                              </div>
-                            </div>
-                          </Dropdown.Item>
-                          <Dropdown.Item
-                            className="d-flex border-bottom main-cart-item"
-                            href={`${process.env.PUBLIC_URL}/pages/e-commerce/productDetails`}
-                          >
-
-                            <img
-                              alt=""
-                              className="drop-img cover-image"
-                              src={require("../../assets/img/ecommerce/06.jpg")}
-                            />
-                            <div className="ms-3 text-start">
-                              <h5 className="mb-1 text-muted tx-13">
-                                Glass Decor Item
-                              </h5>
-                              <div className="text-dark tx-semibold tx-12">
-                                5 * $ 5.99
+                                1 * $ 189.00
                               </div>
                             </div>
 
@@ -683,32 +616,107 @@ let getdata:any = useSelector((state:any) => state.cartreducer.carts);
                               </div>
                             </div>
                           </Dropdown.Item>
-                          <Dropdown.Item
-                            className="d-flex border-bottom main-cart-item"
-                            href={`${process.env.PUBLIC_URL}/pages/e-commerce/productDetails`}
-                          >
+                            <Dropdown.Item
+                              className="d-flex border-bottom main-cart-item"
+                              href={`${process.env.PUBLIC_URL}/pages/e-commerce/productDetails`}
+                            >
 
-                            <img
-                              className="drop-img cover-image"
-                              src={require("../../assets/img/ecommerce/04.jpg")}
-                              alt=""
-                            />
+                              <img
+                                alt=""
+                                className="drop-img cover-image"
+                                src={require("../../assets/img/ecommerce/02.jpg")}
+                              />
+                              <div className="ms-3 text-start">
+                                <h5 className="mb-1 text-muted tx-13">
+                                  White Ear Buds
+                                </h5>
+                                <div className="text-dark tx-semibold tx-12">
+                                  3 * $ 59.00
+                                </div>
+                              </div>
 
-                            <div className="ms-3 text-start">
-                              <h5 className="mb-1 text-muted tx-13">
-                                Pink Teddy Bear
-                              </h5>
-                              <div className="text-dark tx-semibold tx-12">
-                                1 * $ 10.00
+
+                              <div className="ms-auto my-auto">
+                                <div className="">
+                                  <i className="fe fe-trash-2 text-end text-danger"></i>
+                                </div>
                               </div>
-                            </div>
-                            <div className="ms-auto my-auto">
-                              <div className="">
-                                <i className="fe fe-trash-2 text-end text-danger"></i>
+                            </Dropdown.Item>
+                            <Dropdown.Item
+                              className="d-flex border-bottom main-cart-item"
+                              href={`${process.env.PUBLIC_URL}/pages/e-commerce/productDetails`}
+                            >
+
+                              <img
+                                alt=""
+                                className="drop-img cover-image"
+                                src={require("../../assets/img/ecommerce/12.jpg")}
+                              />
+                              <div className="ms-3 text-start">
+                                <h5 className="mb-1 text-muted tx-13">
+                                  Branded Black Headset
+                                </h5>
+                                <div className="text-dark tx-semibold tx-12">
+                                  2 * $ 39.99
+                                </div>
                               </div>
-                            </div>
-                          </Dropdown.Item> </>
-                       } 
+                              <div className="ms-auto my-auto">
+                                <div className="">
+                                  <i className="fe fe-trash-2 text-end text-danger"></i>
+                                </div>
+                              </div>
+                            </Dropdown.Item>
+                            <Dropdown.Item
+                              className="d-flex border-bottom main-cart-item"
+                              href={`${process.env.PUBLIC_URL}/pages/e-commerce/productDetails`}
+                            >
+
+                              <img
+                                alt=""
+                                className="drop-img cover-image"
+                                src={require("../../assets/img/ecommerce/06.jpg")}
+                              />
+                              <div className="ms-3 text-start">
+                                <h5 className="mb-1 text-muted tx-13">
+                                  Glass Decor Item
+                                </h5>
+                                <div className="text-dark tx-semibold tx-12">
+                                  5 * $ 5.99
+                                </div>
+                              </div>
+
+                              <div className="ms-auto my-auto">
+                                <div className="">
+                                  <i className="fe fe-trash-2 text-end text-danger"></i>
+                                </div>
+                              </div>
+                            </Dropdown.Item>
+                            <Dropdown.Item
+                              className="d-flex border-bottom main-cart-item"
+                              href={`${process.env.PUBLIC_URL}/pages/e-commerce/productDetails`}
+                            >
+
+                              <img
+                                className="drop-img cover-image"
+                                src={require("../../assets/img/ecommerce/04.jpg")}
+                                alt=""
+                              />
+
+                              <div className="ms-3 text-start">
+                                <h5 className="mb-1 text-muted tx-13">
+                                  Pink Teddy Bear
+                                </h5>
+                                <div className="text-dark tx-semibold tx-12">
+                                  1 * $ 10.00
+                                </div>
+                              </div>
+                              <div className="ms-auto my-auto">
+                                <div className="">
+                                  <i className="fe fe-trash-2 text-end text-danger"></i>
+                                </div>
+                              </div>
+                            </Dropdown.Item> </>
+                      }
                     </div>
                     <div className="dropdown-footer text-start">
                       <Link
@@ -718,14 +726,14 @@ let getdata:any = useSelector((state:any) => state.cartreducer.carts);
                         Checkout
                       </Link>
                       <span className="float-end mt-1 tx-semibold">
-                         {getdata.length ? <>Sub Total: $ {price}</> : 
-                         <> Sub Total : $ 00.00</>
-                         }
+                        {getdata.length ? <>Sub Total: $ {price}</> :
+                          <> Sub Total : $ 00.00</>
+                        }
                       </span>
                     </div>
                   </Dropdown.Menu>
-                </Dropdown>
-                <Dropdown className="dropdown nav-item  main-header-message ">
+                </Dropdown> */}
+                {/* <Dropdown className="dropdown nav-item  main-header-message ">
                   <Dropdown.Toggle className="new nav-link" variant="">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -880,9 +888,9 @@ let getdata:any = useSelector((state:any) => state.cartreducer.carts);
                       </Link>
                     </div>
                   </Dropdown.Menu>
-                </Dropdown>
+                </Dropdown> */}
                 <Dropdown className=" nav-item main-header-notification d-flex">
-                  <Dropdown.Toggle className="new nav-link"  variant="">
+                  <Dropdown.Toggle className="new nav-link" variant="">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       className="header-icon-svgs"
@@ -1116,7 +1124,7 @@ let getdata:any = useSelector((state:any) => state.cartreducer.carts);
                 <Dropdown className=" main-profile-menu nav nav-item nav-link ps-lg-2">
                   <Dropdown.Toggle
                     className="new nav-link profile-user d-flex"
-                    
+
                     variant=""
                   >
                     <img
@@ -1166,7 +1174,7 @@ let getdata:any = useSelector((state:any) => state.cartreducer.carts);
                     >
                       <i className="far fa-sun"></i> Settings
                     </Dropdown.Item>
-                    <Dropdown.Item className="dropdown-item" onClick={() => {auth.signOut();routeChange()}} >
+                    <Dropdown.Item className="dropdown-item" onClick={() => { auth.signOut(); routeChange() }} >
                       <i className="far fa-arrow-alt-circle-left"></i> Sign Out
                     </Dropdown.Item>
                   </Dropdown.Menu>
@@ -1174,7 +1182,7 @@ let getdata:any = useSelector((state:any) => state.cartreducer.carts);
               </ul>
             </Navbar.Collapse>
           </div>
-          <div className="d-flex">
+          {/* <div className="d-flex">
             <Link
               className="demo-icon new nav-link"
               to="#"
@@ -1191,7 +1199,7 @@ let getdata:any = useSelector((state:any) => state.cartreducer.carts);
                 <path d="m2.845 16.136 1 1.73c.531.917 1.809 1.261 2.73.73l.529-.306A8.1 8.1 0 0 0 9 19.402V20c0 1.103.897 2 2 2h2c1.103 0 2-.897 2-2v-.598a8.132 8.132 0 0 0 1.896-1.111l.529.306c.923.53 2.198.188 2.731-.731l.999-1.729a2.001 2.001 0 0 0-.731-2.732l-.505-.292a7.718 7.718 0 0 0 0-2.224l.505-.292a2.002 2.002 0 0 0 .731-2.732l-.999-1.729c-.531-.92-1.808-1.265-2.731-.732l-.529.306A8.1 8.1 0 0 0 15 4.598V4c0-1.103-.897-2-2-2h-2c-1.103 0-2 .897-2 2v.598a8.132 8.132 0 0 0-1.896 1.111l-.529-.306c-.924-.531-2.2-.187-2.731.732l-.999 1.729a2.001 2.001 0 0 0 .731 2.732l.505.292a7.683 7.683 0 0 0 0 2.223l-.505.292a2.003 2.003 0 0 0-.731 2.733zm3.326-2.758A5.703 5.703 0 0 1 6 12c0-.462.058-.926.17-1.378a.999.999 0 0 0-.47-1.108l-1.123-.65.998-1.729 1.145.662a.997.997 0 0 0 1.188-.142 6.071 6.071 0 0 1 2.384-1.399A1 1 0 0 0 11 5.3V4h2v1.3a1 1 0 0 0 .708.956 6.083 6.083 0 0 1 2.384 1.399.999.999 0 0 0 1.188.142l1.144-.661 1 1.729-1.124.649a1 1 0 0 0-.47 1.108c.112.452.17.916.17 1.378 0 .461-.058.925-.171 1.378a1 1 0 0 0 .471 1.108l1.123.649-.998 1.729-1.145-.661a.996.996 0 0 0-1.188.142 6.071 6.071 0 0 1-2.384 1.399A1 1 0 0 0 13 18.7l.002 1.3H11v-1.3a1 1 0 0 0-.708-.956 6.083 6.083 0 0 1-2.384-1.399.992.992 0 0 0-1.188-.141l-1.144.662-1-1.729 1.124-.651a1 1 0 0 0 .471-1.108z" />
               </svg>
             </Link>
-          </div>
+          </div> */}
         </div>
       </div>
     </Navbar>

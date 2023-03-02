@@ -1,10 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import {  Button, Col, Form, FormGroup, Row } from 'react-bootstrap';
+import { Button, Col, Form, FormGroup, Row } from 'react-bootstrap';
 import * as Switcherdatacustam from "../../../../data/Switcherdata/Switcherdatacustam";
-const SignUp = () =>{
- 
-  
+const SignUp = () => {
+
+
   return (
     <div>
       <div className="page">
@@ -47,7 +47,7 @@ const SignUp = () =>{
                   <div className="main-card-signin d-md-flex">
                     <div className="wd-100p">
                       <div className="d-flex mb-4">
-                        <Link to={`${process.env.PUBLIC_URL}/dashboard/dashboard-1`}>
+                        <Link to="/">
                           <img
                             src={require("../../../../assets/img/brand/favicon.png")}
                             className="sign-favicon ht-40"
@@ -61,7 +61,7 @@ const SignUp = () =>{
                           <h6 className="font-weight-normal mb-4">
                             It's free to signup and only takes a minute.
                           </h6>
-                        
+
                           <Form action="#">
                             <FormGroup className="form-group">
                               <Form.Label>Firstname &amp; Lastname</Form.Label>{" "}
@@ -159,7 +159,7 @@ const SignUp = () =>{
       </div>
     </div>
   );
-  }
+}
 SignUp.propTypes = {};
 
 SignUp.defaultProps = {};

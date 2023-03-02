@@ -2,9 +2,9 @@ import React from 'react';
 import { Breadcrumb, Button, Card, Col, Row, Table } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
- const print = () => {
-   window.print();
- };
+const print = () => {
+  window.print();
+};
 const Invoice = () => (
   <div>
     {/* <!-- breadcrumb --> */}
@@ -31,7 +31,7 @@ const Invoice = () => (
             <div className="d-lg-flex">
               <h6 className="main-content-label mb-1">
                 <span className="d-flex mb-4">
-                  <Link to={`${process.env.PUBLIC_URL}/dashboard/dashboard-1`}>
+                  <Link to="/">
                     <img
                       src={require("../../../assets/img/brand/favicon.png")}
                       className="sign-favicon ht-40"
@@ -114,8 +114,8 @@ const Invoice = () => (
                     <td className="tx-right">$40.00</td>
                   </tr>
                   <tr>
-                    <td className="valign-middle" 
-                    colSpan={2} rowSpan={4}
+                    <td className="valign-middle"
+                      colSpan={2} rowSpan={4}
                     >
                       <div className="invoice-notes">
                         <label className="main-content-label tx-13">
@@ -132,19 +132,19 @@ const Invoice = () => (
                       {/*<!-- invoice-notes --> */}
                     </td>
                     <td className="tx-right">Sub-Total</td>
-                    <td className="tx-right"colSpan={2}>
+                    <td className="tx-right" colSpan={2}>
                       $400.00
                     </td>
                   </tr>
                   <tr>
                     <td className="tx-right">Tax</td>
-                    <td className="tx-right"colSpan={2}>
+                    <td className="tx-right" colSpan={2}>
                       3%
                     </td>
                   </tr>
                   <tr>
                     <td className="tx-right">Discount</td>
-                    <td className="tx-right"colSpan={2}>
+                    <td className="tx-right" colSpan={2}>
                       10%
                     </td>
                   </tr>
@@ -152,7 +152,7 @@ const Invoice = () => (
                     <td className="tx-right tx-uppercase tx-bold tx-inverse">
                       Total Due
                     </td>
-                    <td className="tx-right"colSpan={2}>
+                    <td className="tx-right" colSpan={2}>
                       <h4 className="tx-bold">$450.00</h4>
                     </td>
                   </tr>
@@ -165,7 +165,7 @@ const Invoice = () => (
               <i className="fe fe-credit-card me-1"></i> Pay Invoice
             </Button>
             <Button
-            variant=''
+              variant=''
               type="button"
               className="btn ripple btn-secondary mb-1 me-2"
             >

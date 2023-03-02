@@ -45,7 +45,7 @@ const ResetPassword = () => (
                   <div className="main-card-signin d-md-flex">
                     <div className="wd-100p">
                       <div className="d-flex mb-3">
-                        <Link to={`${process.env.PUBLIC_URL}/dashboard/dashboard-1`}>
+                        <Link to="/">
                           <img
                             src={require("../../../../assets/img/brand/favicon.png")}
                             className="sign-favicon ht-40"

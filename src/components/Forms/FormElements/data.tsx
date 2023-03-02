@@ -5,6 +5,7 @@ import { Form } from "react-bootstrap";
 import MaskInput from "react-maskinput";
 import Pickr from "@simonwep/pickr";
 import DatePicker from "react-datepicker";
+
 export function Brand() {
   const [value, setvalue] = useState<any>("");
 
@@ -13,31 +14,31 @@ export function Brand() {
   };
   const Optioncategory1 = [
     {
-     value:"br",
-     label:"Brazil"
+      value: "br",
+      label: "Brazil"
     },
     {
-     value:"cz",
-     label:"Czech Republic"
+      value: "cz",
+      label: "Czech Republic"
     },
     {
-     value:"de",
-     label:"Germany"
+      value: "de",
+      label: "Germany"
     },
     {
-     value:"pl",
-     label:"Poland"
+      value: "pl",
+      label: "Poland"
     },
   ];
   return (
     <Select
-			onChange={handleOnchange}
-			options={Optioncategory1}
-			classNamePrefix="formselect"
-			isSearchable
-			placeholder="Brazil"
-   isMulti
-		  />
+      onChange={handleOnchange}
+      options={Optioncategory1}
+      classNamePrefix="formselect"
+      isSearchable
+      placeholder="Brazil"
+      isMulti
+    />
   );
 }
 export function Customize() {
@@ -66,12 +67,12 @@ export function Customize() {
   ];
   return (
     <Select
-			onChange={handleOnchange}
-			options={Optioncategory1}
-			classNamePrefix="formselect"
-			isSearchable
-			placeholder="Brazil"
-		  />
+      onChange={handleOnchange}
+      options={Optioncategory1}
+      classNamePrefix="formselect"
+      isSearchable
+      placeholder="Brazil"
+    />
   );
 }
 export function Disabled() {
@@ -100,25 +101,25 @@ export function Disabled() {
   ];
   return (
     <Select
-			onChange={handleOnchange}
-			options={Optioncategory1}
-			classNamePrefix="formselect"
-			isSearchable
-			placeholder="Brazil"
+      onChange={handleOnchange}
+      options={Optioncategory1}
+      classNamePrefix="formselect"
+      isSearchable
+      placeholder="Brazil"
       isDisabled
-		  />
-  
+    />
+
   );
 }
 
-export  function DateAndTimePickers() {
+export function DateAndTimePickers() {
   return (
     <Form className="form-control" noValidate>
       <TextField
         id="datetime-local"
         type="datetime-local"
         defaultValue="2020-01-16T14:22"
-     
+
       />
     </Form>
   );
@@ -126,7 +127,7 @@ export  function DateAndTimePickers() {
 export function DateMask() {
   const [mask, setMask] = React.useState("00.00.0000");
   const [maskString, setMaskString] = React.useState("DD.MM.YYYY");
-  const onChange = (e:any) => {
+  const onChange = (e: any) => {
     if (parseInt(e.target.value[6], 10) > 2) {
       setMaskString("DD.MM.YY");
       setMask("00.00.00");
@@ -196,7 +197,7 @@ export const Datepicker = () => {
     <DatePicker
       className="form-control"
       selected={startDate}
-      onChange={(date:any) => setStartDate(date)}
+      onChange={(date: any) => setStartDate(date)}
     />
   );
 };
@@ -209,7 +210,7 @@ export const Previousmonth = () => {
       className="form-control"
       selected={startDate}
       showPreviousMonths
-      onChange={(date:any) => setStartDate(date)}
+      onChange={(date: any) => setStartDate(date)}
       monthsShown={2}
     />
   );
@@ -222,7 +223,7 @@ export const Monthrange = () => {
     <DatePicker
       className="form-control"
       selected={startDate}
-      onChange={(date:any) => setStartDate(date)}
+      onChange={(date: any) => setStartDate(date)}
       dateFormat="MM/yyyy"
       showMonthYearPicker
       showFullMonthYearPicker
@@ -237,7 +238,7 @@ export const Yearrange = () => {
     <DatePicker
       className="form-control"
       selected={startDate}
-      onChange={(date:any) => setStartDate(date)}
+      onChange={(date: any) => setStartDate(date)}
       showYearPicker
       dateFormat="yyyy"
     />
@@ -252,7 +253,7 @@ export function Nanomethod() {
       const _pickr = Pickr.create({
         el: ".color-picker",
         theme: "nano",
-          default: '#05c3fb',
+        default: '#05c3fb',
         swatches: [
           "rgba(156, 39, 176, 0.9)",
           "rgba(103, 58, 183, 0.85)",
@@ -289,9 +290,9 @@ export function Nanomethod() {
           },
         },
       });
-       console.log(_pickr);
+      console.log(_pickr);
     }
-   
+
   }, []);
 
   return (
@@ -309,47 +310,47 @@ export function Classicmethod() {
       const pickr = Pickr.create({
         el: ".color-picker",
         theme: "classic",
-         default: '#6c5ffc',
-      swatches: [
-        "rgba(244, 67, 54, 1)",
-        "rgba(233, 30, 99, 0.95)",
-        "rgba(156, 39, 176, 0.9)",
-        "rgba(103, 58, 183, 0.85)",
-        "rgba(63, 81, 181, 0.8)",
-        "rgba(33, 150, 243, 0.75)",
-        "rgba(3, 169, 244, 0.7)",
-        "rgba(0, 188, 212, 0.7)",
-        "rgba(0, 150, 136, 0.75)",
-        "rgba(76, 175, 80, 0.8)",
-        "rgba(139, 195, 74, 0.85)",
-        "rgba(205, 220, 57, 0.9)",
-        "rgba(255, 235, 59, 0.95)",
-        "rgba(255, 193, 7, 1)",
-      ],
+        default: '#6c5ffc',
+        swatches: [
+          "rgba(244, 67, 54, 1)",
+          "rgba(233, 30, 99, 0.95)",
+          "rgba(156, 39, 176, 0.9)",
+          "rgba(103, 58, 183, 0.85)",
+          "rgba(63, 81, 181, 0.8)",
+          "rgba(33, 150, 243, 0.75)",
+          "rgba(3, 169, 244, 0.7)",
+          "rgba(0, 188, 212, 0.7)",
+          "rgba(0, 150, 136, 0.75)",
+          "rgba(76, 175, 80, 0.8)",
+          "rgba(139, 195, 74, 0.85)",
+          "rgba(205, 220, 57, 0.9)",
+          "rgba(255, 235, 59, 0.95)",
+          "rgba(255, 193, 7, 1)",
+        ],
 
-      components: {
-        preview: true,
-        opacity: true,
-        hue: true,
+        components: {
+          preview: true,
+          opacity: true,
+          hue: true,
 
-        interaction: {
-          hex: true,
-          rgba: true,
-          hsva: true,
-          input: true,
-          clear: true,
-          save: true,
+          interaction: {
+            hex: true,
+            rgba: true,
+            hsva: true,
+            input: true,
+            clear: true,
+            save: true,
+          },
         },
-      },  
 
       });
-        console.log(pickr);
+      console.log(pickr);
     }
-  
+
   }, []);
 
   return (
-    
+
     <div className="App">
       <div className="color-picker" ref={colorPicker}></div>
     </div>
@@ -363,8 +364,8 @@ export function Monolithmethod() {
     if (colorPicker.current) {
       const pickr = Pickr.create({
         el: ".color-picker",
-        theme: "classic", 
-          default: '#fc5296',
+        theme: "classic",
+        default: '#fc5296',
 
         swatches: [
           "rgba(55, 35, 9, 0.5)",
