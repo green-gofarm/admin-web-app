@@ -114,9 +114,6 @@ export default function CustomizedTablePagination({
     return (
 
         <CustomTablePagination
-            components={{
-                Root: "div"
-            }}
             rowsPerPageOptions={rowsPerPageOptions || DEFAULT_PAGINATION.rowsPerPageOptions}
             rowsPerPage={rowsPerPage || DEFAULT_PAGINATION.rowsPerPage}
             count={count || 0}
