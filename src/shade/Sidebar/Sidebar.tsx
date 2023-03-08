@@ -4,13 +4,100 @@ import { MENUITEMS } from "./SideMenu";
 import Scrollbars from "react-custom-scrollbars";
 import { NavLink } from "react-router-dom";
 import { useLocation } from "react-router-dom";
+
 let history: any = [];
+
+function mainContentClickFn(setMenuitems: Function) {
+  if (document.body.classList.contains('horizontal') && window.innerWidth >= 992) {
+    clearMenuActive(setMenuitems);
+  }
+}
+
+function clearMenuActive(setMenuitems: Function) {
+  MENUITEMS.map((mainlevel: any) => {
+    if (mainlevel.Items) {
+      mainlevel.Items.map((sublevel: any) => {
+        sublevel.active = false;
+        if (sublevel.children) {
+          sublevel.children.map((sublevel1: any) => {
+            sublevel1.active = false;
+            if (sublevel1.children) {
+              sublevel1.children.map((sublevel2: any) => {
+                sublevel2.active = false;
+                if (sublevel2.children) {
+                  sublevel2.children.map((sublevel3: any) => {
+                    sublevel3.active = false;
+                    return sublevel3;
+                  })
+                }
+                return sublevel2;
+              })
+            }
+            return sublevel1;
+          })
+        }
+        return sublevel;
+      })
+    }
+    return mainlevel;
+  })
+
+  setMenuitems((arr: any) => [...arr]);
+}
 
 const Sidebar = () => {
   let location = useLocation();
   const [menuitems, setMenuitems] = useState(MENUITEMS);
+
   // initial loading
   useEffect(() => {
+    function setSidemenu() {
+      if (menuitems) {
+        menuitems.map((mainlevel: any) => {
+          if (mainlevel.Items) {
+            mainlevel.Items.map((items: any) => {
+              items.active = false;
+              items.selected = false;
+              if (location.pathname === items.path || location.pathname === items.path + "/") {
+                items.active = true;
+                items.selected = true;
+              }
+              if (items.children) {
+                items.children.map((submenu: any) => {
+                  submenu.active = false;
+                  submenu.selected = false;
+                  if (location.pathname === submenu.path || location.pathname === submenu.path + "/") {
+                    items.active = true;
+                    items.selected = true;
+                    submenu.active = true;
+                    submenu.selected = true;
+                  }
+                  if (submenu.children) {
+                    submenu.children.map((submenu1: any) => {
+                      submenu1.active = false;
+                      submenu1.selected = false;
+                      if (location.pathname === submenu1.path || location.pathname === submenu1.path + "/") {
+                        items.active = true;
+                        items.selected = true;
+                        submenu.active = true;
+                        submenu.selected = true;
+                        submenu1.active = true;
+                        submenu1.selected = true;
+                      }
+                      return submenu1;
+                    })
+                  }
+                  return submenu;
+                })
+              }
+              return items;
+            })
+          }
+          setMenuitems((arr: any) => [...arr]);
+          return mainlevel;
+        })
+      }
+    }
 
     history.push(location.pathname);  // add  history to history  stack for current location.pathname to prevent multiple history calls innerWidth  and innerWidth  calls from  multiple users. This is important because the history stack is not always empty when the user clicks  the history       
     if (history.length > 2) {
@@ -21,104 +108,22 @@ const Sidebar = () => {
     }
     let mainContent: any = document.querySelector('.main-content');
 
+    const handleClick = () => mainContentClickFn(setMenuitems);
+
     //when we click on the body to remove
-    mainContent.addEventListener('click', mainContentClickFn);
+    mainContent.addEventListener('click', handleClick);
     return () => {
-      mainContent.removeEventListener('click', mainContentClickFn);
+      mainContent.removeEventListener('click', handleClick);
     }
-  }, [location])
+  }, [location, menuitems])
 
   // location
   useEffect(() => {
     if (document.body.classList.contains('horizontal') && window.innerWidth >= 992) {
-      clearMenuActive();
+      clearMenuActive(setMenuitems);
     }
   }, []);
 
-  //  In Horizontal When we click the body it should we Closed using in useEfffect Refer line No:16
-  function mainContentClickFn() {
-    if (document.body.classList.contains('horizontal') && window.innerWidth >= 992) {
-      clearMenuActive();
-    }
-  }
-  //<-------End---->
-  function clearMenuActive() {
-    MENUITEMS.map((mainlevel: any) => {
-      if (mainlevel.Items) {
-        mainlevel.Items.map((sublevel: any) => {
-          sublevel.active = false;
-          if (sublevel.children) {
-            sublevel.children.map((sublevel1: any) => {
-              sublevel1.active = false;
-              if (sublevel1.children) {
-                sublevel1.children.map((sublevel2: any) => {
-                  sublevel2.active = false;
-                  if (sublevel2.children) {
-                    sublevel2.children.map((sublevel3: any) => {
-                      sublevel3.active = false;
-                      return sublevel3;
-                    })
-                  }
-                  return sublevel2;
-                })
-              }
-              return sublevel1;
-            })
-          }
-          return sublevel;
-        })
-      }
-      return mainlevel;
-    })
-    setMenuitems((arr: any) => [...arr]);
-  }
-  function setSidemenu() {
-    if (menuitems) {
-      menuitems.map((mainlevel: any) => {
-        if (mainlevel.Items) {
-          mainlevel.Items.map((items: any) => {
-            items.active = false;
-            items.selected = false;
-            if (location.pathname === items.path + '/') {
-              items.active = true;
-              items.selected = true;
-            }
-            if (items.children) {
-              items.children.map((submenu: any) => {
-                submenu.active = false;
-                submenu.selected = false;
-                if (location.pathname === submenu.path + '/') {
-                  items.active = true;
-                  items.selected = true;
-                  submenu.active = true;
-                  submenu.selected = true;
-                }
-                if (submenu.children) {
-                  submenu.children.map((submenu1: any) => {
-                    submenu1.active = false;
-                    submenu1.selected = false;
-                    if (location.pathname === submenu1.path + '/') {
-                      items.active = true;
-                      items.selected = true;
-                      submenu.active = true;
-                      submenu.selected = true;
-                      submenu1.active = true;
-                      submenu1.selected = true;
-                    }
-                    return submenu1;
-                  })
-                }
-                return submenu;
-              })
-            }
-            return items;
-          })
-        }
-        setMenuitems((arr: any) => [...arr]);
-        return mainlevel;
-      })
-    }
-  }
   function toggleSidemenu(item: any) {
 
     if (
@@ -251,7 +256,7 @@ const Sidebar = () => {
                     {Item.Items.map((menuItem: any, i: any) => (
                       <li className={`slide ${menuItem.selected ? "is-expanded" : ""}  ${menuItem.active ? "is-expanded" : ""}`} key={i}>
                         {menuItem.type === "link" ? (
-                          <NavLink to={menuItem.path + "/"} className={`side-menu__item ${menuItem.selected ? " active" : ""}`}
+                          <NavLink to={menuItem.path} className={`side-menu__item ${menuItem.selected ? " active" : ""}`}
                           >
                             {menuItem.icon}
                             <span className="side-menu__label">
@@ -313,7 +318,7 @@ const Sidebar = () => {
                                   {childrenItem.type === "link" ? (
                                     <span >
                                       <NavLink
-                                        to={childrenItem.path + "/"}
+                                        to={childrenItem.path}
                                         className="slide-item"
                                       >
                                         {childrenItem.title}{childrenItem.active}
@@ -334,7 +339,7 @@ const Sidebar = () => {
                                           <li key={key}>
                                             {childrenSubItem.type === "link" ? (
                                               <NavLink
-                                                to={childrenSubItem.path + "/"}
+                                                to={childrenSubItem.path}
                                                 className="sub-side-menu__item"
                                               >
                                                 <span className="sub-side-menu__label">{childrenSubItem.title}{childrenSubItem.active}</span>

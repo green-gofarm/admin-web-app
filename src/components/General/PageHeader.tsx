@@ -1,5 +1,5 @@
 import { Box } from '@mui/material'
-import React from 'react'
+import React, { ReactNode } from 'react'
 import { Breadcrumb } from 'react-bootstrap'
 
 export interface IBreadcrumbItem {
@@ -10,7 +10,7 @@ export interface IBreadcrumbItem {
 }
 
 interface IPageHeader {
-    title?: string,
+    title?: string | ReactNode,
     breadcrumb?: Array<IBreadcrumbItem>,
 }
 
@@ -21,7 +21,10 @@ function PageHeader({ title, breadcrumb }: IPageHeader) {
                 <Box
                     component="span"
                     className="main-content-title mg-b-0 mg-b-lg-1"
-                    textTransform="capitalize"
+                    sx={{
+                        fontFamily: "sans-serif",
+                        // fontWeight: "600 !important"
+                    }}
                 >
                     {title}
                 </Box>

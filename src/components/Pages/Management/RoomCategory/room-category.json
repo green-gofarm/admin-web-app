@@ -1,3 +1,52 @@
 {
-    "data": []
+    "data": [
+        {
+            "id": 1,
+            "name": "Phòng đơn",
+            "status": 1,
+            "description": "Phòng có một giường đơn hoặc giường đôi nhỏ và phù hợp cho một người ở hoặc một cặp vợ chồng",
+            "updatedDate": "2022-02-01 10:00:00",
+            "createdDate": "2022-02-01 10:00:00"
+        },
+        {
+            "id": 2,
+            "name": "Phòng đôi",
+            "status": 1,
+            "description": "Phòng có hai giường đơn hoặc một giường đôi lớn, phù hợp cho hai người ở hoặc một cặp vợ chồng.",
+            "updatedDate": "2022-03-01 08:15:00",
+            "createdDate": "2022-03-01 08:15:00"
+        },
+        {
+            "id": 3,
+            "name": "Phòng gia đình",
+            "status": 1,
+            "description": "Phòng có kích thước rộng rãi, chứa được hai giường lớn hoặc nhiều giường nhỏ, phù hợp cho các gia đình đi nghỉ dưỡng hoặc đoàn du lịch.",
+            "updatedDate": "2022-03-01 08:15:00",
+            "createdDate": "2022-03-01 08:15:00"
+        },
+        {
+            "id": 4,
+            "name": "Phòng cap cấp",
+            "status": 2,
+            "description": "Phòng có kích thước vừa phải, trang bị đầy đủ các tiện nghi cơ bản và có không gian thoải mái.",
+            "updatedDate": "2022-04-10 11:45:00",
+            "createdDate": "2022-04-10 11:45:00"
+        },
+        {
+            "id": 5,
+            "name": "Phòng hạng sang",
+            "status": 3,
+            "description": "Phòng có kích thước lớn và trang bị nhiều tiện nghi cao cấp.",
+            "updatedDate": "2022-04-10 11:45:00",
+            "createdDate": "2022-04-10 11:45:00"
+        },
+        {
+            "id": 6,
+            "name": "Khác",
+            "status": 1,
+            "description": "Phòng tự định nghĩa",
+            "updatedDate": "2022-04-10 11:45:00",
+            "createdDate": "2022-04-10 11:45:00"
+        }
+    ]
 }

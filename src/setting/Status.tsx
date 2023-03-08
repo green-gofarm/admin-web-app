@@ -8,9 +8,6 @@ export const Status = ({ statusObject }: IStatus) => {
     if (!statusObject) return null;
     return (
         <Box
-            display="flex"
-            alignItems="center"
-            justifyContent="space-between"
             padding="4px 8px"
             borderRadius="4px"
             width="fit-content"

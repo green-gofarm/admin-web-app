@@ -3,10 +3,10 @@ import Slider from "react-slick";
 import { Breadcrumb, Card, Col, Row, Table } from 'react-bootstrap';
 // import { LightgalleryProvider, LightgalleryItem } from "react-lightgallery";
 import { Link } from 'react-router-dom';
-import {  LightGallery, settings } from './data';
+import { LightGallery, settings } from './data';
 
 
- const Filedetails = () => {
+const Filedetails = () => {
 
   return (
     <div>
@@ -216,8 +216,8 @@ import {  LightGallery, settings } from './data';
               <Row className=" row-sm file-detailimg">
                 {/* <!-- light gallery --> */}
                 <ul id="lightgallery" className="list-unstyled row mb-0 px-2">
-                  
-                  <LightGallery/>
+
+                  <LightGallery />
                 </ul>
                 {/* <!-- light gallery --> */}
               </Row>

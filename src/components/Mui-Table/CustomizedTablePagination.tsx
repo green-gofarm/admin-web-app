@@ -112,7 +112,6 @@ export default function CustomizedTablePagination({
 }: IPagination) {
 
     return (
-
         <CustomTablePagination
             rowsPerPageOptions={rowsPerPageOptions || DEFAULT_PAGINATION.rowsPerPageOptions}
             rowsPerPage={rowsPerPage || DEFAULT_PAGINATION.rowsPerPage}
@@ -120,6 +119,18 @@ export default function CustomizedTablePagination({
             page={page}
             onPageChange={handleChangePage}
             onRowsPerPageChange={handleChangeRowsPerPage}
+            slots={{
+                root: "div"
+            }}
+            slotProps={{
+                select: {
+                    'aria-label': 'rows per page',
+                },
+                actions: {
+                    lang: ""
+                },
+            }}
+            labelRowsPerPage="Số hàng mỗi trang"
         />
     );
 }

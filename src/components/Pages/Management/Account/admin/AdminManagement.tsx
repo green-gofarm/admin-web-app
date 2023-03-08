@@ -3,7 +3,7 @@ import { Card } from 'react-bootstrap';
 import { Box, FormGroup, Grid } from '@mui/material';
 import PageHeader, { IBreadcrumbItem } from '../../../../General/PageHeader';
 import Select from 'react-select';
-import { AdminTable } from './AdminTable';
+import AdminTable from './AdminTable';
 import { LIST_ADMIN_STATUS } from '../../../../../setting/admin-setting';
 
 const breadcrumb: Array<IBreadcrumbItem> = [
@@ -45,10 +45,10 @@ const AdminManagement = () => {
     }, []);
 
     return (
-        <Box component="div">
+        <Box marginBottom="1.3rem">
             {/* <!-- breadcrumb --> */}
             <PageHeader
-                title="quản trị viên"
+                title="Quản trị viên"
                 breadcrumb={breadcrumb}
             />
 
@@ -56,7 +56,7 @@ const AdminManagement = () => {
             <Box
                 component={Grid}
                 container
-                spacing={0}
+                spacing={2}
             >
                 <Grid item xs={12}>
                     <Card className="custom-card">
@@ -130,13 +130,9 @@ const AdminManagement = () => {
                 </Grid>
 
                 <Grid item xs={12}>
-                    <Card className="custom-card overflow-hidden">
-                        <Card.Body>
-                            <Box className="table-responsive">
-                                <AdminTable />
-                            </Box>
-                        </Card.Body>
-                    </Card>
+                    <Box className="table-responsive">
+                        <AdminTable />
+                    </Box>
                 </Grid>
             </Box>
         </Box>

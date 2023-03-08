@@ -21,7 +21,7 @@ const color = {
     900: "#212529",
   },
   primary: {
-    main: "#5e72e4",
+    main: "#139c7f",
     dark: "#233dd2",
     snackbar: "#7889e8",
     badgeBg: "#eaecfb",

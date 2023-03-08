@@ -17,11 +17,11 @@ export const LIST_CUSTOMER_STATUS = [
     {
         label: "Chưa kích hoạt",
         value: CUSTOMER_STATUSES.INACTIVE,
-        textColor: STATUS_COLORS.DELETED.textColor,
-        bgColor: STATUS_COLORS.DELETED.bgColor
+        textColor: STATUS_COLORS.DISABLED.textColor,
+        bgColor: STATUS_COLORS.DISABLED.bgColor
     },
     {
-        label: "Bị cấm",
+        label: "Đang bị khóa",
         value: CUSTOMER_STATUSES.BANNED,
         textColor: STATUS_COLORS.BANNED.textColor,
         bgColor: STATUS_COLORS.BANNED.bgColor

@@ -1,0 +1,116 @@
+{
+    "data": [
+        {
+            "id": 1,
+            "name": "Ngoài trời",
+            "description": "Hoạt động được tổ chức và thực hiện ở ngoài không gian, thường là ở môi trường thiên nhiên như rừng, núi, sông suối, biển, hồ, đồng cỏ, vv.",
+            "status": 1,
+            "createdDate": "2022-02-01 10:00:00",
+            "updatedDate": "2022-02-01 10:00:00"
+        },
+        {
+            "id": 2,
+            "name": "Thể thao",
+            "description": "Hoạt động liên quan đến các môn thể thao ngoài trời như chạy bộ, leo núi, đạp xe hoặc trong nhà như bóng đá trong nhà, cầu lông, bơi lội, vv.",
+            "status": 1,
+            "createdDate": "2022-02-01 10:00:00",
+            "updatedDate": "2022-02-01 10:00:00"
+        },
+        {
+            "id": 3,
+            "name": "Khám phá",
+            "description": "Các hoạt động như khám phá địa danh, dã ngoại, vv.",
+            "status": 1,
+            "createdDate": "2022-02-01 10:00:00",
+            "updatedDate": "2022-02-01 10:00:00"
+        },
+        {
+            "id": 4,
+            "name": "Tham quan",
+            "description": "Các hoạt động như tham quan thắng cảnh, tham quan các bảo tàng, vv.",
+            "status": 1,
+            "createdDate": "2022-02-01 10:00:00",
+            "updatedDate": "2022-02-01 10:00:00"
+        },
+        {
+            "id": 5,
+            "name": "Ẩm thực",
+            "description": "Các hoạt động liên quan đến ẩm thực như tham gia các lớp nấu ăn, thử nghiệm món ăn, thưởng thức ẩm thực địa phương, vv.",
+            "status": 1,
+            "createdDate": "2022-02-01 10:00:00",
+            "updatedDate": "2022-02-01 10:00:00"
+        },
+        {
+            "id": 6,
+            "name": "Mua sắm",
+            "description": "Các hoạt động liên quan đến mua sắm như tham quan chợ, mua sắm sản phẩm địa phương, vv.",
+            "status": 3,
+            "createdDate": "2022-02-01 10:00:00",
+            "updatedDate": "2022-02-01 10:00:00"
+        },
+        {
+            "id": 7,
+            "name": "Cộng đồng",
+            "description": "Các hoạt động liên quan đến cộng đồng và xã hội như tình nguyện, tham gia các hoạt động từ thiện, vv.",
+            "status": 2,
+            "createdDate": "2022-02-01 10:00:00",
+            "updatedDate": "2022-02-01 10:00:00"
+        },
+        {
+            "id": 8,
+            "name": "Thiên nhiên",
+            "description": "Mô tả các hoạt động liên quan đến việc khám phá cảnh quan thiên nhiên như trekking, đi bộ đường dài, leo núi, khám phá hang động, tham quan rừng rậm, bãi biển hoang sơ, vườn quốc gia,…",
+            "status": 1,
+            "createdDate": "2022-02-01 10:00:00",
+            "updatedDate": "2022-02-01 10:00:00"
+        },
+        {
+            "id": 9,
+            "name": "Văn hóa địa phương",
+            "description": "Mô tả các hoạt động liên quan đến khám phá văn hóa, lịch sử, truyền thống, ẩm thực và đời sống địa phương như tham quan đền đài, chùa chiền, phố cổ, thị trấn, chợ đêm, trải nghiệm ẩm thực,…",
+            "status": 1,
+            "createdDate": "2022-02-01 10:00:00",
+            "updatedDate": "2022-02-01 10:00:00"
+        },
+        {
+            "id": 10,
+            "name": "Giải trí",
+            "description": "Mô tả các hoạt động liên quan đến giải trí như xem phim, xem biểu diễn nghệ thuật, chơi game, khu vui chơi giải trí, bowling, karaoke,…",
+            "status": 1,
+            "createdDate": "2022-02-01 10:00:00",
+            "updatedDate": "2022-02-01 10:00:00"
+        },
+        {
+            "id": 11,
+            "name": "Nghỉ dưỡng",
+            "description": "Mô tả các hoạt động liên quan đến du lịch nghỉ dưỡng như  xông hơi, massage, yoga,…",
+            "status": 1,
+            "createdDate": "2022-02-01 10:00:00",
+            "updatedDate": "2022-02-01 10:00:00"
+        },
+        {
+            "id": 12,
+            "name": "Thành phố",
+            "description": "Mô tả các hoạt động liên quan đến thành phố.",
+            "status": 1,
+            "createdDate": "2022-02-01 10:00:00",
+            "updatedDate": "2022-02-01 10:00:00"
+        },
+        {
+            "id": 13,
+            "name": "Học tập",
+            "description": "Mô tả các hoạt động liên quan đến học tập như tham gia khóa học ngắn hạn, hội thảo,…",
+            "status": 1,
+            "createdDate": "2022-02-01 10:00:00",
+            "updatedDate": "2022-02-01 10:00:00"
+        },
+        {
+            "id": 14,
+            "name": "Tôn giáo",
+            "description": "Mô tả các hoạt động liên quan đến tham quan các địa điểm tôn giáo như chùa chiền, đền đài, thánh đường, lễ hội",
+            "status": 1,
+            "createdDate": "2022-02-01 10:00:00",
+            "updatedDate": "2022-02-01 10:00:00"
+        }
+    ]
+}

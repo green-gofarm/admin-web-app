@@ -11433,7 +11433,7 @@ const geoUrl = {
 };
 
 
-export const rounded = (num:any) => {
+export const rounded = (num: any) => {
   if (num > 1000000000) {
     return Math.round(num / 100000000) / 10 + "Bn";
   } else if (num > 1000000) {
@@ -11443,7 +11443,7 @@ export const rounded = (num:any) => {
   }
 };
 
-export const WorldMap = ({ setTooltipContent }:any) => {
+export const WorldMap = ({ setTooltipContent }: any) => {
   return (
     <>
       <ComposableMap projectionConfig={{ scale: 200 }} className="worldmaps ">
@@ -11467,7 +11467,7 @@ export const WorldMap = ({ setTooltipContent }:any) => {
                       outline: "none",
                     },
                     hover: {
-                      fill: "#38cab3",
+                      fill: "#139c7f",
                       outline: "none",
                     },
                   }}
@@ -23068,7 +23068,7 @@ export const Basicmarkers = () => {
           ))
         }
       </Geographies>
-      {Basicmarkersdata.map(({ name, coordinates, markerOffset }:any) => (
+      {Basicmarkersdata.map(({ name, coordinates, markerOffset }: any) => (
         <Marker key={name} coordinates={coordinates}>
           <circle r={10} fill="#F00" stroke="#fff" strokeWidth={2} />
           <text
@@ -23129,7 +23129,7 @@ export const Custommarkers = () => {
           ))
         }
       </Geographies>
-      {Custommarkersdata.map(({ name, coordinates, markerOffset }:any) => (
+      {Custommarkersdata.map(({ name, coordinates, markerOffset }: any) => (
         <Marker key={name} coordinates={coordinates}>
           <g
             fill="none"
@@ -23175,7 +23175,7 @@ export const Shapeworldmap = () => {
                   outline: "none",
                 },
                 hover: {
-                  fill: "#38cab3",
+                  fill: "#139c7f",
                   outline: "none",
                 },
               }}

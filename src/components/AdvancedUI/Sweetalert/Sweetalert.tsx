@@ -6,7 +6,7 @@ import Swal from "sweetalert2";
 
 const Sweetalert = () => {
 
- 
+
   const Timer = () => {
     Swal.fire({
       title: 'Your message',
@@ -23,7 +23,7 @@ const Sweetalert = () => {
       title: "Welcome to Your Admin Page",
       allowOutsideClick: false,
       confirmButtonText: "ok",
-      cancelButtonColor: "#38cab3",
+      cancelButtonColor: "#139c7f",
     });
   }
   function Title() {
@@ -31,7 +31,7 @@ const Sweetalert = () => {
       title: "Here is  a title!",
       allowOutsideClick: false,
       confirmButtonText: "ok",
-      cancelButtonColor: "#38cab3",
+      cancelButtonColor: "#139c7f",
       text: "All are available in the template",
     });
   }
@@ -42,7 +42,7 @@ const Sweetalert = () => {
       icon: "success",
       allowOutsideClick: false,
       confirmButtonText: "ok",
-      cancelButtonColor: "#38cab3",
+      cancelButtonColor: "#139c7f",
       text: "You clicked the button!",
     });
   }

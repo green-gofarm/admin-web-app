@@ -3,7 +3,9 @@ import { Card } from 'react-bootstrap';
 import { Box, FormGroup, Grid } from '@mui/material';
 import Select from 'react-select';
 import PageHeader, { IBreadcrumbItem } from '../../../General/PageHeader';
-import { FarmstayTable } from './FarmstayTable';
+import FarmstayTable from './FarmstayTable';
+import FarmstayStatistic from './FarmstayStatistic';
+import { IStatisticCard } from '../../../General/Statistic/StatisticCard';
 
 const breadcrumb: Array<IBreadcrumbItem> = [
     {
@@ -18,6 +20,41 @@ const breadcrumb: Array<IBreadcrumbItem> = [
         }
     }
 ]
+
+const statisticData: IStatisticCard[] = [
+    {
+        title: "Tổng số farmstay",
+        value: 122,
+        icon: <i className="mdi mdi-account-multiple icon-size float-start text-primary text-primary-shadow"></i>,
+        subTitle: "Farmstay mới trong tháng",
+        subValue: 20,
+        type: "number"
+    },
+    {
+        title: "Số booking trong tháng",
+        value: 22736,
+        icon: <i className="mdi mdi-cart-outline icon-size float-start text-danger text-danger-shadow"></i>,
+        subTitle: "Đã thanh toán",
+        subValue: 2334,
+        type: "number"
+    },
+    {
+        title: "Doanh thu trong quý",
+        value: 22987200,
+        icon: <i className="icon-size mdi mdi-poll-box float-start text-warning text-warning-shadow"></i>,
+        subTitle: "Trong tháng này",
+        subValue: 400000,
+        type: "money"
+    },
+    {
+        title: "Số đơn đã hủy",
+        value: 234,
+        icon: <i className="icon-size mdi mdi-poll-box float-start text-warning text-warning-shadow"></i>,
+        subTitle: "Trong tháng này",
+        subValue: 23,
+        type: "number"
+    },
+];
 
 export const STATUSES = {
     ACTIVE: 1,
@@ -40,7 +77,7 @@ const FarmstayManagement = () => {
     }, []);
 
     return (
-        <Box component="div">
+        <Box marginBottom="1.3rem">
             <PageHeader
                 title="Farmstay"
                 breadcrumb={breadcrumb}
@@ -50,78 +87,10 @@ const FarmstayManagement = () => {
             <Box
                 component={Grid}
                 container
-                spacing={0}
+                spacing={2}
             >
-
                 <Grid item xs={12}>
-                    <Grid container spacing={2}>
-                        <Grid item xs={12} md={6} lg={6} xl={3}>
-                            <Card>
-                                <Card.Body>
-                                    <div className="card-order">
-                                        <h6 className="mb-2">Tổng số farmstay</h6>
-                                        <h2 className="text-end ">
-                                            <i className="mdi mdi-account-multiple icon-size float-start text-primary text-primary-shadow"></i>
-                                            <span>122</span>
-                                        </h2>
-                                        <p className="mb-0">
-                                            Farmstay mới trong tháng<span className="float-end">20</span>
-                                        </p>
-                                    </div>
-                                </Card.Body>
-                            </Card>
-                        </Grid>
-
-                        <Grid item xs={12} md={6} lg={6} xl={3}>
-                            <Card className=" ">
-                                <Card.Body>
-                                    <div className="card-widget">
-                                        <h6 className="mb-2">Số booking trong tháng</h6>
-                                        <h2 className="text-end">
-                                            <i className="mdi mdi-cart-outline icon-size float-start text-danger text-danger-shadow"></i>
-                                            <span>22.736</span>
-                                        </h2>
-                                        <p className="mb-0">
-                                            Đã thanh toán<span className="float-end">2334</span>
-                                        </p>
-                                    </div>
-                                </Card.Body>
-                            </Card>
-                        </Grid>
-
-                        <Grid item xs={12} md={6} lg={6} xl={3}>
-                            <Card>
-                                <Card.Body>
-                                    <div className="card-widget">
-                                        <h6 className="mb-2">Doanh thu trong quý</h6>
-                                        <h2 className="text-end">
-                                            <i className="icon-size mdi mdi-poll-box float-start text-warning text-warning-shadow"></i>
-                                            <span>22.987.200 đ</span>
-                                        </h2>
-                                        <p className="mb-0">
-                                            Trong tháng này<span className="float-end">400.000 đ</span>
-                                        </p>
-                                    </div>
-                                </Card.Body>
-                            </Card>
-                        </Grid>
-                        <Grid item xs={12} md={6} lg={6} xl={3}>
-                            <Card>
-                                <Card.Body>
-                                    <div className="card-widget">
-                                        <h6 className="mb-2">Số đơn đã hủy</h6>
-                                        <h2 className="text-end">
-                                            <i className="icon-size mdi mdi-poll-box float-start text-warning text-warning-shadow"></i>
-                                            <span>234</span>
-                                        </h2>
-                                        <p className="mb-0">
-                                            Trong tháng này<span className="float-end">23</span>
-                                        </p>
-                                    </div>
-                                </Card.Body>
-                            </Card>
-                        </Grid>
-                    </Grid>
+                    <FarmstayStatistic data={statisticData} />
                 </Grid>
                 <Grid item xs={12}>
                     <Card className="custom-card">
@@ -193,13 +162,9 @@ const FarmstayManagement = () => {
                 </Grid>
 
                 <Grid item xs={12}>
-                    <Card className="custom-card overflow-hidden">
-                        <Card.Body>
-                            <Box className="table-responsive">
-                                <FarmstayTable />
-                            </Box>
-                        </Card.Body>
-                    </Card>
+                    <Box className="table-responsive">
+                        <FarmstayTable />
+                    </Box>
                 </Grid>
             </Box>
         </Box>

@@ -124,8 +124,8 @@ export const horizontal = () => {
 
   // $('#slide-left').remove('d-none');
   // $('#slide-right').remove('d-none');
- let horizontalstyle :any= document.querySelector(".horizontal .side-menu")
- horizontalstyle.style.flexWrap = "nowrap";
+  let horizontalstyle: any = document.querySelector(".horizontal .side-menu")
+  horizontalstyle.style.flexWrap = "nowrap";
 
   checkHoriMenu();
   Horizontalmenudefultclose();
@@ -158,7 +158,7 @@ export const HorizontalHoverMenu = () => {
     .querySelector(".horizontal-hover .side-menu")
     ?.classList.add("flex-nowrap");
   let li = document.querySelectorAll(".side-menu li");
-  li.forEach((e:any, i:any) => {
+  li.forEach((e: any, i: any) => {
     if (e.classList.contains("is-expaned")) {
       let ele = [...e.children];
       ele.forEach((el, i) => {
@@ -182,10 +182,10 @@ export const HorizontalHoverMenu = () => {
 // Color theme
 export const LightTheme = () => {
   document.querySelector("body")?.classList.add("light-theme");
- let Lightheader:any = document.querySelector("#myonoffswitch3")as HTMLInputElement
- Lightheader.checked = true;
- let Lightmenu:any = document.querySelector("#myonoffswitch6")as HTMLInputElement
- Lightmenu.checked = true;
+  let Lightheader: any = document.querySelector("#myonoffswitch3") as HTMLInputElement
+  Lightheader.checked = true;
+  let Lightmenu: any = document.querySelector("#myonoffswitch6") as HTMLInputElement
+  Lightmenu.checked = true;
 
   document.querySelector("body")?.classList.remove("transparent-theme");
   document.querySelector("body")?.classList.remove("dark-theme");
@@ -200,7 +200,7 @@ export const LightTheme = () => {
   document.querySelector("body")?.classList.remove("bg-img3");
   document.querySelector("body")?.classList.remove("bg-img4");
 
-  let htmllight:any = document.querySelector("html")
+  let htmllight: any = document.querySelector("html")
   htmllight.style = "";
   name();
 
@@ -213,10 +213,10 @@ export const LightTheme = () => {
 };
 export const dark = () => {
   document.querySelector("body")?.classList.add("dark-theme");
- let darkheader:any = document.querySelector("#myonoffswitch8") as HTMLInputElement
+  let darkheader: any = document.querySelector("#myonoffswitch8") as HTMLInputElement
   darkheader.checked = true;
- let darkmenu:any = document.querySelector("#myonoffswitch5") as HTMLInputElement
- darkmenu.checked = true;
+  let darkmenu: any = document.querySelector("#myonoffswitch5") as HTMLInputElement
+  darkmenu.checked = true;
 
   document.querySelector("body")?.classList.remove("transparent-theme");
   document.querySelector("body")?.classList.remove("light-theme");
@@ -227,7 +227,7 @@ export const dark = () => {
   document.querySelector("body")?.classList.remove("color-menu");
   document.querySelector("body")?.classList.remove("gradient-menu");
 
-  let htmldark:any = document.querySelector("html")
+  let htmldark: any = document.querySelector("html")
   htmldark.style = "";
   name();
   localStorage.removeItem("nowalighttheme");
@@ -255,20 +255,20 @@ export const transparent = () => {
   document.querySelector(".app")?.classList.remove("gradient-header");
   document.querySelector(".app")?.classList.remove("light-header");
   document.querySelector(".app")?.classList.remove("dark-header");
-  let Lightheader:any = document.querySelector("#myonoffswitch3")as HTMLInputElement
+  let Lightheader: any = document.querySelector("#myonoffswitch3") as HTMLInputElement
   Lightheader.checked = false;
-  let Lightmenu:any = document.querySelector("#myonoffswitch6")as HTMLInputElement
+  let Lightmenu: any = document.querySelector("#myonoffswitch6") as HTMLInputElement
   Lightmenu.checked = false;
-  let darkheader:any = document.querySelector("#myonoffswitch8") as HTMLInputElement
+  let darkheader: any = document.querySelector("#myonoffswitch8") as HTMLInputElement
   darkheader.checked = false;
- let darkmenu:any = document.querySelector("#myonoffswitch5") as HTMLInputElement
- darkmenu.checked = false;
-  let htmltransparent:any = document.querySelector("html")
+  let darkmenu: any = document.querySelector("#myonoffswitch5") as HTMLInputElement
+  darkmenu.checked = false;
+  let htmltransparent: any = document.querySelector("html")
   htmltransparent.style = "";
   localStorage.removeItem("nowalighttheme");
   localStorage.setItem("nowatransparent", 'true');
   localStorage.removeItem("nowadark");
-localStorage.removeItem("nowaBgImage")
+  localStorage.removeItem("nowaBgImage")
 };
 
 /*Transparent Bg-Image Style Start*/
@@ -292,15 +292,15 @@ export function bgimage1() {
   localStorage.removeItem("nowatransparentPrimaryColor");
   localStorage.removeItem("nowatransparentBgColor");
 
-  let light:any = document.querySelector("#myonoffswitch2") as HTMLInputElement
+  let light: any = document.querySelector("#myonoffswitch2") as HTMLInputElement
   light.checked = false;
-  let darks:any = document.querySelector("#myonoffswitch1") as HTMLInputElement 
+  let darks: any = document.querySelector("#myonoffswitch1") as HTMLInputElement
   darks.checked = false;
-  let transparents:any = document.querySelector("#myonoffswitchTransparent") as HTMLInputElement
+  let transparents: any = document.querySelector("#myonoffswitchTransparent") as HTMLInputElement
   transparents.checked = true;
 
- let htmltransparentbody:any = document.querySelector("html")
- htmltransparentbody.style.removeProperty("--transparent-body");
+  let htmltransparentbody: any = document.querySelector("html")
+  htmltransparentbody.style.removeProperty("--transparent-body");
 
 }
 
@@ -314,8 +314,8 @@ export function bgimage2() {
   document.querySelector(".app")?.classList.remove("light-theme");
   document.querySelector(".app")?.classList.remove("dark-theme");
   localStorage.setItem("nowaBgImage", "bg-img2");
-  let htmltransparentbody:any = document.querySelector("html")
- htmltransparentbody.style.removeProperty("--transparent-body");
+  let htmltransparentbody: any = document.querySelector("html")
+  htmltransparentbody.style.removeProperty("--transparent-body");
 
 
   localStorage.removeItem("nowaPrimaryColor");
@@ -326,11 +326,11 @@ export function bgimage2() {
   localStorage.removeItem("nowatransparentPrimaryColor");
   localStorage.removeItem("nowatransparentBgColor");
 
-   let light:any = document.querySelector("#myonoffswitch2") as HTMLInputElement
+  let light: any = document.querySelector("#myonoffswitch2") as HTMLInputElement
   light.checked = false;
-  let darks:any = document.querySelector("#myonoffswitch1") as HTMLInputElement 
+  let darks: any = document.querySelector("#myonoffswitch1") as HTMLInputElement
   darks.checked = false;
-  let transparents:any = document.querySelector("#myonoffswitchTransparent") as HTMLInputElement
+  let transparents: any = document.querySelector("#myonoffswitchTransparent") as HTMLInputElement
   transparents.checked = true;
 
 
@@ -345,8 +345,8 @@ export function bgimage3() {
   document.querySelector(".app")?.classList.remove("light-theme");
   document.querySelector(".app")?.classList.remove("dark-theme");
   localStorage.setItem("nowaBgImage", "bg-img3");
-  let htmltransparentbody:any = document.querySelector("html")
- htmltransparentbody.style.removeProperty("--transparent-body");
+  let htmltransparentbody: any = document.querySelector("html")
+  htmltransparentbody.style.removeProperty("--transparent-body");
   transparentStyle();
 
   localStorage.removeItem("nowaPrimaryColor");
@@ -357,11 +357,11 @@ export function bgimage3() {
   localStorage.removeItem("nowatransparentPrimaryColor");
   localStorage.removeItem("nowatransparentBgColor");
 
-   let light:any = document.querySelector("#myonoffswitch2") as HTMLInputElement
+  let light: any = document.querySelector("#myonoffswitch2") as HTMLInputElement
   light.checked = false;
-  let darks:any = document.querySelector("#myonoffswitch1") as HTMLInputElement 
+  let darks: any = document.querySelector("#myonoffswitch1") as HTMLInputElement
   darks.checked = false;
-  let transparents:any = document.querySelector("#myonoffswitchTransparent") as HTMLInputElement
+  let transparents: any = document.querySelector("#myonoffswitchTransparent") as HTMLInputElement
   transparents.checked = true;
 
 
@@ -376,8 +376,8 @@ export function bgimage4() {
   document.querySelector(".app")?.classList.remove("light-theme");
   document.querySelector(".app")?.classList.remove("dark-theme");
   localStorage.setItem("nowaBgImage", "bg-img4");
-  let htmltransparentbody:any = document.querySelector("html")
- htmltransparentbody.style.removeProperty("--transparent-body");
+  let htmltransparentbody: any = document.querySelector("html")
+  htmltransparentbody.style.removeProperty("--transparent-body");
   transparentStyle();
 
   localStorage.removeItem("nowaPrimaryColor");
@@ -388,11 +388,11 @@ export function bgimage4() {
   localStorage.removeItem("nowatransparentPrimaryColor");
   localStorage.removeItem("nowatransparentBgColor");
 
-   let light:any = document.querySelector("#myonoffswitch2") as HTMLInputElement
+  let light: any = document.querySelector("#myonoffswitch2") as HTMLInputElement
   light.checked = false;
-  let darks:any = document.querySelector("#myonoffswitch1") as HTMLInputElement 
+  let darks: any = document.querySelector("#myonoffswitch1") as HTMLInputElement
   darks.checked = false;
-  let transparents:any = document.querySelector("#myonoffswitchTransparent") as HTMLInputElement
+  let transparents: any = document.querySelector("#myonoffswitchTransparent") as HTMLInputElement
   transparents.checked = true;
 
 }
@@ -400,15 +400,15 @@ export function bgimage4() {
 /*Transparent Bg-Image Style End*/
 
 export function checkHoriMenu() {
-  let menuWidth:any = document.querySelector(".horizontal-main");
-  let menuItems:any = document.querySelector(".side-menu");
-  let mainSidemenuWidth:any = document.querySelector(".main-sidemenu");
+  let menuWidth: any = document.querySelector(".horizontal-main");
+  let menuItems: any = document.querySelector(".side-menu");
+  let mainSidemenuWidth: any = document.querySelector(".main-sidemenu");
   let menuContainerWidth = menuWidth?.offsetWidth - mainSidemenuWidth?.offsetWidth;
   let marginLeftValue = Math.ceil(Number(window.getComputedStyle(menuItems).marginLeft.split("px")[0]));
   let marginRightValue = Math.ceil(
     Number(window.getComputedStyle(menuItems).marginRight.split("px")[0])
   );
-  let check:any =
+  let check: any =
     menuItems.scrollWidth + (0 - menuWidth?.offsetWidth) + menuContainerWidth;
 
   if (document.querySelector(".app")?.classList.contains("ltr")) {
@@ -445,24 +445,24 @@ export function checkHoriMenu() {
   }
 }
 
-export function handleThemeUpdate(cssVars:any) {
-  const root:any = document.querySelector(":root");
-  const keys:any = Object.keys(cssVars);
+export function handleThemeUpdate(cssVars: any) {
+  const root: any = document.querySelector(":root");
+  const keys: any = Object.keys(cssVars);
 
-  keys.forEach((key:any) => {
+  keys.forEach((key: any) => {
     root.style.setProperty(key, cssVars[key]);
   });
 }
 // to check the value is hexa or not
-const isValidHex = (hexValue:any) => /^#([A-Fa-f0-9]{3,4}){1,2}$/.test(hexValue);
+const isValidHex = (hexValue: any) => /^#([A-Fa-f0-9]{3,4}){1,2}$/.test(hexValue);
 
-const getChunksFromString = (st:any, chunkSize:any) =>
+const getChunksFromString = (st: any, chunkSize: any) =>
   st.match(new RegExp(`.{${chunkSize}}`, "g"));
 // convert hex value to 256
-const convertHexUnitTo256 = (hexStr:any) =>
+const convertHexUnitTo256 = (hexStr: any) =>
   parseInt(hexStr.repeat(2 / hexStr.length), 16);
 // get alpha value is equla to 1 if there was no value is asigned to alpha in function
-const getAlphafloat = (a:any, alpha:any) => {
+const getAlphafloat = (a: any, alpha: any) => {
   if (typeof a !== "undefined") {
     return a / 255;
   }
@@ -472,7 +472,7 @@ const getAlphafloat = (a:any, alpha:any) => {
   return alpha;
 };
 // convertion of hex code to rgba code
-export function hexToRgba(hexValue:any, alpha = 1) {
+export function hexToRgba(hexValue: any, alpha = 1) {
   if (!isValidHex(hexValue)) {
     return null;
   }
@@ -482,10 +482,10 @@ export function hexToRgba(hexValue:any, alpha = 1) {
   return `rgba(${r}, ${g}, ${b}, ${getAlphafloat(a, alpha)})`;
 }
 
-export function dynamicLightPrimaryColor(primaryColor:any, color:any) {
-  primaryColor.forEach((item:any) => {
+export function dynamicLightPrimaryColor(primaryColor: any, color: any) {
+  primaryColor.forEach((item: any) => {
     const cssPropName = `--primary-${item.getAttribute("data-id")}`;
-    const cssPropName1 =`--primary-${item.getAttribute("data-id1")}`;
+    const cssPropName1 = `--primary-${item.getAttribute("data-id1")}`;
     const cssPropName2 = `--primary-${item.getAttribute("data-id2")}`;
     handleThemeUpdate({
       [cssPropName]: hexToRgba(color),
@@ -494,10 +494,10 @@ export function dynamicLightPrimaryColor(primaryColor:any, color:any) {
     });
   });
 }
-export function dynamicDarkPrimaryColor(primaryColor:any, color:any) {
-  primaryColor.forEach((item:any) => {
+export function dynamicDarkPrimaryColor(primaryColor: any, color: any) {
+  primaryColor.forEach((item: any) => {
     const cssPropName = `--primary-${item.getAttribute("data-id")}`;
-    const cssPropName1 =`--primary-${item.getAttribute("data-id1")}`;
+    const cssPropName1 = `--primary-${item.getAttribute("data-id1")}`;
     const cssPropName2 = `--primary-${item.getAttribute("data-id2")}`;
     handleThemeUpdate({
       [cssPropName]: hexToRgba(color),
@@ -506,10 +506,10 @@ export function dynamicDarkPrimaryColor(primaryColor:any, color:any) {
     });
   });
 }
-export function dynamicTransparentPrimaryColor(primaryColor:any, color:any) {
-  primaryColor.forEach((item:any) => {
+export function dynamicTransparentPrimaryColor(primaryColor: any, color: any) {
+  primaryColor.forEach((item: any) => {
     const cssPropName = `--primary-${item.getAttribute("data-id")}`;
-    const cssPropName1 =`--primary-${item.getAttribute("data-id1")}`;
+    const cssPropName1 = `--primary-${item.getAttribute("data-id1")}`;
     const cssPropName2 = `--primary-${item.getAttribute("data-id2")}`;
     handleThemeUpdate({
       [cssPropName]: hexToRgba(color),
@@ -518,16 +518,16 @@ export function dynamicTransparentPrimaryColor(primaryColor:any, color:any) {
     });
   });
 }
-export function dynamicBgTransparentBackground(primaryColor:any, color:any) {
-  primaryColor.forEach((item:any) => {
+export function dynamicBgTransparentBackground(primaryColor: any, color: any) {
+  primaryColor.forEach((item: any) => {
     const cssPropName1 = `--transparent-${item.getAttribute("data-id5")}`;
     handleThemeUpdate({
       [cssPropName1]: hexToRgba(color),
     });
   });
 }
-export function dynamicBgImgTransparentPrimaryColor(primaryColor:any, color:any) {
-  primaryColor.forEach((item:any) => {
+export function dynamicBgImgTransparentPrimaryColor(primaryColor: any, color: any) {
+  primaryColor.forEach((item: any) => {
     const cssPropName = `--primary-bg-color`;
     const cssPropName1 = `--primary-bg-hover`;
     const cssPropName2 = `--primary-bg-border`;
@@ -551,22 +551,22 @@ function transparentStyle() {
   document.querySelector(".app")?.classList.remove("gradient-header");
 }
 export function resetData() {
- let lighttheme:any = document.querySelector("#myonoffswitch1") as HTMLInputElement
- lighttheme.checked = true;   //lighttheme
- let fixed:any = document.querySelector("#myonoffswitch11") as HTMLInputElement 
- fixed.checked = true;   //fixed
- let lightmenu:any = document.querySelector("#myonoffswitch3") as HTMLInputElement 
- lightmenu.checked = true;    //lightmenu
- let lightheader:any = document.querySelector("#myonoffswitch6") as HTMLInputElement 
- lightheader.checked = true;    //lightheader
- let full:any = document.querySelector("#myonoffswitch9") as HTMLInputElement
- full.checked = true;    //fullwidth
- let ltr:any = document.querySelector("#myonoffswitch54") as HTMLInputElement 
- ltr.checked = true;  //Ltr
- let vertail:any = document.querySelector("#myonoffswitch34") as HTMLInputElement 
- vertail.checked = true;  //Vertail
- let Horizontalhover:any = document.querySelector("#myonoffswitch111") as HTMLInputElement 
- Horizontalhover.checked = false;
+  let lighttheme: any = document.querySelector("#myonoffswitch1") as HTMLInputElement
+  lighttheme.checked = true;   //lighttheme
+  let fixed: any = document.querySelector("#myonoffswitch11") as HTMLInputElement
+  fixed.checked = true;   //fixed
+  let lightmenu: any = document.querySelector("#myonoffswitch3") as HTMLInputElement
+  lightmenu.checked = true;    //lightmenu
+  let lightheader: any = document.querySelector("#myonoffswitch6") as HTMLInputElement
+  lightheader.checked = true;    //lightheader
+  let full: any = document.querySelector("#myonoffswitch9") as HTMLInputElement
+  full.checked = true;    //fullwidth
+  let ltr: any = document.querySelector("#myonoffswitch54") as HTMLInputElement
+  ltr.checked = true;  //Ltr
+  let vertail: any = document.querySelector("#myonoffswitch34") as HTMLInputElement
+  vertail.checked = true;  //Vertail
+  let Horizontalhover: any = document.querySelector("#myonoffswitch111") as HTMLInputElement
+  Horizontalhover.checked = false;
   document.querySelector(".app")?.classList.remove("bg-img4");
   document.querySelector(".app")?.classList.remove("bg-img1");
   document.querySelector(".app")?.classList.remove("bg-img2");
@@ -623,19 +623,19 @@ export function name() {
     localStorage.getItem("nowatransparentBgImgPrimary") ||
     primaryColorVal;
 
-  let colorData = hexToRgba(myVarVal || "#38cab3", 0.1);
+  let colorData = hexToRgba(myVarVal || "#139c7f", 0.1);
   document.querySelector("html")?.style.setProperty("--primary01", colorData);
 
-  let colorData1 = hexToRgba(myVarVal || "#38cab3", 0.2);
+  let colorData1 = hexToRgba(myVarVal || "#139c7f", 0.2);
   document.querySelector("html")?.style.setProperty("--primary02", colorData1);
 
-  let colorData2 = hexToRgba(myVarVal || "#38cab3", 0.3);
+  let colorData2 = hexToRgba(myVarVal || "#139c7f", 0.3);
   document.querySelector("html")?.style.setProperty("--primary03", colorData2);
 
-  let colorData3 = hexToRgba(myVarVal || "#38cab3", 0.6);
+  let colorData3 = hexToRgba(myVarVal || "#139c7f", 0.6);
   document.querySelector("html")?.style.setProperty("--primary06", colorData3);
 
-  let colorData4 = hexToRgba(myVarVal || "#38cab3", 0.9);
+  let colorData4 = hexToRgba(myVarVal || "#139c7f", 0.9);
   document.querySelector("html")?.style.setProperty("--primary09", colorData4);
 }
 name();
@@ -644,8 +644,8 @@ export function localStorageBackUp() {
   let html = document.querySelector("html")?.style;
   let body = document.querySelector("body");
 
-  if (localStorage.getItem("nowaBgImage")!== null){
-    let img:any = localStorage.getItem("nowaBgImage");
+  if (localStorage.getItem("nowaBgImage") !== null) {
+    let img: any = localStorage.getItem("nowaBgImage");
     document.body.classList.add(img)
     localStorage.removeItem("nowalighttheme")
     localStorage.removeItem("nowadark")
@@ -654,12 +654,12 @@ export function localStorageBackUp() {
   if (localStorage.getItem("nowaPrimaryColor") !== null) {
     body?.classList.add("light-theme");
 
-   let lighttheme:any = document.getElementById("myonoffswitch1") as HTMLInputElement
-   lighttheme.checked = true;
+    let lighttheme: any = document.getElementById("myonoffswitch1") as HTMLInputElement
+    lighttheme.checked = true;
 
     body?.classList.remove("dark-theme");
     body?.classList.remove("transparent-theme");
-    
+
     html?.setProperty(
       "--primary-bg-color",
       localStorage.getItem("nowaPrimaryColor")
@@ -677,7 +677,7 @@ export function localStorageBackUp() {
     body?.classList.add("dark-theme");
     body?.classList.remove("light-theme");
     body?.classList.remove("transparent-theme");
-    let darkthemes:any = document.querySelector("#myonoffswitch2") as HTMLInputElement
+    let darkthemes: any = document.querySelector("#myonoffswitch2") as HTMLInputElement
     darkthemes.checked = true;
     html?.setProperty(
       "--primary-bg-color",
@@ -694,8 +694,8 @@ export function localStorageBackUp() {
   }
   if (localStorage.getItem("nowatransparentPrimaryColor") !== null) {
     body?.classList.add("transparent-theme");
-   let transparents:any = document.querySelector("#myonoffswitchTransparent") as HTMLInputElement
-  transparents.checked = true;
+    let transparents: any = document.querySelector("#myonoffswitchTransparent") as HTMLInputElement
+    transparents.checked = true;
 
 
     body?.classList.remove("light-theme");
@@ -725,7 +725,7 @@ export function localStorageBackUp() {
 
     body?.classList.remove("light-theme");
     body?.classList.remove("dark-theme");
-    let img:any = localStorage.getItem("nowaBgImage");
+    let img: any = localStorage.getItem("nowaBgImage");
     html?.setProperty(
       "--primary-bg-color",
       localStorage.getItem("nowatransparent-bgImgPrimaryColor")
@@ -737,8 +737,8 @@ export function localStorageBackUp() {
     document.querySelector("html[lang=en]")?.setAttribute("dir", "rtl");
     // document.getElementById("style").setAttribute("href", "../assets/plugins/bootstrap/css/bootstrap.min.css")
     document.querySelector("body")?.classList.remove("ltr");
-   let rtl:any = document.querySelector("#myonoffswitch55") as HTMLInputElement 
-   rtl.checked = true;  
+    let rtl: any = document.querySelector("#myonoffswitch55") as HTMLInputElement
+    rtl.checked = true;
   }
 
   if (localStorage.nowahorizontal) {
@@ -759,10 +759,10 @@ export function localStorageBackUp() {
 
     // $('#slide-left').remove('d-none');
     // $('#slide-right').remove('d-none');
-  let horizontalstyle:any =  document.querySelector(".horizontal .side-menu")
-  horizontalstyle.style.flexWrap = "nowrap";
-   let horizontal:any = document.querySelector("#myonoffswitch35")as HTMLInputElement 
-   horizontal.checked = true;  
+    let horizontalstyle: any = document.querySelector(".horizontal .side-menu")
+    horizontalstyle.style.flexWrap = "nowrap";
+    let horizontal: any = document.querySelector("#myonoffswitch35") as HTMLInputElement
+    horizontal.checked = true;
     checkHoriMenu();
     Horizontalmenudefultclose();
     switcherArrowFn();
@@ -785,12 +785,12 @@ export function localStorageBackUp() {
     document.querySelector(".main-container")?.classList.remove("container-fluid");
     document.querySelector(".app")?.classList.remove("sidebar-mini");
     document.querySelector(".app")?.classList.remove("sidenav-toggled");
-    let Horizontalhover:any = document.querySelector("#myonoffswitch111") as HTMLInputElement 
+    let Horizontalhover: any = document.querySelector("#myonoffswitch111") as HTMLInputElement
     Horizontalhover.checked = true;
     document.querySelector(".horizontal-hover .side-menu")
       ?.classList.add("flex-nowrap");
     let li = document.querySelectorAll(".side-menu li");
-    li.forEach((e:any, i) => {
+    li.forEach((e: any, i) => {
       if (e.classList.contains("is-expaned")) {
         let ele = [...e.children];
         ele.forEach((el, i) => {
@@ -808,25 +808,25 @@ export function localStorageBackUp() {
     switcherArrowFn();
   }
   if (localStorage.nowadark) {
-    let darktheme:any = document.querySelector("#myonoffswitch2") as HTMLInputElement
+    let darktheme: any = document.querySelector("#myonoffswitch2") as HTMLInputElement
     darktheme.checked = true;
     dark()
   }
   if (localStorage.nowatransparent) {
-    let transparents:any = document.querySelector("#myonoffswitchTransparent") as HTMLInputElement
+    let transparents: any = document.querySelector("#myonoffswitchTransparent") as HTMLInputElement
     transparents.checked = true;
     transparent()
   }
   if (localStorage.nowalighttheme) {
-   let lighttheme:any = document.querySelector("#myonoffswitch1")as HTMLInputElement 
-   lighttheme.checked = true
+    let lighttheme: any = document.querySelector("#myonoffswitch1") as HTMLInputElement
+    lighttheme.checked = true
     LightTheme()
   }
 }
 
 export function switcherArrowFn() {
-  let slideLeft:any = document.querySelector(".slide-left");
-  let slideRight:any = document.querySelector(".slide-right");
+  let slideLeft: any = document.querySelector(".slide-left");
+  let slideRight: any = document.querySelector(".slide-right");
   // used to remove is-expanded class and remove class on clicking arrow buttons
   function slideClick() {
     let slide = document.querySelectorAll(".slide");
@@ -842,7 +842,7 @@ export function switcherArrowFn() {
         element.classList.remove("active");
       }
     });
-    slideMenu.forEach((element:any, _index) => {
+    slideMenu.forEach((element: any, _index) => {
       if (element) {
         element.style.display = "none";
       }
@@ -850,9 +850,9 @@ export function switcherArrowFn() {
   }
   // horizontal arrows
   window.addEventListener("resize", () => {
-    let menuWidth:any = document.querySelector(".horizontal-main");
-    let menuItems:any = document.querySelector(".side-menu");
-    let mainSidemenuWidth:any = document.querySelector(".main-sidemenu");
+    let menuWidth: any = document.querySelector(".horizontal-main");
+    let menuItems: any = document.querySelector(".side-menu");
+    let mainSidemenuWidth: any = document.querySelector(".main-sidemenu");
     let menuContainerWidth = menuWidth?.offsetWidth - mainSidemenuWidth?.offsetWidth;
     let marginLeftValue = Math.ceil(Number(window.getComputedStyle(menuItems).marginLeft.split("px")[0]));
     let marginRightValue = Math.ceil(Number(window.getComputedStyle(menuItems).marginRight.split("px")[0]));
@@ -899,9 +899,9 @@ export function switcherArrowFn() {
 
   slideLeft.addEventListener("click", () => {
     slideClick();
-    let menuWidth:any = document.querySelector(".horizontal-main");
-    let menuItems:any = document.querySelector(".side-menu");
-    let mainSidemenuWidth:any = document.querySelector(".main-sidemenu");
+    let menuWidth: any = document.querySelector(".horizontal-main");
+    let menuItems: any = document.querySelector(".side-menu");
+    let mainSidemenuWidth: any = document.querySelector(".main-sidemenu");
     let menuContainerWidth = menuWidth?.offsetWidth - mainSidemenuWidth?.offsetWidth;
     let marginLeftValue = Math.ceil(Number(window.getComputedStyle(menuItems).marginLeft.split("px")[0])) + 100;
     let marginRightValue = Math.ceil(Number(window.getComputedStyle(menuItems).marginRight.split("px")[0])) + 100;
@@ -922,11 +922,11 @@ export function switcherArrowFn() {
       }
       // to remove dropdown when clicking arrows in horizontal menu
       let subNavSub = document.querySelectorAll(".sub-nav-sub");
-      subNavSub.forEach((e:any) => {
+      subNavSub.forEach((e: any) => {
         e.style.display = "";
       });
       let subNav = document.querySelectorAll(".nav-sub");
-      subNav.forEach((e:any) => {
+      subNav.forEach((e: any) => {
         e.style.display = "";
       });
     }
@@ -951,20 +951,20 @@ export function switcherArrowFn() {
 
       // to remove dropdown when clicking arrows in horizontal menu
       let subNavSub = document.querySelectorAll(".sub-nav-sub");
-      subNavSub.forEach((e:any) => {
+      subNavSub.forEach((e: any) => {
         e.style.display = "";
       });
       let subNav = document.querySelectorAll(".nav-sub");
-      subNav.forEach((e:any) => {
+      subNav.forEach((e: any) => {
         e.style.display = "";
       });
     }
   });
   slideRight.addEventListener("click", () => {
     slideClick();
-    let menuWidth:any = document.querySelector(".horizontal-main");
-    let menuItems:any = document.querySelector(".side-menu");
-    let mainSidemenuWidth:any = document.querySelector(".main-sidemenu");
+    let menuWidth: any = document.querySelector(".horizontal-main");
+    let menuItems: any = document.querySelector(".side-menu");
+    let mainSidemenuWidth: any = document.querySelector(".main-sidemenu");
     let menuContainerWidth = menuWidth?.offsetWidth - mainSidemenuWidth?.offsetWidth;
     let marginLeftValue = Math.ceil(Number(window.getComputedStyle(menuItems).marginLeft.split("px")[0])) - 100;
     let marginRightValue = Math.ceil(Number(window.getComputedStyle(menuItems).marginRight.split("px")[0])) - 100;
@@ -987,11 +987,11 @@ export function switcherArrowFn() {
       }
       // to remove dropdown when clicking arrows in horizontal menu
       let subNavSub = document.querySelectorAll(".sub-nav-sub");
-      subNavSub.forEach((e:any) => {
+      subNavSub.forEach((e: any) => {
         e.style.display = "";
       });
       let subNav = document.querySelectorAll(".nav-sub");
-      subNav.forEach((e:any) => {
+      subNav.forEach((e: any) => {
         e.style.display = "";
       });
     }
@@ -1010,11 +1010,11 @@ export function switcherArrowFn() {
       }
       // to remove dropdown when clicking arrows in horizontal menu
       let subNavSub = document.querySelectorAll(".sub-nav-sub");
-      subNavSub.forEach((e:any) => {
+      subNavSub.forEach((e: any) => {
         e.style.display = "";
       });
       let subNav = document.querySelectorAll(".nav-sub");
-      subNav.forEach((e:any) => {
+      subNav.forEach((e: any) => {
         e.style.display = "";
       });
       //
@@ -1029,8 +1029,8 @@ export const responsiveSidebarclose = () => {
   document.querySelector(".sidebar-right")?.classList.remove("sidebar-open");
   //swichermainright
   document.querySelector(".demo_changer")?.classList.remove("active");
- let demochanger:any = document.querySelector(".demo_changer");
- demochanger.style.right = "-270px";
+  let demochanger: any = document.querySelector(".demo_changer");
+  demochanger.style.right = "-270px";
 };
 
 //horizontalmenusticky
@@ -1039,13 +1039,13 @@ export const horizontalmenusticky = () => {
     if (window.scrollY > 30) {
       document.querySelector(".main-header")?.classList.add("fixed-header", "visible-title");
       let Scolls = document.querySelectorAll(".sticky");
-      Scolls.forEach((e:any) => {
+      Scolls.forEach((e: any) => {
         e.classList.add("sticky-pin");
       });
     } else {
       document.querySelector(".main-header")?.classList.remove("fixed-header", "visible-title");
       let Scolls = document.querySelectorAll(".sticky");
-      Scolls.forEach((e:any) => {
+      Scolls.forEach((e: any) => {
         e.classList.remove("sticky-pin");
       });
     }
@@ -1069,7 +1069,7 @@ export function Horizontalmenudefultclose() {
         element.classList.remove("active");
       }
     });
-    slideMenu.forEach((element:any) => {
+    slideMenu.forEach((element: any) => {
       if (element) {
         element.style.display = "none";
       }

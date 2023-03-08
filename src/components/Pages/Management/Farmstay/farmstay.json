@@ -1,20 +1,19 @@
 {
     "data": [
         {
-            "farmstay": {
-                "id": 1,
-                "name": "Nông trại vui vẻ",
-                "description": "Trải nghiệm cuộc sống vùng quê sông nước",
-                "contactInformation": "Email: wifildt@gmail.com, Phone: 0901234567",
-                "address": "xã Đức Tân, huyện Tánh Linh, tỉnh Bình Thuận",
-                "country": "Việt Nam",
-                "city": "Bình thuận",
-                "status": 1,
-                "hostId": 1,
-                "images": "image1.jpg,image2.jpg,image3.jpg",
-                "createdDate": "2022-01-01 10:00:00",
-                "updatedDate": "2022-01-02 12:00:00"
-            },
+            "id": 1,
+            "rating": 5,
+            "name": "Nông trại vui vẻ",
+            "description": "Trải nghiệm cuộc sống vùng quê sông nước",
+            "contactInformation": "Email: wifildt@gmail.com, Phone: 0901234567",
+            "address": "160 Pasteur, phường 6, quận 3, thành phố Hồ Chí Minh",
+            "country": "Việt Nam",
+            "city": "Thành phố Hồ Chí Minh",
+            "status": 1,
+            "hostId": 1,
+            "images": "image1.jpg,image2.jpg,image3.jpg",
+            "createdDate": "2022-01-01 10:00:00",
+            "updatedDate": "2022-01-02 12:00:00",
             "host": {
                 "userId": 45,
                 "name": "Lê Danh Trọng",
@@ -23,94 +22,79 @@
                 "bankAccountNumber": "1234567890",
                 "createdDate": "2022-01-01 10:00:00",
                 "updatedDate": "2022-01-02 12:00:00"
-            },
-            "faqs": [
-                {
-                    "id": 1,
-                    "farmstayId": 1,
-                    "question": "Ở nông trại có những loài động vật nào?",
-                    "qnswer": "Chúng tôi nuôi bò, ngựa, dê, heo, và các loại gia cầm khác.",
-                    "createdDate": "2022-01-01 10:00:00",
-                    "updatedDate": null
-                },
-                {
-                    "id": 2,
-                    "farmstayId": 1,
-                    "question": "Tôi có thể tham gia những hoạt động nào?",
-                    "answer": "Bạn có thể tham gia chăn trâu, đi cấy lúa, hoặc đốt lữa trại.",
-                    "createdAt": "2022-01-01 10:00:00",
-                    "updatedAt": null
-                }
-            ],
-            "policies": [
-                {
-                    "id": 1,
-                    "name": "Quy định hủy đơn",
-                    "farmstayId": 1,
-                    "description": "Chỉ chấp nhận hủy đặt phòng trước 48 giờ so với thời gian check-in, và sẽ được hoàn trả tiền đầy đủ.",
-                    "status": 1,
-                    "createdDate": "2022-01-01 10:00:00",
-                    "updatedDate": null
-                },
-                {
-                    "id": 2,
-                    "name": "Thú cưng",
-                    "farmstayId": 1,
-                    "description": "Được phép đem theo mèo.",
-                    "status": 1,
-                    "createdDate": "2022-01-01 10:00:00",
-                    "updatedDate": null
-                }
-            ],
-            "serviceCategories": [
-                {
-                    "id": 1,
-                    "name": "Thực phẩm và nước giải khát",
-                    "status": 1,
-                    "description": "Các món ngon được chế biến từ các nguyên liệu địa phương.",
-                    "createdDate": "2022-01-01 10:00:00",
-                    "updatedDate": null
-                }
-            ],
-            "services": [
-                {
-                    "id": 1,
-                    "name": "Bữa sáng",
-                    "description": "Bữa sáng ngon miệng được chế biến từ các nguyên liệu tươi ngon của địa phương.",
-                    "status": 1,
-                    "farmstayId": 1,
-                    "categoryId": 1,
-                    "image": "breakfast.jpg",
-                    "createdAt": "2022-01-01 10:00:00",
-                    "updatedAt": null
-                }
-            ],
-            "reviews": [
-                {
-                    "id": 789,
-                    "rating": 5,
-                    "comment": "Chúng tôi đã có một thời gian tuyệt vời trong trang trại này! Các máy chủ rất thân thiện và chào đón. Bữa sáng rất ngon và chúng tôi thích tương tác với động vật.!",
-                    "customer": {
-                        "id": 101,
-                        "name": "Hải Anh",
-                        "email": "john@example.com",
-                        "phone": "+1-555-5678",
-                        "address": "1111 Guest Road, Anytown, USA"
-                    }
-                },
-                {
-                    "id": 790,
-                    "rating": 4,
-                    "comment": "Đây là một nơi tuyệt vời để rời khỏi thành phố và tận hưởng không khí trong lành. Các phòng rất thoải mái và sạch sẽ. Nhược điểm duy nhất là phòng tắm được dùng chung với những khách khác.",
-                    "customer": {
-                        "id": 102,
-                        "name": "Mỹ Nhung",
-                        "email": "sarah@example.com",
-                        "phone": "+1-555-9101",
-                        "address": "2222 Guest Road, Anytown, USA"
-                    }
-                }
-            ]
+            }
+        },
+        {
+            "id": 1,
+            "rating": 4,
+            "name": "Nông trại vui vẻ",
+            "description": "Trải nghiệm cuộc sống vùng quê sông nước",
+            "contactInformation": "Email: wifildt@gmail.com, Phone: 0901234567",
+            "address": "Xã Đức Tân, huyện Tánh Linh, tỉnh Bình Thuận",
+            "country": "Việt Nam",
+            "city": "Bình thuận",
+            "status": 2,
+            "hostId": 1,
+            "images": "image1.jpg,image2.jpg,image3.jpg",
+            "createdDate": "2022-01-01 10:00:00",
+            "updatedDate": "2022-01-02 12:00:00",
+            "host": {
+                "userId": 45,
+                "name": "Lê Danh Trọng",
+                "contract": "https://cozyfarmhouse.com/contract.pdf",
+                "bankAccountName": "LE DANH TRONG",
+                "bankAccountNumber": "1234567890",
+                "createdDate": "2022-01-01 10:00:00",
+                "updatedDate": "2022-01-02 12:00:00"
+            }
+        },
+        {
+            "id": 1,
+            "rating": 4,
+            "name": "Nông trại vui vẻ",
+            "description": "Trải nghiệm cuộc sống vùng quê sông nước",
+            "contactInformation": "Email: wifildt@gmail.com, Phone: 0901234567",
+            "address": "36 Phố Huế, phường Ngô Thì Nhậm, quận Hai Bà Trưng, Hà Nội",
+            "country": "Việt Nam",
+            "city": "Hà nội",
+            "status": 3,
+            "hostId": 1,
+            "images": "image1.jpg,image2.jpg,image3.jpg",
+            "createdDate": "2022-01-01 10:00:00",
+            "updatedDate": "2022-01-02 12:00:00",
+            "host": {
+                "userId": 45,
+                "name": "Lê Danh Trọng",
+                "contract": "https://cozyfarmhouse.com/contract.pdf",
+                "bankAccountName": "LE DANH TRONG",
+                "bankAccountNumber": "1234567890",
+                "createdDate": "2022-01-01 10:00:00",
+                "updatedDate": "2022-01-02 12:00:00"
+            }
+        },
+        {
+            "id": 1,
+            "rating": 3,
+            "name": "Nông trại vui vẻ",
+            "description": "Trải nghiệm cuộc sống vùng quê sông nước",
+            "contactInformation": "Email: wifildt@gmail.com, Phone: 0901234567",
+            "address": "Khu du lịch Bà Nà Hills, phường Hòa Vang, thành phố Đà Nẵng",
+            "country": "Việt Nam",
+            "city": "Đà nẵng",
+            "status": 4,
+            "hostId": 1,
+            "images": "image1.jpg,image2.jpg,image3.jpg",
+            "createdDate": "2022-01-01 10:00:00",
+            "updatedDate": "2022-01-02 12:00:00",
+            "host": {
+                "userId": 45,
+                "name": "Lê Danh Trọng",
+                "contract": "https://cozyfarmhouse.com/contract.pdf",
+                "bankAccountName": "LE DANH TRONG",
+                "bankAccountNumber": "1234567890",
+                "createdDate": "2022-01-01 10:00:00",
+                "updatedDate": "2022-01-02 12:00:00"
+            }
         }
     ]
 }

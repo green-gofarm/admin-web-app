@@ -1,36 +1,72 @@
-import { useMemo } from "react";
+import { useCallback, useMemo, useState } from "react";
 import json from "./farmstay.json";
-import { Box, IconButton } from "@mui/material";
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
+import { Box } from "@mui/material";
 import { Status } from "../../../../setting/Status";
 import MuiTables from "../../../Mui-Table/MuiTable";
-import EllipsisWrapper from "../../../General/EllipsisWrapper";
+import EllipsisWrapper from "../../../General/Wrapper/EllipsisWrapper";
+import ViewIconAction from "../../../General/Action/IconAction/ViewIconAction";
+import { findFarmstayStatus } from "../../../../setting/farmstay-setting";
+import { formatTimeString } from "../../../../helpers/dateUtils";
+import { createCodeString } from "../../../../helpers/stringUtils";
+import { useNavigate } from "react-router-dom";
+import ActivateFarmstay from "./action/ActivateFarmstay";
+import InactivateFarmstay from "./action/InactivateFarmstay";
+import LockIconAction from "../../../General/Action/IconAction/LockIconAction";
+import UnlockIconAction from "../../../General/Action/IconAction/UnlockIconAction";
+import TooltipIconAction from "../../../General/Icon/TooltipIconAction";
+import GradingIcon from '@mui/icons-material/Grading';
+import AvatarWrapper from "../../../General/Wrapper/AvatarWrapper";
 
 const dataObject = JSON.parse(JSON.stringify(json));
 const data = dataObject.data;
 
-export const FarmstayTable = () => {
+export default function FarmstayTable() {
 
-    console.log(data[0].reviews[0].rating)
+    const navigate = useNavigate();
+
+    // State
+    const [openInactivate, setOpenInactivate] = useState<boolean>(false);
+    const [openActive, setOpenActive] = useState<boolean>(false);
+    const [selectedFarmstay, setSelectedFarmstay] = useState<any>(null);
 
     const columns = useMemo(() => [
         {
+            key: "code",
+            label: "Mã",
+            render: (row: any) => createCodeString("FR", row.id)
+        },
+        {
             key: "name",
-            label: "Tên",
+            label: "Tên gọi",
             render: (row: any) => (
-                <EllipsisWrapper breakWidth={120}>
-                    {row.farmstay.name}
-                </EllipsisWrapper>
+                <Box
+                    display="flex"
+                    alignItems="center"
+                    gap="8px"
+                >
+                    <AvatarWrapper
+                        src={require("../../../../assets/img/photos/farmstay.jpg")}
+                        name={row.name}
+                    />
+                    {row.name}
+                </Box>
             )
         },
         {
             key: "email",
             label: "Chủ sở hữu",
             render: (row) => (
-                <EllipsisWrapper breakWidth={120}>
+                <Box
+                    display="flex"
+                    alignItems="center"
+                    gap="8px"
+                >
+                    <AvatarWrapper
+                        src={row.host.avatarURL}
+                        name={row.host.name}
+                    />
                     {row.host.name}
-                </EllipsisWrapper>
+                </Box>
             )
         },
         {
@@ -38,7 +74,7 @@ export const FarmstayTable = () => {
             label: "Thông tin liên hệ",
             render: (row) => (
                 <EllipsisWrapper breakWidth={200}>
-                    {row.farmstay.contactInformation}
+                    {row.contactInformation}
                 </EllipsisWrapper>
             )
         },
@@ -47,14 +83,14 @@ export const FarmstayTable = () => {
             label: "Địa chỉ",
             render: (row) => (
                 <EllipsisWrapper breakWidth={200}>
-                    {row.farmstay.address}
+                    {row.address}
                 </EllipsisWrapper>
             )
         },
         {
             key: "rating",
             label: "Đánh giá",
-            render: (row) => new Array(row.reviews[0].rating).fill("").map((_, index) => (
+            render: (row) => new Array(row.rating).fill("").map((_, index) => (
                 <Box
                     key={index}
                     component="span"
@@ -68,18 +104,18 @@ export const FarmstayTable = () => {
         {
             key: "farmstay.createdDate",
             label: "Ngày tạo",
-            render: (row) => row.farmstay.createdDate
+            render: (row: any) => formatTimeString(row.createdDate)
         },
         {
             key: "farmstay.updatedDate",
             label: "Lần cập nhật cuối",
-            render: (row) => row.farmstay.updatedDate
+            render: (row: any) => formatTimeString(row.updatedDate)
         },
         {
             key: "status",
             label: "Trạng thái",
             render: (row) => (
-                <Status statusObject={{}} />
+                <Status statusObject={findFarmstayStatus(row.status)} />
             )
         },
         {
@@ -89,35 +125,56 @@ export const FarmstayTable = () => {
                 <Box
                     component="div"
                     display="flex"
-                    alignItems="center"
-                    columnGap="8px"
-                    fontSize="13px"
                 >
-                    <span>
-                        <IconButton
-                            style={{ padding: 5 }}
-                        >
-                            <EditIcon />
-                        </IconButton>
-                    </span>
-
-                    <span>
-                        <IconButton
-                            style={{ padding: 5 }}
-                        >
-                            <DeleteIcon />
-                        </IconButton>
-                    </span>
+                    <ViewIconAction
+                        onClick={() => navigate(`/management/farmstay/${row.id}`)}
+                    />
+                    <TooltipIconAction
+                        title="Phê duyệt"
+                        Icon={GradingIcon}
+                        onClick={() => navigate(`/management/farmstay/${row.id}`)}
+                    />
+                    <LockIconAction
+                        onClick={() => {
+                            setOpenInactivate(true);
+                            setSelectedFarmstay(row);
+                        }}
+                    />
+                    <UnlockIconAction
+                        onClick={() => {
+                            setOpenActive(true);
+                            setSelectedFarmstay(row);
+                        }}
+                    />
                 </Box>
             )
         },
-    ], []);
+    ], [navigate]);
+
+    const handleCloseActive = useCallback(() => setOpenActive(false), []);
+    const handleCloseInactivate = useCallback(() => setOpenInactivate(false), []);
+
 
     return (
         <>
             <MuiTables
                 data={data}
                 columns={columns}
+                fixedColumns={{
+                    right: 1
+                }}
+            />
+
+            <ActivateFarmstay
+                open={openActive}
+                farmstay={selectedFarmstay}
+                onClose={handleCloseActive}
+            />
+
+            <InactivateFarmstay
+                open={openInactivate}
+                farmstay={selectedFarmstay}
+                onClose={handleCloseInactivate}
             />
         </>
     );

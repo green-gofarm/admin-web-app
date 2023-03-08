@@ -22,6 +22,7 @@ export default function CustomTableHeader({
                     ? columns.map((column, index) =>
                         <TableCell
                             key={column.key || index}
+                            align={column.align || "left"}
                             classes={{
                                 root:
                                     classes.tableCellRoot + " " + classes.tableCellRootHead,

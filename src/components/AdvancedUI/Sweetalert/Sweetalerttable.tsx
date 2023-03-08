@@ -9,7 +9,7 @@ export const Sweettable = () => {
             text: "Your message",
             allowOutsideClick: false,
             confirmButtonText: "ok",
-            cancelButtonColor: "#38cab3",
+            cancelButtonColor: "#139c7f",
         });
     }
     //Secondaryalertbutton
@@ -19,7 +19,7 @@ export const Sweettable = () => {
             text: "Your message",
             allowOutsideClick: false,
             confirmButtonText: "ok",
-            cancelButtonColor: "#38cab3",
+            cancelButtonColor: "#139c7f",
         });
     }
     //Infoalertbutton with images

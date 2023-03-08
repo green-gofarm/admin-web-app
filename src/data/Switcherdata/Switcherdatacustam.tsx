@@ -30,7 +30,7 @@ export const LightTheme = () => {
   document.querySelector("body")?.classList.remove("color-menu");
   document.querySelector("body")?.classList.remove("gradient-menu");
 
-  let html:any = document.querySelector("html")
+  let html: any = document.querySelector("html")
   html.style = "";
   name();
   localStorage.clear();
@@ -47,30 +47,30 @@ export const dark = () => {
   document.querySelector("body")?.classList.remove("color-menu");
   document.querySelector("body")?.classList.remove("gradient-menu");
 
-  let html:any = document.querySelector("html")
+  let html: any = document.querySelector("html")
   html.style = "";
   name();
   localStorage.clear();
 };
 
-export function handleThemeUpdate(cssVars:any) {
-  const root:any = document.querySelector(":root");
-  const keys:any = Object.keys(cssVars);
+export function handleThemeUpdate(cssVars: any) {
+  const root: any = document.querySelector(":root");
+  const keys: any = Object.keys(cssVars);
 
-  keys.forEach((key:any) => {
+  keys.forEach((key: any) => {
     root.style.setProperty(key, cssVars[key]);
   });
 }
 // to check the value is hexa or not
-const isValidHex = (hexValue:any) => /^#([A-Fa-f0-9]{3,4}){1,2}$/.test(hexValue);
+const isValidHex = (hexValue: any) => /^#([A-Fa-f0-9]{3,4}){1,2}$/.test(hexValue);
 
-const getChunksFromString = (st:any, chunkSize:any) =>
+const getChunksFromString = (st: any, chunkSize: any) =>
   st.match(new RegExp(`.{${chunkSize}}`, "g"));
 // convert hex value to 256
-const convertHexUnitTo256 = (hexStr:any) =>
+const convertHexUnitTo256 = (hexStr: any) =>
   parseInt(hexStr.repeat(2 / hexStr.length), 16);
 // get alpha value is equla to 1 if there was no value is asigned to alpha in function
-const getAlphafloat = (a:any, alpha:any) => {
+const getAlphafloat = (a: any, alpha: any) => {
   if (typeof a !== "undefined") {
     return a / 255;
   }
@@ -80,7 +80,7 @@ const getAlphafloat = (a:any, alpha:any) => {
   return alpha;
 };
 // convertion of hex code to rgba code
-export function hexToRgba(hexValue:any, alpha = 1) {
+export function hexToRgba(hexValue: any, alpha = 1) {
   if (!isValidHex(hexValue)) {
     return null;
   }
@@ -90,8 +90,8 @@ export function hexToRgba(hexValue:any, alpha = 1) {
   return `rgba(${r}, ${g}, ${b}, ${getAlphafloat(a, alpha)})`;
 }
 
-export function dynamicLightPrimaryColor(primaryColor:any, color:any) {
-  primaryColor.forEach((item:any) => {
+export function dynamicLightPrimaryColor(primaryColor: any, color: any) {
+  primaryColor.forEach((item: any) => {
     const cssPropName = `--primary-${item.getAttribute("data-id")}`;
     const cssPropName1 = `--primary-${item.getAttribute("data-id1")}`;
     const cssPropName2 = `--primary-${item.getAttribute("data-id2")}`;
@@ -102,8 +102,8 @@ export function dynamicLightPrimaryColor(primaryColor:any, color:any) {
     });
   });
 }
-export function dynamicDarkPrimaryColor(primaryColor:any, color:any) {
-  primaryColor.forEach((item:any) => {
+export function dynamicDarkPrimaryColor(primaryColor: any, color: any) {
+  primaryColor.forEach((item: any) => {
     const cssPropName = `--primary-${item.getAttribute("data-id")}`;
     const cssPropName1 = `--primary-${item.getAttribute("data-id1")}`;
     const cssPropName2 = `--primary-${item.getAttribute("data-id2")}`;
@@ -114,8 +114,8 @@ export function dynamicDarkPrimaryColor(primaryColor:any, color:any) {
     });
   });
 }
-export function dynamicTransparentPrimaryColor(primaryColor:any, color:any) {
-  primaryColor.forEach((item:any) => {
+export function dynamicTransparentPrimaryColor(primaryColor: any, color: any) {
+  primaryColor.forEach((item: any) => {
     const cssPropName = `--primary-${item.getAttribute("data-id")}`;
     const cssPropName1 = `--primary-${item.getAttribute("data-id1")}`;
     const cssPropName2 = `--primary-${item.getAttribute("data-id2")}`;
@@ -126,20 +126,20 @@ export function dynamicTransparentPrimaryColor(primaryColor:any, color:any) {
     });
   });
 }
-export function dynamicBgTransparentBackground(primaryColor:any, color:any) {
-  primaryColor.forEach((item:any) => {
+export function dynamicBgTransparentBackground(primaryColor: any, color: any) {
+  primaryColor.forEach((item: any) => {
     const cssPropName1 = `--transparent-${item.getAttribute("data-id5")}`;
     handleThemeUpdate({
       [cssPropName1]: hexToRgba(color),
     });
   });
 }
-export function dynamicBgImgTransparentPrimaryColor(primaryColor:any, color:any) {
-  primaryColor.forEach((item:any) => {
+export function dynamicBgImgTransparentPrimaryColor(primaryColor: any, color: any) {
+  primaryColor.forEach((item: any) => {
     const cssPropName = `--primary-${item.getAttribute("data-id")}`;
     const cssPropName1 = `--primary-${item.getAttribute("data-id1")}`;
     const cssPropName2 = `--primary-${item.getAttribute("data-id2")}`;
-    
+
     handleThemeUpdate({
       [cssPropName]: hexToRgba(color),
       [cssPropName1]: hexToRgba(color),
@@ -149,11 +149,11 @@ export function dynamicBgImgTransparentPrimaryColor(primaryColor:any, color:any)
 }
 
 export function resetData() {
-  let myonoffswitch1:any = document.querySelector("#myonoffswitch1") as HTMLInputElement
+  let myonoffswitch1: any = document.querySelector("#myonoffswitch1") as HTMLInputElement
   myonoffswitch1.checked = true;   //lighttheme
- let myonoffswitch54:any = document.querySelector("#myonoffswitch54") as HTMLInputElement
- myonoffswitch54.checked = true;  //Ltr
-  
+  let myonoffswitch54: any = document.querySelector("#myonoffswitch54") as HTMLInputElement
+  myonoffswitch54.checked = true;  //Ltr
+
   document.querySelector(".error-page1")?.classList.add("ltr");
   document.querySelector("html[lang=en]")?.setAttribute("dir", "ltr");
   // document.getElementById("style").setAttribute("href", "../assets/plugins/bootstrap/css/bootstrap.rtl.min.css")
@@ -175,19 +175,19 @@ export function name() {
     localStorage.getItem("nowatransparentBgImgPrimary") ||
     primaryColorVal;
 
-  let colorData = hexToRgba(myVarVal || "#38cab3", 0.1);
+  let colorData = hexToRgba(myVarVal || "#139c7f", 0.1);
   document.querySelector("html")?.style.setProperty("--primary01", colorData);
 
-  let colorData1 = hexToRgba(myVarVal || "#38cab3", 0.2);
+  let colorData1 = hexToRgba(myVarVal || "#139c7f", 0.2);
   document.querySelector("html")?.style.setProperty("--primary02", colorData1);
 
-  let colorData2 = hexToRgba(myVarVal || "#38cab3", 0.3);
+  let colorData2 = hexToRgba(myVarVal || "#139c7f", 0.3);
   document.querySelector("html")?.style.setProperty("--primary03", colorData2);
 
-  let colorData3 = hexToRgba(myVarVal || "#38cab3", 0.6);
+  let colorData3 = hexToRgba(myVarVal || "#139c7f", 0.6);
   document.querySelector("html")?.style.setProperty("--primary06", colorData3);
 
-  let colorData4 = hexToRgba(myVarVal || "#38cab3", 0.9);
+  let colorData4 = hexToRgba(myVarVal || "#139c7f", 0.9);
   document.querySelector("html")?.style.setProperty("--primary09", colorData4);
 }
 name();
@@ -198,11 +198,11 @@ export function localStorageBackUp() {
   if (localStorage.getItem("nowaprimaryColor") !== null) {
     body?.classList.add("light-theme");
 
-    let myonoffswitch6:any = document.getElementById("myonoffswitch6") as HTMLInputElement
+    let myonoffswitch6: any = document.getElementById("myonoffswitch6") as HTMLInputElement
     myonoffswitch6.checked = true;
 
     body?.classList.remove("dark-theme");
-    
+
     html?.setProperty(
       "--primary-bg-color",
       localStorage.getItem("nowaprimaryColor")
@@ -219,11 +219,11 @@ export function localStorageBackUp() {
   if (localStorage.getItem("nowadarkPrimaryColor") !== null) {
     body?.classList.add("dark-theme");
 
-  let myonoffswitch7:any =  document.getElementById("myonoffswitch7") as HTMLInputElement
-  myonoffswitch7.checked = true;
+    let myonoffswitch7: any = document.getElementById("myonoffswitch7") as HTMLInputElement
+    myonoffswitch7.checked = true;
 
     body?.classList.remove("light-theme");
-    
+
 
     html?.setProperty(
       "--primary-bg-color",
@@ -239,7 +239,7 @@ export function localStorageBackUp() {
     );
   }
 
- 
+
   if (localStorage.nowartl) {
     document.querySelector("body")?.classList.add("rtl");
     document.querySelector("html[lang=en]")?.setAttribute("dir", "ltr");
@@ -248,12 +248,12 @@ export function localStorageBackUp() {
 }
 export const Swichermainright = () => {
   document.querySelector(".demo_changer")?.classList.toggle("active");
- let demo:any = document.querySelector(".demo_changer")
- demo.style.right = "0px";
+  let demo: any = document.querySelector(".demo_changer")
+  demo.style.right = "0px";
 };
 export const Swichermainrightremove = () => {
   document.querySelector(".demo_changer")?.classList.remove("active");
-  let demo:any =document.querySelector(".demo_changer")
+  let demo: any = document.querySelector(".demo_changer")
   demo.style.right = "-270px";
 };
 

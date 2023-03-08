@@ -1,11 +1,12 @@
-import { Outlet } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 
 const Auth = () => {
 
   return (
-    <div >
+    <>
+      <Navigate to="/authentication/sign-in" replace />
       <Outlet />
-    </div>
+    </>
   );
 };
 

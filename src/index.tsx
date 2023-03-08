@@ -1,7 +1,7 @@
 import reportWebVitals from './reportWebVitals';
 import React from 'react';
 import ReactDOM from "react-dom/client";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import Auth from "./Authentication/auth";
 import "./index.scss";
 import Loader from "./shade/Loaders/Loaders"
@@ -15,14 +15,8 @@ const AuthSignUp = React.lazy(() => import("./Authentication/SignUp"))
 
 //App pages
 const App = React.lazy(() => import("../src/shade/layouts/App"));
-const Dashboard = React.lazy(() =>
-    import("./components/Dashboard/Dashboard-1/Dashboard")
-);
-const Dashboard2 = React.lazy(() =>
-    import("./components/Dashboard/Dashboard-2/Dashboard2")
-);
-const Dashboard3 = React.lazy(() =>
-    import("./components/Dashboard/Dashboard-3/Dashboard3")
+const Overview = React.lazy(() =>
+    import("./components/Pages/Dashboard/overview/Overview")
 );
 
 // Management
@@ -41,9 +35,43 @@ const FarmstayManagement = React.lazy(() =>
 const RoomCategoryManagement = React.lazy(() =>
     import("./components/Pages/Management/RoomCategory/RoomCategoryManagement")
 );
+const ServiceCategoryManagement = React.lazy(() =>
+    import("./components/Pages/Management/ServiceCategory/ServiceCategoryManagement")
+);
+const TagManagement = React.lazy(() =>
+    import("./components/Pages/Management/Tag/TagManagement")
+);
+const OrderManagement = React.lazy(() =>
+    import("./components/Pages/Management/Order/OrderManagement")
+);
+const WithdrawalRequestManagement = React.lazy(() =>
+    import("./components/Pages/Management/WithdrawalRequest/WithdrawalRequestManagement")
+);
+const FeedbackManagement = React.lazy(() =>
+    import("./components/Pages/Management/Feedback/FeedbackManagement")
+);
 
+// Detail
+const AdminDetail = React.lazy(() =>
+    import("./components/Pages/Management/Account/admin/AdminDetail")
+);
+const CustomerDetail = React.lazy(() =>
+    import("./components/Pages/Management/Account/customer/CustomerDetail")
+);
+const HostDetail = React.lazy(() =>
+    import("./components/Pages/Management/Account/host/HostDetail")
+);
+const FarmstayDetail = React.lazy(() =>
+    import("./components/Pages/Management/Farmstay/FarmstayDetail/FarmstayDetail")
+);
+const OrderDetail = React.lazy(() =>
+    import("./components/Pages/Management/Order/OrderDetail")
+);
+const WithdrawalRequestDetail = React.lazy(() =>
+    import("./components/Pages/Management/WithdrawalRequest/WithdrawalRequestDetail")
+);
 
-//Error pages
+// Error pages
 const Custompages = React.lazy(() => import("../src/shade/layouts/custompages"));
 
 const Error404 = React.lazy(() =>
@@ -63,7 +91,7 @@ root.render(
                     <React.Suspense fallback={<Loader />}>
                         <Routes>
                             <Route path="/authentication" element={<Auth />}>
-                                <Route index element={<AuthSignIn />} />
+                                <Route index element={<Auth />} />
 
                                 <Route
                                     path="/authentication/sign-in"
@@ -78,69 +106,109 @@ root.render(
                             <Route path="/" element={<App />}>
                                 <Route
                                     index
-                                    element={<Dashboard />}
+                                    element={<Navigate to="/dashboard/overview" />}
                                 />
 
                                 <Route path="/dashboard">
                                     <Route
                                         index
-                                        element={<Dashboard />}
+                                        element={<Navigate to="/dashboard/overview" />}
                                     />
 
                                     <Route
                                         path="/dashboard/overview"
-                                        element={<Dashboard />}
-                                    />
-                                    <Route
-                                        path="dashboard/income"
-                                        element={<Dashboard2 />}
-                                    />
-                                    <Route
-                                        path="dashboard/farmstay"
-                                        element={<Dashboard3 />}
+                                        element={<Overview />}
                                     />
                                 </Route>
 
-                                <Route path="/management">
+                                <Route path="/management"                                >
                                     <Route
                                         index
-                                        element={<AdminManagement />}
+                                        element={<Navigate to="/management/account" />}
                                     />
 
                                     <Route path="/management/account">
                                         <Route
                                             index
-                                            element={<AdminManagement />}
+                                            element={<Navigate to="/management/account/host" />}
                                         />
+
+                                        <Route path="/management/account/admin"                                        >
+                                            <Route
+                                                index
+                                                element={<AdminManagement />}
+                                            />
+
+                                            <Route
+                                                path="/management/account/admin/:id"
+                                                element={<AdminDetail />}
+                                            />
+                                        </Route>
+
+                                        <Route path="/management/account/host"                                        >
+                                            <Route
+                                                index
+                                                element={<HostManagement />}
+                                            />
+
+                                            <Route
+                                                path="/management/account/host/:id"
+                                                element={<HostDetail />}
+                                            />
+                                        </Route>
+
+                                        <Route path="/management/account/customer"                                        >
+                                            <Route
+                                                index
+                                                element={<CustomerManagement />}
+                                            />
+
+                                            <Route
+                                                path="/management/account/customer/:id"
+                                                element={<CustomerDetail />}
+                                            />
+                                        </Route>
+                                    </Route>
+
+                                    <Route path="/management/farmstay">
                                         <Route
-                                            path="/management/account/admin"
-                                            element={<AdminManagement />}
+                                            index
+                                            element={<FarmstayManagement />}
                                         />
+
                                         <Route
-                                            path="/management/account/host"
-                                            element={<HostManagement />}
+                                            path="/management/farmstay/:id"
+                                            element={<FarmstayDetail />}
                                         />
+                                    </Route>
+
+                                    <Route path="/management/order">
                                         <Route
-                                            path="/management/account/customer"
-                                            element={<CustomerManagement />}
+                                            index
+                                            element={<OrderManagement />}
+                                        />
+
+                                        <Route
+                                            path="/management/order/:id"
+                                            element={<OrderDetail />}
+                                        />
+                                    </Route>
+
+                                    <Route path="/management/withdrawal-request">
+                                        <Route
+                                            index
+                                            element={<WithdrawalRequestManagement />}
+                                        />
+
+                                        <Route
+                                            path="/management/withdrawal-request/:id"
+                                            element={<WithdrawalRequestDetail />}
                                         />
                                     </Route>
 
                                     <Route
-                                        path="/management/farmstay"
-                                        element={<FarmstayManagement />}
-                                    />
-                                    <Route
-                                        path="/management/order"
-                                        element={<Dashboard />}
-                                    />
-                                    <Route
-                                        path="/management/withdrawal-request"
-                                        element={<Dashboard />}
-                                    />
-                                    <Route
                                         path="/management/feedback"
-                                        element={<Dashboard />}
+                                        element={<FeedbackManagement />}
                                     />
                                     <Route
                                         path="/management/room-category"
@@ -148,11 +216,11 @@ root.render(
                                     />
                                     <Route
                                         path="/management/service-category"
-                                        element={<Dashboard />}
+                                        element={<ServiceCategoryManagement />}
                                     />
                                     <Route
                                         path="/management/tags"
-                                        element={<Dashboard />}
+                                        element={<TagManagement />}
                                     />
 
                                 </Route>

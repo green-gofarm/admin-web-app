@@ -3,8 +3,10 @@ import { Card } from 'react-bootstrap';
 import { Box, FormGroup, Grid } from '@mui/material';
 import PageHeader, { IBreadcrumbItem } from '../../../../General/PageHeader';
 import Select from 'react-select';
-import { CustomerTable } from './CustomerTable';
+import CustomerTable from './CustomerTable';
 import { LIST_CUSTOMER_STATUS } from '../../../../../setting/customer-setting';
+import { IStatisticCard } from '../../../../General/Statistic/StatisticCard';
+import CustomerStatistic from './CustomerStatistic';
 
 const breadcrumb: Array<IBreadcrumbItem> = [
     {
@@ -24,6 +26,33 @@ const breadcrumb: Array<IBreadcrumbItem> = [
     }
 ]
 
+const statisticData: IStatisticCard[] = [
+    {
+        title: "Tổng số tài khoản",
+        value: 3672,
+        icon: <i className="mdi mdi-account-multiple icon-size float-start text-primary text-primary-shadow"></i>,
+        subTitle: "Tài khoản mới trong tháng",
+        subValue: 858,
+        type: "number"
+    },
+    {
+        title: "Tổng số lần đặt tour",
+        value: 2736,
+        icon: <i className="mdi mdi-cart-outline icon-size float-start text-danger text-danger-shadow"></i>,
+        subTitle: "Trong tháng này",
+        subValue: 234,
+        type: "number"
+    },
+    {
+        title: "Tổng số tiền khách hàng đã thanh toán",
+        value: 2987200000,
+        icon: <i className="icon-size mdi mdi-poll-box float-start text-warning text-warning-shadow"></i>,
+        subTitle: "Trong tháng này",
+        subValue: 400000,
+        type: "money"
+    },
+];
+
 export const STATUSES = {
     ACTIVE: 1,
     INACTIVE: 2,
@@ -32,6 +61,7 @@ export const STATUSES = {
 
 const CustomerManagement = () => {
 
+    // State
     const [filters, setFilters] = useState({
         status: null
     });
@@ -45,7 +75,7 @@ const CustomerManagement = () => {
     }, []);
 
     return (
-        <Box component="div">
+        <Box marginBottom="1.3rem">
             {/* <!-- breadcrumb --> */}
             <PageHeader
                 title="Khách du lịch"
@@ -56,62 +86,11 @@ const CustomerManagement = () => {
             <Box
                 component={Grid}
                 container
-                spacing={0}
+                spacing={2}
             >
 
                 <Grid item xs={12}>
-                    <Grid container spacing={2}>
-                        <Grid item xs={12} md={6} lg={4}>
-                            <Card>
-                                <Card.Body>
-                                    <div className="card-order">
-                                        <h6 className="mb-2">Tổng số tài khoản</h6>
-                                        <h2 className="text-end ">
-                                            <i className="mdi mdi-account-multiple icon-size float-start text-primary text-primary-shadow"></i>
-                                            <span>3.672</span>
-                                        </h2>
-                                        <p className="mb-0">
-                                            Tài khoản mới trong tháng<span className="float-end">858</span>
-                                        </p>
-                                    </div>
-                                </Card.Body>
-                            </Card>
-                        </Grid>
-
-                        <Grid item xs={12} md={6} lg={4}>
-                            <Card className=" ">
-                                <Card.Body>
-                                    <div className="card-widget">
-                                        <h6 className="mb-2">Tổng số lần đặt tour</h6>
-                                        <h2 className="text-end">
-                                            <i className="mdi mdi-cart-outline icon-size float-start text-danger text-danger-shadow"></i>
-                                            <span>2.736</span>
-                                        </h2>
-                                        <p className="mb-0">
-                                            Trong tháng này<span className="float-end">234</span>
-                                        </p>
-                                    </div>
-                                </Card.Body>
-                            </Card>
-                        </Grid>
-
-                        <Grid item xs={12} md={6} lg={4}>
-                            <Card>
-                                <Card.Body>
-                                    <div className="card-widget">
-                                        <h6 className="mb-2">Tổng số tiền đã thanh toán</h6>
-                                        <h2 className="text-end">
-                                            <i className="icon-size mdi mdi-poll-box float-start text-warning text-warning-shadow"></i>
-                                            <span>2.987.200.000 đ</span>
-                                        </h2>
-                                        <p className="mb-0">
-                                            Trong tháng này<span className="float-end">400.000 đ</span>
-                                        </p>
-                                    </div>
-                                </Card.Body>
-                            </Card>
-                        </Grid>
-                    </Grid>
+                    <CustomerStatistic data={statisticData} />
                 </Grid>
                 <Grid item xs={12}>
                     <Card className="custom-card">
@@ -183,13 +162,9 @@ const CustomerManagement = () => {
                 </Grid>
 
                 <Grid item xs={12}>
-                    <Card className="custom-card overflow-hidden">
-                        <Card.Body>
-                            <Box className="table-responsive">
-                                <CustomerTable />
-                            </Box>
-                        </Card.Body>
-                    </Card>
+                    <Box className="table-responsive">
+                        <CustomerTable />
+                    </Box>
                 </Grid>
             </Box>
         </Box>

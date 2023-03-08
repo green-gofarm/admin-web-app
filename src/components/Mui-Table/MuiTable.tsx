@@ -2,9 +2,8 @@ import React, { useEffect, useState } from "react";
 
 import makeStyles from '@mui/styles/makeStyles';
 import Box from "@mui/material/Box";
-import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
-import CardHeader from "@mui/material/CardHeader";
+import { Card as ReactBootstrapCard } from "react-bootstrap"
 import Table from "@mui/material/Table";
 import TableContainer from "@mui/material/TableContainer";
 
@@ -24,7 +23,11 @@ interface ITable {
     columns: any[],
     panel?: any,
     loadingData?: boolean,
-    noPaging?: boolean
+    noPaging?: boolean,
+    fixedColumns?: {
+        left?: number,
+        right?: number
+    }
 }
 
 const MuiTables = ({
@@ -33,7 +36,11 @@ const MuiTables = ({
     data,
     panel,
     loadingData,
-    noPaging
+    noPaging,
+    fixedColumns = {
+        left: 0,
+        right: 0
+    }
 }: ITable) => {
     const classes = useStyles();
 
@@ -63,54 +70,131 @@ const MuiTables = ({
 
     return (
         <>
-            <Card classes={{ root: classes.cardRoot }}>
+            <ReactBootstrapCard>
                 {title || panel
-                    ? <CardHeader
-                        className={classes.cardHeader}
-                        title={title ?? ""}
-                        titleTypographyProps={{
-                            component: Box,
-                            marginBottom: "0!important",
-                            variant: "h3",
-                        }}
-                        action={panel}
-                    />
+                    ? <ReactBootstrapCard.Header className=" border-bottom-0 d-flex">
+                        {title
+                            ? <h3 className="card-title mb-2 ">{title}</h3>
+                            : null
+                        }
+                        {panel
+                            ? <div className="card-options">{panel}</div>
+                            : null
+                        }
+                    </ReactBootstrapCard.Header>
                     : null
                 }
-                <TableContainer>
-                    <Box
-                        component={Table}
-                        alignItems="center"
-                        marginBottom="0!important"
-                    >
-                        <CustomTableHeader
-                            columns={columns}
-                        />
+                <ReactBootstrapCard.Body>
+                    <Box position="relative">
+                        <TableContainer>
+                            <Box
+                                component={Table}
+                                alignItems="center"
+                                marginBottom="0!important"
+                            >
+                                <CustomTableHeader
+                                    columns={columns}
+                                />
 
-                        <CustomTableBody
-                            columns={columns}
-                            data={paginationData}
-                            loadingData={loadingData}
-                        />
+                                <CustomTableBody
+                                    columns={columns}
+                                    data={paginationData}
+                                    loadingData={loadingData}
+                                />
+                            </Box>
+                        </TableContainer>
+                        {fixedColumns?.left && fixedColumns.left > 0
+                            ? <TableContainer>
+                                <Box
+                                    component={Table}
+                                    alignItems="center"
+                                    marginBottom="0!important"
+                                    sx={{
+                                        minWidth: "auto",
+                                        position: "absolute",
+                                        width: "100px",
+                                        top: 0,
+                                        zIndex: 1,
+                                        left: 0,
+                                        boxShadow: "2px 0 2px -2px #9da1b6",
+
+                                        "& th, & td": {
+                                            whiteSpace: "nowrap !important",
+                                        },
+                                        "& td": {
+                                            background: "#fff"
+                                        }
+                                    }}
+                                >
+                                    <CustomTableHeader
+                                        columns={columns.slice(0, fixedColumns.left)}
+                                    />
+
+                                    <CustomTableBody
+                                        columns={columns.slice(0, fixedColumns.left)}
+                                        data={paginationData}
+                                        loadingData={loadingData}
+                                    />
+                                </Box>
+                            </TableContainer>
+                            : null
+                        }
+                        {fixedColumns?.right && fixedColumns.right > 0
+                            ? <TableContainer>
+                                <Box
+                                    component={Table}
+                                    alignItems="center"
+                                    marginBottom="0!important"
+                                    sx={{
+                                        minWidth: "auto",
+                                        position: "absolute",
+                                        width: "100px",
+                                        top: 0,
+                                        zIndex: 2,
+                                        right: 0,
+                                        boxShadow: "-2px 0px 2px -2px #9da1b6",
+
+                                        "& th, & td": {
+                                            whiteSpace: "nowrap !important",
+                                        },
+                                        "& td": {
+                                            background: "#fff"
+                                        }
+                                    }}
+                                >
+                                    <CustomTableHeader
+                                        columns={columns.slice(columns.length - fixedColumns.right || 0, columns.length)}
+                                    />
+
+                                    <CustomTableBody
+                                        columns={columns.slice(columns.length - fixedColumns.right || 0, columns.length)}
+                                        data={paginationData}
+                                        loadingData={loadingData}
+                                    />
+                                </Box>
+                            </TableContainer>
+                            : null
+                        }
                     </Box>
-                </TableContainer>
-                {noPaging !== true &&
-                    <Box
-                        classes={{ root: classes.cardActionsRoot }}
-                        component={CardActions}
-                        justifyContent="flex-end"
-                    >
-                        <CustomizedTablePagination
-                            count={isAvailableArray(data) ? data.length : 0}
-                            page={page}
-                            rowsPerPage={rowsPerPage}
-                            rowsPerPageOptions={[5, 10, 20, 50]}
-                            handleChangePage={handleChangePage}
-                            handleChangeRowsPerPage={handleChangeRowsPerPage}
-                        />
-                    </Box>
-                }
-            </Card>
+                    {noPaging !== true
+                        ? <Box
+                            classes={{ root: classes.cardActionsRoot }}
+                            component={CardActions}
+                            justifyContent="flex-end"
+                        >
+                            <CustomizedTablePagination
+                                count={isAvailableArray(data) ? data.length : 0}
+                                page={page}
+                                rowsPerPage={rowsPerPage}
+                                rowsPerPageOptions={[5, 10, 20, 50]}
+                                handleChangePage={handleChangePage}
+                                handleChangeRowsPerPage={handleChangeRowsPerPage}
+                            />
+                        </Box>
+                        : null
+                    }
+                </ReactBootstrapCard.Body>
+            </ReactBootstrapCard>
         </>
     );
 };

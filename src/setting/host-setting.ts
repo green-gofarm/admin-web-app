@@ -20,7 +20,7 @@ export const LIST_HOST_STATUS = [
         bgColor: STATUS_COLORS.DELETED.bgColor
     },
     {
-        label: "Bị cấm",
+        label: "Đang bị khóa",
         value: HOST_STATUSES.BANNED,
         textColor: STATUS_COLORS.BANNED.textColor,
         bgColor: STATUS_COLORS.BANNED.bgColor

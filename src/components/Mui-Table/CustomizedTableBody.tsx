@@ -23,7 +23,7 @@ const NoRow = ({ classes }: any) => (
                 fontStyle: "italic"
             }}
         >
-            No information
+            Không có thông tin
         </TableCell>
     </TableRow>
 )
@@ -76,7 +76,7 @@ export default function CustomizedTableBody({
                             align={column.align || "left"}
                             classes={{ root: classes.tableCellRoot }}
                         >
-                            {column.render ? column.render(row) : (row[column.key] || "N/A")}
+                            {column.render ? column.render(row) : (row[column.key] || "-")}
                         </TableCell>
                     )
                     : null

@@ -1,20 +1,38 @@
-import { useMemo } from "react";
+import { useCallback, useMemo, useState } from "react";
 import json from "./customer.json";
 import { UserData } from "../account-interface";
 import MuiTables from "../../../../Mui-Table/MuiTable";
-import { Box, IconButton } from "@mui/material";
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
+import { Box } from "@mui/material";
 import { Status } from "../../../../../setting/Status";
-import AvatarWrapper from "../../../../General/AvatarWrapper";
+import AvatarWrapper from "../../../../General/Wrapper/AvatarWrapper";
 import { findCustomerStatus } from "../../../../../setting/customer-setting";
+import ViewIconAction from "../../../../General/Action/IconAction/ViewIconAction";
+import LockIconAction from "../../../../General/Action/IconAction/LockIconAction";
+import UnlockIconAction from "../../../../General/Action/IconAction/UnlockIconAction";
+import { createCodeString } from "../../../../../helpers/stringUtils";
+import BanCustomer from "./action/BanCustomer";
+import UnbanCustomer from "./action/UnbanCustomer";
+import { useNavigate } from "react-router-dom";
 
 const dataObject = JSON.parse(JSON.stringify(json));
 const userData: UserData = dataObject.data;
 
-export const CustomerTable = () => {
+export default function CustomerTable() {
 
+    const navigate = useNavigate();
+
+    // State
+    const [openBan, setOpenBan] = useState<boolean>(false);
+    const [openUnban, setOpenUnban] = useState<boolean>(false);
+    const [selectedCustomer, setSelectedCustomer] = useState<any>(null);
+
+    // Memorize
     const columns = useMemo(() => [
+        {
+            key: "code",
+            label: "Mã",
+            render: (row: any) => createCodeString("CU", row.id)
+        },
         {
             key: "name",
             label: "Họ và tên",
@@ -23,7 +41,6 @@ export const CustomerTable = () => {
                     display="flex"
                     alignItems="center"
                     gap="8px"
-                    width="140px"
                 >
                     <AvatarWrapper
                         src={row.avatarURL}
@@ -36,11 +53,7 @@ export const CustomerTable = () => {
         {
             key: "email",
             label: "Email",
-            render: (row) => (
-                <Box width="120px">
-                    {row.email}
-                </Box>
-            )
+            render: (row) => row.email
         },
         {
             key: "phoneNumber",
@@ -67,36 +80,51 @@ export const CustomerTable = () => {
             label: "Thao tác",
             render: (row) => (
                 <Box
-                    component="div"
                     display="flex"
                     alignItems="center"
                     columnGap="8px"
-                    fontSize="13px"
                 >
-                    <span>
-                        <IconButton
-                            style={{ padding: 5 }}
-                        >
-                            <EditIcon />
-                        </IconButton>
-                    </span>
-
-                    <span>
-                        <IconButton
-                            style={{ padding: 5 }}
-                        >
-                            <DeleteIcon />
-                        </IconButton>
-                    </span>
+                    <ViewIconAction
+                        onClick={() => navigate(`/management/account/customer/${row.id}`)}
+                    />
+                    <LockIconAction
+                        onClick={() => {
+                            setOpenBan(true);
+                            setSelectedCustomer(row);
+                        }}
+                    />
+                    <UnlockIconAction
+                        onClick={() => {
+                            setOpenUnban(true);
+                            setSelectedCustomer(row);
+                        }}
+                    />
                 </Box>
             )
         },
-    ], []);
+    ], [navigate]);
+
+    const handleCloseBan = useCallback(() => setOpenBan(false), []);
+    const handleCloseUnban = useCallback(() => setOpenUnban(false), []);
 
     return (
-        <MuiTables
-            data={userData}
-            columns={columns}
-        />
+        <>
+            <MuiTables
+                data={userData}
+                columns={columns}
+                fixedColumns={{ right: 1 }}
+            />
+
+            <BanCustomer
+                open={openBan}
+                onClose={handleCloseBan}
+                customer={selectedCustomer}
+            />
+            <UnbanCustomer
+                open={openUnban}
+                onClose={handleCloseUnban}
+                customer={selectedCustomer}
+            />
+        </>
     );
 };
