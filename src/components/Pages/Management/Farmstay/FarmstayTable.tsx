@@ -6,15 +6,12 @@ import MuiTables from "../../../Mui-Table/MuiTable";
 import EllipsisWrapper from "../../../General/Wrapper/EllipsisWrapper";
 import ViewIconAction from "../../../General/Action/IconAction/ViewIconAction";
 import { findFarmstayStatus } from "../../../../setting/farmstay-setting";
-import { formatTimeString } from "../../../../helpers/dateUtils";
 import { createCodeString } from "../../../../helpers/stringUtils";
 import { useNavigate } from "react-router-dom";
 import ActivateFarmstay from "./action/ActivateFarmstay";
 import InactivateFarmstay from "./action/InactivateFarmstay";
 import LockIconAction from "../../../General/Action/IconAction/LockIconAction";
 import UnlockIconAction from "../../../General/Action/IconAction/UnlockIconAction";
-import TooltipIconAction from "../../../General/Icon/TooltipIconAction";
-import GradingIcon from '@mui/icons-material/Grading';
 import AvatarWrapper from "../../../General/Wrapper/AvatarWrapper";
 
 const dataObject = JSON.parse(JSON.stringify(json));
@@ -70,15 +67,6 @@ export default function FarmstayTable() {
             )
         },
         {
-            key: "phoneNumber",
-            label: "Thông tin liên hệ",
-            render: (row) => (
-                <EllipsisWrapper breakWidth={200}>
-                    {row.contactInformation}
-                </EllipsisWrapper>
-            )
-        },
-        {
             key: "address",
             label: "Địa chỉ",
             render: (row) => (
@@ -102,16 +90,6 @@ export default function FarmstayTable() {
             ))
         },
         {
-            key: "farmstay.createdDate",
-            label: "Ngày tạo",
-            render: (row: any) => formatTimeString(row.createdDate)
-        },
-        {
-            key: "farmstay.updatedDate",
-            label: "Lần cập nhật cuối",
-            render: (row: any) => formatTimeString(row.updatedDate)
-        },
-        {
             key: "status",
             label: "Trạng thái",
             render: (row) => (
@@ -127,12 +105,7 @@ export default function FarmstayTable() {
                     display="flex"
                 >
                     <ViewIconAction
-                        onClick={() => navigate(`/management/farmstay/${row.id}`)}
-                    />
-                    <TooltipIconAction
-                        title="Phê duyệt"
-                        Icon={GradingIcon}
-                        onClick={() => navigate(`/management/farmstay/${row.id}`)}
+                        onClick={() => navigate(`/management/farmstay/all/${row.id}`)}
                     />
                     <LockIconAction
                         onClick={() => {
@@ -160,9 +133,6 @@ export default function FarmstayTable() {
             <MuiTables
                 data={data}
                 columns={columns}
-                fixedColumns={{
-                    right: 1
-                }}
             />
 
             <ActivateFarmstay

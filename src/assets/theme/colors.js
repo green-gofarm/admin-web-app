@@ -22,7 +22,7 @@ const color = {
   },
   primary: {
     main: "#139c7f",
-    dark: "#233dd2",
+    dark: "#094e3f",
     snackbar: "#7889e8",
     badgeBg: "#eaecfb",
     badgeBgHover: "#2a44db",

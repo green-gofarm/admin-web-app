@@ -61,10 +61,6 @@ export default function CustomerTable() {
             render: (row) => row.phoneNumber
         },
         {
-            key: "createdDate",
-            label: "Ngày tham gia",
-        },
-        {
             key: "updatedDate",
             label: "Lần cập nhật cuối",
         },

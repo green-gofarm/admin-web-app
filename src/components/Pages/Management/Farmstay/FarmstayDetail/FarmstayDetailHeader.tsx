@@ -3,8 +3,9 @@ import { Card } from 'react-bootstrap'
 import AvatarWrapper from '../../../../General/Wrapper/AvatarWrapper'
 import { formatTimeString } from '../../../../../helpers/dateUtils'
 import IconLabelDetail from '../../../../General/Item/IconLabelDetail'
-import { getFeedbackRatingNumber } from './FeedbackItem'
+import { getFeedbackRatingNumber } from './ui-segment/FeedbackItem'
 import LockIcon from "@mui/icons-material/Lock";
+import { Link, useLocation } from 'react-router-dom'
 
 interface IFarmstayDetailHeader {
     detail?: any,
@@ -13,6 +14,9 @@ interface IFarmstayDetailHeader {
 function FarmstayDetailHeader({
     detail
 }: IFarmstayDetailHeader) {
+
+    const location = useLocation();
+
     return (
         <Card className="custom-card customs-cards">
             <Card.Body className=" d-md-flex bg-white">
@@ -48,9 +52,12 @@ function FarmstayDetailHeader({
                                 label="Chủ sở hửu:"
                                 value={
                                     <Box
+                                        component={Link}
+                                        to={`/management/account/host/${detail?.host?.userId}?backUrl=${location.pathname + location.search}`}
                                         display="flex"
                                         alignItems="center"
                                         gap="8px"
+                                        className="tag tag-rounded"
                                     >
                                         <AvatarWrapper
                                             name={detail?.host.name}

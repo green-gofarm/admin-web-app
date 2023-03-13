@@ -14,6 +14,10 @@ const breadcrumb: Array<IBreadcrumbItem> = [
     },
     {
         text: "Farmstay",
+        href: "/management/farmstay"
+    },
+    {
+        text: "Danh sách",
         active: true,
         props: {
             "aria-current": "page"
@@ -79,7 +83,7 @@ const FarmstayManagement = () => {
     return (
         <Box marginBottom="1.3rem">
             <PageHeader
-                title="Farmstay"
+                title="Danh sách Farmstay"
                 breadcrumb={breadcrumb}
             />
 

@@ -23,6 +23,7 @@ function PageHeader({ title, breadcrumb }: IPageHeader) {
                     className="main-content-title mg-b-0 mg-b-lg-1"
                     sx={{
                         fontFamily: "sans-serif",
+                        textTransform: "capitalize"
                         // fontWeight: "600 !important"
                     }}
                 >

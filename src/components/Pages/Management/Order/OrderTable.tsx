@@ -54,11 +54,6 @@ export default function OrderTable() {
             render: (row: any) => formatTimeString(row.createdDate)
         },
         {
-            key: "updatedDate",
-            label: "Lần cập nhật cuối",
-            render: (row: any) => formatTimeString(row.updatedDate)
-        },
-        {
             key: "status",
             label: "Trạng thái",
             render: (row) => (

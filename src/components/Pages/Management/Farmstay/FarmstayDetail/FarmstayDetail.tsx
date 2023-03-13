@@ -8,15 +8,15 @@ import { createCodeString } from '../../../../../helpers/stringUtils';
 import FarmstayDetailHeader from './FarmstayDetailHeader';
 import Navigation, { NavigationItem } from '../../../../General/Tab/Navigation';
 import DetailPageHeaderTitle from '../../../../General/DetailPageHeaderTitle';
-import BasicInfoTab from './BasicInfoTab';
+import BasicInfoTab from './tab/BasicInfoTab';
 import TabPaneContentBody from '../../../../General/Tab/TabPaneContentBody';
-import ActivityTab from './ActivityTab';
-import RoomTab from './RoomTab';
-import ServiceTab from './ServiceTab';
-import PolicyTab from './PolicyTab';
-import FAQTab from './FAQTab';
-import OrderHistoryTab from './OrderHistoryTab';
-import FeedbackTab from './FeedbackTab';
+import ActivityTab from './tab/ActivityTab';
+import RoomTab from './tab/RoomTab';
+import ServiceTab from './tab/ServiceTab';
+import PolicyTab from './tab/PolicyTab';
+import FAQTab from './tab/FAQTab';
+import OrderHistoryTab from './tab/OrderHistoryTab';
+import FeedbackTab from './tab/FeedbackTab';
 
 const breadcrumb: Array<IBreadcrumbItem> = [
     {
@@ -26,6 +26,10 @@ const breadcrumb: Array<IBreadcrumbItem> = [
     {
         text: "Farmstay",
         href: "/management/farmstay"
+    },
+    {
+        text: "Danh sách",
+        href: "/management/farmstay/all"
     },
     {
         text: "Chi tiết",
@@ -122,7 +126,7 @@ function FarmstayDetail() {
                         gap="8px"
                     >
                         <DetailPageHeaderTitle
-                            backUrl={searchParams.get("backUrl") ?? "/management/account/customer"}
+                            backUrl={searchParams.get("backUrl") ?? "/management/farmstay"}
                             title="Chi tiết farmstay"
                             code={createCodeString("FR", id)}
                         />
@@ -149,9 +153,9 @@ function FarmstayDetail() {
                                         <TabPaneContentBody eventKey={TAB_KEYS.About}>
                                             <BasicInfoTab detail={detail} />
                                         </TabPaneContentBody>
-                                        <TabPaneContentBody eventKey={TAB_KEYS.Activity}>
+                                        <Tab.Pane eventKey={TAB_KEYS.Activity}>
                                             <ActivityTab />
-                                        </TabPaneContentBody>
+                                        </Tab.Pane>
                                         <TabPaneContentBody eventKey={TAB_KEYS.Room}>
                                             <RoomTab />
                                         </TabPaneContentBody>

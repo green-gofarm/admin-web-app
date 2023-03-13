@@ -1,20 +1,18 @@
 import React from "react";
 import PageHeader from "../../../General/PageHeader";
 import { breadcrumb } from "./setting";
-import { Grid } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 import { overviewData, revenueData } from "./data";
 import StatisticCardOverviewGroup from "../../../General/Statistic/StatisticCardOverviewGroup";
 import { Button, Card } from "react-bootstrap";
 import RevenueStatisticChar from "./RevenueStatisticChar";
 import MuiTables from "../../../Mui-Table/MuiTable";
-import { useNavigate } from "react-router-dom";
+import OrderTable from "./OrderTable";
 
 export default function Overview() {
 
-  const navigate = useNavigate();
-
   return (
-    <React.Fragment>
+    <Box marginBottom="1.3rem">
       <PageHeader
         title="Tổng quan"
         breadcrumb={breadcrumb}
@@ -82,58 +80,10 @@ export default function Overview() {
           />
         </Grid>
 
-        <Grid item xs={12} lg={6}>
-          <MuiTables
-            title="Farmstay cần duyệt (10)"
-            data={[]}
-            columns={[]}
-            noPaging
-            panel={
-              <Button
-                className="btn btn-primary mb-3 shadow"
-                variant=""
-                onClick={() => navigate("/management/farmstay")}
-              >
-                Đến quản lý
-              </Button>
-            }
-          />
-        </Grid>
-        <Grid item xs={12} lg={6}>
-          <MuiTables
-            title="Tài khoản mới đăng ký"
-            data={[]}
-            columns={[]}
-            noPaging
-            panel={
-              <Button
-                className="btn btn-primary mb-3 shadow"
-                variant=""
-                onClick={() => navigate("/management/account/customer")}
-              >
-                Đến quản lý
-              </Button>
-            }
-          />
-        </Grid>
         <Grid item xs={12}>
-          <MuiTables
-            title="Đơn mới"
-            data={[]}
-            columns={[]}
-            noPaging
-            panel={
-              <Button
-                className="btn btn-primary mb-3 shadow"
-                variant=""
-                onClick={() => navigate("/management/order")}
-              >
-                Đến quản lý
-              </Button>
-            }
-          />
+          <OrderTable />
         </Grid>
       </Grid>
-    </React.Fragment>
+    </Box>
   );
 }

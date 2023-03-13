@@ -14,6 +14,7 @@ import CustomTableBody from "./CustomizedTableBody";
 import { DEFAULT_PAGINATION } from "./setting";
 import { isAvailableArray } from "../../helpers/arrayUtils";
 import CustomizedTablePagination from "./CustomizedTablePagination";
+import CustomizedPanel from "./CustomizedPanel";
 
 const useStyles = makeStyles(componentStyles);
 
@@ -24,6 +25,7 @@ interface ITable {
     panel?: any,
     loadingData?: boolean,
     noPaging?: boolean,
+    noPanel?: boolean,
     fixedColumns?: {
         left?: number,
         right?: number
@@ -37,6 +39,7 @@ const MuiTables = ({
     panel,
     loadingData,
     noPaging,
+    noPanel,
     fixedColumns = {
         left: 0,
         right: 0
@@ -71,18 +74,12 @@ const MuiTables = ({
     return (
         <>
             <ReactBootstrapCard>
-                {title || panel
-                    ? <ReactBootstrapCard.Header className=" border-bottom-0 d-flex">
-                        {title
-                            ? <h3 className="card-title mb-2 ">{title}</h3>
-                            : null
-                        }
-                        {panel
-                            ? <div className="card-options">{panel}</div>
-                            : null
-                        }
-                    </ReactBootstrapCard.Header>
-                    : null
+                {noPanel
+                    ? null
+                    : <CustomizedPanel
+                        title={title}
+                        panel={panel}
+                    />
                 }
                 <ReactBootstrapCard.Body>
                     <Box position="relative">

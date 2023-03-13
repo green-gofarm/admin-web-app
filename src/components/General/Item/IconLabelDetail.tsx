@@ -4,7 +4,8 @@ import { ReactNode, memo } from "react"
 interface IDetailItem {
     label?: string | ReactNode,
     icon?: any,
-    value?: any
+    value?: any,
+    className?: string,
 }
 
 
@@ -12,15 +13,14 @@ function IconLabelDetail({
     icon,
     label,
     value,
-    ...props
+    className,
 }: IDetailItem) {
     return (
         <Box
             display="flex"
             gap="8px"
             alignItems="center"
-            className="text-muted mb-2"
-            {...props}
+            className={className ?? "text-muted mb-2"}
         >
             {icon
                 ? <Box

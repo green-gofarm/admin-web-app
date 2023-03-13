@@ -5,10 +5,13 @@ import { Link, useNavigate } from "react-router-dom";
 import { Box } from '@mui/material';
 import { GoogleAuthProvider, auth, getFirebaseToken } from '../Firebase/firebase';
 import GoogleButton from './google-button/GoogleButton';
+import { useDispatch } from 'react-redux';
+import { signUpHost } from '../redux/auth/action';
 
 const SignIn = () => {
 
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const handleSignIn = async () => {
         try {
@@ -16,7 +19,16 @@ const SignIn = () => {
             await auth.signInWithPopup(provider);
             const token = await getFirebaseToken();
             console.log(token);
-            navigate("/")
+            if (token) {
+                dispatch(signUpHost(token, {
+                    onSuccess: (data: any) => {
+                        console.log(data);
+                    },
+                    onFailure: (error: any) => {
+                        console.log(error);
+                    }
+                }))
+            }
         } catch (error) {
             console.error('Error signing in with Google:', error);
         }

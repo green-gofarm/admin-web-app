@@ -28,10 +28,10 @@ export default function Header() {
   const openCloseSidebar = () => {
     document.querySelector("body")?.classList.toggle("sidenav-toggled");
   };
-  //rightsidebar
-  const Rightsidebar = () => {
-    document.querySelector(".sidebar-right")?.classList.add("sidebar-open");
-  };
+  // //rightsidebar
+  // const Rightsidebar = () => {
+  //   document.querySelector(".sidebar-right")?.classList.add("sidebar-open");
+  // };
 
   // responsivesearch
   const responsivesearch = () => {
@@ -124,51 +124,26 @@ export default function Header() {
                   <Dropdown.Menu className="slid1">
                     <div className="menu-header-content text-start border-bottom">
                       <div className="d-flex">
-                        <h6 className="dropdown-title mb-1 tx-15 font-weight-semibold">
-                          Notifications
+                        <h6 className="dropdown-title mb-0 tx-15 font-weight-semibold">
+                          Thông báo
                         </h6>
-                        <span className="badge badge-pill badge-warning ms-auto my-auto float-end">
-                          Mark All Read
-                        </span>
                       </div>
-                      <p className="dropdown-title-text subtext mb-0 op-6 pb-0 tx-12 ">
-                        You have 4 unread Notifications
-                      </p>
                     </div>
                     <Scrollbars style={{ height: 280 }}>
                       <div className="main-notification-list Notification-scroll">
                         <Dropdown.Item
                           className="d-flex p-3 border-bottom"
-                          href={`${process.env.PUBLIC_URL}/pages/mail/mail`}
+                          href="/notification?key=1"
                         >
                           <div className="notifyimg bg-pink">
                             <i className="far fa-folder-open text-white"></i>
                           </div>
                           <div className="ms-3">
                             <h5 className="notification-label mb-1">
-                              New files available
+                              Yêu cầu rút tiền
                             </h5>
                             <div className="notification-subtext">
-                              10 hour ago
-                            </div>
-                          </div>
-                          <div className="ms-auto">
-                            <i className="las la-angle-right text-end text-muted"></i>
-                          </div>
-                        </Dropdown.Item>
-                        <Dropdown.Item
-                          className="d-flex p-3  border-bottom"
-                          href={`${process.env.PUBLIC_URL}/pages/mail/mail`}
-                        >
-                          <div className="notifyimg bg-purple">
-                            <i className="fab fa-delicious text-white"></i>
-                          </div>
-                          <div className="ms-3">
-                            <h5 className="notification-label mb-1">
-                              Updates Available
-                            </h5>
-                            <div className="notification-subtext">
-                              2 days ago
+                              10 giờ trước
                             </div>
                           </div>
                           <div className="ms-auto">
@@ -177,17 +152,17 @@ export default function Header() {
                         </Dropdown.Item>
                         <Dropdown.Item
                           className="d-flex p-3 border-bottom"
-                          href={`${process.env.PUBLIC_URL}/pages/mail/mail`}
+                          href="/notification?key=2"
                         >
                           <div className="notifyimg bg-success">
                             <i className="fa fa-cart-plus text-white"></i>
                           </div>
                           <div className="ms-3">
                             <h5 className="notification-label mb-1">
-                              New Order Received
+                              Yêu cầu đặt phòng mới
                             </h5>
                             <div className="notification-subtext">
-                              1 hour ago
+                              1 giờ trước
                             </div>
                           </div>
                           <div className="ms-auto">
@@ -196,56 +171,18 @@ export default function Header() {
                         </Dropdown.Item>
                         <Dropdown.Item
                           className="d-flex p-3 border-bottom"
-                          href={`${process.env.PUBLIC_URL}/pages/mail/mail`}
+                          href="/notification?key=3"
                         >
                           <div className="notifyimg bg-warning">
                             <i className="far fa-envelope-open text-white"></i>
                           </div>
                           <div className="ms-3">
                             <h5 className="notification-label mb-1">
-                              New review received
+                              12 Tin nhắn mới
                             </h5>
                             <div className="notification-subtext">
-                              1 day ago
+                              1 ngày trước
                             </div>
-                          </div>
-                          <div className="ms-auto">
-                            <i className="las la-angle-right text-end text-muted"></i>
-                          </div>
-                        </Dropdown.Item>
-                        <Dropdown.Item
-                          className="d-flex p-3 border-bottom"
-                          href={`${process.env.PUBLIC_URL}/pages/mail/mail`}
-                        >
-                          <div className="notifyimg bg-danger">
-                            <i className="fab fa-wpforms text-white"></i>
-                          </div>
-                          <div className="ms-3">
-                            <h5 className="notification-label mb-1">
-                              22 verified registrations
-                            </h5>
-                            <div className="notification-subtext">
-                              2 hour ago
-                            </div>
-                          </div>
-                          <div className="ms-auto">
-                            <i className="las la-angle-right text-end text-muted"></i>
-                          </div>
-                        </Dropdown.Item>
-                        <Dropdown.Item
-                          className="d-flex p-3 border-bottom"
-                          href={`${process.env.PUBLIC_URL}/pages/mail/mail`}
-                        >
-                          <div className="">
-                            <i className="far fa-check-square text-white notifyimg bg-success"></i>
-                          </div>
-                          <div className="ms-3">
-                            <h5 className="notification-label mb-1">
-                              Project has been approved
-                            </h5>
-                            <span className="notification-subtext">
-                              4 hour ago
-                            </span>
                           </div>
                           <div className="ms-auto">
                             <i className="las la-angle-right text-end text-muted"></i>
@@ -256,9 +193,9 @@ export default function Header() {
                     <div className="dropdown-footer">
                       <Link
                         className="btn btn-primary btn-sm btn-block"
-                        to={`${process.env.PUBLIC_URL}/pages/mail/mail`}
+                        to="/notification"
                       >
-                        VIEW ALL
+                        Xem tất cả
                       </Link>
                     </div>
                   </Dropdown.Menu>
@@ -279,7 +216,7 @@ export default function Header() {
                     </svg>
                   </Link>
                 </li>
-                <li
+                {/* <li
                   className="dropdown main-header-message right-toggle"
                   onClick={() => Rightsidebar()}
                 >
@@ -299,7 +236,7 @@ export default function Header() {
                       <path d="M4 6h16v2H4zm4 5h12v2H8zm5 5h7v2h-7z" />
                     </svg>
                   </Link>
-                </li>
+                </li> */}
                 <li className="nav-link search-icon d-lg-none d-block">
                   <Form
                     className="navbar-form"
@@ -372,29 +309,17 @@ export default function Header() {
                         </div>
                       </div>
                     </div>
-                    <Dropdown.Item className="dropdown-item" href={`${process.env.PUBLIC_URL}/pages/profile`}>
-                      <i className="far fa-user-circle"></i>Profile
+                    <Dropdown.Item className="dropdown-item" href={`/profile`}>
+                      <i className="far fa-user-circle"></i>Hồ sơ cá nhân
                     </Dropdown.Item>
-                    <Dropdown.Item className="dropdown-item" href={`${process.env.PUBLIC_URL}/pages/mail/chat`}>
-                      <i className="far fa-smile"></i> chat
+                    <Dropdown.Item className="dropdown-item" href={`/message`}>
+                      <i className="far fa-comment-dots"></i>Tin nhắn
                     </Dropdown.Item>
-                    <Dropdown.Item
-                      className="dropdown-item"
-                      href={`${process.env.PUBLIC_URL}/pages/mail/readmail`}
-                    >
-                      <i className="far fa-envelope "></i>Inbox
-                    </Dropdown.Item>
-                    <Dropdown.Item className="dropdown-item" href={`${process.env.PUBLIC_URL}/pages/mail/mail`}>
-                      <i className="far fa-comment-dots"></i>Messages
-                    </Dropdown.Item>
-                    <Dropdown.Item
-                      className="dropdown-item"
-                      href={`${process.env.PUBLIC_URL}/pages/mail/mailsettings`}
-                    >
-                      <i className="far fa-sun"></i> Settings
+                    <Dropdown.Item className="dropdown-item" href={`/notification`}>
+                      <i className="far fa-bell"></i>Thông báo
                     </Dropdown.Item>
                     <Dropdown.Item className="dropdown-item" onClick={() => { auth.signOut(); routeChange() }} >
-                      <i className="far fa-arrow-alt-circle-left"></i> Sign Out
+                      <i className="far fa-arrow-alt-circle-left"></i> Đăng xuất
                     </Dropdown.Item>
                   </Dropdown.Menu>
                 </Dropdown>

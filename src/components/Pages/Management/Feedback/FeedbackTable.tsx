@@ -132,14 +132,6 @@ export default function FeedbackTable() {
             )
         },
         {
-            key: "createdDate",
-            label: "Ngày thực hiện",
-        },
-        {
-            key: "updatedDate",
-            label: "Lần cập nhật cuối",
-        },
-        {
             key: "status",
             label: "Trạng thái",
             render: (row) => (
@@ -191,7 +183,6 @@ export default function FeedbackTable() {
             <MuiTables
                 data={data}
                 columns={columns}
-                fixedColumns={{ right: 1 }}
             />
 
             <ViewFeedback

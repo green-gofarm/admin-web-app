@@ -4,7 +4,6 @@ import { Scrollbars } from "react-custom-scrollbars";
 import { Link, useNavigate } from "react-router-dom";
 import { auth } from "../../Firebase/firebase";
 import { useDispatch, useSelector } from 'react-redux';
-import { Delete } from '../../redux/actions/action';
 
 export default function Header() {
   const [Lang, setLang] = React.useState(false);
@@ -60,7 +59,7 @@ export default function Header() {
 
 
   const ondelete = (id: any) => {
-    dispatch(Delete(id))
+    // dispatch(Delete(id))
   }
 
 
@@ -1116,8 +1115,8 @@ export default function Header() {
                           </div>
                         </div>
                       </div>
-                      <Dropdown.Item className="dropdown-item" href={`${process.env.PUBLIC_URL}/pages/profile`}>
-                        <i className="far fa-user-circle"></i>Profile
+                      <Dropdown.Item className="dropdown-item" href={`/profile`}>
+                        <i className="far fa-user-circle"></i>Hồ sơ cá nhân
                       </Dropdown.Item>
                       <Dropdown.Item className="dropdown-item" href={`${process.env.PUBLIC_URL}/pages/mail/chat`}>
                         <i className="far fa-smile"></i> chat
