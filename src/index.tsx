@@ -7,6 +7,8 @@ import { Provider } from 'react-redux';
 import store from './redux/store';
 import AdminRoutes from './routes/AdminRoutes';
 import "./index.scss";
+import { CURRENT_ROLE, ROLES } from './setting/setting';
+import HostRoutes from './routes/HostRoutes';
 
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement
@@ -17,7 +19,14 @@ root.render(
         <Provider store={store}>
             <StyledEngineProvider injectFirst>
                 <ThemeProvider theme={theme}>
-                    <AdminRoutes />
+                    {CURRENT_ROLE === ROLES.ADMIN
+                        ? <AdminRoutes />
+                        : null
+                    }
+                    {CURRENT_ROLE === ROLES.HOST
+                        ? <HostRoutes />
+                        : null
+                    }
                 </ThemeProvider>
             </StyledEngineProvider>
         </Provider>

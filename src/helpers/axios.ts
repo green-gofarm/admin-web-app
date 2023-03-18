@@ -1,6 +1,6 @@
 import axios, { AxiosRequestConfig, AxiosError } from 'axios';
 import { ENV_DOMAIN } from './api';
-import { getFirebaseToken } from '../Firebase/firebase';
+import { auth, getFirebaseToken } from '../Firebase/firebase';
 
 const axiosClient = axios.create({
 	baseURL: ENV_DOMAIN,
@@ -12,10 +12,13 @@ const axiosClient = axios.create({
 
 axiosClient.interceptors.request.use(async (config) => {
 	const token = await getFirebaseToken();
-	if (token) {
-		config.headers.Authorization = token;
+	if (!token) {
+		auth.signOut();
+		console.log("aaaa");
+		throw new Error("Token does not exist");
 	}
 
+	config.headers.Authorization = `Bearer ${token}`;
 	return config;
 });
 

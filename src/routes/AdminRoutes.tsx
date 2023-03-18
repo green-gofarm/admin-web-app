@@ -96,20 +96,17 @@ function AdminRoutes() {
                 <React.Suspense fallback={<Loader />}>
                     <Routes>
                         <Route element={<AutoSignIn />}>
-                            <Route path="/authentication">
-                                <Route index element={<NoAuth />} />
-
+                            <Route path="/authentication" element={<NoAuth />}>
                                 <Route
                                     path="/authentication/sign-in"
                                     element={<AuthSignIn />}
                                 />
                             </Route>
-
-                            <Route element={<Auth />}>
+                            <Route path="/" element={<Auth />}>
                                 <Route path="/" element={<App />}>
                                     <Route
                                         index
-                                        element={<Navigate to="/dashboard/overview" />}
+                                        element={<Overview />}
                                     />
 
                                     <Route path="/profile" element={<AdminProfile />} />
@@ -118,8 +115,8 @@ function AdminRoutes() {
 
                                     <Route path="/dashboard">
                                         <Route
-                                            index
-                                            element={<Navigate to="/dashboard/overview" />}
+                                            path="/dashboard"
+                                            element={<Overview />}
                                         />
 
                                         <Route
@@ -255,7 +252,8 @@ function AdminRoutes() {
                                     </Route>
                                 </Route>
                             </Route>
-                            <Route path="/" element={<Custompages />}>
+
+                            <Route element={<Custompages />}>
                                 <Route path="*" element={<Error404 />}></Route>
                             </Route>
                         </Route>

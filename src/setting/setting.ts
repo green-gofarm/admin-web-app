@@ -1,22 +1,10 @@
-import { equalIgnoreCase } from "../helpers/stringUtils";
-
-export const ROLES = {
-    ADMIN: "ADMIN",
-    HOST: "HOST",
-    CUSTOMER: "CUSTOMER"
+export enum ROLES {
+    ADMIN = "Quản trị viên",
+    HOST = "Chủ farmstay",
+    CUSTOMER = "Khách du lịch"
 }
 
-export const isAdmin = (role: string) => {
-    return equalIgnoreCase(role, ROLES.ADMIN);
-}
-
-export const isCustomer = (role: string) => {
-    return equalIgnoreCase(role, ROLES.CUSTOMER);
-}
-
-export const isHost = (role: string) => {
-    return equalIgnoreCase(role, ROLES.HOST);
-}
+export const CURRENT_ROLE: ROLES = ROLES.ADMIN;
 
 export const GENDERS = {
     male: "Male",

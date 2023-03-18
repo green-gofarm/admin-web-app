@@ -31,12 +31,6 @@ const getFirebaseToken = async (): Promise<string | null> => {
 		return await currentUser.getIdToken();
 	}
 
-	const hasRememberedAccount = localStorage.getItem('firebaseui::rememberedAccounts');
-
-	if (!hasRememberedAccount) {
-		return null;
-	}
-
 	try {
 		const token = await new Promise<string>((resolve, reject) => {
 			const waitTimer = setTimeout(() => {
@@ -57,7 +51,6 @@ const getFirebaseToken = async (): Promise<string | null> => {
 			});
 		});
 
-		console.log("Get token success: ", token);
 		return token;
 	} catch (error) {
 		console.error('Error getting Firebase token: ', error);

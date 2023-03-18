@@ -23,10 +23,11 @@ function AutoSignIn() {
     const signOut = useCallback(() => {
         dispatch(signOutUser());
         if (!location.pathname.startsWith("/authentication")) {
-            const newPath = location.pathname !== "/"
-                ? `/authentication/sign-in?backUrl=${location.pathname + location.search}`
-                : "/authentication/sign-in";
-            navigate(newPath);
+            if (location.pathname !== "/") {
+                navigate(`/authentication/sign-in?backUrl=${location.pathname + location.search}`);
+            }
+
+            navigate("/authentication/sign-in");
         }
         auth.signOut();
     }, [dispatch, location.pathname, location.search, navigate]);
@@ -34,13 +35,11 @@ function AutoSignIn() {
     useEffect(() => {
         const unregisterAuthObserver = authObject().onAuthStateChanged(async (currentUser) => {
             if (!currentUser) {
-                setLoading(false);
                 signOut();
                 return;
             }
 
             const token = await currentUser.getIdToken();
-            setLoading(false);
 
             if (!token) {
                 signOut();
@@ -48,7 +47,6 @@ function AutoSignIn() {
             }
 
             if (!user) {
-                console.log("2");
                 dispatch(signInAdmin({
                     loading: setLoading,
                     onFailure: (error: any) => {
@@ -60,7 +58,7 @@ function AutoSignIn() {
         });
 
         return () => unregisterAuthObserver();
-    }, [dispatch, signOut, user]);
+    }, [dispatch, signOut, user])
 
     if (loading) {
         return <Loader />

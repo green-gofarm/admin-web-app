@@ -31,7 +31,7 @@ function* signInAdmin(action: IReduxAction): Generator<any, void, any> {
     option?.loading && option.loading(true);
     try {
         const response = yield call(apis.signInAdmin);
-        yield put(actions.signUpHostSuccess(response));
+        yield put(actions.signInSuccess(response));
         option?.onSuccess && option.onSuccess(response);
     } catch (error) {
         console.log(error);
@@ -44,8 +44,6 @@ function* signInAdmin(action: IReduxAction): Generator<any, void, any> {
 function* watchSignIn() {
     yield takeLatest(types.SIGN_IN_ADMIN, signInAdmin);
 }
-
-
 
 function* watchAuth() {
     yield all([

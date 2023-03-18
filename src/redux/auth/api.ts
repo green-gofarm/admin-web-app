@@ -10,7 +10,7 @@ export function signUpHost(token: string) {
             "Content-Type": "application/json"
         },
         data: JSON.stringify({
-            accessToken: token
+            accessToken: `Bearer ${token}`
         })
     }
 

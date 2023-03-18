@@ -3,7 +3,7 @@ import React from "react";
 
 interface IEllipsisWrapper {
     children: React.ReactNode,
-    breakWidth: number,
+    breakWidth?: number,
 }
 
 function EllipsisWrapper({
@@ -26,6 +26,7 @@ function EllipsisWrapper({
             overflow="hidden"
             display="inline-block"
             textOverflow="ellipsis"
+            whiteSpace="nowrap"
         >
             {childrenWithProps}
         </Box>
