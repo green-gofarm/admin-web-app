@@ -7,25 +7,25 @@ export type FaqItemType = {
 }
 
 interface IFaqItem {
-    item: FaqItemType
+    item: FaqItemType,
+    eventKey: string,
 }
 
 function FaqItem({
     item,
+    eventKey,
 }: IFaqItem) {
     return (
-        <Accordion className='overflow-hidden card'>
-            <Accordion.Item eventKey="0">
-                <Accordion.Header className='accordion-toggle font-weight-semibold tx-12 panel-heading2'>
-                    {item?.question ?? "-"}
-                </Accordion.Header>
-                <Accordion.Body id="collapseFour1" className="panel-body">
-                    <p className="text-muted tx-14">
-                        {item?.answer ?? "-"}
-                    </p>
-                </Accordion.Body>
-            </Accordion.Item>
-        </Accordion>
+        <Accordion.Item eventKey={eventKey}>
+            <Accordion.Header className='font-weight-semibold'>
+                {item?.question ?? "-"}
+            </Accordion.Header>
+            <Accordion.Body>
+                <p className="text-muted tx-14">
+                    {item?.answer ?? "-"}
+                </p>
+            </Accordion.Body>
+        </Accordion.Item>
     )
 }
 

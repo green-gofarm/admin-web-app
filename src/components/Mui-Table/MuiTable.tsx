@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { ReactNode, useEffect, useState } from "react";
 
 import makeStyles from '@mui/styles/makeStyles';
 import Box from "@mui/material/Box";
@@ -26,6 +26,7 @@ interface ITable {
     loadingData?: boolean,
     noPaging?: boolean,
     noPanel?: boolean,
+    filter?: ReactNode,
     fixedColumns?: {
         left?: number,
         right?: number
@@ -40,6 +41,7 @@ const MuiTables = ({
     loadingData,
     noPaging,
     noPanel,
+    filter,
     fixedColumns = {
         left: 0,
         right: 0
@@ -81,6 +83,9 @@ const MuiTables = ({
                         panel={panel}
                     />
                 }
+                <ReactBootstrapCard.Header className="border-bottom-0 d-flex pb-0">
+                    {filter ?? null}
+                </ReactBootstrapCard.Header>
                 <ReactBootstrapCard.Body>
                     <Box position="relative">
                         <TableContainer>

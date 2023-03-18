@@ -18,18 +18,7 @@ export function signUpHost(token: string) {
     return axiosRequest(url, option);
 }
 
-export function signIn(token: string) {
-
-    const option: AxiosRequestConfig = {
-        method: METHOD.POST,
-        headers: {
-            "Content-Type": "application/json"
-        },
-        data: JSON.stringify({
-            accessToken: token
-        })
-    }
-
-    const url = `${ENP.SIGN_UP}/host`;
-    return axiosRequest(url, option);
+export function signInAdmin() {
+    const url = `${ENP.ADMIN}/my-profile`;
+    return axiosRequest(url);
 }

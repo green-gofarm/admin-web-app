@@ -1730,6 +1730,15 @@
   dependencies:
     tslib "^2.1.0"
 
+"@fullcalendar/core@^5.11.3":
+  version "5.11.4"
+  resolved "https://registry.yarnpkg.com/@fullcalendar/core/-/core-5.11.4.tgz#1ea0e3f8bee45d0c8dc82f9b018b8c074263cbd0"
+  integrity sha512-p1/GRIageomlyJpsMVi+Ig5TNo9t2sEYsLHe6zvtCLtpXK/l03veZukYyM/jou8VzT0VJp1f7yN8irc5VBgqxw==
+  dependencies:
+    "@fullcalendar/common" "~5.11.4"
+    preact "^10.0.5"
+    tslib "^2.1.0"
+
 "@fullcalendar/daygrid@^5.11.3", "@fullcalendar/daygrid@~5.11.4":
   version "5.11.4"
   resolved "https://registry.yarnpkg.com/@fullcalendar/daygrid/-/daygrid-5.11.4.tgz#8a9f0863bb3fa8c0bc0118020cdb63fbe966aa94"
@@ -10878,6 +10887,11 @@ postcss@^8.0.9, postcss@^8.1.10, postcss@^8.3.5, postcss@^8.4.19, postcss@^8.4.4
     picocolors "^1.0.0"
     source-map-js "^1.0.2"
 
+preact@^10.0.5:
+  version "10.13.1"
+  resolved "https://registry.yarnpkg.com/preact/-/preact-10.13.1.tgz#d220bd8771b8fa197680d4917f3cefc5eed88720"
+  integrity sha512-KyoXVDU5OqTpG9LXlB3+y639JAGzl8JSBXLn1J9HTSB3gbKcuInga7bZnXLlxmK94ntTs1EFeZp0lrja2AuBYQ==
+
 prefix-style@2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/prefix-style/-/prefix-style-2.0.1.tgz#66bba9a870cfda308a5dc20e85e9120932c95a06"
@@ -11556,7 +11570,7 @@ react-tag-input-component@^1.1.1:
   dependencies:
     goober "^2.1.10"
 
-react-toastify@^9.0.8:
+react-toastify@^9.1.1:
   version "9.1.1"
   resolved "https://registry.yarnpkg.com/react-toastify/-/react-toastify-9.1.1.tgz#9280caea4a13dc1739c350d90660a630807bf10b"
   integrity sha512-pkFCla1z3ve045qvjEmn2xOJOy4ZciwRXm1oMPULVkELi5aJdHCN/FHnuqXq8IwGDLB7PPk2/J6uP9D8ejuiRw==

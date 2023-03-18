@@ -81,7 +81,7 @@ const tabOptions: NavigationItem[] = [
         eventKey: TAB_KEYS.Feedback
     },
     {
-        label: "Đơn hàng",
+        label: "Lịch sử đơn hàng",
         eventKey: TAB_KEYS.OrderHistory
     },
 ]
@@ -139,7 +139,7 @@ function FarmstayDetail() {
                 <Grid item xs={12}>
                     <FarmstayDetailHeader detail={detail} />
                     <div className="profile-tab tab-menu-heading">
-                        <Tab.Container id="left-tabs-example" defaultActiveKey="About">
+                        <Tab.Container defaultActiveKey="About">
                             <Grid
                                 container
                                 spacing={2}
@@ -165,13 +165,12 @@ function FarmstayDetail() {
                                         <TabPaneContentBody eventKey={TAB_KEYS.Policies}>
                                             <PolicyTab />
                                         </TabPaneContentBody>
-                                        <TabPaneContentBody eventKey={TAB_KEYS.FAQ}>
+                                        <Tab.Pane eventKey={TAB_KEYS.FAQ}>
                                             <FAQTab />
-                                        </TabPaneContentBody>
-                                        <TabPaneContentBody eventKey={TAB_KEYS.OrderHistory}>
+                                        </Tab.Pane>
+                                        <Tab.Pane eventKey={TAB_KEYS.OrderHistory}>
                                             <OrderHistoryTab />
-                                        </TabPaneContentBody>
-
+                                        </Tab.Pane>
                                         <Tab.Pane eventKey={TAB_KEYS.Feedback}>
                                             <FeedbackTab />
                                         </Tab.Pane>

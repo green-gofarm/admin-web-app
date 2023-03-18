@@ -10,11 +10,15 @@ import { convertToMoney, createCodeString } from "../../../../helpers/stringUtil
 import { formatTimeString } from "../../../../helpers/dateUtils";
 import { findOrderStatus } from "../../../../setting/order-setting";
 import CancelOrder from "./action/CancelOrder";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const dataObject = JSON.parse(JSON.stringify(json));
 const data = dataObject.data;
 
 export default function OrderTable() {
+
+    const navigate = useNavigate();
+    const location = useLocation();
 
     const [openCancel, setOpenCancel] = useState<boolean>(false);
     const [selectedOrder, setSelectedOrder] = useState<any>(null);
@@ -71,7 +75,9 @@ export default function OrderTable() {
                     columnGap="8px"
                     fontSize="13px"
                 >
-                    <ViewIconAction />
+                    <ViewIconAction
+                        onClick={() => navigate(`/management/order/${row.id}?backUrl=${location.pathname + location.search}`)}
+                    />
                     <InactivateIconAction
                         title="Hủy"
                         onClick={() => {
@@ -82,7 +88,7 @@ export default function OrderTable() {
                 </Box>
             )
         },
-    ], []);
+    ], [location, navigate]);
 
     const handleCloseCancel = useCallback(() => setOpenCancel(false), []);
 

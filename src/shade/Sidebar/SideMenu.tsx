@@ -103,7 +103,7 @@ export const MENUITEMS = [
       },
       {
         path: "/management/order",
-        title: "Đơn đặt tour",
+        title: "Đơn hàng",
         type: "link",
         active: false,
         selected: false,

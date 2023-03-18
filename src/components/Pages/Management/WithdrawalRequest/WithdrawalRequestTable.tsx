@@ -6,18 +6,21 @@ import MuiTables from "../../../Mui-Table/MuiTable";
 import AvatarWrapper from "../../../General/Wrapper/AvatarWrapper";
 import { WITHDRAWAL_REQUEST_STATUSES, findWithdrawalRequestStatus } from "../../../../setting/withdrawl-request-setting";
 import { convertToMoney, createCodeString } from "../../../../helpers/stringUtils";
-import TooltipIconAction from "../../../General/Icon/TooltipIconAction";
 
 //Mui icon
-import GradingIcon from '@mui/icons-material/Grading';
 import { formatTimeString, getTimeAgoString } from "../../../../helpers/dateUtils";
 import ViewIconAction from "../../../General/Action/IconAction/ViewIconAction";
+import ApproveIconAction from "../../../General/Action/IconAction/ApproveIconAction";
+import RejectIconAction from "../../../General/Action/IconAction/RejectIconAction";
+import useBackUrl from "../../../../hooks/useBackUrl";
 
 const dataObject = JSON.parse(JSON.stringify(json));
 const data = dataObject.data;
 
 
 export default function WithdrawalRequestTable() {
+
+    const { handleNavigateWithBackUrl } = useBackUrl();
 
     const columns = useMemo(() => [
         {
@@ -71,17 +74,20 @@ export default function WithdrawalRequestTable() {
                     alignItems="center"
                     columnGap="8px"
                 >
+                    <ViewIconAction
+                        onClick={() => handleNavigateWithBackUrl(`/management/withdrawal-request/${row.id}`)}
+                    />
                     {row.status === WITHDRAWAL_REQUEST_STATUSES.PENDING
-                        ? <TooltipIconAction
-                            title="Phê duyệt"
-                            Icon={GradingIcon}
-                        />
-                        : <ViewIconAction />
+                        ? <>
+                            <ApproveIconAction />
+                            <RejectIconAction />
+                        </>
+                        : null
                     }
                 </Box>
             )
         },
-    ], []);
+    ], [handleNavigateWithBackUrl]);
 
     return (
         <>

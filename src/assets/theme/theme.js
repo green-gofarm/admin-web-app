@@ -26,6 +26,11 @@ const theme = createTheme(adaptV4Theme({
         },
     },
     overrides: {
+        MuiDivider: {
+            root: {
+                borderColor: "#f0f0f8"
+            }
+        },
         MuiDialogContent: {
             root: {
                 padding: "1rem"

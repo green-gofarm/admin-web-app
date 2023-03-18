@@ -22,12 +22,14 @@ function FeedbackItem({
                     className="media-image avatar avatar-md rounded-circle"
                     alt="64x64"
                     src={"https://ui-avatars.com/api/?name=Le+Danh+Trong"}
+                    width="128px"
+                    height="128px"
                 />
             </div>
             <div className="media-body">
                 <h5 className="mt-0 mb-1 font-weight-semibold tx-16">
                     {item?.user?.name}
-                    <span
+                    {/* <span
                         className="fs-14 ms-0"
                         data-bs-toggle="tooltip"
                         data-placement="top"
@@ -35,7 +37,7 @@ function FeedbackItem({
                         data-bs-original-title="verified"
                     >
                         <i className="fa fa-check-circle text-success"></i>
-                    </span>
+                    </span> */}
                 </h5>
                 <span className="text-muted tx-13">{formatTimeString(item?.createdDate)}</span>
                 <div className="text-warning mt-1">
@@ -49,17 +51,17 @@ function FeedbackItem({
                 <p className="font-13  mb-2 mt-2">
                     {item?.comment}
                 </p>
-                <p className="mb-1">
-                    <span className="float-end">
-                        <Link to="#" className="new ms-3">
-                            <ReplyIcon />
-                        </Link>
-                        <Link to="#" className="new ms-3 mt-6">
-                            <FlagIcon />
-                        </Link>
-                    </span>
-                </p>
             </div>
+            <p className="mb-1">
+                <span className="float-end">
+                    <Link to="#" className="new ms-3">
+                        <ReplyIcon />
+                    </Link>
+                    <Link to="#" className="new ms-3 mt-6">
+                        <FlagIcon />
+                    </Link>
+                </span>
+            </p>
         </div>
     )
 }

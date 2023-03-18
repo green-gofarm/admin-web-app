@@ -19,6 +19,7 @@ const firebaseApp = firebase.initializeApp(firebaseConfig);
 
 const db = firebaseApp.firestore();
 const auth = firebase.auth();
+const authObject = firebase.auth;
 const GoogleAuthProvider = firebase.auth.GoogleAuthProvider;
 const messaging = firebase.messaging();
 
@@ -67,6 +68,7 @@ const getFirebaseToken = async (): Promise<string | null> => {
 export {
 	db,
 	auth,
+	authObject,
 	messaging,
 	getFirebaseToken,
 	GoogleAuthProvider

@@ -3,6 +3,7 @@
         {
             "id": 1,
             "customerId": 111,
+            "farmstay": 1,
             "totalPrice": 1000000,
             "reimbursement": 200000,
             "status": 1,
@@ -33,6 +34,7 @@
         {
             "id": 2,
             "customerId": 112,
+            "farmstay": 1,
             "totalPrice": 500000,
             "reimbursement": 100000,
             "status": 2,
@@ -63,6 +65,7 @@
         {
             "id": 3,
             "customerId": 113,
+            "farmstay": 1,
             "totalPrice": 750000,
             "reimbursement": 150000,
             "status": 3,
@@ -93,6 +96,7 @@
         {
             "id": 4,
             "customerId": 114,
+            "farmstay": 1,
             "totalPrice": 1200000,
             "reimbursement": 240000,
             "status": 4,
@@ -123,6 +127,7 @@
         {
             "id": 5,
             "customerId": 115,
+            "farmstay": 1,
             "totalPrice": 2000000,
             "reimbursement": 400000,
             "status": 5,
@@ -153,6 +158,7 @@
         {
             "id": 6,
             "customerId": 116,
+            "farmstay": 1,
             "totalPrice": 2000000,
             "reimbursement": 400000,
             "status": 6,

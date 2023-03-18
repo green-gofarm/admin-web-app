@@ -16,3 +16,9 @@ export interface IReduxAction {
     type: string,
     payload?: any
 }
+
+export interface RootState {
+    auth: {
+        user: any
+    };
+}

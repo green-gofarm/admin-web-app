@@ -6,7 +6,7 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 interface _ITitle {
     backUrl: string,
     title: string,
-    code: string,
+    code?: string,
 }
 
 function DetailPageHeaderTitle({
@@ -38,9 +38,12 @@ function DetailPageHeaderTitle({
                 gap="4px"
             >
                 {title}
-                <span className="tag tag-rounded">
-                    {code}
-                </span>
+                {code
+                    ? <span className="tag tag-rounded">
+                        {code}
+                    </span>
+                    : null
+                }
             </Box>
         </Box>
     )

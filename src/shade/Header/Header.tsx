@@ -84,18 +84,22 @@ export default function Header() {
             </Link>
           </div>
           <div className="logo-horizontal">
-            <Link to="/" className="header-logo">
-              <img
-                src={require("../../assets/img/brand/logo.png")}
-                className="mobile-logo logo-1"
-                alt="logo"
-              />
-              <img
-                src={require("../../assets/img/brand/logo-white.png")}
-                className="mobile-logo dark-logo-1"
-                alt="logo"
-              />
-            </Link>
+            <Box
+              component="img"
+              src={require("../../assets/img/brand/logo.png")}
+              className="mobile-logo logo-1"
+              alt="logo"
+              sx={{ maxHeight: "36px" }}
+            />
+            <Box
+              component="img"
+              src={require("../../assets/img/brand/logo-white.png")}
+              className="mobile-logo dark-logo-1"
+              alt="logo"
+              sx={{
+                maxHeight: "36px"
+              }}
+            />
           </div>
         </div>
         <div className="main-header-right">

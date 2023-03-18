@@ -1,6 +1,7 @@
 import React from 'react'
 import FaqItem, { FaqItemType } from '../ui-segment/FaqItem'
-import { Grid } from '@mui/material';
+// import { Grid } from '@mui/material';
+import { Accordion } from 'react-bootstrap';
 
 const data: FaqItemType[] = [
     {
@@ -32,14 +33,12 @@ const data: FaqItemType[] = [
 
 function FAQTab() {
     return (
-        <div className="panel-group2" id="accordion11" role="tablist">
-            <Grid container spacing={2}>
+        <div>
+            <Accordion defaultActiveKey="0">
                 {data.map((item, index) =>
-                    <Grid key={index} item xs={12}>
-                        <FaqItem item={item} />
-                    </Grid>
+                    <FaqItem key={index} item={item} eventKey={index + ""} />
                 )}
-            </Grid>
+            </Accordion>
         </div>
     )
 }

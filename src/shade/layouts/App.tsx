@@ -1,11 +1,11 @@
-import React, { Fragment } from "react";
+import { Fragment, useEffect } from "react";
 import Header from "../Header/Header";
 import Sidebar from "../Sidebar/Sidebar";
 import Footer from "../Footer/Footer";
 import Switcher from "../Switcher/Switcher";
-// import RightSidebar from "../RightSidebar/RightSidebar";
 import { Outlet } from "react-router-dom";
 import TabToTop from "../TabToTop/TabToTop";
+import { HorizontalHoverMenu } from "../../data/Switcherdata/Switcherdata";
 
 export default function App() {
   //The created store
@@ -35,6 +35,11 @@ export default function App() {
   var gone = window.matchMedia("(max-width: 1024px)")
   Sidebargone(gone) // Call listener function at run time
   gone.addListener(Sidebargone)
+
+  useEffect(() => {
+    HorizontalHoverMenu();
+  }, []);
+
   return (
     <Fragment>
 

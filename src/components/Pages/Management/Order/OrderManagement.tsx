@@ -11,7 +11,7 @@ const breadcrumb: Array<IBreadcrumbItem> = [
         href: "/management"
     },
     {
-        text: "Đơn đặt tour",
+        text: "Đơn hàng",
         active: true,
         props: {
             "aria-current": "page"
@@ -41,7 +41,7 @@ const OrderManagement = () => {
     return (
         <Box marginBottom="1.3rem">
             <PageHeader
-                title="Đơn đặt tour"
+                title="Đơn hàng"
                 breadcrumb={breadcrumb}
             />
 

@@ -1,33 +1,41 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { Link, useNavigate } from "react-router-dom";
 // import { auth } from '../Firebase/firebase';
 import { Box } from '@mui/material';
-import { GoogleAuthProvider, auth, getFirebaseToken } from '../Firebase/firebase';
-import GoogleButton from './google-button/GoogleButton';
+import { GoogleAuthProvider, auth, getFirebaseToken } from '../../Firebase/firebase';
+import GoogleButton from '../google-button/GoogleButton';
 import { useDispatch } from 'react-redux';
-import { signUpHost } from '../redux/auth/action';
+import { signInAdmin } from '../../redux/auth/action';
+import { toast } from 'react-toastify';
+import WithAuthBackDropLoader from '../../components/General/WithAuthBackDropLoader';
 
 const SignIn = () => {
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
+    // State
+    const [loadingSignIn, setLoadingSignIn] = useState(false);
+
     const handleSignIn = async () => {
         try {
             const provider = new GoogleAuthProvider();
             await auth.signInWithPopup(provider);
             const token = await getFirebaseToken();
-            console.log(token);
+
             if (token) {
-                dispatch(signUpHost(token, {
-                    onSuccess: (data: any) => {
-                        console.log(data);
+                dispatch(signInAdmin({
+                    loading: setLoadingSignIn,
+                    onSuccess: (response: any) => {
+                        console.log(response)
+                        navigate("/");
                     },
                     onFailure: (error: any) => {
                         console.log(error);
+                        toast.error("Đăng nhập thất bại");
                     }
-                }))
+                }));
             }
         } catch (error) {
             console.error('Error signing in with Google:', error);
@@ -36,6 +44,9 @@ const SignIn = () => {
 
     return (
         <React.Fragment>
+            <WithAuthBackDropLoader
+                open={loadingSignIn}
+            />
             <div className="square-box"> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> </div>
             <div className="page bg-primary">
                 <div className="page-single">
@@ -55,7 +66,7 @@ const SignIn = () => {
                                             <div className="d-flex mb-4">
                                                 <Link to="#">
                                                     <img
-                                                        src={require("../assets/img/brand/favicon.png")}
+                                                        src={require("../../assets/img/brand/favicon.png")}
                                                         className="sign-favicon ht-40"
                                                         alt="logo"
                                                     />

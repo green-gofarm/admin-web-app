@@ -3,6 +3,7 @@ import { Table } from 'react-bootstrap'
 import IconLabelDetail from '../../../../../General/Item/IconLabelDetail';
 import AvatarWrapper from '../../../../../General/Wrapper/AvatarWrapper';
 import { MapContainer, TileLayer } from "react-leaflet";
+import { Link, useLocation } from 'react-router-dom';
 
 interface IBasicInfo {
     detail: any,
@@ -12,17 +13,20 @@ function PreviewBasicInfoTab({
     detail
 }: IBasicInfo) {
 
+    const location = useLocation();
     const position: any = [10.797056, 106.659840];
-
 
     return (
         <div className="tab-pane " id="tab5">
             <h5 className="mb-3 mt-1 fw-semibold">Thông tin cơ bản:</h5>
             <IconLabelDetail
+                className="mb-4"
                 icon={<i className="fa fa-user me-2"></i>}
                 label="Chủ sở hửu:"
                 value={
                     <Box
+                        component={Link}
+                        to={`/management/account/host/${detail?.host?.userId}?backUrl=${location.pathname + location.search}`}
                         display="flex"
                         alignItems="center"
                         gap="8px"
@@ -39,7 +43,6 @@ function PreviewBasicInfoTab({
                         {detail?.host.name}
                     </Box>
                 }
-                className="mb-4"
             />
             <IconLabelDetail
                 icon={<i className="fa fa-location-arrow me-2"></i>}

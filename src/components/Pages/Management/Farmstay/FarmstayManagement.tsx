@@ -87,7 +87,6 @@ const FarmstayManagement = () => {
                 breadcrumb={breadcrumb}
             />
 
-            {/* <!-- Row --> */}
             <Box
                 component={Grid}
                 container

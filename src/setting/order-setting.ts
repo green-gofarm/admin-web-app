@@ -29,7 +29,7 @@ export const LIST_ORDER_STATUS = [
         bgColor: STATUS_COLORS.ACTIVE.bgColor
     },
     {
-        label: "Bị từ chối",
+        label: "Đã từ chối",
         value: ORDER_STATUSES.REJECTED,
         textColor: STATUS_COLORS.CANCELED.textColor,
         bgColor: STATUS_COLORS.CANCELED.bgColor

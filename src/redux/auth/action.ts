@@ -16,13 +16,17 @@ export const signUpHostSuccess = (data: any): IReduxAction => ({
     payload: data
 })
 
-export const signIn = (token: string, option?: IReduxActionOption): IReduxAction => ({
-    type: type.SIGN_IN,
-    payload: { token, option: option ?? getEmptyOption() }
+export const signInAdmin = (option?: IReduxActionOption): IReduxAction => ({
+    type: type.SIGN_IN_ADMIN,
+    payload: { option: option ?? getEmptyOption() }
 })
 
 
 export const signInSuccess = (data: any): IReduxAction => ({
     type: type.SIGN_IN_SUCCESS,
     payload: data
+})
+
+export const signOutUser = (): IReduxAction => ({
+    type: type.SIGN_OUT_USER,
 })

@@ -20,5 +20,6 @@ export const DOMAIN = `${ENV_DOMAIN}/v1`;
 // Endpoint
 export const ENP = {
     SIGN_UP: `${DOMAIN}/register`,
-    SIGN_IN: `${DOMAIN}/myprofile`
+    ADMIN: `${DOMAIN}/admin`,
+    HOST: `${DOMAIN}/host`
 }

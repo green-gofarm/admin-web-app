@@ -16,6 +16,8 @@ export const authReducer = (state = initialState, action: IReduxAction) => {
             return { ...state, user: action.payload };
         case type.SIGN_IN_SUCCESS:
             return { ...state, user: action.payload };
+        case type.SIGN_OUT_USER:
+            return { ...state, user: null };
         default:
             return state
     }

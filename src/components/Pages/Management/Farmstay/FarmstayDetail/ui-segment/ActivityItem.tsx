@@ -1,67 +1,81 @@
-import { Box, Grid } from '@mui/material'
+import { Box, Grid, Typography } from '@mui/material'
 import { Card } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
-import VisibilityIcon from '@mui/icons-material/Visibility';
+import makeStyles from '@mui/styles/makeStyles/makeStyles';
+import { convertToMoney } from '../../../../../../helpers/stringUtils';
+import { Status } from '../../../../../../setting/Status';
+import { findActivityStatus } from '../../../../../../setting/activity-status-setting';
+import { useLocation, useNavigate } from 'react-router-dom';
 
+const useStylesEllipsis = makeStyles({
+    multiLineEllipsis: {
+        overflow: "hidden",
+        textOverflow: "ellipsis",
+        display: "-webkit-box",
+        "-webkit-line-clamp": 2,
+        "-webkit-box-orient": "vertical",
+        fontSize: "13px"
+    }
+});
 interface IActivityItem {
     item: any
 }
 
 function ActivityItem({ item }: IActivityItem) {
+    const classes = useStylesEllipsis();
+    const navigate = useNavigate();
+    const location = useLocation();
+
     return (
         <Card className="custom-card customs-cards">
-            <Card.Body className=" d-md-flex bg-white">
-                <div className="">
-                    <span className="pos-relative">
-                        <Box
-                            component="img"
-                            className="br-5 "
-                            src={require("../../../../../../assets/img/png/fishing.jpg")}
-                            alt="Activity img"
-                            sx={{
-                                position: "relative",
-                                width: "80px",
-                                height: "80px",
-                                backgroundPosition: "center",
-                                backgroundSize: "cover",
-                                backgroundRepeat: "no-repeat"
-                            }}
-                        />
-                        <span className="bg-success text-white wd-1 ht-1 rounded-pill profile-online"></span>
-                    </span>
-                </div>
-                <Box className="prof-details" margin="0 0 4px 24px">
-                    <Grid container spacing={0}>
-                        <Grid item xs={12}>
-                            <h4 className="font-weight-semibold">
+            <Card.Body className="d-md-flex bg-white">
+                <Box
+                    minWidth="fit-content"
+                >
+                    <Box
+                        component="img"
+                        className="br-5 "
+                        src={require("../../../../../../assets/img/png/fishing.jpg")}
+                        alt="Activity img"
+                        sx={{
+                            position: "relative",
+                            height: "140px",
+                            backgroundPosition: "center",
+                            backgroundSize: "cover",
+                            backgroundRepeat: "no-repeat"
+                        }}
+                    />
+                </Box>
+                <Box margin="0 0 4px 24px">
+                    <Grid container spacing={1}>
+                        <Grid item xs={8}>
+                            <h5 className="font-weight-semibold">
                                 {item?.name}
-                            </h4>
+                            </h5>
                         </Grid>
-                        <Grid item xs={12} lg={6}>
+                        <Grid item xs={4}>
+                            <Box
+                                width="100%"
+                                textAlign="right"
+                                className="font-weight-semibold"
+                            >
+                                {convertToMoney(item?.defaultPrice)}
+                            </Box>
+                        </Grid>
+                        <Grid item xs={8}>
+                            <Typography className={classes.multiLineEllipsis}>
+                                {item?.description}
+                            </Typography>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Status statusObject={findActivityStatus(item?.status)} />
+                        </Grid>
 
-                        </Grid>
-                        <Grid item xs={12} lg={6}>
-                            {/* <IconLabelDetail
-                                icon={<i className="fa fa-location-arrow me-2"></i>}
-                                label="Địa chỉ:"
-                                value={detail?.address}
-                            />
-                            <IconLabelDetail
-                                icon={<i className="fa fa-phone me-2"></i>}
-                                label="Liên hệ"
-                                value={detail?.contactInformation}
-                            /> */}
-                        </Grid>
                         <Grid item xs={12}>
                             <Box
-                                display="flex"
-                                gap="8px"
-                                height="42px"
-                                className="ms-md-4 ms-0 mb-2"
+                                className="btn btn-primary shadow"
+                                onClick={() => navigate(`/management/farmstay/all/${item?.farmstayId}/activity/${item?.id}?backUrl=${location.pathname + location.search}`)}
                             >
-                                <Link to="#" className="new ms-3">
-                                    <VisibilityIcon />
-                                </Link>
+                                Xem chi tiết
                             </Box>
                         </Grid>
                     </Grid>

@@ -162,3 +162,10 @@ export const getTimeAgoString = (date?: string, withoutSuffix = false) => {
     }
     return moment(date).fromNow(withoutSuffix);
 }
+
+
+export const convertISOToNaturalFormat = (isoDateString?: string) => {
+    if (!isValidDate(isoDateString)) return isoDateString;
+    const formattedDate = moment(isoDateString).format("Do MMMM YYYY");
+    return formattedDate;
+}
