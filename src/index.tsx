@@ -9,6 +9,7 @@ import AdminRoutes from './routes/AdminRoutes';
 import "./index.scss";
 import { CURRENT_ROLE, ROLES } from './setting/setting';
 import HostRoutes from './routes/HostRoutes';
+import Toastify from './components/General/Toastify';
 
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement
@@ -19,6 +20,7 @@ root.render(
         <Provider store={store}>
             <StyledEngineProvider injectFirst>
                 <ThemeProvider theme={theme}>
+                    <Toastify />
                     {CURRENT_ROLE === ROLES.ADMIN
                         ? <AdminRoutes />
                         : null

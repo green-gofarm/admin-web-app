@@ -1,20 +1,44 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Col, Row } from 'react-bootstrap';
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 // import { auth } from '../Firebase/firebase';
 import { Box } from '@mui/material';
-import { GoogleAuthProvider, auth } from '../../Firebase/firebase';
+import { GoogleAuthProvider, auth, getFirebaseToken } from '../../Firebase/firebase';
 import GoogleButton from '../google-button/GoogleButton';
+import { useDispatch } from 'react-redux';
+import { signInAdmin } from '../../redux/auth/action';
 import { toast } from 'react-toastify';
+import WithAuthBackDropLoader from '../../components/General/WithAuthBackDropLoader';
 
 const SignIn = () => {
 
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const [searchParams] = useSearchParams();
+
     // State
+    const [loadingSignIn, setLoadingSignIn] = useState(false);
+
     const handleSignIn = async () => {
         try {
             const provider = new GoogleAuthProvider();
             await auth.signInWithPopup(provider);
-            toast.success("Đăng nhập thành công");
+            const token = await getFirebaseToken();
+
+            if (token) {
+                dispatch(signInAdmin({
+                    loading: setLoadingSignIn,
+                    onSuccess: (response: any) => {
+                        toast.success("Đăng nhập thành công");
+                        const path = searchParams.get("backUrl") ?? "/";
+                        navigate(path);
+                    },
+                    onFailure: (error: any) => {
+                        console.log(error);
+                        toast.error("Đăng nhập thất bại");
+                    }
+                }));
+            }
         } catch (error) {
             console.error('Error signing in with Google:', error);
         }
@@ -22,6 +46,9 @@ const SignIn = () => {
 
     return (
         <React.Fragment>
+            <WithAuthBackDropLoader
+                open={loadingSignIn}
+            />
             <div className="square-box"> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> </div>
             <div className="page bg-primary">
                 <div className="page-single">

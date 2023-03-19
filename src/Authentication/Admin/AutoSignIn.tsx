@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { auth, authObject } from '../../Firebase/firebase';
+import { auth, authObject, getFirebaseToken } from '../../Firebase/firebase';
 import { useDispatch } from 'react-redux';
 import { signInAdmin, signOutUser } from '../../redux/auth/action';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
@@ -46,21 +46,28 @@ function AutoSignIn() {
                 signOut();
                 return;
             }
-
-            if (!user) {
-                console.log("2");
-                dispatch(signInAdmin({
-                    loading: setLoading,
-                    onFailure: (error: any) => {
-                        signOut();
-                        toast.error("Không thể lấy thông tin tài khoản. Vui lòng đăng nhập lại");
-                    }
-                }));
-            }
         });
 
         return () => unregisterAuthObserver();
     }, [dispatch, signOut, user]);
+
+    useEffect(() => {
+        async function signIn() {
+            const token = await getFirebaseToken();
+
+            if (token && !user) {
+                dispatch(signInAdmin({
+                    loading: setLoading,
+                    onFailure: (error: any) => {
+                        toast.error("Không thể lấy thông tin tài khoản. Vui lòng đăng nhập lại");
+                    }
+                }));
+            }
+        }
+
+        signIn();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [user]);
 
     if (loading) {
         return <Loader />

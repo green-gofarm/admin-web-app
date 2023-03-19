@@ -22,3 +22,8 @@ export function signInAdmin() {
     const url = `${ENP.ADMIN}/my-profile`;
     return axiosRequest(url);
 }
+
+export function signInHost() {
+    const url = `${ENP.HOST}/my-profile`;
+    return axiosRequest(url);
+}

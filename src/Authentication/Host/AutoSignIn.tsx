@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { auth, authObject } from '../../Firebase/firebase';
+import { auth, authObject, getFirebaseToken } from '../../Firebase/firebase';
 import { useDispatch } from 'react-redux';
 import { signInAdmin, signOutUser } from '../../redux/auth/action';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
@@ -23,11 +23,10 @@ function AutoSignIn() {
     const signOut = useCallback(() => {
         dispatch(signOutUser());
         if (!location.pathname.startsWith("/authentication")) {
-            if (location.pathname !== "/") {
-                navigate(`/authentication/sign-in?backUrl=${location.pathname + location.search}`);
-            }
-
-            navigate("/authentication/sign-in");
+            const newPath = location.pathname !== "/"
+                ? `/authentication/sign-in?backUrl=${location.pathname + location.search}`
+                : "/authentication/sign-in";
+            navigate(newPath);
         }
         auth.signOut();
     }, [dispatch, location.pathname, location.search, navigate]);
@@ -35,30 +34,40 @@ function AutoSignIn() {
     useEffect(() => {
         const unregisterAuthObserver = authObject().onAuthStateChanged(async (currentUser) => {
             if (!currentUser) {
+                setLoading(false);
                 signOut();
                 return;
             }
 
             const token = await currentUser.getIdToken();
+            setLoading(false);
 
             if (!token) {
                 signOut();
                 return;
             }
+        });
 
-            if (!user) {
+        return () => unregisterAuthObserver();
+    }, [dispatch, signOut, user]);
+
+    useEffect(() => {
+        async function signIn() {
+            const token = await getFirebaseToken();
+
+            if (token && !user) {
                 dispatch(signInAdmin({
                     loading: setLoading,
                     onFailure: (error: any) => {
-                        signOut();
                         toast.error("Không thể lấy thông tin tài khoản. Vui lòng đăng nhập lại");
                     }
                 }));
             }
-        });
+        }
 
-        return () => unregisterAuthObserver();
-    }, [dispatch, signOut, user])
+        signIn();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [user]);
 
     if (loading) {
         return <Loader />
