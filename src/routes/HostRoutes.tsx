@@ -1,32 +1,34 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import React from "react";
 import Loader from "../shade/Loaders/Loaders";
 import NoAuth from "../Authentication/Host/NoAuth";
 import Auth from "../Authentication/Host/Auth";
 import AutoSignIn from "../Authentication/Host/AutoSignIn";
 
-//Auth
+// Auth
 const AuthSignIn = React.lazy(() => import("../Authentication/Host/SignIn"));
 const AuthSignUp = React.lazy(() => import("../Authentication/Host/SignUp"))
 
 // Profile
 const AdminProfile = React.lazy(() => import("../components/Pages/Profile/AdminProfile"));
 
-//Notification
+// Notification
 const AdminNotifications = React.lazy(() => import("../components/Pages/Notifications/AdminNotifications"));
 
-//App pages
+// App pages
 const App = React.lazy(() => import("../shade/layouts/App"));
-const Overview = React.lazy(() =>
-    import("../components/Pages/Dashboard/overview/Overview")
-);
+const BookingRequestManagement = React.lazy(() => import("../components/Pages/Host/BookingRequest/BookingRequestManagement"));
+const FarmstayManagement = React.lazy(() => import("../components/Pages/Host/Farmstay/FarmstayManagement"));
+const WithdrawalRequestManagement = React.lazy(() => import("../components/Pages/Host/WithdrawalRequest//WithdrawalRequestManagement"));
+
+// Detail
+const BookingRequestDetail = React.lazy(() => import("../components/Pages/Host/BookingRequest/BookingRequestDetail"));
+const WithdrawalRequestDetail = React.lazy(() => import("../components/Pages/Host/WithdrawalRequest/WithdrawalRequestDetail"));
 
 // Error pages
 const Custompages = React.lazy(() => import("../shade/layouts/custompages"));
 
-const Error404 = React.lazy(() =>
-    import("../components/Pages/Authentication/404Error/404Error")
-);
+const Error404 = React.lazy(() => import("../components/Pages/Authentication/404Error/404Error"));
 
 function HostRoutes() {
     return (
@@ -49,24 +51,41 @@ function HostRoutes() {
                                 <Route path="/" element={<App />}>
                                     <Route
                                         index
-                                        element={<Overview />}
+                                        element={<Navigate to="/management/farmstay" />}
                                     />
+
+                                    <Route path="/management/farmstay">
+                                        <Route
+                                            index
+                                            element={<FarmstayManagement />}
+                                        />
+                                    </Route>
+
+                                    <Route path="/management/booking-request">
+                                        <Route
+                                            index
+                                            element={<BookingRequestManagement />}
+                                        />
+                                        <Route
+                                            path="/management/booking-request/:id"
+                                            element={<BookingRequestDetail />}
+                                        />
+                                    </Route>
+
+                                    <Route path="/management/withdrawal-request">
+                                        <Route
+                                            index
+                                            element={<WithdrawalRequestManagement />}
+                                        />
+                                        <Route
+                                            path="/management/withdrawal-request/:id"
+                                            element={<WithdrawalRequestDetail />}
+                                        />
+                                    </Route>
 
                                     <Route path="/profile" element={<AdminProfile />} />
 
                                     <Route path="/notification" element={<AdminNotifications />} />
-
-                                    <Route path="/dashboard">
-                                        <Route
-                                            path="/dashboard"
-                                            element={<Overview />}
-                                        />
-
-                                        <Route
-                                            path="/dashboard/overview"
-                                            element={<Overview />}
-                                        />
-                                    </Route>
                                 </Route>
                             </Route>
 

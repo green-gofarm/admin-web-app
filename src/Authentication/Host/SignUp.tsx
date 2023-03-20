@@ -1,47 +1,74 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from "react-router-dom";
-import { auth } from "../../Firebase/firebase"
-import { Button, Col, Form, FormGroup, Row, Alert } from 'react-bootstrap';
-const SignUp = () => {
-    const [err, setError] = useState("");
-    const [data, setData] = React.useState({
-        fullname: "",
-        email: "",
-        password: "",
-    })
-    const { email, password, fullname } = data;
-    const changeHandler = (e: any) => {
-        setData({ ...data, [e.target.name]: e.target.value })
-    }
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { GoogleAuthProvider, auth, getFirebaseToken } from "../../Firebase/firebase"
+import { Box, Grid } from '@mui/material';
+import GoogleButton from '../google-button/GoogleButton';
+import { signUpHost } from '../../redux/auth/action';
+import { toast } from 'react-toastify';
+import { useDispatch } from 'react-redux';
+import { AxiosError } from 'axios';
+import { Alert } from "react-bootstrap";
 
-    const Signup = (e: any) => {
-        // e.preventDefault();
-        auth.createUserWithEmailAndPassword(email, password).then(
-            user => { console.log(user); routeChange() }).catch(err => { console.log(err); setError(err.message) })
-    }
-    let navigate = useNavigate();
-    const routeChange = () => {
-        let path = `${process.env.PUBLIC_URL}/dashboard/dashboard-1/`;
-        navigate(path);
-    }
+
+const SignUp = () => {
+
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const [searchParams] = useSearchParams();
+    const [errorMessage, setErrorMessage] = useState("");
+
+    // State
+    const [loadingSignIn, setLoadingSignIn] = useState(false);
+
+    const handleSignUp = async () => {
+        try {
+            const provider = new GoogleAuthProvider();
+            await auth.signInWithPopup(provider);
+            const token = await getFirebaseToken();
+
+            if (token) {
+                dispatch(signUpHost(token, {
+                    loading: setLoadingSignIn,
+                    onSuccess: (response: any) => {
+                        toast.success("Đăng ký thành công");
+                        // const path = searchParams.get("backUrl") ?? "/";
+                        // navigate(path);
+                    },
+                    onFailure: (error: AxiosError | any) => {
+                        console.log(error);
+                        auth.signOut();
+                        if (error?.response?.data?.resultCode === 8000) {
+                            setErrorMessage("Email này đã được sử dụng.");
+                        } else {
+                            setErrorMessage("Đăng ký thất bại.");
+                        }
+                    }
+                }));
+            }
+        } catch (error) {
+            console.error('Error signing in with Google:', error);
+        }
+    };
+
     return (
         <div>
             <div className="square-box"> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> </div>
             <div className="page bg-primary">
                 <div className="page-single">
-                    <div className="container">
-                        <Row>
-                            <Col
+                    <div className="container" style={{ marginTop: "89px" }} >
+                        <Grid container justifyContent="center">
+                            <Grid
+                                item
                                 xl={5}
                                 lg={6}
                                 md={8}
                                 sm={8}
-                                xs={10}
+                                xs={12}
                                 className="card-sigin-main py-4 justify-content-center mx-auto"
                             >
-                                <div className="card-sigin ">
-                                    {/* <!-- Demo content--> */}
-                                    <div className="main-card-signin d-md-flex">
+
+                                <div className="card-sigin">
+                                    <div className="main-card-signin d-lg-flex">
                                         <div className="wd-100p">
                                             <div className="d-flex mb-4">
                                                 <Link to="#">
@@ -54,113 +81,37 @@ const SignUp = () => {
                                             </div>
                                             <div className="">
                                                 <div className="main-signup-header">
-                                                    <h2 className="text-dark">Get Started</h2>
+                                                    <h2 className="text-dark">Tham gia với GoFarm</h2>
                                                     <h6 className="font-weight-normal mb-4">
-                                                        It's free to signup and only takes a minute.
+                                                        Đăng ký tài khoản miễn phí.
                                                     </h6>
-                                                    {err && <Alert variant="danger">{err}</Alert>}
-                                                    <Form >
-                                                        <FormGroup className="form-group">
-                                                            <label>Firstname &amp; Lastname</label>{" "}
-                                                            <Form.Control
-                                                                className="form-control"
-                                                                placeholder="Enter your firstname and lastname"
-                                                                type='text'
-                                                                name='fullname'
-                                                                value={fullname}
-                                                                onChange={changeHandler}
-                                                            />
-                                                        </FormGroup>
-                                                        <FormGroup className="form-group">
-                                                            <label>Email</label>{" "}
-                                                            <Form.Control
-                                                                className="form-control"
-                                                                placeholder="Enter your email"
-                                                                type='text'
-                                                                name="email"
-                                                                value={email}
-                                                                onChange={changeHandler}
-                                                            />
-                                                        </FormGroup>
-                                                        <FormGroup className="form-group">
-                                                            <label>Password</label>{" "}
-                                                            <Form.Control
-                                                                className="form-control"
-                                                                placeholder="Enter your password"
-                                                                type="password"
-                                                                name="password"
-                                                                value={password}
-                                                                onChange={changeHandler}
-                                                            />
-                                                        </FormGroup>
-                                                        <Button
-                                                            variant=""
-                                                            className="btn btn-primary btn-block"
-                                                            onClick={Signup}
-                                                        >
-
-                                                            Create Account
-
-                                                        </Button>
-
-                                                        <div className="mt-4 d-flex text-center justify-content-center">
-                                                            <Link
-                                                                to="https://www.facebook.com/"
-                                                                target="_blank"
-                                                                className="btn btn-icon btn-facebook me-3"
-                                                                type="button"
-                                                            >
-                                                                <span className="btn-inner--icon">
-                                                                    {" "}
-                                                                    <i className="bx bxl-facebook tx-18 tx-prime"></i>{" "}
-                                                                </span>
-                                                            </Link>
-                                                            <Link
-                                                                to="https://www.twitter.com/"
-                                                                target="_blank"
-                                                                className="btn btn-icon me-3"
-                                                                type="button"
-                                                            >
-                                                                <span className="btn-inner--icon">
-                                                                    {" "}
-                                                                    <i className="bx bxl-twitter tx-18 tx-prime"></i>{" "}
-                                                                </span>
-                                                            </Link>
-                                                            <Link
-                                                                to="https://www.linkedin.com/"
-                                                                target="_blank"
-                                                                className="btn btn-icon me-3"
-                                                                type="button"
-                                                            >
-                                                                <span className="btn-inner--icon">
-                                                                    {" "}
-                                                                    <i className="bx bxl-linkedin tx-18 tx-prime"></i>{" "}
-                                                                </span>
-                                                            </Link>
-                                                            <Link
-                                                                to="https://www.instagram.com/"
-                                                                target="_blank"
-                                                                className="btn  btn-icon me-3"
-                                                                type="button"
-                                                            >
-                                                                <span className="btn-inner--icon">
-                                                                    {" "}
-                                                                    <i className="bx bxl-instagram tx-18 tx-prime"></i>{" "}
-                                                                </span>
-                                                            </Link>
+                                                    <div className="panel panel-primary">
+                                                        <div className=" tab-menu-heading mb-2 border-bottom-0">
+                                                            <div className="tabs-menu1">
+                                                                <Box>
+                                                                    <GoogleButton
+                                                                        text='Đăng ký với Google'
+                                                                        onClick={handleSignUp}
+                                                                    />
+                                                                </Box>
+                                                            </div>
                                                         </div>
-                                                        <div className="main-signup-footer mt-3 text-center ">
-                                                            <p>Already have an account?  <Link to={`${process.env.PUBLIC_URL}/authentication/login`} >Login</Link></p>
-                                                        </div>
-                                                    </Form>
+                                                    </div>
+                                                    {errorMessage
+                                                        ? <Alert variant="danger">{errorMessage}</Alert>
+                                                        : null
+                                                    }
+                                                    <div className="main-signup-footer mt-3 text-center ">
+                                                        <p>Đã có tài khoản?  <Link to={`${process.env.PUBLIC_URL}/authentication/sign-in`} >Đăng nhập</Link></p>
+                                                    </div>
 
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </Col>
-                        </Row>
+                            </Grid>
+                        </Grid>
                     </div>
                 </div>
             </div>

@@ -20,58 +20,59 @@ function AutoSignIn() {
     // Redux
     const user = useSelector((state: RootState) => state.auth.user);
 
-    const signOut = useCallback(() => {
-        dispatch(signOutUser());
-        if (!location.pathname.startsWith("/authentication")) {
-            const newPath = location.pathname !== "/"
-                ? `/authentication/sign-in?backUrl=${location.pathname + location.search}`
-                : "/authentication/sign-in";
-            navigate(newPath);
-        }
-        auth.signOut();
-    }, [dispatch, location.pathname, location.search, navigate]);
+    // const signOut = useCallback(() => {
+    //     dispatch(signOutUser());
+    //     if (!location.pathname.startsWith("/authentication")) {
+    //         const newPath = location.pathname !== "/"
+    //             ? `/authentication/sign-in?backUrl=${location.pathname + location.search}`
+    //             : "/authentication/sign-in";
+    //         navigate(newPath);
+    //     }
+    //     auth.signOut();
+    // }, [dispatch, location.pathname, location.search, navigate]);
 
-    useEffect(() => {
-        const unregisterAuthObserver = authObject().onAuthStateChanged(async (currentUser) => {
-            if (!currentUser) {
-                setLoading(false);
-                signOut();
-                return;
-            }
+    // useEffect(() => {
+    //     const unregisterAuthObserver = authObject().onAuthStateChanged(async (currentUser) => {
+    //         if (!currentUser) {
+    //             setLoading(false);
+    //             signOut();
+    //             return;
+    //         }
 
-            const token = await currentUser.getIdToken();
-            setLoading(false);
+    //         const token = await currentUser.getIdToken();
+    //         setLoading(false);
 
-            if (!token) {
-                signOut();
-                return;
-            }
-        });
+    //         if (!token) {
+    //             signOut();
+    //             return;
+    //         }
+    //     });
 
-        return () => unregisterAuthObserver();
-    }, [dispatch, signOut, user]);
+    //     return () => unregisterAuthObserver();
+    // }, [dispatch, signOut, user]);
 
-    useEffect(() => {
-        async function signIn() {
-            const token = await getFirebaseToken();
+    // useEffect(() => {
+    //     async function signIn() {
+    //         const token = await getFirebaseToken();
 
-            if (token && !user) {
-                dispatch(signInAdmin({
-                    loading: setLoading,
-                    onFailure: (error: any) => {
-                        toast.error("Không thể lấy thông tin tài khoản. Vui lòng đăng nhập lại");
-                    }
-                }));
-            }
-        }
+    //         if (token) {
+    //             dispatch(signInAdmin({
+    //                 loading: setLoading,
+    //                 onFailure: (error: any) => {
+    //                     auth.signOut();
+    //                     toast.error("Không thể lấy thông tin tài khoản. Vui lòng đăng nhập lại");
+    //                 }
+    //             }));
+    //         }
+    //     }
 
-        signIn();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [user]);
+    //     signIn();
+    //     // eslint-disable-next-line react-hooks/exhaustive-deps
+    // }, []);
 
-    if (loading) {
-        return <Loader />
-    }
+    // if (loading) {
+    //     return <Loader />
+    // }
 
     return (
         <Outlet />

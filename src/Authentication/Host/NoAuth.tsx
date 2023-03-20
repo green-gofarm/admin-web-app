@@ -6,9 +6,9 @@ const NoAuth = () => {
     const [searchParams] = useSearchParams();
     const user = useSelector((state: RootState) => state.auth.user);
 
-    if (user) {
-        return <Navigate to={searchParams.get("backUrl") ?? "/"} replace />
-    }
+    // if (user) {
+    //     return <Navigate to={searchParams.get("backUrl") ?? "/"} replace />
+    // }
 
     return (
         <Outlet />

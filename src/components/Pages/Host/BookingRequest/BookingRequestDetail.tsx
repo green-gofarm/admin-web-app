@@ -3,17 +3,13 @@ import PageHeader, { IBreadcrumbItem } from "../../../General/PageHeader";
 import { Box, Divider, Grid } from "@mui/material";
 import DetailPageHeaderTitle from "../../../General/DetailPageHeaderTitle";
 import { convertToMoney, createCodeString } from "../../../../helpers/stringUtils";
-import { Button, Card, Table } from "react-bootstrap";
+import { Alert, Button, Card, Table } from "react-bootstrap";
 import { convertISOToNaturalFormat } from "../../../../helpers/dateUtils";
 import AvatarWrapper from "../../../General/Wrapper/AvatarWrapper";
 import IconLabelDetail from "../../../General/Item/IconLabelDetail";
 import { Status } from "../../../../setting/Status";
 import { findOrderStatus } from "../../../../setting/order-setting";
 import HomeIcon from '@mui/icons-material/Home';
-
-const print = () => {
-    window.print();
-};
 
 const breadcrumb: Array<IBreadcrumbItem> = [
     {
@@ -89,7 +85,7 @@ const detail = {
     }
 };
 
-function OrderDetail() {
+function BookingRequestDetail() {
 
     const { id } = useParams();
     const [searchParams] = useSearchParams();
@@ -116,6 +112,25 @@ function OrderDetail() {
             <Grid container spacing={2}>
                 <Grid item xs={12}>
                     <Card className=" custom-card">
+                        <Card.Header className="border-bottom">
+                            <Alert variant="info">
+                                {`Đơn sẽ quá hạn vào ${convertISOToNaturalFormat(detail.expiredTime, "HH:mm [ngày] Do MMMM YYYY")}`}
+                            </Alert>
+                            <Button
+                                variant=''
+                                type="button"
+                                className="btn ripple btn-primary mb-1 me-2"
+                            >
+                                <i className="fe fe-thumbs-up me-1"></i> Nhận đơn
+                            </Button>
+                            <Button
+                                variant=''
+                                type="button"
+                                className="btn ripple btn-secondary mb-1 me-2"
+                            >
+                                <i className="fe fe-thumbs-down me-1"></i> Từ chối
+                            </Button>
+                        </Card.Header>
                         <Card.Body>
                             <div className="d-lg-flex">
                                 <h6 className="main-content-label mb-1">
@@ -151,7 +166,7 @@ function OrderDetail() {
                                                 value={
                                                     <Box
                                                         component={Link}
-                                                        to={`/management/account/host/${detail.customer.userId}?backUrl=${location.pathname + location.search}`}
+                                                        to="#"
                                                         display="flex"
                                                         alignItems="center"
                                                         gap="8px"
@@ -356,16 +371,6 @@ function OrderDetail() {
                                 </Table>
                             </div>
                         </Card.Body>
-                        <Card.Footer className=" text-end">
-                            <Button
-                                variant=''
-                                type="button"
-                                className="btn ripple btn-info mb-1 me-2"
-                                onClick={print}
-                            >
-                                <i className="fe fe-printer me-1"></i> In ra hóa đơn
-                            </Button>
-                        </Card.Footer>
                     </Card>
                 </Grid>
             </Grid>
@@ -373,4 +378,4 @@ function OrderDetail() {
     )
 }
 
-export default OrderDetail
+export default BookingRequestDetail;

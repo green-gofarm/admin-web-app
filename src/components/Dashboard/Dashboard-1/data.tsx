@@ -100,7 +100,7 @@ export class Statistics1 extends React.Component<{}, { options: any, series: any
             style: {
               color: "#adb5be",
               fontSize: "14px",
-              fontFamily: "poppins, sans-serif",
+              fontFamily: "Inter, sans-serif",
               fontWeight: 600,
               cssClass: "apexcharts-yaxis-label",
             },

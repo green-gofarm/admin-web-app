@@ -4,7 +4,7 @@ export enum ROLES {
     CUSTOMER = "Khách du lịch"
 }
 
-export const CURRENT_ROLE: ROLES = ROLES.ADMIN;
+export const CURRENT_ROLE: ROLES = ROLES.HOST;
 
 export const GENDERS = {
     male: "Male",

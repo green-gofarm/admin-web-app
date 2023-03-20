@@ -11,7 +11,7 @@ interface IViewIconAction {
 }
 
 function ApproveIconAction({
-    title = "Khóa",
+    title = "Chấp nhận",
     Icon = ThumbUpAltIcon,
     onClick,
     ...props

@@ -89,7 +89,7 @@ License        :   Licensed under ThemeForest License
 /*navigation*/
 /*dark colors*/
 /* ######## FONT ######## */
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap");
 
 /* ######## BOOTSTRAP ######## */
 .accordion>.card:not(:first-of-type) .card-header:first-child {
@@ -4318,7 +4318,8 @@ dd {
 }
 
 html {
-  font-family: "Poppins", sans-serif;
+  font-family: "Inter",
+    sans-serif;
   line-height: 1.15;
   -webkit-text-size-adjust: 100%;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
@@ -4339,7 +4340,8 @@ section {
 
 body {
   margin: 0;
-  font-family: "Poppins", sans-serif;
+  font-family: "Inter",
+    sans-serif;
   font-size: 0.81568rem;
   font-weight: 400;
   line-height: 1.5;
@@ -16805,7 +16807,8 @@ a.close.disabled {
 /* ############### PAGE LAYOUT STYLES ############### */
 /* ###### 6.3 Global  ###### */
 body {
-  font-family: "Poppins", sans-serif;
+  font-family: "Inter",
+    sans-serif;
 }
 
 .main-body {
@@ -18499,7 +18502,7 @@ pre {
 }
 
 .main-logo1 {
-  font-family: poppins;
+  font-family: Inter;
   font-weight: 600;
 }
 
@@ -19763,13 +19766,13 @@ hr {
 #morrisDonut1.morris-donut-wrapper-demo svg text {
   font-size: 12px !important;
   font-weight: 500 !important;
-  font-family: "Poppins", sans-serif !important;
+  font-family: "Inter", sans-serif !important;
 }
 
 #morrisDonut2.morris-donut-wrapper-demo svg text {
   font-size: 12px !important;
   font-weight: 500 !important;
-  font-family: "Poppins", sans-serif !important;
+  font-family: "Inter", sans-serif !important;
 }
 
 .form-label {
@@ -47670,7 +47673,8 @@ body:not(.lg-from-hash) .lg-outer.lg-start-zoom .lg-item.lg-complete .lg-object 
   display: flex;
   flex-wrap: wrap;
   background: #fff;
-  font-family: sans-serif;
+  font-family: "Inter",
+    sans-serif;
   font-size: 14px;
   line-height: 20px;
   color: #556270;
@@ -51428,7 +51432,8 @@ a.ui-button:active {
   color: #666;
   background: rgba(255, 255, 255, 0.8);
   border: solid 2px rgba(230, 230, 230, 0.8);
-  font-family: sans-serif;
+  font-family: "Inter",
+    sans-serif;
   font-size: 12px;
   text-align: center;
 }
@@ -56896,7 +56901,8 @@ div.dtr-bs-modal table.table tr:first-child td {
   overflow: hidden;
   background-color: black;
   opacity: 1;
-  font-family: sans-serif;
+  font-family: "Inter",
+    sans-serif;
   cursor: pointer;
   transition: opacity 0.3s ease-out;
   transition: all 0.3s ease-out;

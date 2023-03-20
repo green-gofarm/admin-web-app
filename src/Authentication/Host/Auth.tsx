@@ -7,9 +7,9 @@ const Auth = () => {
   const location = useLocation();
   const user = useSelector((state: RootState) => state.auth.user);
 
-  if (!user) {
-    return <Navigate to={`/authentication/sign-in?backUrl=${location.pathname + location.search}`} replace />
-  }
+  // if (!user) {
+  //   return <Navigate to={`/authentication/sign-in?backUrl=${location.pathname + location.search}`} replace />
+  // }
 
   return <Outlet />;
 };

@@ -34,7 +34,7 @@ const SignIn = () => {
                         navigate(path);
                     },
                     onFailure: (error: any) => {
-                        console.log(error);
+                        auth.signOut();
                         toast.error("Đăng nhập thất bại");
                     }
                 }));
@@ -76,7 +76,7 @@ const SignIn = () => {
                                             </div>
                                             <div className="">
                                                 <div className="main-signup-header">
-                                                    <h2>Chào mừng bạn quay lại!!</h2>
+                                                    <h2>Chào mừng quay lại!!</h2>
                                                     <h6 className="font-weight-semibold mb-4">
                                                         Vui lòng đăng nhập để tiếp tục
                                                     </h6>
@@ -91,8 +91,6 @@ const SignIn = () => {
                                                                 </Box>
                                                             </div>
                                                         </div>
-
-
                                                     </div>
                                                 </div>
                                             </div>

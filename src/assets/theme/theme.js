@@ -51,6 +51,10 @@ const theme = createTheme(adaptV4Theme({
                 width: "16px",
                 height: "16px",
             },
+            fontSizeLarge: {
+                width: "24px",
+                height: "24px",
+            }
         },
         MuiTable: {
             root: {

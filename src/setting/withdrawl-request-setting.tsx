@@ -1,7 +1,7 @@
 import { STATUS_COLORS } from "./color";
 
 export const WITHDRAWAL_REQUEST_STATUSES = {
-    INCOMPLETE: 1,
+    AVAILABLE: 1,
     PENDING: 2,
     APPROVED: 3,
     REJECTED: 4,
@@ -10,8 +10,8 @@ export const WITHDRAWAL_REQUEST_STATUSES = {
 
 export const LIST_WITHDRAWAL_REQUEST_STATUS = [
     {
-        label: "Chưa đủ yêu cầu",
-        value: WITHDRAWAL_REQUEST_STATUSES.INCOMPLETE,
+        label: "Có thể yêu cầu",
+        value: WITHDRAWAL_REQUEST_STATUSES.AVAILABLE,
         textColor: STATUS_COLORS.AVAILABLE.textColor,
         bgColor: STATUS_COLORS.AVAILABLE.bgColor
     },

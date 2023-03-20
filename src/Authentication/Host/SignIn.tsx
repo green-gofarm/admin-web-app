@@ -1,20 +1,22 @@
 import React, { useState } from 'react';
-import { Col, Row } from 'react-bootstrap';
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 // import { auth } from '../Firebase/firebase';
-import { Box } from '@mui/material';
+import { Box, Grid } from '@mui/material';
 import { GoogleAuthProvider, auth, getFirebaseToken } from '../../Firebase/firebase';
 import GoogleButton from '../google-button/GoogleButton';
 import { useDispatch } from 'react-redux';
-import { signInAdmin } from '../../redux/auth/action';
+import { signInHost } from '../../redux/auth/action';
 import { toast } from 'react-toastify';
 import WithAuthBackDropLoader from '../../components/General/WithAuthBackDropLoader';
+import { AxiosError } from 'axios';
+import { Alert } from "react-bootstrap";
 
 const SignIn = () => {
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [searchParams] = useSearchParams();
+    const [errorMessage, setErrorMessage] = useState("");
 
     // State
     const [loadingSignIn, setLoadingSignIn] = useState(false);
@@ -24,21 +26,25 @@ const SignIn = () => {
             const provider = new GoogleAuthProvider();
             await auth.signInWithPopup(provider);
             const token = await getFirebaseToken();
-
-            if (token) {
-                dispatch(signInAdmin({
-                    loading: setLoadingSignIn,
-                    onSuccess: (response: any) => {
-                        toast.success("Đăng nhập thành công");
-                        const path = searchParams.get("backUrl") ?? "/";
-                        navigate(path);
-                    },
-                    onFailure: (error: any) => {
-                        console.log(error);
-                        toast.error("Đăng nhập thất bại");
-                    }
-                }));
-            }
+            console.log(token);
+            // if (token) {
+            //     dispatch(signInHost({
+            //         loading: setLoadingSignIn,
+            //         onSuccess: (response: any) => {
+            //             toast.success("Đăng nhập thành công");
+            //             const path = searchParams.get("backUrl") ?? "/";
+            //             navigate(path);
+            //         },
+            //         onFailure: (error: AxiosError | any) => {
+            //             auth.signOut();
+            //             if (error?.response?.status === 404) {
+            //                 setErrorMessage("Tài khoản không tồn tại.")
+            //             } else {
+            //                 setErrorMessage("Đăng nhập thất bại");
+            //             }
+            //         }
+            //     }));
+            // }
         } catch (error) {
             console.error('Error signing in with Google:', error);
         }
@@ -53,13 +59,14 @@ const SignIn = () => {
             <div className="page bg-primary">
                 <div className="page-single">
                     <div className="container" style={{ marginTop: "89px" }} >
-                        <Row>
-                            <Col
+                        <Grid container justifyContent="center">
+                            <Grid
+                                item
                                 xl={5}
                                 lg={6}
                                 md={8}
                                 sm={8}
-                                xs={10}
+                                xs={12}
                                 className="card-sigin-main mx-auto my-auto py-4 justify-content-center"
                             >
                                 <div className="card-sigin">
@@ -76,7 +83,7 @@ const SignIn = () => {
                                             </div>
                                             <div className="">
                                                 <div className="main-signup-header">
-                                                    <h2>Chào mừng bạn quay lại!!</h2>
+                                                    <h2>Chào mừng quay lại!!</h2>
                                                     <h6 className="font-weight-semibold mb-4">
                                                         Vui lòng đăng nhập để tiếp tục
                                                     </h6>
@@ -91,16 +98,21 @@ const SignIn = () => {
                                                                 </Box>
                                                             </div>
                                                         </div>
-
-
+                                                    </div>
+                                                    {errorMessage
+                                                        ? <Alert variant="danger">{errorMessage}</Alert>
+                                                        : null
+                                                    }
+                                                    <div className="main-signup-footer mt-3 text-center">
+                                                        <p>Chưa có tài khoản?  <Link to={`/authentication/sign-up`} >Đăng ký</Link></p>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </Col>
-                        </Row>
+                            </Grid>
+                        </Grid>
                     </div>
                 </div >
             </div>

@@ -21,5 +21,5 @@ export const DOMAIN = `${ENV_DOMAIN}/v1`;
 export const ENP = {
     SIGN_UP: `${DOMAIN}/register`,
     ADMIN: `${DOMAIN}/admin`,
-    HOST: `${DOMAIN}/host`
+    HOST: `${DOMAIN}/hosts`
 }

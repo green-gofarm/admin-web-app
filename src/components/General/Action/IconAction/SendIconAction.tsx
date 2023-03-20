@@ -1,8 +1,8 @@
 import { MouseEventHandler } from 'react'
 import TooltipIconAction from '../../Icon/TooltipIconAction'
-import ThumbDownAltIcon from '@mui/icons-material/ThumbDownAlt';
 import { OverridableComponent } from '@mui/material/OverridableComponent';
 import { IconTypeMap } from '@mui/material';
+import SendIcon from '@mui/icons-material/Send';
 
 interface IViewIconAction {
     title?: string,
@@ -10,9 +10,9 @@ interface IViewIconAction {
     onClick?: MouseEventHandler<HTMLElement>,
 }
 
-function RejectIconAction({
-    title = "Từ chối",
-    Icon = ThumbDownAltIcon,
+function SendIconAction({
+    title = "Gửi yêu cầu",
+    Icon = SendIcon,
     onClick,
     ...props
 }: IViewIconAction) {
@@ -21,7 +21,7 @@ function RejectIconAction({
             title={title}
             Icon={Icon}
             IconProps={{
-                color: "#e39124 !important"
+                color: "rgb(25, 118, 210) !important"
             }}
             onClick={onClick}
             {...props}
@@ -29,4 +29,4 @@ function RejectIconAction({
     )
 }
 
-export default RejectIconAction;
+export default SendIconAction;
