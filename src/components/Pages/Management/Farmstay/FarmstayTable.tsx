@@ -1,11 +1,10 @@
-import { useCallback, useMemo, useState } from "react";
-import json from "./farmstay.json";
-import { Box } from "@mui/material";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { Box, CircularProgress, Grid } from "@mui/material";
 import { Status } from "../../../../setting/Status";
 import MuiTables from "../../../Mui-Table/MuiTable";
 import EllipsisWrapper from "../../../General/Wrapper/EllipsisWrapper";
 import ViewIconAction from "../../../General/Action/IconAction/ViewIconAction";
-import { findFarmstayStatus } from "../../../../setting/farmstay-setting";
+import { FARMSTAY_SORT_BY_OPTIONS, LIST_FARMSTAY_STATUS, findFarmstayStatus } from "../../../../setting/farmstay-setting";
 import { createCodeString } from "../../../../helpers/stringUtils";
 import { useNavigate } from "react-router-dom";
 import ActivateFarmstay from "./action/ActivateFarmstay";
@@ -13,13 +12,81 @@ import InactivateFarmstay from "./action/InactivateFarmstay";
 import LockIconAction from "../../../General/Action/IconAction/LockIconAction";
 import UnlockIconAction from "../../../General/Action/IconAction/UnlockIconAction";
 import AvatarWrapper from "../../../General/Wrapper/AvatarWrapper";
+import useFarmstays, { defaultFarmstaysPagination } from "./hooks/useFarmstays";
+import { Card, FormGroup } from "react-bootstrap";
+import Select from 'react-select';
+import useDelayLoading from "../../../../hooks/useDelayLoading";
+import { removeNullProps } from "../../../../setting/general-props";
+import SearchIcon from "@mui/icons-material/Search";
 
-const dataObject = JSON.parse(JSON.stringify(json));
-const data = dataObject.data;
+interface FilterProps {
+    status: any,
+}
 
 export default function FarmstayTable() {
 
     const navigate = useNavigate();
+
+    const [filters, setFilters] = useState<FilterProps>({
+        status: null,
+    });
+
+    const [searchText, setSearchText] = useState("");
+
+    const [sort, setSort] = useState<any>(() => {
+        const result = FARMSTAY_SORT_BY_OPTIONS.find(item =>
+            item.sortValue.orderBy === defaultFarmstaysPagination.orderBy
+            && item.sortValue.orderDirection === defaultFarmstaysPagination.orderDirection
+        ) ?? FARMSTAY_SORT_BY_OPTIONS[0];
+        return result;
+    })
+
+    const handleOnChange = useCallback((value: any, key: string) => {
+        setFilters(prev => ({
+            ...prev,
+            [key]: value
+        }))
+    }, []);
+
+    const {
+        data,
+        loading,
+        pagination,
+        rowsPerPageOptions,
+        refresh,
+        handleChangePage,
+        handleChangeRowsPerPage
+    } = useFarmstays(true);
+
+    const delay = useDelayLoading(loading);
+
+    useEffect(() => {
+        const params = {
+            name: searchText || null,
+            status: filters.status?.value ?? null
+        }
+        refresh(undefined, removeNullProps(params));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [filters]);
+
+    useEffect(() => {
+        if (sort) {
+            refresh({
+                ...pagination,
+                orderBy: sort.sortValue?.orderBy,
+                orderDirection: sort.sortValue?.orderDirection
+            });
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [sort]);
+
+    const handleSubmit = () => {
+        const params = {
+            name: searchText || null,
+            status: filters.status?.value ?? null
+        }
+        refresh(undefined, removeNullProps(params));
+    }
 
     // State
     const [openInactivate, setOpenInactivate] = useState<boolean>(false);
@@ -59,10 +126,10 @@ export default function FarmstayTable() {
                     gap="8px"
                 >
                     <AvatarWrapper
-                        src={row.host.avatarURL}
-                        name={row.host.name}
+                        src={row.avatarURL}
+                        name={row.name}
                     />
-                    {row.host.name}
+                    {row.name}
                 </Box>
             )
         },
@@ -127,13 +194,99 @@ export default function FarmstayTable() {
     const handleCloseActive = useCallback(() => setOpenActive(false), []);
     const handleCloseInactivate = useCallback(() => setOpenInactivate(false), []);
 
-
     return (
         <>
-            <MuiTables
-                data={data}
-                columns={columns}
-            />
+            <Grid container spacing={2}>
+                <Grid item xs={12}>
+                    <Card className="custom-card">
+                        <Card.Body>
+                            <div className="input-group mb-0">
+                                <input
+                                    value={searchText}
+                                    onChange={(e) => setSearchText(e.target.value ?? "")}
+                                    type="text"
+                                    className="form-control"
+                                    autoFocus
+                                    placeholder="Tìm kiếm theo tên"
+                                    disabled={delay}
+                                    onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
+                                />
+                                <span className="input-group-append">
+                                    <button
+                                        disabled={delay}
+                                        className="btn ripple btn-primary"
+                                        type="button"
+                                        onClick={handleSubmit}
+                                    >
+                                        <Box display="flex" gap="4px" alignItems="center">
+                                            {delay
+                                                ? <CircularProgress
+                                                    size={16}
+                                                    thickness={4}
+                                                    sx={{
+                                                        color: "inherit"
+                                                    }}
+                                                />
+                                                : <SearchIcon />
+                                            }
+                                            <Box>
+                                                Tìm kiếm
+                                            </Box>
+                                        </Box>
+                                    </button>
+                                </span>
+                            </div>
+                        </Card.Body>
+                        <Card.Body>
+                            <div className="main-content-body-profile mt-0">
+                                <Grid container spacing={2}>
+                                    <Grid item xs={6} md="auto">
+                                        <FormGroup className="form-group">
+                                            <Box minWidth="160px">
+                                                <Select
+                                                    value={filters.status}
+                                                    onChange={(option) => handleOnChange(option, "status")}
+                                                    options={LIST_FARMSTAY_STATUS}
+                                                    placeholder="Trạng thái"
+                                                    isSearchable
+                                                    isClearable
+                                                />
+                                            </Box>
+                                        </FormGroup>
+                                    </Grid>
+                                    <Grid item xs={6} md="auto">
+                                        <FormGroup className="form-group">
+                                            <Select
+                                                value={sort}
+                                                onChange={(option) => setSort(option)}
+                                                options={FARMSTAY_SORT_BY_OPTIONS}
+                                                placeholder="Sắp xếp theo"
+                                                isSearchable
+                                            />
+                                        </FormGroup>
+                                    </Grid>
+                                </Grid>
+                            </div>
+                        </Card.Body>
+                    </Card>
+                </Grid>
+                <Grid item xs={12}>
+                    <MuiTables
+                        data={data}
+                        columns={columns}
+                        loadingData={delay}
+                        pagination={{
+                            count: pagination.totalItem,
+                            handleChangePage,
+                            handleChangeRowsPerPage,
+                            rowsPerPageOptions,
+                            page: pagination.page,
+                            rowsPerPage: pagination.pageSize,
+                        }}
+                    />
+
+                </Grid>
+            </Grid>
 
             <ActivateFarmstay
                 open={openActive}

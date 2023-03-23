@@ -1,3 +1,4 @@
+import { Box } from "@mui/material";
 import { Card as ReactBootstrapCard } from "react-bootstrap"
 
 interface ICustomizedPanel {
@@ -22,7 +23,7 @@ function CustomizedPanel({
                     : null
                 }
                 {panel
-                    ? <div className="card-options">{panel}</div>
+                    ? <Box className="card-options" marginRight="0 !important">{panel}</Box>
                     : null
                 }
             </ReactBootstrapCard.Header>

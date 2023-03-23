@@ -1,6 +1,5 @@
 import { useMemo } from "react";
-import json from "../farmstay.json";
-import { Box } from "@mui/material";
+import { Box, Button, CircularProgress, Grid } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { createCodeString } from "../../../../../helpers/stringUtils";
 import AvatarWrapper from "../../../../General/Wrapper/AvatarWrapper";
@@ -8,13 +7,26 @@ import EllipsisWrapper from "../../../../General/Wrapper/EllipsisWrapper";
 import TooltipIconAction from "../../../../General/Icon/TooltipIconAction";
 import GradingIcon from "@mui/icons-material/Grading";
 import MuiTables from "../../../../Mui-Table/MuiTable";
-
-const dataObject = JSON.parse(JSON.stringify(json));
-const data = dataObject.data;
+import usePreviewFarmstays from "../hooks/usePreviewFarmstays";
+import { Badge, Card } from "react-bootstrap";
+import RefreshIcon from '@mui/icons-material/Refresh';
+import useDelayLoading from "../../../../../hooks/useDelayLoading";
 
 export default function FarmstayPreviewTable() {
 
     const navigate = useNavigate();
+
+    const {
+        data,
+        loading,
+        pagination,
+        rowsPerPageOptions,
+        refresh,
+        handleChangePage,
+        handleChangeRowsPerPage
+    } = usePreviewFarmstays();
+
+    const delay = useDelayLoading(loading);
 
     const columns = useMemo(() => [
         {
@@ -40,7 +52,7 @@ export default function FarmstayPreviewTable() {
             )
         },
         {
-            key: "email",
+            key: "host",
             label: "Chủ sở hữu",
             render: (row) => (
                 <Box
@@ -49,10 +61,10 @@ export default function FarmstayPreviewTable() {
                     gap="8px"
                 >
                     <AvatarWrapper
-                        src={row.host.avatarURL}
-                        name={row.host.name}
+                        src={row.name}
+                        name={row.name}
                     />
-                    {row.host.name}
+                    {row.name}
                 </Box>
             )
         },
@@ -86,10 +98,59 @@ export default function FarmstayPreviewTable() {
 
     return (
         <>
-            <MuiTables
-                data={data}
-                columns={columns}
-            />
+            <Grid container spacing={2}>
+                <Grid item xs={12}>
+                    <Card className="custom-card">
+                        <Card.Body>
+                            <Box
+                                display="flex"
+                                alignItems="center"
+                                justifyContent="space-between"
+                            >
+                                <Box component="h5" fontWeight="500" className="mb-0">
+                                    Đang có
+                                    <Badge
+                                        bg=""
+                                        className=" badge-primary-transparent tx-16 font-weight-bold text-primiary ms-2 me-2"
+                                    >
+                                        {data.length}
+                                    </Badge>
+                                    farmstay cần phê duyệt
+                                </Box>
+
+                                <Button
+                                    variant="outlined"
+                                    color="primary"
+                                    startIcon={
+                                        delay
+                                            ? <CircularProgress size={16} thickness={4} />
+                                            : <RefreshIcon />
+                                    }
+                                    onClick={() => refresh()}
+                                >
+                                    Làm mới
+                                </Button>
+                            </Box>
+                        </Card.Body>
+                    </Card>
+                </Grid>
+
+                <Grid item xs={12}>
+                    <MuiTables
+                        data={data}
+                        columns={columns}
+                        loadingData={delay}
+                        pagination={{
+                            count: pagination.totalItem,
+                            handleChangePage,
+                            handleChangeRowsPerPage,
+                            rowsPerPageOptions,
+                            page: pagination.page,
+                            rowsPerPage: pagination.pageSize,
+                        }}
+                    />
+                </Grid>
+            </Grid>
         </>
     );
 };

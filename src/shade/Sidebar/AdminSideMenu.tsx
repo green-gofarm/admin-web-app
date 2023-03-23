@@ -127,7 +127,7 @@ const MENUITEMS = [
       },
       {
         path: "/management/withdrawal-request",
-        title: "Yêu cầu thanh toán",
+        title: "Đơn hàng giải ngân",
         type: "link",
         active: false,
         selected: false,
@@ -152,10 +152,7 @@ const MENUITEMS = [
       },
       {
         path: "/management/feedback",
-        title: "Phản hồi",
-        type: "link",
-        active: false,
-        selected: false,
+        title: "Feedback",
         icon: (
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -169,6 +166,25 @@ const MENUITEMS = [
             />
           </svg>
         ),
+        type: "sub",
+        selected: false,
+        active: false,
+        children: [
+          {
+            path: "/management/feedback/reported",
+            type: "link",
+            active: false,
+            selected: false,
+            title: "Feedback bị báo cáo",
+          },
+          {
+            path: "/management/feedback/all",
+            type: "link",
+            active: false,
+            selected: false,
+            title: "Danh sách feedback",
+          },
+        ],
       },
       {
         title: "Quản lý danh mục",

@@ -21,4 +21,37 @@ export interface RootState {
     auth: {
         user: any
     };
+
+    farmstay: {
+        farmstays: any,
+        allFarmstays: any[]
+    };
+
+    service: {
+        serviceCategories: any
+    };
+
+    room: {
+        roomCategories: any
+    };
+
+    feedback: {
+        feedbacks: any
+    };
+
+    user: {
+        users: any,
+        allUsers: any[],
+        hosts: any,
+        allHosts: any[],
+        customers: any,
+        allCustomers: any[],
+        admins: any,
+        allAdmins: any[],
+    };
+
+    order: {
+        orders: any,
+        disbursements: any,
+    }
 }

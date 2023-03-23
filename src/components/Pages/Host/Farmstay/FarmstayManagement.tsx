@@ -28,7 +28,7 @@ export default function FarmstayManagement() {
 
     const handleOpenFarmstayDetail = (farmstay: any) => {
         if (farmstay?.id) {
-            navigate(`/farmstay/${farmstay?.id}`);
+            navigate(`/management/farmstay/${farmstay?.id}`);
         }
     }
 

@@ -24,6 +24,7 @@ const WithdrawalRequestManagement = React.lazy(() => import("../components/Pages
 // Detail
 const BookingRequestDetail = React.lazy(() => import("../components/Pages/Host/BookingRequest/BookingRequestDetail"));
 const WithdrawalRequestDetail = React.lazy(() => import("../components/Pages/Host/WithdrawalRequest/WithdrawalRequestDetail"));
+const FarmstayDetail = React.lazy(() => import("../components/Pages/Host/Farmstay/FarmstayDetail/FarmstayDetail"));
 
 // Error pages
 const Custompages = React.lazy(() => import("../shade/layouts/custompages"));
@@ -58,6 +59,11 @@ function HostRoutes() {
                                         <Route
                                             index
                                             element={<FarmstayManagement />}
+                                        />
+
+                                        <Route
+                                            path="/management/farmstay/:id"
+                                            element={<FarmstayDetail />}
                                         />
                                     </Route>
 

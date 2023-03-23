@@ -30,3 +30,17 @@ export const LIST_SERVICE_CATEGORY_STATUS = [
 export const findServiceCategoryStatus = (value: number) => {
     return value != null && LIST_SERVICE_CATEGORY_STATUS.find(item => item.value === value);
 }
+
+interface SortByProps {
+    label: string,
+    value: number,
+    sortValue: {
+        orderBy: "createdDate" | "rating",
+        orderDirection: "desc" | "asc"
+    }
+}
+
+export const SERVICE_CATEGORY_SORT_BY_OPTIONS: SortByProps[] = [
+    { label: "Ngày tạo gần nhất", value: 1, sortValue: { orderBy: "createdDate", orderDirection: "desc" } },
+    { label: "Ngày tạo xa nhất", value: 2, sortValue: { orderBy: "createdDate", orderDirection: "asc" } },
+]

@@ -55,6 +55,9 @@ const WithdrawalRequestManagement = React.lazy(() =>
 const FeedbackManagement = React.lazy(() =>
     import("../components/Pages/Management/Feedback/FeedbackManagement")
 );
+const ReportedFeedbackManagement = React.lazy(() =>
+    import("../components/Pages/Management/Feedback/ReportedFeedback/ReportedFeedbackManagement")
+);
 
 // Detail
 const AdminDetail = React.lazy(() =>
@@ -232,10 +235,22 @@ function AdminRoutes() {
                                             />
                                         </Route>
 
-                                        <Route
-                                            path="/management/feedback"
-                                            element={<FeedbackManagement />}
-                                        />
+                                        <Route path="/management/feedback">
+                                            <Route
+                                                index
+                                                element={<Navigate to="/management/feedback/reported" />}
+                                            />
+
+                                            <Route
+                                                path="/management/feedback/reported"
+                                                element={<ReportedFeedbackManagement />}
+                                            />
+
+                                            <Route
+                                                path="/management/feedback/all"
+                                                element={<FeedbackManagement />}
+                                            />
+                                        </Route>
                                         <Route
                                             path="/management/room-category"
                                             element={<RoomCategoryManagement />}

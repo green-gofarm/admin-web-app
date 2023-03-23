@@ -1,24 +1,24 @@
 import { memo, useState } from 'react'
 import { Box } from '@mui/material';
-import ConfirmModel from '../../../../General/Model/ConfirmModel';
+import ConfirmModel from '../../../../../General/Model/ConfirmModel';
 
-interface _ICancelOrder {
+interface LockActivityProps {
     open?: boolean,
-    order?: any,
+    activity?: any,
     refresh?: any,
     onClose: Function
 }
 
-function CancelOrder({
+function LockActivity({
     open,
-    order,
+    activity,
     refresh,
     onClose,
-}: _ICancelOrder) {
+}: LockActivityProps) {
     const [loading] = useState(false);
 
     const handleSubmit = () => {
-        if (!order?.id) return;
+        if (!activity?.id) return;
         onClose && onClose();
         refresh && refresh();
     }
@@ -26,10 +26,10 @@ function CancelOrder({
     return (
         <ConfirmModel
             open={open}
-            title="Hủy đơn"
+            title="Khóa hoạt động"
             description={(
                 <Box display="inline-block">
-                    Bạn có chắc chắn muốn hủy đơn này?
+                    Xác nhận khóa lại hoạt động này?
                 </Box>
             )}
             loading={loading}
@@ -39,4 +39,4 @@ function CancelOrder({
     )
 }
 
-export default memo(CancelOrder);
+export default memo(LockActivity);

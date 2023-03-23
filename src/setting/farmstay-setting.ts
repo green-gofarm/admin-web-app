@@ -5,7 +5,6 @@ export enum FARMSTAY_STATUSES {
     PENDING = 2,
     ACTIVE = 3,
     INACTIVE = 4,
-    REJECTED = 5,
 }
 
 export const LIST_FARMSTAY_STATUS = [
@@ -33,14 +32,24 @@ export const LIST_FARMSTAY_STATUS = [
         textColor: STATUS_COLORS.PENDING.textColor,
         bgColor: STATUS_COLORS.PENDING.bgColor
     },
-    {
-        label: "Không được chấp nhận",
-        value: FARMSTAY_STATUSES.REJECTED,
-        textColor: STATUS_COLORS.BANNED.textColor,
-        bgColor: STATUS_COLORS.BANNED.bgColor
-    },
 ]
 
 export const findFarmstayStatus = (value: number) => {
     return value != null && LIST_FARMSTAY_STATUS.find(item => item.value === value);
 }
+
+interface SortByProps {
+    label: string,
+    value: number,
+    sortValue: {
+        orderBy: "createdDate" | "rating",
+        orderDirection: "desc" | "asc"
+    }
+}
+
+export const FARMSTAY_SORT_BY_OPTIONS: SortByProps[] = [
+    { label: "Ngày tạo gần nhất", value: 1, sortValue: { orderBy: "createdDate", orderDirection: "desc" } },
+    { label: "Ngày tạo xa nhất", value: 2, sortValue: { orderBy: "createdDate", orderDirection: "asc" } },
+    { label: "Đánh giá cao nhất", value: 3, sortValue: { orderBy: "rating", orderDirection: "desc" } },
+    { label: "Đánh giá thấp nhất tới cao", value: 4, sortValue: { orderBy: "rating", orderDirection: "asc" } },
+]

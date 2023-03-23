@@ -1,6 +1,4 @@
 import { useMemo } from "react";
-import json from "./admin.json";
-import { UserData } from "../account-interface";
 import MuiTables from "../../../../Mui-Table/MuiTable";
 import { Box } from "@mui/material";
 import { findAdminStatus } from "../../../../../setting/admin-setting";
@@ -9,13 +7,24 @@ import AvatarWrapper from "../../../../General/Wrapper/AvatarWrapper";
 import ViewIconAction from "../../../../General/Action/IconAction/ViewIconAction";
 import { createCodeString } from "../../../../../helpers/stringUtils";
 import { useNavigate } from "react-router-dom";
-
-const dataObject = JSON.parse(JSON.stringify(json));
-const userData: UserData = dataObject.data;
+import useAdmins from "../hooks/useAdmins";
+import useDelayLoading from "../../../../../hooks/useDelayLoading";
+import { ROLES } from "../../../../../setting/setting";
 
 export default function AdminTable() {
 
     const navigate = useNavigate();
+
+    const {
+        data,
+        loading,
+        pagination,
+        rowsPerPageOptions,
+        handleChangePage,
+        handleChangeRowsPerPage
+    } = useAdmins();
+
+    const delay = useDelayLoading(loading);
 
     // Memorize
     const columns = useMemo(() => [
@@ -77,8 +86,17 @@ export default function AdminTable() {
 
     return (
         <MuiTables
-            data={userData}
+            data={data.filter(item => item.role === ROLES.ADMIN)}
             columns={columns}
+            loadingData={delay}
+            pagination={{
+                count: pagination.totalItem,
+                handleChangePage,
+                handleChangeRowsPerPage,
+                rowsPerPageOptions,
+                page: pagination.page,
+                rowsPerPage: pagination.pageSize,
+            }}
         />
     );
 };

@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect, useState } from "react";
+import React, { ReactNode } from "react";
 
 import makeStyles from '@mui/styles/makeStyles';
 import Box from "@mui/material/Box";
@@ -11,8 +11,6 @@ import TableContainer from "@mui/material/TableContainer";
 import componentStyles from "./tables";
 import CustomTableHeader from "./CustomizedTableHeader";
 import CustomTableBody from "./CustomizedTableBody";
-import { DEFAULT_PAGINATION } from "./setting";
-import { isAvailableArray } from "../../helpers/arrayUtils";
 import CustomizedTablePagination from "./CustomizedTablePagination";
 import CustomizedPanel from "./CustomizedPanel";
 
@@ -30,6 +28,14 @@ interface ITable {
     fixedColumns?: {
         left?: number,
         right?: number
+    },
+    pagination?: {
+        count: number;
+        page: number;
+        rowsPerPage: number;
+        rowsPerPageOptions: number[];
+        handleChangePage: (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => void;
+        handleChangeRowsPerPage: (event: React.ChangeEvent<HTMLInputElement>) => void;
     }
 }
 
@@ -45,33 +51,10 @@ const MuiTables = ({
     fixedColumns = {
         left: 0,
         right: 0
-    }
+    },
+    pagination,
 }: ITable) => {
     const classes = useStyles();
-
-    const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(DEFAULT_PAGINATION.rowsPerPage);
-
-    const [paginationData, setPaginationData] = useState<any[]>([]);
-
-    useEffect(() => {
-        const startIndex = page * rowsPerPage;
-        const endIndex = (page + 1) * rowsPerPage;
-        setPaginationData(() => {
-            if (!isAvailableArray(data)) return [];
-            return data.slice(startIndex, endIndex) ?? [];
-        });
-    }, [data, page, rowsPerPage])
-
-
-    const handleChangePage = (event: React.MouseEvent<HTMLButtonElement> | null, newPage: any) => {
-        setPage(newPage);
-    };
-
-    const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setRowsPerPage(parseInt(event.target.value, 10));
-        setPage(0);
-    };
 
     return (
         <>
@@ -83,9 +66,13 @@ const MuiTables = ({
                         panel={panel}
                     />
                 }
-                <ReactBootstrapCard.Header className="border-bottom-0 d-flex pb-0">
-                    {filter ?? null}
-                </ReactBootstrapCard.Header>
+                {filter
+                    ? <ReactBootstrapCard.Header className="border-bottom-0 d-flex pb-0">
+                        {filter}
+                    </ReactBootstrapCard.Header>
+                    : null
+                }
+
                 <ReactBootstrapCard.Body>
                     <Box position="relative">
                         <TableContainer>
@@ -100,8 +87,9 @@ const MuiTables = ({
 
                                 <CustomTableBody
                                     columns={columns}
-                                    data={paginationData}
+                                    data={data}
                                     loadingData={loadingData}
+                                    rowsPerPage={pagination?.rowsPerPage}
                                 />
                             </Box>
                         </TableContainer>
@@ -134,8 +122,9 @@ const MuiTables = ({
 
                                     <CustomTableBody
                                         columns={columns.slice(0, fixedColumns.left)}
-                                        data={paginationData}
+                                        data={data}
                                         loadingData={loadingData}
+                                        rowsPerPage={pagination?.rowsPerPage}
                                     />
                                 </Box>
                             </TableContainer>
@@ -170,27 +159,28 @@ const MuiTables = ({
 
                                     <CustomTableBody
                                         columns={columns.slice(columns.length - fixedColumns.right || 0, columns.length)}
-                                        data={paginationData}
+                                        data={data}
                                         loadingData={loadingData}
+                                        rowsPerPage={pagination?.rowsPerPage}
                                     />
                                 </Box>
                             </TableContainer>
                             : null
                         }
                     </Box>
-                    {noPaging !== true
+                    {noPaging !== true && pagination
                         ? <Box
                             classes={{ root: classes.cardActionsRoot }}
                             component={CardActions}
                             justifyContent="flex-end"
                         >
                             <CustomizedTablePagination
-                                count={isAvailableArray(data) ? data.length : 0}
-                                page={page}
-                                rowsPerPage={rowsPerPage}
-                                rowsPerPageOptions={[5, 10, 20, 50]}
-                                handleChangePage={handleChangePage}
-                                handleChangeRowsPerPage={handleChangeRowsPerPage}
+                                count={pagination.count}
+                                page={pagination.page}
+                                rowsPerPage={pagination.rowsPerPage}
+                                rowsPerPageOptions={pagination.rowsPerPageOptions}
+                                handleChangePage={pagination.handleChangePage}
+                                handleChangeRowsPerPage={pagination.handleChangeRowsPerPage}
                             />
                         </Box>
                         : null

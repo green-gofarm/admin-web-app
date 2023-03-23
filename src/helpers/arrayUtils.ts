@@ -14,6 +14,6 @@ export const sortDateArray = (array: any, comparator: any) => {
     return sortedArray;
 }
 
-export function isAvailableArray<T>(value: T | readonly T[]): value is readonly T[] {
+export function isAvailableArray<T>(value: T | readonly T[]): value is T[] {
     return Array.isArray(value) && value.length > 0;
 }

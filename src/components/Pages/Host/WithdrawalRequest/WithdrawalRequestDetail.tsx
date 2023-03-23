@@ -4,7 +4,6 @@ import { Box, Grid } from "@mui/material";
 import DetailPageHeaderTitle from "../../../General/DetailPageHeaderTitle";
 import { Button, Card } from "react-bootstrap";
 import { convertToMoney, createCodeString } from "../../../../helpers/stringUtils";
-import AvatarWrapper from "../../../General/Wrapper/AvatarWrapper";
 import IconLabelDetail from "../../../General/Item/IconLabelDetail";
 import { Status } from "../../../../setting/Status";
 import useBackUrl from "../../../../hooks/useBackUrl";

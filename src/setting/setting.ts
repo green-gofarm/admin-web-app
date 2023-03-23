@@ -1,10 +1,10 @@
 export enum ROLES {
-    ADMIN = "Quản trị viên",
-    HOST = "Chủ farmstay",
-    CUSTOMER = "Khách du lịch"
+    ADMIN = 1,
+    HOST = 2,
+    CUSTOMER = 3
 }
 
-export const CURRENT_ROLE: ROLES = ROLES.HOST;
+export const CURRENT_ROLE: ROLES = ROLES.ADMIN;
 
 export const GENDERS = {
     male: "Male",
@@ -33,4 +33,8 @@ export const CRUD_MODE = {
     create: "create",
     edit: "edit",
     delete: "delete"
+}
+
+export const Interceptors = {
+    pageNumber: (page: number) => page >= 1 ? page : 1
 }

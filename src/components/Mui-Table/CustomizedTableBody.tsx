@@ -54,13 +54,15 @@ const TableRowSkeleton = ({ classes, columns }: ITableRowSkeleton) => (
 interface ITableBody {
     data: any[],
     columns: any[],
-    loadingData?: boolean
+    loadingData?: boolean,
+    rowsPerPage?: number;
 }
 
 export default function CustomizedTableBody({
     columns,
     data,
-    loadingData
+    loadingData,
+    rowsPerPage
 }: ITableBody) {
     const classes = useStyles();
 
@@ -87,14 +89,11 @@ export default function CustomizedTableBody({
 
     const renderContent = () => isAvailableArray(data) ? renderData() : <NoRow classes={classes} />;
     const renderSkeleton = () => (
-        <>
-            <TableRowSkeleton classes={classes} columns={columns} />
-            <TableRowSkeleton classes={classes} columns={columns} />
-            <TableRowSkeleton classes={classes} columns={columns} />
-            <TableRowSkeleton classes={classes} columns={columns} />
-            <TableRowSkeleton classes={classes} columns={columns} />
-        </>
+        new Array(rowsPerPage ?? 5).fill("").map((_, i) =>
+            <TableRowSkeleton classes={classes} columns={columns} key={i} />
+        )
     )
+
     return (
 
         <TableBody>

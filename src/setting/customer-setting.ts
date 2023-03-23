@@ -3,8 +3,7 @@ import { STATUS_COLORS } from "./color";
 
 export const CUSTOMER_STATUSES = {
     ACTIVE: 1,
-    INACTIVE: 2,
-    BANNED: 3,
+    BANNED: 2,
 }
 
 export const LIST_CUSTOMER_STATUS = [
@@ -13,12 +12,6 @@ export const LIST_CUSTOMER_STATUS = [
         value: CUSTOMER_STATUSES.ACTIVE,
         textColor: STATUS_COLORS.ACTIVE.textColor,
         bgColor: STATUS_COLORS.ACTIVE.bgColor
-    },
-    {
-        label: "Chưa kích hoạt",
-        value: CUSTOMER_STATUSES.INACTIVE,
-        textColor: STATUS_COLORS.DISABLED.textColor,
-        bgColor: STATUS_COLORS.DISABLED.bgColor
     },
     {
         label: "Đang bị khóa",
@@ -31,3 +24,17 @@ export const LIST_CUSTOMER_STATUS = [
 export const findCustomerStatus = (value: number) => {
     return value != null && LIST_CUSTOMER_STATUS.find(item => item.value === value);
 }
+
+interface SortByProps {
+    label: string,
+    value: number,
+    sortValue: {
+        orderBy: "createdDate",
+        orderDirection: "desc" | "asc"
+    }
+}
+
+export const CUSTOMER_SORT_BY_OPTIONS: SortByProps[] = [
+    { label: "Ngày tạo gần nhất", value: 1, sortValue: { orderBy: "createdDate", orderDirection: "desc" } },
+    { label: "Ngày tạo xa nhất", value: 2, sortValue: { orderBy: "createdDate", orderDirection: "asc" } },
+]
