@@ -1,23 +1,21 @@
 import { STATUS_COLORS } from "./color";
 
 export const WITHDRAWAL_REQUEST_STATUSES = {
-    NONE: 0,
     INCOMPLETE: 1,
-    COMPLETED: 2,
-    PENDING_APPROVE: 3,
-    REJECTED: 4,
+    PENDING: 2,
+    COMPLETED: 3,
 }
 
 export const LIST_WITHDRAWAL_REQUEST_STATUS = [
     {
-        label: "Đơn chưa hoàn thành",
+        label: "Chưa giải ngân",
         value: WITHDRAWAL_REQUEST_STATUSES.INCOMPLETE,
         textColor: STATUS_COLORS.AVAILABLE.textColor,
         bgColor: STATUS_COLORS.AVAILABLE.bgColor
     },
     {
-        label: "Đang phê duyệt",
-        value: WITHDRAWAL_REQUEST_STATUSES.PENDING_APPROVE,
+        label: "Đang xử lý",
+        value: WITHDRAWAL_REQUEST_STATUSES.PENDING,
         textColor: STATUS_COLORS.PENDING.textColor,
         bgColor: STATUS_COLORS.PENDING.bgColor
     },
@@ -26,12 +24,6 @@ export const LIST_WITHDRAWAL_REQUEST_STATUS = [
         value: WITHDRAWAL_REQUEST_STATUSES.COMPLETED,
         textColor: STATUS_COLORS.ACTIVE.textColor,
         bgColor: STATUS_COLORS.ACTIVE.bgColor
-    },
-    {
-        label: "Từ chối giải ngân",
-        value: WITHDRAWAL_REQUEST_STATUSES.REJECTED,
-        textColor: STATUS_COLORS.BANNED.textColor,
-        bgColor: STATUS_COLORS.BANNED.bgColor
     },
 ]
 

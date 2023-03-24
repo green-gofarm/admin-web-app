@@ -18,6 +18,7 @@ import Select from 'react-select';
 import useDelayLoading from "../../../../hooks/useDelayLoading";
 import { removeNullProps } from "../../../../setting/general-props";
 import SearchIcon from "@mui/icons-material/Search";
+import useBackUrl from "../../../../hooks/useBackUrl";
 
 interface FilterProps {
     status: any,
@@ -26,6 +27,7 @@ interface FilterProps {
 export default function FarmstayTable() {
 
     const navigate = useNavigate();
+    const { createBackUrl } = useBackUrl();
 
     const [filters, setFilters] = useState<FilterProps>({
         status: null,
@@ -62,7 +64,7 @@ export default function FarmstayTable() {
 
     useEffect(() => {
         const params = {
-            name: searchText || null,
+            Name: searchText || null,
             status: filters.status?.value ?? null
         }
         refresh(undefined, removeNullProps(params));
@@ -172,7 +174,7 @@ export default function FarmstayTable() {
                     display="flex"
                 >
                     <ViewIconAction
-                        onClick={() => navigate(`/management/farmstay/all/${row.id}`)}
+                        onClick={() => navigate(`/management/farmstay/all/${row.id}?backUrl=${createBackUrl()}`)}
                     />
                     <LockIconAction
                         onClick={() => {
@@ -189,7 +191,7 @@ export default function FarmstayTable() {
                 </Box>
             )
         },
-    ], [navigate]);
+    ], [createBackUrl, navigate]);
 
     const handleCloseActive = useCallback(() => setOpenActive(false), []);
     const handleCloseInactivate = useCallback(() => setOpenInactivate(false), []);

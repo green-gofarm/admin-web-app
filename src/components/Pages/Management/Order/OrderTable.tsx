@@ -56,7 +56,7 @@ export default function OrderTable() {
 
     useEffect(() => {
         const params = {
-            name: searchText || null,
+            Id: searchText || null,
             status: filters.status?.value ?? null
         }
         refresh(undefined, removeNullProps(params));
@@ -76,7 +76,7 @@ export default function OrderTable() {
 
     const handleSubmit = () => {
         const params = {
-            name: searchText || null,
+            Id: searchText || null,
             status: filters.status?.value ?? null
         }
         refresh(undefined, removeNullProps(params));
@@ -158,7 +158,7 @@ export default function OrderTable() {
                                     type="text"
                                     className="form-control"
                                     autoFocus
-                                    placeholder="Tìm kiếm theo tên"
+                                    placeholder="Tìm kiếm theo mã đơn hàng"
                                     disabled={delay}
                                     onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
                                 />

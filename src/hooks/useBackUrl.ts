@@ -1,29 +1,25 @@
 import { useCallback } from 'react';
-
-import { useMemo } from 'react';
-import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
+import { useLocation, useSearchParams } from 'react-router-dom';
 
 function useBackUrl() {
     const location = useLocation();
-    const navigate = useNavigate();
     const [searchParams] = useSearchParams();
 
-    const backUrl = useMemo((): string => {
+    const createBackUrl = useCallback((): string => {
         const url = location.pathname + location.search;
-        return url;
+        return encodeURIComponent(url);
     }, [location.pathname, location.search]);
 
-    const handleNavigateWithBackUrl = useCallback((path: string) => {
-        const newUrl = `${path}?backUrl=${backUrl}`;
-        navigate(newUrl);
-    }, [backUrl, navigate]);
-
     const getBackUrl = useCallback(() => {
-        return searchParams.get("backUrl");
+        const backUrl = searchParams.get("backUrl");
+        return backUrl ? decodeURIComponent(backUrl) : "";
     }, [searchParams]);
 
-    return { backUrl, handleNavigateWithBackUrl, getBackUrl };
+    return {
+        createBackUrl,
+        getBackUrl
+    };
 
 }
 
-export default useBackUrl
+export default useBackUrl;

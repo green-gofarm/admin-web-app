@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { Box, Button, CircularProgress, Grid } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { createCodeString } from "../../../../../helpers/stringUtils";
 import AvatarWrapper from "../../../../General/Wrapper/AvatarWrapper";
 import EllipsisWrapper from "../../../../General/Wrapper/EllipsisWrapper";
@@ -15,6 +15,7 @@ import useDelayLoading from "../../../../../hooks/useDelayLoading";
 export default function FarmstayPreviewTable() {
 
     const navigate = useNavigate();
+    const location = useLocation();
 
     const {
         data,
@@ -88,12 +89,12 @@ export default function FarmstayPreviewTable() {
                     <TooltipIconAction
                         title="Phê duyệt"
                         Icon={GradingIcon}
-                        onClick={() => navigate(`/management/farmstay/preview/${row.id}`)}
+                        onClick={() => navigate(`/management/farmstay/preview/${row.id}?backUrl=${location.pathname + location.search}`)}
                     />
                 </Box>
             )
         },
-    ], [navigate]);
+    ], [location.pathname, location.search, navigate]);
 
 
     return (

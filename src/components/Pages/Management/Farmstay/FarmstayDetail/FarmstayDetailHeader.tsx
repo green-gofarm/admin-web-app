@@ -1,11 +1,12 @@
-import { Box, Button, Grid } from '@mui/material'
+import { Box, Grid } from '@mui/material'
 import { Card } from 'react-bootstrap'
 import AvatarWrapper from '../../../../General/Wrapper/AvatarWrapper'
-import { formatTimeString } from '../../../../../helpers/dateUtils'
 import IconLabelDetail from '../../../../General/Item/IconLabelDetail'
 import { getFeedbackRatingNumber } from './ui-segment/FeedbackItem'
-import LockIcon from "@mui/icons-material/Lock";
-import { Link, useLocation } from 'react-router-dom'
+import { Link } from 'react-router-dom'
+import useBackUrl from '../../../../../hooks/useBackUrl'
+import useContactInfo from './hooks/useContactInfo'
+import StringWrapper from '../../../../General/Wrapper/StringWrapper'
 
 interface IFarmstayDetailHeader {
     detail?: any,
@@ -15,11 +16,13 @@ function FarmstayDetailHeader({
     detail
 }: IFarmstayDetailHeader) {
 
-    const location = useLocation();
+    const { createBackUrl } = useBackUrl();
+
+    const contactInfo = useContactInfo(detail);
 
     return (
         <Card className="custom-card customs-cards">
-            <Card.Body className=" d-md-flex bg-white">
+            <Card.Body className="d-flex bg-white">
                 <div className="">
                     <span className="pos-relative">
                         <Box
@@ -29,8 +32,8 @@ function FarmstayDetailHeader({
                             alt="Farmstay logo"
                             sx={{
                                 position: "relative",
-                                width: "160px",
-                                height: "160px",
+                                width: "96px",
+                                height: "96px",
                                 backgroundPosition: "center",
                                 backgroundSize: "cover",
                                 backgroundRepeat: "no-repeat"
@@ -39,7 +42,11 @@ function FarmstayDetailHeader({
                         <span className="bg-success text-white wd-1 ht-1 rounded-pill profile-online"></span>
                     </span>
                 </div>
-                <Box className="prof-details" margin="0 0 4px 24px">
+                <Box
+                    className="prof-details"
+                    margin="0 0 4px 24px"
+                    flexGrow="1"
+                >
                     <Grid container spacing={0}>
                         <Grid item xs={12}>
                             <h4 className="font-weight-semibold">
@@ -53,7 +60,7 @@ function FarmstayDetailHeader({
                                 value={
                                     <Box
                                         component={Link}
-                                        to={`/management/account/host/${detail?.host?.userId}?backUrl=${location.pathname + location.search}`}
+                                        to={`/management/account/host/${detail?.host?.userId}?backUrl=${createBackUrl()}`}
                                         display="flex"
                                         alignItems="center"
                                         gap="8px"
@@ -72,11 +79,6 @@ function FarmstayDetailHeader({
                                 }
                             />
                             <IconLabelDetail
-                                icon={<i className="fa fa-window-restore me-2"></i>}
-                                label="Ngày tạo:"
-                                value={formatTimeString(detail?.createdDate)}
-                            />
-                            <IconLabelDetail
                                 icon={<i className="fa fa-star me-2"></i>}
                                 label="Đánh giá:"
                                 value={
@@ -87,6 +89,7 @@ function FarmstayDetailHeader({
                                         {new Array(getFeedbackRatingNumber(detail) < 5 ? (5 - getFeedbackRatingNumber(detail)) : 0).fill("").map((_, index) => (
                                             <i className="bx bxs-star text-light" key={index}></i>
                                         ))}
+                                        {` (${getFeedbackRatingNumber(detail)} sao)`}
                                     </div>
                                 }
                             />
@@ -98,34 +101,16 @@ function FarmstayDetailHeader({
                                 value={detail?.address}
                             />
                             <IconLabelDetail
-                                icon={<i className="fa fa-phone me-2"></i>}
+                                icon={<i className="fa fa-address-book me-2"></i>}
                                 label="Liên hệ"
-                                value={detail?.contactInformation}
+                                value={
+                                    contactInfo[0]
+                                        ? <StringWrapper text={contactInfo[0].value} />
+                                        : <i>Chưa có thông tin liên hệ</i>
+                                }
                             />
                         </Grid>
-                        <Grid item xs={12}>
-                            <Box
-                                display="flex"
-                                gap="8px"
-                                height="42px"
-                                className="ms-md-4 ms-0 mb-2"
-                            >
-                                <Button
-                                    sx={{
-                                        marginLeft: "auto"
-                                    }}
-                                    color="error"
-                                    variant="contained"
-                                    size="small"
-                                    startIcon={<LockIcon fontSize="small" />}
-                                >
-                                    Khóa farmstay
-                                </Button>
-                            </Box>
-                        </Grid>
                     </Grid>
-
-
                 </Box>
             </Card.Body>
         </Card>

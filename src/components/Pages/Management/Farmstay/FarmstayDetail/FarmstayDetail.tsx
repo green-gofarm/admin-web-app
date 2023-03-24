@@ -17,6 +17,8 @@ import PolicyTab from './tab/PolicyTab';
 import FAQTab from './tab/FAQTab';
 import OrderHistoryTab from './tab/OrderHistoryTab';
 import FeedbackTab from './tab/FeedbackTab';
+import useFarmstayDetail from './hooks/useFarmstayDetail';
+import useFarmstayDetailTab, { TAB_KEYS } from './hooks/useFarmstayDetailTab';
 
 const breadcrumb: Array<IBreadcrumbItem> = [
     {
@@ -39,17 +41,6 @@ const breadcrumb: Array<IBreadcrumbItem> = [
         }
     }
 ]
-
-const TAB_KEYS = {
-    About: "About",
-    Activity: "Activity",
-    Room: "Room",
-    Service: "Service",
-    Policies: "Policies",
-    FAQ: "FAQ",
-    OrderHistory: "OrderHistory",
-    Feedback: "Feedback",
-}
 
 const tabOptions: NavigationItem[] = [
     {
@@ -86,34 +77,13 @@ const tabOptions: NavigationItem[] = [
     },
 ]
 
-const detail = {
-    id: 1,
-    rating: 3,
-    name: "Nông trại vui vẻ",
-    description: "Trải nghiệm cuộc sống vùng quê sông nước",
-    contactInformation: "Email: wifildt@gmail.com, Phone: 0901234567",
-    address: "160 Pasteur, phường 6, quận 3, thành phố Hồ Chí Minh",
-    country: "Việt Nam",
-    city: "Thành phố Hồ Chí Minh",
-    status: 1,
-    hostId: 1,
-    images: "image1.jpg,image2.jpg,image3.jpg",
-    createdDate: "2022-01-01 10:00:00",
-    updatedDate: "2022-01-02 12:00:00",
-    host: {
-        userId: 45,
-        name: "Lê Danh Trọng",
-        bankAccountName: "LE DANH TRONG",
-        bankAccountNumber: "1234567890",
-        createdDate: "2022-01-01 10:00:00",
-        updatedDate: "2022-01-02 12:00:00"
-    }
-};
-
 function FarmstayDetail() {
 
     const { id } = useParams();
+    const { tab, handleChangeTab } = useFarmstayDetailTab();
     const [searchParams] = useSearchParams();
+
+    const { farmstayDetail, loading } = useFarmstayDetail(id);
 
     return (
         <Box marginBottom="1.3rem">
@@ -137,24 +107,35 @@ function FarmstayDetail() {
 
             <Grid container spacing={2}>
                 <Grid item xs={12}>
-                    <FarmstayDetailHeader detail={detail} />
+                    <FarmstayDetailHeader detail={farmstayDetail} />
                     <div className="profile-tab tab-menu-heading">
-                        <Tab.Container defaultActiveKey="About">
+                        <Tab.Container
+                            onSelect={(newTab) => handleChangeTab(newTab)}
+                            activeKey={tab}
+                        >
                             <Grid
                                 container
                                 spacing={2}
                             >
                                 <Grid item xs={12}>
-                                    <Navigation data={tabOptions} />
+                                    <Navigation
+                                        data={tabOptions}
+                                    />
                                 </Grid>
 
                                 <Grid item xs={12}>
                                     <Tab.Content>
-                                        <TabPaneContentBody eventKey={TAB_KEYS.About}>
-                                            <BasicInfoTab detail={detail} />
-                                        </TabPaneContentBody>
+                                        <Tab.Pane eventKey={TAB_KEYS.About}>
+                                            <BasicInfoTab
+                                                detail={farmstayDetail}
+                                                loading={loading}
+                                            />
+                                        </Tab.Pane>
                                         <Tab.Pane eventKey={TAB_KEYS.Activity}>
-                                            <ActivityTab />
+                                            <ActivityTab
+                                                detail={farmstayDetail}
+                                                loading={loading}
+                                            />
                                         </Tab.Pane>
                                         <TabPaneContentBody eventKey={TAB_KEYS.Room}>
                                             <RoomTab />

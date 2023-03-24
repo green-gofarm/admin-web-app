@@ -135,7 +135,7 @@ function FarmstayPreview() {
                                 spacing={2}
                             >
                                 <Grid item xs={12}>
-                                    <Navigation data={tabOptions} />
+                                    {/* <Navigation data={tabOptions} /> */}
                                 </Grid>
 
                                 <Grid item xs={12}>

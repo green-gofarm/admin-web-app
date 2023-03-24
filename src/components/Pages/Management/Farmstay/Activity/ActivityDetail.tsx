@@ -4,8 +4,11 @@ import PageHeader, { IBreadcrumbItem } from '../../../../General/PageHeader';
 import { Box, Grid } from '@mui/material';
 import DetailPageHeaderTitle from '../../../../General/DetailPageHeaderTitle';
 import ActivityDetailHeader from './ActivityDetailHeader';
-import { Card } from 'react-bootstrap';
 import ActivitySchedule from './ActivitySchedule';
+import useActivityDetail from './hooks/useActivityDetail';
+import ActivityImage from './ActivityImage';
+import useActivityImages from '../FarmstayDetail/hooks/useActivityImages';
+import { Card } from 'react-bootstrap';
 
 const breadcrumb: Array<IBreadcrumbItem> = [
     {
@@ -33,31 +36,12 @@ const breadcrumb: Array<IBreadcrumbItem> = [
     }
 ]
 
-const detail = {
-    id: 3,
-    farmstayId: 2,
-    name: "Cưỡi voi",
-    description: "Một trải nghiệm thú vị giúp bạn có thể khám phá văn hóa và truyền thống của địa phương. Bạn sẽ được cưỡi trên lưng những chú voi khổng lồ và khám phá những cảnh đẹp tuyệt vời ở nơi đây. Ngoài ra, bạn cũng có thể tìm hiểu thêm về cuộc sống và văn hóa của những người dân địa phương thông qua hướng dẫn của họ. Đây là một trải nghiệm đáng nhớ mà bạn không nên bỏ lỡ khi đến thăm.",
-    categoryId: 1,
-    defaultPrice: 350000,
-    images: {
-        logo: "https://example.com/hiking.jpg",
-        others: [
-            "https://example.com/hiking.jpg",
-            "https://example.com/hiking.jpg"
-        ]
-    },
-    status: 1,
-    slot: 3,
-    createdDate: "2022-03-09 15:30:00",
-    updatedDate: "2022-03-09 15:30:00"
-};
-
 function ActivityDetail() {
     const { id, activityId } = useParams();
     const [searchParams] = useSearchParams();
 
-    console.log({ id, activityId });
+    const { detail, loading } = useActivityDetail(id, activityId);
+    const images = useActivityImages(detail);
 
     return (
         <Box marginBottom="1.3rem">
@@ -80,16 +64,35 @@ function ActivityDetail() {
 
             <Grid container spacing={2}>
                 <Grid item xs={12}>
-                    <ActivityDetailHeader detail={detail} />
-                </Grid>
+                    <Card>
+                        <Card.Body className="border-0">
+                            <ActivityDetailHeader
+                                detail={detail}
+                                loading={loading}
+                                images={images}
+                            />
+                        </Card.Body>
+                    </Card>
 
+                </Grid>
                 <Grid item xs={12}>
                     <Card>
                         <Card.Body className="border-0">
-                            <h5 className="mb-2 mt-1 fw-semibold">Lịch hoạt động</h5>
-                            <ActivitySchedule />
+                            <ActivityImage
+                                detail={detail}
+                                loading={loading}
+                                images={images}
+                            />
                         </Card.Body>
                     </Card>
+
+                </Grid>
+
+                <Grid item xs={12}>
+                    <ActivitySchedule
+                        detail={detail}
+                        loading={loading}
+                    />
                 </Grid>
             </Grid>
         </Box>

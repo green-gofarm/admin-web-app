@@ -62,7 +62,7 @@ function useCustomers(preventFirstCall?: boolean) {
                         totalPage: response.data?.totalPage ?? defaultCustomersPagination.totalPage,
                         totalItem: response.data?.totalItem ?? defaultCustomersPagination.totalItem,
                     }))
-                    setData(prev => isAvailableArray(response?.data?.data) ? response.data.data : prev)
+                    setData(prev => isAvailableArray(response?.data?.data) ? response.data.data : [])
                 }
             }
         ))

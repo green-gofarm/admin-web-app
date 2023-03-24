@@ -4,7 +4,9 @@ import makeStyles from '@mui/styles/makeStyles/makeStyles';
 import { convertToMoney } from '../../../../../../helpers/stringUtils';
 import { Status } from '../../../../../../setting/Status';
 import { findActivityStatus } from '../../../../../../setting/activity-status-setting';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import useBackUrl from '../../../../../../hooks/useBackUrl';
+import useActivityImages from '../hooks/useActivityImages';
 
 const useStylesEllipsis = makeStyles({
     multiLineEllipsis: {
@@ -23,7 +25,8 @@ interface IActivityItem {
 function ActivityItem({ item }: IActivityItem) {
     const classes = useStylesEllipsis();
     const navigate = useNavigate();
-    const location = useLocation();
+    const { createBackUrl } = useBackUrl();
+    const images = useActivityImages(item);
 
     return (
         <Card className="custom-card customs-cards">
@@ -34,11 +37,11 @@ function ActivityItem({ item }: IActivityItem) {
                     <Box
                         component="img"
                         className="br-5 "
-                        src={require("../../../../../../assets/img/png/fishing.jpg")}
+                        src={images?.avatar ?? "../../../../../../assets/img/photos/1.jpg"}
                         alt="Activity img"
                         sx={{
                             position: "relative",
-                            height: "140px",
+                            height: "120px",
                             backgroundPosition: "center",
                             backgroundSize: "cover",
                             backgroundRepeat: "no-repeat"
@@ -48,9 +51,16 @@ function ActivityItem({ item }: IActivityItem) {
                 <Box margin="0 0 4px 24px">
                     <Grid container spacing={1}>
                         <Grid item xs={8}>
-                            <h5 className="font-weight-semibold">
-                                {item?.name}
-                            </h5>
+                            <Box
+                                display="flex"
+                                alignItems="center"
+                                gap="8px"
+                            >
+                                <h5 className="font-weight-semibold mb-0">
+                                    {item?.name ?? "No_Name"}
+                                </h5>
+                                <Status statusObject={findActivityStatus(item?.status)} />
+                            </Box>
                         </Grid>
                         <Grid item xs={4}>
                             <Box
@@ -58,7 +68,7 @@ function ActivityItem({ item }: IActivityItem) {
                                 textAlign="right"
                                 className="font-weight-semibold"
                             >
-                                {convertToMoney(item?.defaultPrice)}
+                                {convertToMoney(item?.price)}
                             </Box>
                         </Grid>
                         <Grid item xs={8}>
@@ -66,21 +76,16 @@ function ActivityItem({ item }: IActivityItem) {
                                 {item?.description}
                             </Typography>
                         </Grid>
-                        <Grid item xs={12}>
-                            <Status statusObject={findActivityStatus(item?.status)} />
-                        </Grid>
 
                         <Grid item xs={12}>
                             <Box
                                 className="btn btn-primary shadow"
-                                onClick={() => navigate(`/management/farmstay/all/${item?.farmstayId}/activity/${item?.id}?backUrl=${location.pathname + location.search}`)}
+                                onClick={() => navigate(`/management/farmstay/all/${item?.farmstayId}/activity/${item?.id}?backUrl=${createBackUrl()}`)}
                             >
                                 Xem chi tiết
                             </Box>
                         </Grid>
                     </Grid>
-
-
                 </Box>
             </Card.Body>
         </Card>

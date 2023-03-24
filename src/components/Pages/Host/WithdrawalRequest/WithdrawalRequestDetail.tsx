@@ -86,7 +86,7 @@ const detail = {
 function WithdrawalRequestDetail() {
 
     const { id } = useParams();
-    const { getBackUrl, backUrl } = useBackUrl();
+    const { getBackUrl, createBackUrl } = useBackUrl();
 
     return (
         <Box marginBottom="1.3rem">
@@ -128,7 +128,7 @@ function WithdrawalRequestDetail() {
                                         value={
                                             <Link
                                                 className="tag tag-rounded clickable"
-                                                to={`/management/booking-request/${id}?backUrl=${backUrl}`}
+                                                to={`/management/booking-request/${id}?backUrl=${createBackUrl()}`}
                                             >
                                                 {createCodeString("OD", id)}
                                             </Link>

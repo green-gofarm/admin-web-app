@@ -63,7 +63,7 @@ function useFeedbacks(preventFirstCall?: boolean) {
                         totalItem: response.data?.totalItem ?? defaultFeedbacksPagination.totalItem,
                     }))
 
-                    setData(prev => isAvailableArray(response?.data?.data) ? response.data.data : prev)
+                    setData(prev => isAvailableArray(response?.data?.data) ? response.data.data : [])
                 }
             }
         ))

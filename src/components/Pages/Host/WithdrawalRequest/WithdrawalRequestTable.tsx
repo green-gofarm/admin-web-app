@@ -12,6 +12,7 @@ import { formatTimeString, getTimeAgoString } from "../../../../helpers/dateUtil
 import ViewIconAction from "../../../General/Action/IconAction/ViewIconAction";
 import useBackUrl from "../../../../hooks/useBackUrl";
 import SendIconAction from "../../../General/Action/IconAction/SendIconAction";
+import { useNavigate } from "react-router-dom";
 
 const dataObject = JSON.parse(JSON.stringify(json));
 const data = dataObject.data;
@@ -19,7 +20,8 @@ const data = dataObject.data;
 
 export default function WithdrawalRequestTable() {
 
-    const { handleNavigateWithBackUrl } = useBackUrl();
+    const navigate = useNavigate();
+    const { createBackUrl } = useBackUrl();
 
     const columns = useMemo(() => [
         {
@@ -74,13 +76,13 @@ export default function WithdrawalRequestTable() {
                     columnGap="8px"
                 >
                     <ViewIconAction
-                        onClick={() => handleNavigateWithBackUrl(`/management/withdrawal-request/${row.id}`)}
+                        onClick={() => navigate(`/management/withdrawal-request/${row.id}?backUrl=${createBackUrl()}`)}
                     />
                     <SendIconAction />
                 </Box>
             )
         },
-    ], [handleNavigateWithBackUrl]);
+    ], [createBackUrl, navigate]);
 
     return (
         <>

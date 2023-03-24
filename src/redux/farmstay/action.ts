@@ -33,3 +33,57 @@ export const searchAllFarmstaysSuccess = (data: any): IReduxAction => ({
 export const searchAllFarmstaysFailed = (): IReduxAction => ({
     type: type.SEARCH_ALL_FARMSTAYS_FAILED
 })
+
+
+export const getFarmstayDetail = (id: any, option?: IReduxActionOption): IReduxAction => ({
+    type: type.GET_FARMSTAY_DETAIL,
+    payload: { id, option: option ?? getEmptyOption() }
+})
+
+export const getFarmstayDetailSuccess = (data: any): IReduxAction => ({
+    type: type.GET_FARMSTAY_DETAIL_SUCCESS,
+    payload: data
+})
+
+export const getFarmstayDetailFailed = (): IReduxAction => ({
+    type: type.GET_FARMSTAY_DETAIL_FAILED
+})
+
+export const clearFarmstayDetail = (): IReduxAction => ({
+    type: type.CLEAR_FARMSTAY_DETAIL
+})
+
+
+
+export const getActivityDetail = (farmstayId: any, activityId: any, option?: IReduxActionOption): IReduxAction => ({
+    type: type.GET_ACTIVITY_DETAIL,
+    payload: { farmstayId, activityId, option: option ?? getEmptyOption() }
+})
+
+export const getActivityDetailSuccess = (data: any): IReduxAction => ({
+    type: type.GET_ACTIVITY_DETAIL_SUCCESS,
+    payload: data
+})
+
+export const getActivityDetailFailed = (): IReduxAction => ({
+    type: type.GET_ACTIVITY_DETAIL_FAILED
+})
+
+export const clearActivityDetail = (): IReduxAction => ({
+    type: type.CLEAR_ACTIVITY_DETAIL
+})
+
+
+export const getActivitySchedule = (data: any, option?: IReduxActionOption): IReduxAction => ({
+    type: type.GET_ACTIVITY_SCHEDULE,
+    payload: { data, option: option ?? getEmptyOption() }
+})
+
+export const getActivityScheduleSuccess = (data: any): IReduxAction => ({
+    type: type.GET_ACTIVITY_SCHEDULE_SUCCESS,
+    payload: data
+})
+
+export const getActivityScheduleFailed = (): IReduxAction => ({
+    type: type.GET_ACTIVITY_SCHEDULE_FAILED
+})

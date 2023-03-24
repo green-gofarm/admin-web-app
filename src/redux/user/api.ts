@@ -29,9 +29,10 @@ export function searchUsersWithRole(params: any, role: ROLES) {
 
     const _params: Record<string, string> = {
         ...params ?? {},
-        role,
+        Role: role,
     }
 
     const url = `${ENP.USER}/search`;
     return axiosRequest(url, option, _params);
 }
+

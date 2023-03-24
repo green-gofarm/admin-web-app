@@ -15,7 +15,8 @@ import { Card } from "react-bootstrap";
 import useDisbursement, { defaultDisbursementsPagination } from "./hooks/useDisbursement";
 import useDelayLoading from "../../../../hooks/useDelayLoading";
 import { removeNullProps } from "../../../../setting/general-props";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import useBackUrl from "../../../../hooks/useBackUrl";
 
 export default function WithdrawalRequestTable() {
 
@@ -54,7 +55,7 @@ export default function WithdrawalRequestTable() {
 
     useEffect(() => {
         const params = {
-            name: searchText || null,
+            OrderId: searchText || null,
             status: filters.status?.value ?? null
         }
         refresh(undefined, removeNullProps(params));
@@ -74,14 +75,14 @@ export default function WithdrawalRequestTable() {
 
     const handleSubmit = () => {
         const params = {
-            name: searchText || null,
+            OrderId: searchText || null,
             status: filters.status?.value ?? null
         }
         refresh(undefined, removeNullProps(params));
     }
 
     const navigate = useNavigate();
-    const location = useLocation();
+    const { createBackUrl } = useBackUrl();
 
     const columns = useMemo(() => [
         {
@@ -108,7 +109,7 @@ export default function WithdrawalRequestTable() {
         },
         {
             key: "amount",
-            label: "Số tiền thanh toán",
+            label: "Số tiền giải ngân",
             align: "right",
             render: (row: any) => convertToMoney(row.amount) ?? "-"
         },
@@ -136,12 +137,12 @@ export default function WithdrawalRequestTable() {
                     columnGap="8px"
                 >
                     <ViewIconAction
-                        onClick={() => navigate(`/management/withdrawal-request/${row.id}?backUrl=${location.pathname + location.search}`)}
+                        onClick={() => navigate(`/management/withdrawal-request/${row.id}?backUrl=${createBackUrl()}`)}
                     />
                 </Box>
             )
         },
-    ], [location, navigate]);
+    ], [createBackUrl, navigate]);
 
     return (
         <>

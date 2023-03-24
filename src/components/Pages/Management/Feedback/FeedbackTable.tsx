@@ -79,7 +79,7 @@ export default function FeedbackTable() {
 
     useEffect(() => {
         const params = {
-            name: searchText || null,
+            Comment: searchText || null,
             status: filters.status?.value ?? null,
             type: filters.type?.value ?? null
         };

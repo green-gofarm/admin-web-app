@@ -24,7 +24,10 @@ export interface RootState {
 
     farmstay: {
         farmstays: any,
-        allFarmstays: any[]
+        allFarmstays: any[],
+        farmstayDetail: any,
+        activityDetail: any,
+        activitySchedule: any
     };
 
     service: {

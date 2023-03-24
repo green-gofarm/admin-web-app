@@ -34,7 +34,7 @@ axiosClient.interceptors.response.use((response) => {
 
 export default axiosClient;
 
-const urlWithParams = (url: string, params: Record<string, string>) => {
+const urlWithParams = (url: string, params?: Record<string, string>) => {
 	const newUrl = new URL(url);
 	if (params) {
 		newUrl.search = new URLSearchParams(params).toString();
@@ -50,7 +50,7 @@ const isResponseError = (response: any): response is AxiosError => {
 	return isAxiosError(response?.name);
 }
 
-export const axiosRequest = async (url: string, options: AxiosRequestConfig = {}, params: Record<string, string>) => {
+export const axiosRequest = async (url: string, options: AxiosRequestConfig = {}, params?: Record<string, string>) => {
 
 	const preparedUrl = urlWithParams(url, params);
 

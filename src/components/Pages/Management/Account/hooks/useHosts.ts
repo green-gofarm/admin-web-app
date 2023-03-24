@@ -62,7 +62,7 @@ function useHosts(preventFirstCall?: boolean) {
                         totalPage: response.data?.totalPage ?? defaultHostsPagination.totalPage,
                         totalItem: response.data?.totalItem ?? defaultHostsPagination.totalItem,
                     }))
-                    setData(prev => isAvailableArray(response?.data?.data) ? response.data.data : prev)
+                    setData(prev => isAvailableArray(response?.data?.data) ? response.data.data : [])
                 }
             }
         ))

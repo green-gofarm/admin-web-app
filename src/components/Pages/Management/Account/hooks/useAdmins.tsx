@@ -63,7 +63,7 @@ function useAdmins(preventFirstCall?: boolean) {
                         totalItem: response.data?.totalItem ?? defaultHostsPagination.totalItem,
                     }))
 
-                    setData(prev => isAvailableArray(response?.data?.data) ? response.data.data : prev)
+                    setData(prev => isAvailableArray(response?.data?.data) ? response.data.data : [])
                 }
             }
         ))
