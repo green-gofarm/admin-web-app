@@ -77,7 +77,7 @@ function* getActivityDetail(action: IReduxAction): Generator<any, void, any> {
 
     option?.loading && option.loading(true);
     try {
-        yield put(actions.clearFarmstayDetail());
+        yield put(actions.clearActivityDetail());
 
         const response = yield call(apis.getActivityDetail, action.payload.farmstayId, action.payload.activityId);
 
@@ -100,8 +100,6 @@ function* getActivitySchedule(action: IReduxAction): Generator<any, void, any> {
 
     option?.loading && option.loading(true);
     try {
-        yield put(actions.clearFarmstayDetail());
-
         const response = yield call(apis.getActivitySchedule, data.farmstayId, data.activityId, data.date);
 
         yield put(actions.getActivityScheduleSuccess(response));
@@ -122,14 +120,12 @@ function* watchActivity() {
     yield takeLatest(types.GET_ACTIVITY_SCHEDULE, getActivitySchedule);
 }
 
-
 function* getRoomDetail(action: IReduxAction): Generator<any, void, any> {
     const option: IReduxActionOption = action.payload?.option
 
     option?.loading && option.loading(true);
     try {
-        yield put(actions.clearFarmstayDetail());
-
+        yield put(actions.clearRoomDetail());
         const response = yield call(apis.getRoomDetail, action.payload.farmstayId, action.payload.roomId);
 
         yield put(actions.getRoomDetailSuccess(response));
@@ -151,8 +147,6 @@ function* getRoomSchedule(action: IReduxAction): Generator<any, void, any> {
 
     option?.loading && option.loading(true);
     try {
-        yield put(actions.clearFarmstayDetail());
-
         const response = yield call(apis.getRoomSchedule, data.farmstayId, data.roomId, data.date);
 
         yield put(actions.getRoomScheduleSuccess(response));
@@ -173,12 +167,304 @@ function* watchRoom() {
     yield takeLatest(types.GET_ROOM_SCHEDULE, getRoomSchedule);
 }
 
+function* createFarmstay(action: IReduxAction): Generator<any, void, any> {
+    const option: IReduxActionOption = action.payload.option
+
+    option?.loading && option.loading(true);
+    try {
+        const response = yield call(apis.createFarmstay, action.payload.hostId, action.payload.data);
+        option?.onSuccess && option.onSuccess(response);
+    } catch (error) {
+        option?.onFailure && option.onFailure(error);
+        console.log(error);
+    }
+
+    option?.loading && option.loading(false);
+}
+
+
+function* updateFarmstay(action: IReduxAction): Generator<any, void, any> {
+    const option: IReduxActionOption = action.payload.option
+
+    option?.loading && option.loading(true);
+    try {
+        const response = yield call(
+            apis.updateFarmstay,
+            action.payload.hostId,
+            action.payload.farmstayId,
+            action.payload.data
+        );
+        option?.onSuccess && option.onSuccess(response);
+    } catch (error) {
+        option?.onFailure && option.onFailure(error);
+        console.log(error);
+    }
+
+    option?.loading && option.loading(false);
+}
+
+function* createFarmstayActivities(action: IReduxAction): Generator<any, void, any> {
+    const option: IReduxActionOption = action.payload.option
+
+    option?.loading && option.loading(true);
+    try {
+        const response = yield call(
+            apis.createFarmstayActivities,
+            action.payload.hostId,
+            action.payload.farmstayId,
+            action.payload.data
+        );
+        option?.onSuccess && option.onSuccess(response);
+    } catch (error) {
+        option?.onFailure && option.onFailure(error);
+        console.log(error);
+    }
+
+    option?.loading && option.loading(false);
+}
+
+
+function* updateFarmstayActivities(action: IReduxAction): Generator<any, void, any> {
+    const option: IReduxActionOption = action.payload.option
+
+    option?.loading && option.loading(true);
+    try {
+        const response = yield call(
+            apis.updateFarmstayActivities,
+            action.payload.hostId,
+            action.payload.farmstayId,
+            action.payload.activityId,
+            action.payload.data
+        );
+        option?.onSuccess && option.onSuccess(response);
+    } catch (error) {
+        option?.onFailure && option.onFailure(error);
+        console.log(error);
+    }
+
+    option?.loading && option.loading(false);
+}
+
+
+function* createFarmstayServices(action: IReduxAction): Generator<any, void, any> {
+    const option: IReduxActionOption = action.payload.option
+
+    option?.loading && option.loading(true);
+    try {
+        const response = yield call(
+            apis.createFarmstayServices,
+            action.payload.hostId,
+            action.payload.farmstayId,
+            action.payload.data
+        );
+        option?.onSuccess && option.onSuccess(response);
+    } catch (error) {
+        option?.onFailure && option.onFailure(error);
+        console.log(error);
+    }
+
+    option?.loading && option.loading(false);
+}
+
+
+function* updateFarmstayServices(action: IReduxAction): Generator<any, void, any> {
+    const option: IReduxActionOption = action.payload.option
+
+    option?.loading && option.loading(true);
+    try {
+        const response = yield call(
+            apis.updateFarmstayServices,
+            action.payload.hostId,
+            action.payload.farmstayId,
+            action.payload.serviceId,
+            action.payload.data
+        );
+        option?.onSuccess && option.onSuccess(response);
+    } catch (error) {
+        option?.onFailure && option.onFailure(error);
+        console.log(error);
+    }
+
+    option?.loading && option.loading(false);
+}
+
+
+function* createFarmstayPolicies(action: IReduxAction): Generator<any, void, any> {
+    const option: IReduxActionOption = action.payload.option
+
+    option?.loading && option.loading(true);
+    try {
+        const response = yield call(
+            apis.createFarmstayPolicies,
+            action.payload.hostId,
+            action.payload.farmstayId,
+            action.payload.data
+        );
+        option?.onSuccess && option.onSuccess(response);
+    } catch (error) {
+        option?.onFailure && option.onFailure(error);
+        console.log(error);
+    }
+
+    option?.loading && option.loading(false);
+}
+
+
+function* updateFarmstayPolicies(action: IReduxAction): Generator<any, void, any> {
+    const option: IReduxActionOption = action.payload.option
+
+    option?.loading && option.loading(true);
+    try {
+        const response = yield call(
+            apis.updateFarmstayPolicies,
+            action.payload.hostId,
+            action.payload.farmstayId,
+            action.payload.policies,
+            action.payload.data
+        );
+        option?.onSuccess && option.onSuccess(response);
+    } catch (error) {
+        option?.onFailure && option.onFailure(error);
+        console.log(error);
+    }
+
+    option?.loading && option.loading(false);
+}
+
+
+function* createFarmstayRooms(action: IReduxAction): Generator<any, void, any> {
+    const option: IReduxActionOption = action.payload.option
+
+    option?.loading && option.loading(true);
+    try {
+        const response = yield call(
+            apis.createFarmstayRooms,
+            action.payload.hostId,
+            action.payload.farmstayId,
+            action.payload.data
+        );
+        option?.onSuccess && option.onSuccess(response);
+    } catch (error) {
+        option?.onFailure && option.onFailure(error);
+        console.log(error);
+    }
+
+    option?.loading && option.loading(false);
+}
+
+
+function* updateFarmstayRooms(action: IReduxAction): Generator<any, void, any> {
+    const option: IReduxActionOption = action.payload.option
+
+    option?.loading && option.loading(true);
+    try {
+        const response = yield call(
+            apis.updateFarmstayRooms,
+            action.payload.hostId,
+            action.payload.farmstayId,
+            action.payload.roomId,
+            action.payload.data
+        );
+        option?.onSuccess && option.onSuccess(response);
+    } catch (error) {
+        option?.onFailure && option.onFailure(error);
+        console.log(error);
+    }
+
+    option?.loading && option.loading(false);
+}
+
+
+function* createFarmstayFaqs(action: IReduxAction): Generator<any, void, any> {
+    const option: IReduxActionOption = action.payload.option
+
+    option?.loading && option.loading(true);
+    try {
+        const response = yield call(
+            apis.createFarmstayFaqs,
+            action.payload.hostId,
+            action.payload.farmstayId,
+            action.payload.data
+        );
+        option?.onSuccess && option.onSuccess(response);
+    } catch (error) {
+        option?.onFailure && option.onFailure(error);
+        console.log(error);
+    }
+
+    option?.loading && option.loading(false);
+}
+
+
+function* updateFarmstayFaqs(action: IReduxAction): Generator<any, void, any> {
+    const option: IReduxActionOption = action.payload.option
+
+    option?.loading && option.loading(true);
+    try {
+        const response = yield call(
+            apis.updateFarmstayFaqs,
+            action.payload.hostId,
+            action.payload.farmstayId,
+            action.payload.faqId,
+            action.payload.data
+        );
+        option?.onSuccess && option.onSuccess(response);
+    } catch (error) {
+        option?.onFailure && option.onFailure(error);
+        console.log(error);
+    }
+
+    option?.loading && option.loading(false);
+}
+
+
+function* reviewFarmstay(action: IReduxAction): Generator<any, void, any> {
+    const option: IReduxActionOption = action.payload.option
+
+    option?.loading && option.loading(true);
+    try {
+        const response = yield call(
+            apis.reviewFarmstay,
+            action.payload.id,
+            action.payload.data
+        );
+        option?.onSuccess && option.onSuccess(response);
+    } catch (error) {
+        option?.onFailure && option.onFailure(error);
+        console.log(error);
+    }
+
+    option?.loading && option.loading(false);
+}
+
+function* watchCRUD() {
+    yield takeLatest(types.CREATE_FARMSTAY, createFarmstay);
+    yield takeLatest(types.UPDATE_FARMSTAY, updateFarmstay);
+
+    yield takeLatest(types.CREATE_FARMSTAY_ACTIVITIES, createFarmstayActivities);
+    yield takeLatest(types.UPDATE_FARMSTAY_ACTIVITIES, updateFarmstayActivities);
+
+    yield takeLatest(types.CREATE_FARMSTAY_SERVICES, createFarmstayServices);
+    yield takeLatest(types.UPDATE_FARMSTAY_SERVICES, updateFarmstayServices);
+
+    yield takeLatest(types.CREATE_FARMSTAY_POLICIES, createFarmstayPolicies);
+    yield takeLatest(types.UPDATE_FARMSTAY_POLICIES, updateFarmstayPolicies);
+
+    yield takeLatest(types.CREATE_FARMSTAY_ROOMS, createFarmstayRooms);
+    yield takeLatest(types.UPDATE_FARMSTAY_ROOMS, updateFarmstayRooms);
+
+    yield takeLatest(types.CREATE_FARMSTAY_FAQS, createFarmstayFaqs);
+    yield takeLatest(types.UPDATE_FARMSTAY_FAQS, updateFarmstayFaqs);
+
+    yield takeLatest(types.REVIEW_FARMSTAY, reviewFarmstay);
+}
 
 function* watchFarmstay() {
     yield all([
         fork(watchSearch),
         fork(watchActivity),
         fork(watchRoom),
+        fork(watchCRUD)
     ]);
 }
 

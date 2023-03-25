@@ -120,3 +120,75 @@ export const getRoomScheduleSuccess = (data: any): IReduxAction => ({
 export const getRoomScheduleFailed = (): IReduxAction => ({
     type: type.GET_ROOM_SCHEDULE_FAILED
 })
+
+// CRUD farmstay
+export const createFarmstay = (hostId: any, data: any, option?: ReduxActionOption): IReduxAction => ({
+    type: type.CREATE_FARMSTAY,
+    payload: { hostId, data, option: option ?? getEmptyOption() }
+})
+
+export const updateFarmstay = (hostId: any, farmstayId: any, data: any, option?: ReduxActionOption): IReduxAction => ({
+    type: type.UPDATE_FARMSTAY,
+    payload: { hostId, farmstayId, data, option: option ?? getEmptyOption() }
+})
+
+// CRUD activity
+export const createFarmstayActivities = (hostId: any, farmstayId: any, data: any, option?: ReduxActionOption): IReduxAction => ({
+    type: type.CREATE_FARMSTAY_ACTIVITIES,
+    payload: { hostId, farmstayId, data, option: option ?? getEmptyOption() }
+})
+
+export const updateFarmstayActivities = (hostId: any, farmstayId: any, activityId: any, data: any, option?: ReduxActionOption): IReduxAction => ({
+    type: type.UPDATE_FARMSTAY_ACTIVITIES,
+    payload: { hostId, farmstayId, activityId, data, option: option ?? getEmptyOption() }
+})
+
+// CRUD policies
+export const createFarmstayPolicies = (hostId: any, farmstayId: any, data: any, option?: ReduxActionOption): IReduxAction => ({
+    type: type.CREATE_FARMSTAY_POLICIES,
+    payload: { hostId, farmstayId, data, option: option ?? getEmptyOption() }
+})
+
+export const updateFarmstayPolicies = (hostId: any, farmstayId: any, policyId: any, data: any, option?: ReduxActionOption): IReduxAction => ({
+    type: type.UPDATE_FARMSTAY_POLICIES,
+    payload: { hostId, farmstayId, policyId, data, option: option ?? getEmptyOption() }
+})
+
+// CRUD services
+export const createFarmstayServices = (hostId: any, farmstayId: any, data: any, option?: ReduxActionOption): IReduxAction => ({
+    type: type.CREATE_FARMSTAY_SERVICES,
+    payload: { hostId, farmstayId, data, option: option ?? getEmptyOption() }
+})
+
+export const updateFarmstayServices = (hostId: any, farmstayId: any, serviceId: any, data: any, option?: ReduxActionOption): IReduxAction => ({
+    type: type.UPDATE_FARMSTAY_SERVICES,
+    payload: { hostId, farmstayId, serviceId, data, option: option ?? getEmptyOption() }
+})
+
+// CRUD rooms
+export const createFarmstayRooms = (hostId: any, farmstayId: any, data: any, option?: ReduxActionOption): IReduxAction => ({
+    type: type.CREATE_FARMSTAY_SERVICES,
+    payload: { hostId, farmstayId, data, option: option ?? getEmptyOption() }
+})
+
+export const updateFarmstayRooms = (hostId: any, farmstayId: any, roomId: any, data: any, option?: ReduxActionOption): IReduxAction => ({
+    type: type.UPDATE_FARMSTAY_SERVICES,
+    payload: { hostId, farmstayId, roomId, data, option: option ?? getEmptyOption() }
+})
+
+// CRUD faqs
+export const createFarmstayFaqs = (hostId: any, farmstayId: any, data: any, option?: ReduxActionOption): IReduxAction => ({
+    type: type.CREATE_FARMSTAY_SERVICES,
+    payload: { hostId, farmstayId, data, option: option ?? getEmptyOption() }
+})
+
+export const updateFarmstayFaqs = (hostId: any, farmstayId: any, faqId: any, data: any, option?: ReduxActionOption): IReduxAction => ({
+    type: type.UPDATE_FARMSTAY_SERVICES,
+    payload: { hostId, farmstayId, faqId, data, option: option ?? getEmptyOption() }
+})
+
+
+export const reviewFarmstay = (id: any, data: any, option?: ReduxActionOption): IReduxAction => ({
+    type: type.REVIEW_FARMSTAY,
+    payload: { id, data, option: option ?? getEmptyOption() }
+})

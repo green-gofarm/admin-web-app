@@ -121,3 +121,23 @@ export const searchAllAdminsSuccess = (data: any): IReduxAction => ({
 export const searchAllAdminsFailed = (): IReduxAction => ({
     type: type.SEARCH_ALL_ADMINS_FAILED
 })
+
+
+// Get user detail
+export const getUserDetail = (id: any, role: any, option?: IReduxActionOption): IReduxAction => ({
+    type: type.GET_USER_DETAIL,
+    payload: { id, role, option: option ?? getEmptyOption() }
+})
+
+export const getUserDetailSuccess = (data: any): IReduxAction => ({
+    type: type.GET_USER_DETAIL_SUCCESS,
+    payload: data
+})
+
+export const getUserDetailFailed = (): IReduxAction => ({
+    type: type.GET_USER_DETAIL_FAILED
+})
+
+export const clearUserDetail = (): IReduxAction => ({
+    type: type.CLEAR_USER_DETAIL
+})

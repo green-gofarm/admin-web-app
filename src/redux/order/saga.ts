@@ -40,9 +40,57 @@ function* searchDisbursements(action: IReduxAction): Generator<any, void, any> {
     option?.loading && option.loading(false);
 }
 
+
+function* getOrderDetail(action: IReduxAction): Generator<any, void, any> {
+    const id = action.payload.id;
+    const option: IReduxActionOption = action.payload?.option
+
+    option?.loading && option.loading(true);
+    try {
+        yield put(actions.clearOrderDetail());
+
+        const response = yield call(apis.getOrderDetail, id);
+
+        yield put(actions.getOrderDetailSuccess(response));
+        option?.onSuccess && option.onSuccess(response);
+    } catch (error) {
+        console.log(error);
+
+        yield put(actions.getOrderDetailFailed());
+        option?.onFailure && option.onFailure(error);
+
+    }
+
+    option?.loading && option.loading(false);
+}
+
+
+function* getDisbursementDetail(action: IReduxAction): Generator<any, void, any> {
+    const id = action.payload.id;
+    const option: IReduxActionOption = action.payload?.option
+
+    option?.loading && option.loading(true);
+    try {
+        yield put(actions.clearDisbursementDetail());
+
+        const response = yield call(apis.getDisbursementDetail, id);
+
+        yield put(actions.getDisbursementDetailSuccess(response));
+        option?.onSuccess && option.onSuccess(response);
+    } catch (error) {
+        console.log(error);
+        yield put(actions.getDisbursementDetailFailed());
+        option?.onFailure && option.onFailure(error);
+    }
+
+    option?.loading && option.loading(false);
+}
+
 function* watchSearch() {
     yield takeLatest(types.SEARCH_ORDERS, searchOrders);
     yield takeLatest(types.SEARCH_DISBURSEMENTS, searchDisbursements);
+    yield takeLatest(types.GET_ORDER_DETAIL, getOrderDetail);
+    yield takeLatest(types.GET_DISBURSEMENT_DETAIL, getDisbursementDetail);
 }
 
 function* watchOrder() {

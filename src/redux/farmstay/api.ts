@@ -88,3 +88,180 @@ export function getRoomSchedule(farmstayId: any, roomId: any, date: any) {
     const url = `${ENP.FARMSTAY}/${farmstayId}/rooms/${roomId}/schedule`;
     return axiosRequest(url, option, _params);
 }
+
+export function createFarmstay(hostId: any, data: any) {
+    const option: AxiosRequestConfig = {
+        method: METHOD.POST,
+        headers: {
+            "Content-Type": "application/json"
+        },
+        data: JSON.stringify(data ?? {})
+    }
+
+    const url = `${ENP.HOST}/${hostId}/farmstays`;
+    return axiosRequest(url, option);
+}
+
+
+export function updateFarmstay(hostId: any, farmstayId: any, data: any) {
+    const option: AxiosRequestConfig = {
+        method: METHOD.PATCH,
+        headers: {
+            "Content-Type": "application/json"
+        },
+        data: JSON.stringify(data ?? {})
+    }
+
+    const url = `${ENP.HOST}/${hostId}/farmstays/${farmstayId}`;
+    return axiosRequest(url, option);
+}
+
+
+export function createFarmstayActivities(hostId: any, farmstayId: any, data: any) {
+    const option: AxiosRequestConfig = {
+        method: METHOD.POST,
+        headers: {
+            "Content-Type": "application/json"
+        },
+        data: JSON.stringify(data ?? {})
+    }
+
+    const url = `${ENP.HOST}/${hostId}/farmstays/${farmstayId}`;
+    return axiosRequest(url, option);
+}
+
+
+export function updateFarmstayActivities(hostId: any, farmstayId: any, activityId: any, data: any) {
+    const option: AxiosRequestConfig = {
+        method: METHOD.PATCH,
+        headers: {
+            "Content-Type": "application/json"
+        },
+        data: JSON.stringify(data ?? {})
+    }
+
+    const url = `${ENP.HOST}/${hostId}/farmstays/${farmstayId}/activities/${activityId}`;
+    return axiosRequest(url, option);
+}
+
+export function createFarmstayServices(hostId: any, farmstayId: any, data: any) {
+    const option: AxiosRequestConfig = {
+        method: METHOD.POST,
+        headers: {
+            "Content-Type": "application/json"
+        },
+        data: JSON.stringify(data ?? {})
+    }
+
+    const url = `${ENP.HOST}/${hostId}/farmstays/${farmstayId}`;
+    return axiosRequest(url, option);
+}
+
+
+export function updateFarmstayServices(hostId: any, farmstayId: any, serviceId: any, data: any) {
+    const option: AxiosRequestConfig = {
+        method: METHOD.PATCH,
+        headers: {
+            "Content-Type": "application/json"
+        },
+        data: JSON.stringify(data ?? {})
+    }
+
+    const url = `${ENP.HOST}/${hostId}/farmstays/${farmstayId}/services/${serviceId}`;
+    return axiosRequest(url, option);
+}
+
+export function createFarmstayPolicies(hostId: any, farmstayId: any, data: any) {
+    const option: AxiosRequestConfig = {
+        method: METHOD.POST,
+        headers: {
+            "Content-Type": "application/json"
+        },
+        data: JSON.stringify(data ?? {})
+    }
+
+    const url = `${ENP.HOST}/${hostId}/farmstays/${farmstayId}`;
+    return axiosRequest(url, option);
+}
+
+
+export function updateFarmstayPolicies(hostId: any, farmstayId: any, policyId: any, data: any) {
+    const option: AxiosRequestConfig = {
+        method: METHOD.PATCH,
+        headers: {
+            "Content-Type": "application/json"
+        },
+        data: JSON.stringify(data ?? {})
+    }
+
+    const url = `${ENP.HOST}/${hostId}/farmstays/${farmstayId}/policies/${policyId}`;
+    return axiosRequest(url, option);
+}
+
+export function createFarmstayRooms(hostId: any, farmstayId: any, data: any) {
+    const option: AxiosRequestConfig = {
+        method: METHOD.POST,
+        headers: {
+            "Content-Type": "application/json"
+        },
+        data: JSON.stringify(data ?? {})
+    }
+
+    const url = `${ENP.HOST}/${hostId}/farmstays/${farmstayId}`;
+    return axiosRequest(url, option);
+}
+
+
+export function updateFarmstayRooms(hostId: any, farmstayId: any, roomId: any, data: any) {
+    const option: AxiosRequestConfig = {
+        method: METHOD.PATCH,
+        headers: {
+            "Content-Type": "application/json"
+        },
+        data: JSON.stringify(data ?? {})
+    }
+
+    const url = `${ENP.HOST}/${hostId}/farmstays/${farmstayId}/rooms/${roomId}`;
+    return axiosRequest(url, option);
+}
+
+export function createFarmstayFaqs(hostId: any, farmstayId: any, data: any) {
+    const option: AxiosRequestConfig = {
+        method: METHOD.POST,
+        headers: {
+            "Content-Type": "application/json"
+        },
+        data: JSON.stringify(data ?? {})
+    }
+
+    const url = `${ENP.HOST}/${hostId}/farmstays/${farmstayId}`;
+    return axiosRequest(url, option);
+}
+
+
+export function updateFarmstayFaqs(hostId: any, farmstayId: any, faqId: any, data: any) {
+    const option: AxiosRequestConfig = {
+        method: METHOD.PATCH,
+        headers: {
+            "Content-Type": "application/json"
+        },
+        data: JSON.stringify(data ?? {})
+    }
+
+    const url = `${ENP.HOST}/${hostId}/farmstays/${farmstayId}/faqs/${faqId}`;
+    return axiosRequest(url, option);
+}
+
+
+export function reviewFarmstay(id: any, data: any) {
+    const option: AxiosRequestConfig = {
+        method: METHOD.PATCH,
+        headers: {
+            "Content-Type": "application/json"
+        },
+        data: JSON.stringify(data ?? {})
+    }
+
+    const url = `${ENP.ADMIN}/farmstays/${id}/status`;
+    return axiosRequest(url, option);
+}

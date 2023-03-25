@@ -30,7 +30,7 @@ export const Error404 = () => {
             </h6>
             <Link
               className="btn btn-light"
-              to="/dashboard"
+              to="/"
             >
               Quay lại trang chủ
             </Link>

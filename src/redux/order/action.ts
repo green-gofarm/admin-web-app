@@ -34,3 +34,41 @@ export const searchDisbursementsSuccess = (data: any): IReduxAction => ({
 export const searchDisbursementsFailed = (): IReduxAction => ({
     type: type.SEARCH_DISBURSEMENTS_FAILED
 })
+
+
+export const getOrderDetail = (id: any, option?: IReduxActionOption): IReduxAction => ({
+    type: type.GET_ORDER_DETAIL,
+    payload: { id, option: option ?? getEmptyOption() }
+})
+
+export const getOrderDetailSuccess = (data: any): IReduxAction => ({
+    type: type.GET_ORDER_DETAIL_SUCCESS,
+    payload: data
+})
+
+export const getOrderDetailFailed = (): IReduxAction => ({
+    type: type.GET_ORDER_DETAIL_FAILED
+})
+
+export const clearOrderDetail = (): IReduxAction => ({
+    type: type.CLEAR_ORDER_DETAIL
+})
+
+//Disbursement
+export const getDisbursementDetail = (id: any, option?: IReduxActionOption): IReduxAction => ({
+    type: type.GET_DISBURSEMENT_DETAIL,
+    payload: { id, option: option ?? getEmptyOption() }
+})
+
+export const getDisbursementDetailSuccess = (data: any): IReduxAction => ({
+    type: type.GET_DISBURSEMENT_DETAIL_SUCCESS,
+    payload: data
+})
+
+export const getDisbursementDetailFailed = (): IReduxAction => ({
+    type: type.GET_DISBURSEMENT_DETAIL_FAILED
+})
+
+export const clearDisbursementDetail = (): IReduxAction => ({
+    type: type.CLEAR_DISBURSEMENT_DETAIL
+})

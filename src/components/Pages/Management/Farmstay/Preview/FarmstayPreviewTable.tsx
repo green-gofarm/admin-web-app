@@ -101,7 +101,7 @@ export default function FarmstayPreviewTable() {
                                         bg=""
                                         className=" badge-primary-transparent tx-16 font-weight-bold text-primiary ms-2 me-2"
                                     >
-                                        {data.length}
+                                        {pagination.totalItem}
                                     </Badge>
                                     farmstay cần phê duyệt
                                 </Box>

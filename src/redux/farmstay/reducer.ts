@@ -33,7 +33,7 @@ function farmstayReducer(state = initialState, action: IReduxAction) {
             return { ...state, farmstays: null };
 
         case type.SEARCH_ALL_FARMSTAYS_SUCCESS:
-            return { ...state, allFarmstays: action.payload };
+            return { ...state, allFarmstays: action.payload.data.data };
         case type.SEARCH_ALL_FARMSTAYS_FAILED:
             return { ...state, allFarmstays: [] };
 

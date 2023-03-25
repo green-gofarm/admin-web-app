@@ -28,7 +28,8 @@ const theme = createTheme(adaptV4Theme({
     overrides: {
         MuiDivider: {
             root: {
-                borderColor: "#f0f0f8"
+                borderColor: "#ededf5",
+                opacity: 0.75
             }
         },
         MuiDialogContent: {

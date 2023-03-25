@@ -1,8 +1,13 @@
 import { memo, useState } from 'react'
 import { Box } from '@mui/material';
 import ConfirmModel from '../../../../General/Model/ConfirmModel';
+import { useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
+import useDelayLoading from '../../../../../hooks/useDelayLoading';
+import { reviewFarmstay } from '../../../../../redux/farmstay/action';
+import { FARMSTAY_STATUSES } from '../../../../../setting/farmstay-setting';
 
-interface _IInactivateFarmstay {
+interface InactivateFarmstayProps {
     open?: boolean,
     farmstay?: any,
     refresh?: any,
@@ -14,26 +19,42 @@ function InactivateFarmstay({
     farmstay,
     refresh,
     onClose,
-}: _IInactivateFarmstay) {
-    const [loading] = useState(false);
+}: InactivateFarmstayProps) {
+
+    const dispatch = useDispatch();
+    const [loading, setLoading] = useState<boolean>(false);
+    const delay = useDelayLoading(loading);
 
     const handleSubmit = () => {
-        if (!farmstay?.farmstay?.id) return;
-        onClose && onClose();
-        refresh && refresh();
+        if (!farmstay?.id) return;
+        dispatch(reviewFarmstay(
+            farmstay.id,
+            { status: FARMSTAY_STATUSES.INACTIVE },
+            {
+                loading: setLoading,
+                onSuccess: () => {
+                    toast.success("Cập nhật thành công");
+                    onClose && onClose();
+                    refresh && refresh();
+                },
+                onFailure: () => {
+                    toast.error("Cập nhật thất bại");
+                }
+            }
+        ))
     }
 
     return (
         <ConfirmModel
             open={open}
-            title="Ẩn farmstay"
+            title="Khóa farmstay"
             description={(
                 <Box display="inline-block">
-                    Bạn có chắc chắn muốn ẩn farmstay
-                    <b>{` ${farmstay?.farmstay?.name ?? ""}`}</b> ?
+                    Bạn có chắc chắn muốn khóa
+                    <b>{` ${farmstay?.name ?? ""}`}</b> ?
                 </Box>
             )}
-            loading={loading}
+            loading={delay}
             onCancel={onClose}
             onConfirm={handleSubmit}
         />

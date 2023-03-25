@@ -37,7 +37,7 @@ export const LIST_ORDER_STATUS = [
         bgColor: STATUS_COLORS.CANCELED.bgColor
     },
     {
-        label: "Đã chia tiền",
+        label: "Đã giải ngân",
         value: ORDER_STATUSES.DISBURSE,
         textColor: STATUS_COLORS.AVAILABLE.textColor,
         bgColor: STATUS_COLORS.AVAILABLE.bgColor

@@ -33,3 +33,29 @@ export function searchDisbursements(params: any) {
     const url = `${ENP.DISBURSEMENT}/search`;
     return axiosRequest(url, option, _params);
 }
+
+
+export function getOrderDetail(id: any) {
+    const option: AxiosRequestConfig = {
+        method: METHOD.GET,
+        headers: {
+            "Content-Type": "application/json"
+        },
+    }
+
+    const url = `${ENP.BOOKING}/${id}`;
+    return axiosRequest(url, option);
+}
+
+
+export function getDisbursementDetail(id: any) {
+    const option: AxiosRequestConfig = {
+        method: METHOD.GET,
+        headers: {
+            "Content-Type": "application/json"
+        },
+    }
+
+    const url = `${ENP.DISBURSEMENT}/${id}`;
+    return axiosRequest(url, option);
+}

@@ -161,6 +161,28 @@ function* searchAllAdmins(action: IReduxAction): Generator<any, void, any> {
     option?.loading && option.loading(false);
 }
 
+
+function* getUserDetail(action: IReduxAction): Generator<any, void, any> {
+    const option: IReduxActionOption = action.payload?.option
+
+    option?.loading && option.loading(true);
+    try {
+        yield put(actions.clearUserDetail());
+
+        const response = yield call(apis.getUserDetail, action.payload.id, action.payload.role);
+
+        yield put(actions.getUserDetailSuccess(response));
+        option?.onSuccess && option.onSuccess(response);
+    } catch (error) {
+        console.log(error);
+        yield put(actions.getUserDetailFailed());
+        option?.onFailure && option.onFailure(error);
+
+    }
+
+    option?.loading && option.loading(false);
+}
+
 function* watchAll() {
     yield takeLatest(types.SEARCH_USERS, searchUsers);
     yield takeLatest(types.SEARCH_ALL_USERS, searchAllUsers);
@@ -173,6 +195,9 @@ function* watchAll() {
 
     yield takeLatest(types.SEARCH_ADMINS, searchAdmins);
     yield takeLatest(types.SEARCH_ALL_ADMINS, searchAllAdmins);
+
+    yield takeLatest(types.GET_USER_DETAIL, getUserDetail);
+
 }
 
 function* watchUser() {

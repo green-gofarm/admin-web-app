@@ -1,7 +1,7 @@
 import { IReduxAction } from "../redux-setting";
 import * as type from "./type";
 
-export interface State {
+export interface UserState {
     users: any,
     allUsers: any[],
     hosts: any,
@@ -10,9 +10,10 @@ export interface State {
     allCustomers: any[],
     admins: any,
     allAdmins: any[],
+    userDetail: any,
 }
 
-const initialState: State = {
+const initialState: UserState = {
     users: null,
     allUsers: [],
     hosts: null,
@@ -21,6 +22,7 @@ const initialState: State = {
     allCustomers: [],
     admins: null,
     allAdmins: [],
+    userDetail: null,
 };
 
 function userReducer(state = initialState, action: IReduxAction) {
@@ -60,6 +62,11 @@ function userReducer(state = initialState, action: IReduxAction) {
             return { ...state, allAdmins: action.payload.data.data };
         case type.SEARCH_ALL_ADMINS_FAILED:
             return { ...state, allAdmins: [] };
+
+        case type.GET_USER_DETAIL_SUCCESS:
+            return { ...state, userDetail: action.payload.data };
+        case type.GET_USER_DETAIL_FAILED:
+            return { ...state, userDetail: null };
 
         default:
             return state

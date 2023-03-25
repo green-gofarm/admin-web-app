@@ -113,7 +113,7 @@ export default function WithdrawalRequestTable() {
         },
         {
             key: "createdDate",
-            label: "Thời gian",
+            label: "Ngày khởi tạo",
             render: (row: any) => row.createdDate
                 ? `${formatTimeString(row.createdDate)} (${getTimeAgoString(row.createdDate)})`
                 : "-"

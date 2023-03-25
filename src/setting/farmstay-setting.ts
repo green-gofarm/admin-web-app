@@ -1,3 +1,4 @@
+import { isAvailableArray } from "../helpers/arrayUtils";
 import { STATUS_COLORS } from "./color";
 
 export enum FARMSTAY_STATUSES {
@@ -58,3 +59,8 @@ export const isDraftFarmstay = (status: any) => status === FARMSTAY_STATUSES.DRA
 export const isPendingApproveFarmstay = (status: any) => status === FARMSTAY_STATUSES.PENDING;
 export const isActiveFarmstay = (status: any) => status === FARMSTAY_STATUSES.ACTIVE;
 export const isInActiveFarmstay = (status: any) => status === FARMSTAY_STATUSES.INACTIVE;
+
+export const getFarmstayFromList = (list: any, id: any) => {
+    if (!isAvailableArray(list)) return null;
+    return list.find(item => item.id === id) ?? null;
+}

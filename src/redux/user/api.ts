@@ -36,3 +36,21 @@ export function searchUsersWithRole(params: any, role: ROLES) {
     return axiosRequest(url, option, _params);
 }
 
+
+export function getUserDetail(id: any, role: any) {
+    const option: AxiosRequestConfig = {
+        method: METHOD.GET,
+        headers: {
+            "Content-Type": "application/json"
+        },
+    }
+
+    const rolePath = (() => {
+        if (role === ROLES.HOST) return "hosts";
+        if (role === ROLES.CUSTOMER) return "customers";
+        return role;
+    })();
+
+    const url = `${ENP.ADMIN}/${rolePath}/${id}`;
+    return axiosRequest(url, option);
+}

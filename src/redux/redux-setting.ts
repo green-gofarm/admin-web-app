@@ -1,3 +1,5 @@
+import { UserState } from './user/reducer';
+import { OrderState } from './order/reducer';
 import { TagState } from './tag/reducer';
 import { FarmstayState } from "./farmstay/reducer";
 import { RoomState } from "./room/reducer";
@@ -37,21 +39,9 @@ export interface RootState {
         feedbacks: any
     };
 
-    user: {
-        users: any,
-        allUsers: any[],
-        hosts: any,
-        allHosts: any[],
-        customers: any,
-        allCustomers: any[],
-        admins: any,
-        allAdmins: any[],
-    };
+    user: UserState;
 
-    order: {
-        orders: any,
-        disbursements: any,
-    }
+    order: OrderState;
 
     tag: TagState;
 }

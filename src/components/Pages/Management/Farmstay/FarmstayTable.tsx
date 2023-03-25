@@ -285,12 +285,14 @@ export default function FarmstayTable() {
                 open={openActive}
                 farmstay={selectedFarmstay}
                 onClose={handleCloseActive}
+                refresh={refresh}
             />
 
             <InactivateFarmstay
                 open={openInactivate}
                 farmstay={selectedFarmstay}
                 onClose={handleCloseInactivate}
+                refresh={refresh}
             />
         </>
     );

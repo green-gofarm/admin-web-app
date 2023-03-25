@@ -3,12 +3,10 @@ import { Box, CircularProgress, Grid, Tooltip } from "@mui/material";
 import { Status } from "../../../../setting/Status";
 import MuiTables from "../../../Mui-Table/MuiTable";
 import EllipsisWrapper from "../../../General/Wrapper/EllipsisWrapper";
-import AvatarWrapper from "../../../General/Wrapper/AvatarWrapper";
 import ViewIconAction from "../../../General/Action/IconAction/ViewIconAction";
-import { FEEDBACK_SORT_BY_OPTIONS, FEEDBACK_TYPE_OPTIONS, LIST_FEEDBACK_STATUS, findFeedbackStatus } from "../../../../setting/feedback-setting";
+import { FEEDBACK_SORT_BY_OPTIONS, LIST_FEEDBACK_STATUS, findFeedbackStatus } from "../../../../setting/feedback-setting";
 import { createCodeString } from "../../../../helpers/stringUtils";
-import HomeIcon from '@mui/icons-material/Home';
-import { Card, FormGroup, OverlayTrigger, Popover } from "react-bootstrap";
+import { Card, FormGroup } from "react-bootstrap";
 import LockIconAction from "../../../General/Action/IconAction/LockIconAction";
 import ViewFeedback from "./action/ViewFeedback";
 import UnbanFeedback from "./action/UnbanFeedback";
@@ -19,22 +17,20 @@ import useDelayLoading from "../../../../hooks/useDelayLoading";
 import { removeNullProps } from "../../../../setting/general-props";
 import SearchIcon from "@mui/icons-material/Search";
 import Select from "react-select";
-import useAllFarmstays from "../Farmstay/hooks/useAllFarmstay";
-
-const getFeedbackTypeLabel = (type?: number | null) => {
-    return FEEDBACK_TYPE_OPTIONS.find(item => item.value === type)?.label ?? "Không xác định"
-}
+import useAllCustomers from "../Account/hooks/useAllCustomers";
+import { Link } from "react-router-dom";
+import useBackUrl from "../../../../hooks/useBackUrl";
+import DisplayUser from "../../../General/DisplayUser";
+import { getCustomerFromList } from "../../../../setting/customer-setting";
 
 interface FilterProps {
     status: any,
-    type: any
 }
 
 export default function FeedbackTable() {
 
-    const { allFarmstays } = useAllFarmstays();
-
-    console.log(allFarmstays);
+    const { allCustomers } = useAllCustomers();
+    const { createBackUrl } = useBackUrl();
 
     // State
     const [openView, setOpenView] = useState<boolean>(false);
@@ -44,7 +40,6 @@ export default function FeedbackTable() {
 
     const [filters, setFilters] = useState<FilterProps>({
         status: null,
-        type: null,
     });
 
     const [searchText, setSearchText] = useState("");
@@ -81,7 +76,6 @@ export default function FeedbackTable() {
         const params = {
             Comment: searchText || null,
             Status: filters.status?.value ?? null,
-            Type: filters.type?.value ?? null
         };
         refresh(undefined, removeNullProps(params));
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -113,72 +107,27 @@ export default function FeedbackTable() {
             render: (row: any) => createCodeString("FB", row.id)
         },
         {
-            key: "user",
-            label: "Người gửi",
+            key: "orderId",
+            label: "Đơn hàng",
             render: (row: any) => (
                 <Box
+                    component={Link}
+                    to={`/management/order/${row.orderId}?backUrl=${createBackUrl()}`}
                     display="flex"
                     alignItems="center"
                     gap="8px"
+                    className="tag tag-rounded"
                 >
-                    <AvatarWrapper
-                        src={row.avatarURL}
-                        name={row.name}
-                    />
-                    {row.name}
+                    {createCodeString("OR", row.orderId)}
                 </Box>
             )
         },
         {
-            key: "farmstay",
-            label: "Đối tượng đánh giá",
+            key: "user",
+            label: "Người phản hồi",
             render: (row: any) => (
-                <OverlayTrigger
-                    placement="bottom-start"
-                    trigger="click"
-                    overlay={
-                        <Popover style={{ margin: "0px" }}>
-                            <Popover.Header as="h3">{row.name}</Popover.Header>
-                            <Popover.Body>
-                                <Grid container spacing={1}>
-                                    <Grid item xs={12} md={12}>
-                                        <Box
-                                            color="inherit !important"
-                                        >
-                                            {row.contactInformation}
-                                        </Box>
-                                    </Grid>
-
-                                    <Grid item xs={12} md={12}>
-                                        <Box
-                                            color="inherit !important"
-                                            className="form-control"
-                                        >
-                                            {row.description}
-                                        </Box>
-                                    </Grid>
-                                </Grid>
-                            </Popover.Body>
-                        </Popover>
-                    }
-                >
-                    <Box className="tag tag-rounded btn">
-                        <Box
-                            display="flex"
-                            alignItems="center"
-                            gap="8px"
-                        >
-                            <HomeIcon />
-                            {row.name}
-                        </Box>
-                    </Box>
-                </OverlayTrigger>
+                <DisplayUser user={getCustomerFromList(allCustomers, row?.customerId)} />
             )
-        },
-        {
-            key: "type",
-            label: "Loại",
-            render: (row) => getFeedbackTypeLabel(row.type)
         },
         {
             key: "comment",
@@ -234,7 +183,7 @@ export default function FeedbackTable() {
                 </Box>
             )
         },
-    ], []);
+    ], [allCustomers, createBackUrl]);
 
     const handleCloseView = useCallback(() => setOpenView(false), []);
     const handleCloseUnban = useCallback(() => setOpenUnban(false), []);
@@ -297,17 +246,6 @@ export default function FeedbackTable() {
                                                     isClearable
                                                 />
                                             </Box>
-                                        </FormGroup>
-                                    </Grid>
-                                    <Grid item xs={6} md="auto">
-                                        <FormGroup className="form-group">
-                                            <Select
-                                                value={filters.type}
-                                                onChange={(option) => handleOnChange(option, "type")}
-                                                options={FEEDBACK_TYPE_OPTIONS}
-                                                placeholder="Loại phản hồi"
-                                                isSearchable
-                                            />
                                         </FormGroup>
                                     </Grid>
                                     <Grid item xs={6} md="auto">
