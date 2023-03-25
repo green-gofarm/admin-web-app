@@ -2,6 +2,7 @@ import { Box, Grid } from '@mui/material';
 import IconLabelDetail from '../../../../General/Item/IconLabelDetail';
 import { Status } from '../../../../../setting/Status';
 import { findActivityStatus } from '../../../../../setting/activity-status-setting';
+import { convertToMoney } from '../../../../../helpers/stringUtils';
 
 interface IActivityDetailHeader {
     detail?: any,
@@ -91,7 +92,7 @@ function ActivityDetailHeader({
                 <IconLabelDetail
                     icon={<i className="fa fa-credit-card"></i>}
                     label="Giá vé:"
-                    value={detail?.price}
+                    value={convertToMoney(detail?.price)}
                 />
             </Grid>
         </Grid>

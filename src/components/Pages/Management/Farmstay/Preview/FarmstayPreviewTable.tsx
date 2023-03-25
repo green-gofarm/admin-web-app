@@ -1,9 +1,8 @@
 import { useMemo } from "react";
 import { Box, Button, CircularProgress, Grid } from "@mui/material";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { createCodeString } from "../../../../../helpers/stringUtils";
 import AvatarWrapper from "../../../../General/Wrapper/AvatarWrapper";
-import EllipsisWrapper from "../../../../General/Wrapper/EllipsisWrapper";
 import TooltipIconAction from "../../../../General/Icon/TooltipIconAction";
 import GradingIcon from "@mui/icons-material/Grading";
 import MuiTables from "../../../../Mui-Table/MuiTable";
@@ -11,11 +10,16 @@ import usePreviewFarmstays from "../hooks/usePreviewFarmstays";
 import { Badge, Card } from "react-bootstrap";
 import RefreshIcon from '@mui/icons-material/Refresh';
 import useDelayLoading from "../../../../../hooks/useDelayLoading";
+import useBackUrl from "../../../../../hooks/useBackUrl";
+import useAllHosts from "../../Account/hooks/useAllHosts";
+import { getHostFromList } from "../../../../../setting/host-setting";
+import DisplayLinkUser from "../../../../General/DisplayLinkUser";
 
 export default function FarmstayPreviewTable() {
 
     const navigate = useNavigate();
-    const location = useLocation();
+    const { createBackUrl } = useBackUrl();
+    const { allHosts } = useAllHosts();
 
     const {
         data,
@@ -53,29 +57,12 @@ export default function FarmstayPreviewTable() {
             )
         },
         {
-            key: "host",
+            key: "hostId",
             label: "Chủ sở hữu",
             render: (row) => (
-                <Box
-                    display="flex"
-                    alignItems="center"
-                    gap="8px"
-                >
-                    <AvatarWrapper
-                        src={row.name}
-                        name={row.name}
-                    />
-                    {row.name}
-                </Box>
-            )
-        },
-        {
-            key: "address",
-            label: "Địa chỉ",
-            render: (row) => (
-                <EllipsisWrapper breakWidth={200}>
-                    {row.address}
-                </EllipsisWrapper>
+                <DisplayLinkUser
+                    user={getHostFromList(allHosts, row?.hostId)}
+                />
             )
         },
         {
@@ -89,12 +76,12 @@ export default function FarmstayPreviewTable() {
                     <TooltipIconAction
                         title="Phê duyệt"
                         Icon={GradingIcon}
-                        onClick={() => navigate(`/management/farmstay/preview/${row.id}?backUrl=${location.pathname + location.search}`)}
+                        onClick={() => navigate(`/management/farmstay/preview/${row.id}?backUrl=${createBackUrl()}`)}
                     />
                 </Box>
             )
         },
-    ], [location.pathname, location.search, navigate]);
+    ], [allHosts, createBackUrl, navigate]);
 
 
     return (

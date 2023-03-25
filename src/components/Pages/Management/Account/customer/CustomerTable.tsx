@@ -18,7 +18,10 @@ import { Card, FormGroup } from "react-bootstrap";
 import SearchIcon from "@mui/icons-material/Search";
 import Select from "react-select";
 import { ROLES } from "../../../../../setting/setting";
-import { convertISOToNaturalFormat } from "../../../../../helpers/dateUtils";
+import useBackUrl from "../../../../../hooks/useBackUrl";
+import StringWrapper from "../../../../General/Wrapper/StringWrapper";
+import ConditionWrapper from "../../../../General/Wrapper/ConditionWrapper";
+import { isActiveUser, isBannedUser } from "../../../../../setting/user-setting";
 
 interface FilterProps {
     status: any,
@@ -27,6 +30,7 @@ interface FilterProps {
 export default function CustomerTable() {
 
     const navigate = useNavigate();
+    const { createBackUrl } = useBackUrl();
 
     const [filters, setFilters] = useState<FilterProps>({
         status: null,
@@ -63,16 +67,16 @@ export default function CustomerTable() {
 
     const handleSubmit = () => {
         const params = {
-            name: searchText || null,
-            status: filters.status?.value ?? null
+            Name: searchText || null,
+            Status: filters.status?.value ?? null
         }
         refresh(undefined, removeNullProps(params));
     }
 
     useEffect(() => {
         const params = {
-            name: searchText || null,
-            status: filters.status?.value ?? null
+            Name: searchText || null,
+            Status: filters.status?.value ?? null
         }
         refresh(undefined, removeNullProps(params));
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -121,17 +125,12 @@ export default function CustomerTable() {
         {
             key: "email",
             label: "Email",
+            render: (row) => <StringWrapper text={row.email} />
         },
         {
             key: "phoneNumber",
             label: "Số điện thoại",
-        },
-        {
-            key: "updatedDate",
-            label: "Lần cập nhật cuối",
-            render: (row) => row.updatedDate
-                ? `${convertISOToNaturalFormat(row.updatedDate)}`
-                : "-"
+            render: (row) => <StringWrapper text={row.phoneNumber} />
         },
         {
             key: "status",
@@ -150,24 +149,30 @@ export default function CustomerTable() {
                     columnGap="8px"
                 >
                     <ViewIconAction
-                        onClick={() => navigate(`/management/account/customer/${row.id}`)}
+                        onClick={() => navigate(`/management/account/customer/${row.id}?backUrl={${createBackUrl()}}`)}
                     />
-                    <LockIconAction
-                        onClick={() => {
-                            setOpenBan(true);
-                            setSelectedCustomer(row);
-                        }}
-                    />
-                    <UnlockIconAction
-                        onClick={() => {
-                            setOpenUnban(true);
-                            setSelectedCustomer(row);
-                        }}
-                    />
+
+                    <ConditionWrapper isRender={isActiveUser(row.status)}>
+                        <LockIconAction
+                            onClick={() => {
+                                setOpenBan(true);
+                                setSelectedCustomer(row);
+                            }}
+                        />
+                    </ConditionWrapper>
+
+                    <ConditionWrapper isRender={isBannedUser(row.status)}>
+                        <UnlockIconAction
+                            onClick={() => {
+                                setOpenUnban(true);
+                                setSelectedCustomer(row);
+                            }}
+                        />
+                    </ConditionWrapper>
                 </Box>
             )
         },
-    ], [navigate]);
+    ], [createBackUrl, navigate]);
 
     const handleCloseBan = useCallback(() => setOpenBan(false), []);
     const handleCloseUnban = useCallback(() => setOpenUnban(false), []);
@@ -186,7 +191,6 @@ export default function CustomerTable() {
                                     className="form-control"
                                     autoFocus
                                     placeholder="Tìm kiếm theo tên"
-                                    disabled={delay}
                                     onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
                                 />
                                 <span className="input-group-append">

@@ -1,10 +1,14 @@
-import { memo } from 'react'
+import { memo, useState } from 'react'
 import { Button, Form, FormGroup } from 'react-bootstrap';
-import { Dialog, DialogContent, Grid } from '@mui/material';
+import { Box, CircularProgress, Dialog, DialogContent } from '@mui/material';
 import CustomizedDialogTitle from '../../../../General/Dialog/CustomizedDialogTitle';
 import CustomizedDialogActions from '../../../../General/Dialog/CustomizedDialogActions';
-
-interface _ICreateServiceCategory {
+import useDelayLoading from '../../../../../hooks/useDelayLoading';
+import { useDispatch } from 'react-redux';
+import { useForm } from "react-hook-form";
+import { createServiceCategory } from '../../../../../redux/service/action';
+import { toast } from 'react-toastify';
+interface _IEditServiceCategory {
     open?: boolean,
     refresh?: any,
     onClose: Function
@@ -14,79 +18,118 @@ function CreateServiceCategory({
     open,
     refresh,
     onClose,
-}: _ICreateServiceCategory) {
+}: _IEditServiceCategory) {
 
+    const dispatch = useDispatch();
 
-    const handleSubmit = () => {
-        onClose && onClose();
-        refresh && refresh();
+    const [loadingCreate, setLoadingCreate] = useState<boolean>(false);
+    const delayCreate = useDelayLoading(loadingCreate);
+
+    const { register, handleSubmit, reset, formState: { errors } } = useForm({
+        defaultValues: {
+            name: "",
+            description: "",
+        }
+    });
+
+    const handleUpdate = (data: any) => {
+        dispatch(createServiceCategory(data, {
+            loading: setLoadingCreate,
+            onSuccess: () => {
+                toast.success("Thêm mới thành công.");
+                onClose && onClose();
+                refresh && refresh();
+            },
+            onFailure: () => {
+                toast.error("Thêm mới thất bại");
+            }
+        }))
     }
 
     const handleClose = () => {
+        reset({
+            name: "",
+            description: "",
+        })
         onClose && onClose();
-        refresh && refresh();
     }
+
+    const renderContent = () => (
+        <Form className="">
+            <FormGroup
+                className={`form-group ${errors.name ? "has-danger" : ""}`}
+            >
+                <Form.Label className="form-label">
+                    Tên
+                </Form.Label>
+
+                <Form.Control
+                    autoFocus
+                    type="text"
+                    className={`form-control ${errors.name ? "is-invalid" : ""}`}
+                    {...register("name", { required: true })}
+                />
+                {errors.name
+                    ? <div className="invalid-feedback">Thông tin bắt buộc.</div>
+                    : null
+                }
+            </FormGroup>
+
+            <FormGroup className="form-group ">
+                <Form.Label className="form-label">
+                    Mô tả
+                </Form.Label>
+
+
+                <textarea
+                    className="form-control"
+                    rows={4}
+                    {...register("description")}
+                />
+            </FormGroup>
+        </Form>
+    )
 
     return (
         <Dialog
             open={Boolean(open)}
             onClose={handleClose}
-            maxWidth="md"
+            maxWidth="sm"
             fullWidth
         >
             <CustomizedDialogTitle
-                title="Thêm loại dịch vụ"
+                title="Thêm mới loại dịch vụ"
                 onClose={handleClose}
             />
             <DialogContent>
-                <Form className="">
-                    <FormGroup className="form-group ">
-                        <Grid container>
-                            <Grid item xs={12}>
-                                <Form.Label className="form-label">
-                                    Tên
-                                </Form.Label>
-
-                            </Grid>
-
-                            <Grid item xs={12}>
-                                <Form.Control
-                                    autoFocus
-                                    type="text"
-                                    className="form-control"
-                                />
-                            </Grid>
-                        </Grid>
-                    </FormGroup>
-
-                    <FormGroup className="form-group ">
-                        <Grid container>
-                            <Grid item xs={12}>
-                                <Form.Label className="form-label">
-                                    Mô tả
-                                </Form.Label>
-
-                            </Grid>
-
-                            <Grid item xs={12}>
-                                <textarea
-                                    className="form-control"
-                                    rows={3}
-                                    defaultValue=""
-                                    required
-                                ></textarea>
-                            </Grid>
-                        </Grid>
-                    </FormGroup>
-                </Form>
+                {renderContent()}
             </DialogContent>
 
             <CustomizedDialogActions>
-                <Button variant="secondary" onClick={handleClose}>
+                <Button
+                    variant="secondary"
+                    onClick={handleClose}
+                    disabled={delayCreate}
+                >
                     Hủy
                 </Button>
-                <Button variant="primary" onClick={handleSubmit}>
-                    Xác nhận
+                <Button
+                    variant="primary"
+                    onClick={handleSubmit(handleUpdate)}
+                    disabled={delayCreate}
+                >
+                    <Box
+                        display="flex"
+                        alignItems="center"
+                        gap="8px"
+                    >
+                        {delayCreate
+                            ? <CircularProgress size={16} thickness={4} sx={{ color: "#fff" }} />
+                            : null
+                        }
+                        Xác nhận
+                    </Box>
+
                 </Button>
             </CustomizedDialogActions>
         </Dialog>

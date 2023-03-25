@@ -19,6 +19,10 @@ import useDelayLoading from "../../../../../hooks/useDelayLoading";
 import { ROLES } from "../../../../../setting/setting";
 import { defaultHostsPagination } from "../hooks/useAdmins";
 import { removeNullProps } from "../../../../../setting/general-props";
+import StringWrapper from "../../../../General/Wrapper/StringWrapper";
+import { isActiveUser, isBannedUser } from "../../../../../setting/user-setting";
+import ConditionWrapper from "../../../../General/Wrapper/ConditionWrapper";
+import useBackUrl from "../../../../../hooks/useBackUrl";
 
 
 interface FilterProps {
@@ -28,6 +32,7 @@ interface FilterProps {
 export default function HostTable() {
 
     const navigate = useNavigate();
+    const { createBackUrl } = useBackUrl();
 
     const [filters, setFilters] = useState<FilterProps>({
         status: null,
@@ -64,16 +69,16 @@ export default function HostTable() {
 
     const handleSubmit = () => {
         const params = {
-            name: searchText || null,
-            status: filters.status?.value ?? null
+            Name: searchText || null,
+            Status: filters.status?.value ?? null
         }
         refresh(undefined, removeNullProps(params));
     }
 
     useEffect(() => {
         const params = {
-            name: searchText || null,
-            status: filters.status?.value ?? null
+            Name: searchText || null,
+            Status: filters.status?.value ?? null
         }
         refresh(undefined, removeNullProps(params));
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -123,16 +128,12 @@ export default function HostTable() {
         {
             key: "email",
             label: "Email",
-            render: (row) => (
-                <Box width="120px">
-                    {row.email}
-                </Box>
-            )
+            render: (row) => <StringWrapper text={row.email} />
         },
         {
             key: "phoneNumber",
             label: "Số điện thoại",
-            render: (row) => row.phoneNumber
+            render: (row) => <StringWrapper text={row.phoneNumber} />
         },
         {
             key: "status",
@@ -151,24 +152,31 @@ export default function HostTable() {
                     columnGap="8px"
                 >
                     <ViewIconAction
-                        onClick={() => navigate(`/management/account/host/${row.id}`)}
+                        onClick={() => navigate(`/management/account/host/${row.id}?backUrl={${createBackUrl()}}`)}
                     />
-                    <LockIconAction
-                        onClick={() => {
-                            setOpenBan(true);
-                            setSelectedHost(row);
-                        }}
-                    />
-                    <UnlockIconAction
-                        onClick={() => {
-                            setOpenUnban(true);
-                            setSelectedHost(row);
-                        }}
-                    />
+
+                    <ConditionWrapper isRender={isActiveUser(row.status)}>
+                        <LockIconAction
+                            onClick={() => {
+                                setOpenBan(true);
+                                setSelectedHost(row);
+                            }}
+                        />
+                    </ConditionWrapper>
+
+                    <ConditionWrapper isRender={isBannedUser(row.status)}>
+
+                        <UnlockIconAction
+                            onClick={() => {
+                                setOpenUnban(true);
+                                setSelectedHost(row);
+                            }}
+                        />
+                    </ConditionWrapper>
                 </Box>
             )
         },
-    ], [navigate]);
+    ], [createBackUrl, navigate]);
 
     const handleCloseBan = useCallback(() => setOpenBan(false), []);
     const handleCloseUnban = useCallback(() => setOpenUnban(false), []);
@@ -187,7 +195,6 @@ export default function HostTable() {
                                     className="form-control"
                                     autoFocus
                                     placeholder="Tìm kiếm theo tên"
-                                    disabled={delay}
                                     onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
                                 />
                                 <span className="input-group-append">

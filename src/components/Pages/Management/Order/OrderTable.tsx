@@ -2,24 +2,29 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { Box, CircularProgress, Grid } from "@mui/material";
 import { Status } from "../../../../setting/Status";
 import MuiTables from "../../../Mui-Table/MuiTable";
-import AvatarWrapper from "../../../General/Wrapper/AvatarWrapper";
 import ViewIconAction from "../../../General/Action/IconAction/ViewIconAction";
 import { convertToMoney, createCodeString } from "../../../../helpers/stringUtils";
-import { formatTimeString } from "../../../../helpers/dateUtils";
+import { formatTimeString, getTimeAgoString } from "../../../../helpers/dateUtils";
 import { LIST_ORDER_STATUS, ORDER_SORT_BY_OPTIONS, findOrderStatus } from "../../../../setting/order-setting";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import useOrders, { defaultOrdersPagination } from "./hooks/useOrders";
 import SearchIcon from "@mui/icons-material/Search";
 import Select from "react-select";
 import useDelayLoading from "../../../../hooks/useDelayLoading";
 import { removeNullProps } from "../../../../setting/general-props";
 import { Card, FormGroup } from "react-bootstrap";
+import useBackUrl from "../../../../hooks/useBackUrl";
+import useAllCustomers from "../Account/hooks/useAllCustomers";
+import { getCustomerFromList } from "../../../../setting/customer-setting";
+import DisplayLinkUser from "../../../General/DisplayLinkUser";
 
 interface FilterProps {
     status: any
 }
 
 export default function OrderTable() {
+
+    const { allCustomers } = useAllCustomers();
 
     const [filters, setFilters] = useState<FilterProps>({
         status: null,
@@ -57,7 +62,7 @@ export default function OrderTable() {
     useEffect(() => {
         const params = {
             Id: searchText || null,
-            status: filters.status?.value ?? null
+            Status: filters.status?.value ?? null
         }
         refresh(undefined, removeNullProps(params));
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -77,13 +82,13 @@ export default function OrderTable() {
     const handleSubmit = () => {
         const params = {
             Id: searchText || null,
-            status: filters.status?.value ?? null
+            Status: filters.status?.value ?? null
         }
         refresh(undefined, removeNullProps(params));
     }
 
     const navigate = useNavigate();
-    const location = useLocation();
+    const { createBackUrl } = useBackUrl();
 
     const columns = useMemo(() => [
         {
@@ -92,20 +97,12 @@ export default function OrderTable() {
             render: (row: any) => createCodeString("OD", row.id)
         },
         {
-            key: "user",
+            key: "customerId",
             label: "Khách hàng",
             render: (row: any) => (
-                <Box
-                    display="flex"
-                    alignItems="center"
-                    gap="8px"
-                >
-                    <AvatarWrapper
-                        src={"Trọng"}
-                        name={"Trọng"}
-                    />
-                    {"Trọng"}
-                </Box>
+                <DisplayLinkUser
+                    user={getCustomerFromList(allCustomers, row.customerId)}
+                />
             )
         },
         {
@@ -116,8 +113,10 @@ export default function OrderTable() {
         },
         {
             key: "createdDate",
-            label: "Ngày tạo đơn",
-            render: (row: any) => formatTimeString(row.createdDate)
+            label: "Thời gian tạo đơn",
+            render: (row: any) => row.createdDate
+                ? `${formatTimeString(row.createdDate)} (${getTimeAgoString(row.createdDate)})`
+                : "-"
         },
         {
             key: "status",
@@ -138,12 +137,12 @@ export default function OrderTable() {
                     fontSize="13px"
                 >
                     <ViewIconAction
-                        onClick={() => navigate(`/management/order/${row.id}?backUrl=${location.pathname + location.search}`)}
+                        onClick={() => navigate(`/management/order/${row.id}?backUrl=${createBackUrl()}`)}
                     />
                 </Box>
             )
         },
-    ], [location, navigate]);
+    ], [allCustomers, createBackUrl, navigate]);
 
     return (
         <>
@@ -159,7 +158,6 @@ export default function OrderTable() {
                                     className="form-control"
                                     autoFocus
                                     placeholder="Tìm kiếm theo mã đơn hàng"
-                                    disabled={delay}
                                     onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
                                 />
                                 <span className="input-group-append">

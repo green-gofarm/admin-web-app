@@ -1,20 +1,28 @@
 import { IReduxAction } from "../redux-setting";
 import * as type from "./type";
 
-export interface State {
+export interface FarmstayState {
     farmstays: any,
     allFarmstays: any[],
     farmstayDetail: any,
+
     activityDetail: any,
     activitySchedule: any,
+
+    roomDetail: any,
+    roomSchedule: any,
 }
 
-const initialState: State = {
+const initialState: FarmstayState = {
     farmstays: null,
     allFarmstays: [],
     farmstayDetail: null,
+
     activityDetail: null,
     activitySchedule: null,
+
+    roomDetail: null,
+    roomSchedule: null,
 };
 
 function farmstayReducer(state = initialState, action: IReduxAction) {
@@ -47,6 +55,18 @@ function farmstayReducer(state = initialState, action: IReduxAction) {
             return { ...state, activitySchedule: action.payload.data };
         case type.GET_ACTIVITY_SCHEDULE_FAILED:
             return { ...state, activitySchedule: null };
+
+        case type.GET_ROOM_DETAIL_SUCCESS:
+            return { ...state, roomDetail: action.payload.data };
+        case type.GET_ROOM_DETAIL_FAILED:
+            return { ...state, roomDetail: null };
+        case type.CLEAR_ROOM_DETAIL:
+            return { ...state, roomDetail: null };
+
+        case type.GET_ROOM_SCHEDULE_SUCCESS:
+            return { ...state, roomSchedule: action.payload.data };
+        case type.GET_ROOM_SCHEDULE_FAILED:
+            return { ...state, roomSchedule: null };
         default:
             return state
     }

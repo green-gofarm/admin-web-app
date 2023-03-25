@@ -1,4 +1,4 @@
-import { Box } from '@mui/material';
+import { Box, CircularProgress } from '@mui/material';
 import { ReactNode } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import TooltipIconAction from '../Icon/TooltipIconAction';
@@ -40,11 +40,29 @@ const ConfirmModel = ({
                 </Box>
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="primary" onClick={onCancel}>
+                <Button
+                    variant="secondary"
+                    onClick={onCancel}
+                    disabled={loading}
+                >
                     Hủy
                 </Button>
-                <Button variant="secondary" onClick={onConfirm}>
-                    Xác nhận
+                <Button
+                    variant="primary"
+                    onClick={onConfirm}
+                    disabled={loading}
+                >
+                    <Box
+                        display="flex"
+                        alignItems="center"
+                        gap="8px"
+                    >
+                        {loading
+                            ? <CircularProgress size={16} thickness={4} sx={{ color: "#fff" }} />
+                            : null
+                        }
+                        Xác nhận
+                    </Box>
                 </Button>
             </Modal.Footer>
         </Modal>

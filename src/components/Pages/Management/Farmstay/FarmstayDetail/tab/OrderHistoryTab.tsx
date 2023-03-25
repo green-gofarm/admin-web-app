@@ -1,20 +1,76 @@
-import { Box, Grid } from '@mui/material'
+import { Box, CircularProgress, Grid } from '@mui/material'
 import Select from 'react-select';
 import MuiTables from '../../../../../Mui-Table/MuiTable';
-import { useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import AvatarWrapper from '../../../../../General/Wrapper/AvatarWrapper';
 import { Status } from '../../../../../../setting/Status';
 import ViewIconAction from '../../../../../General/Action/IconAction/ViewIconAction';
-import { findOrderStatus } from '../../../../../../setting/order-setting';
+import { LIST_ORDER_STATUS, findOrderStatus } from '../../../../../../setting/order-setting';
 import { convertToMoney, createCodeString } from '../../../../../../helpers/stringUtils';
 import { formatTimeString } from '../../../../../../helpers/dateUtils';
 import SearchIcon from '@mui/icons-material/Search';
-import json from "../../../Order/order.json";
+import useFarmstayOrders from '../hooks/useFarmstayOrders';
+import useDelayLoading from '../../../../../../hooks/useDelayLoading';
+import { removeNullProps } from '../../../../../../setting/general-props';
+import { useNavigate } from 'react-router-dom';
+import useBackUrl from '../../../../../../hooks/useBackUrl';
 
-const dataObject = JSON.parse(JSON.stringify(json));
-const data = dataObject.data;
+interface OrderHistoryTabProps {
+    detail?: any,
+    loading?: boolean,
+}
 
-function OrderHistoryTab() {
+
+function OrderHistoryTab({
+    detail,
+    loading
+}: OrderHistoryTabProps) {
+
+    const [filters, setFilters] = useState<{ status: any }>({
+        status: null,
+    });
+
+    const [searchText, setSearchText] = useState("");
+
+
+    const handleOnChange = useCallback((value: any, key: string) => {
+        setFilters(prev => ({
+            ...prev,
+            [key]: value
+        }))
+    }, []);
+
+    const {
+        data,
+        loading: loadingOrder,
+        pagination,
+        rowsPerPageOptions,
+        refresh,
+        handleChangePage,
+        handleChangeRowsPerPage
+    } = useFarmstayOrders(true, detail?.id);
+
+    const delay = useDelayLoading(loading || loadingOrder);
+
+    useEffect(() => {
+        const params = {
+            Id: searchText || null,
+            Status: filters.status?.value ?? null
+        }
+        refresh(undefined, removeNullProps(params));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [filters]);
+
+    const handleSubmit = () => {
+        const params = {
+            Id: searchText || null,
+            Status: filters.status?.value ?? null
+        }
+        refresh(undefined, removeNullProps(params));
+    }
+
+    const navigate = useNavigate();
+    const { createBackUrl } = useBackUrl();
 
     const columns = useMemo(() => [
         {
@@ -32,10 +88,10 @@ function OrderHistoryTab() {
                     gap="8px"
                 >
                     <AvatarWrapper
-                        src={row.customer.avatarURL}
-                        name={row.customer.name}
+                        src={"Trọng"}
+                        name={"Trọng"}
                     />
-                    {row.customer.name}
+                    {"Trọng"}
                 </Box>
             )
         },
@@ -59,7 +115,7 @@ function OrderHistoryTab() {
         },
         {
             key: "action",
-            label: "",
+            label: "Thao tác",
             render: (row) => (
                 <Box
                     component="div"
@@ -68,11 +124,13 @@ function OrderHistoryTab() {
                     columnGap="8px"
                     fontSize="13px"
                 >
-                    <ViewIconAction />
+                    <ViewIconAction
+                        onClick={() => navigate(`/management/order/${row.id}?backUrl=${createBackUrl()}`)}
+                    />
                 </Box>
             )
         },
-    ], []);
+    ], [createBackUrl, navigate]);
 
     const renderFilter = () => (
         <Box
@@ -91,14 +149,30 @@ function OrderHistoryTab() {
                         maxHeight="38px"
                         width="260px !important"
                         maxWidth="100%"
+                        value={searchText}
+                        onChange={(e) => setSearchText(e.target.value ?? "")}
+                        onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
                     />
                     <Box
                         component="span"
                         className="input-group-append"
                         maxHeight="38px"
                     >
-                        <button className="btn ripple btn-primary" type="button">
-                            <SearchIcon />
+                        <button
+                            className="btn ripple btn-primary"
+                            type="button"
+                            onClick={handleSubmit}
+                        >
+                            {delay
+                                ? <CircularProgress
+                                    size={16}
+                                    thickness={4}
+                                    sx={{
+                                        color: "inherit"
+                                    }}
+                                />
+                                : <SearchIcon />
+                            }
                         </button>
                     </Box>
                 </Box>
@@ -108,13 +182,12 @@ function OrderHistoryTab() {
                 <Grid container spacing={2}>
                     <Grid item xs="auto">
                         <Select
-                            // value={filters.status}
-                            // onChange={(value) => handleOnChange(value, "status")}
-                            options={[]}
-                            classNamePrefix="selectproduct"
+                            value={filters.status}
+                            onChange={(option) => handleOnChange(option, "status")}
+                            options={LIST_ORDER_STATUS}
                             placeholder="Trạng thái"
                             isSearchable
-                            isMulti
+                            isClearable
                         />
                     </Grid>
                 </Grid>
@@ -126,7 +199,16 @@ function OrderHistoryTab() {
         <MuiTables
             data={data}
             columns={columns}
+            loadingData={delay}
             filter={renderFilter()}
+            pagination={{
+                count: pagination.totalItem,
+                handleChangePage,
+                handleChangeRowsPerPage,
+                rowsPerPageOptions,
+                page: pagination.page,
+                rowsPerPage: pagination.pageSize,
+            }}
         />
     )
 }

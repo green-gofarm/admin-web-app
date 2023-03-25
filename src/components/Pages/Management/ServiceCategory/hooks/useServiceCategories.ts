@@ -1,10 +1,8 @@
 import { searchServiceCategories } from './../../../../../redux/service/action';
-import { DEFAULT_PAGINATION } from './../../../../Mui-Table/setting';
+
 import { useCallback } from 'react';
 import { PaginationProps } from './../../../../../setting/general-props';
 import { useEffect, useState } from 'react';
-import { RootState } from './../../../../../redux/redux-setting';
-import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { isAvailableArray } from '../../../../../helpers/arrayUtils';
 import { clone } from 'lodash';
@@ -26,23 +24,13 @@ export const defaultServiceCategoriesPagination: PaginationProps = {
     totalItem: 0,
 }
 
-function useServiceCategories() {
+function useServiceCategories(preventFirstCall?: boolean) {
     const dispatch = useDispatch();
-    const serviceCategories = useSelector((state: RootState) => state.service.serviceCategories);
 
     const [data, setData] = useState<any[]>([]);
     const [params, setParams] = useState(null);
     const [loading, setLoading] = useState(false);
     const [pagination, setPagination] = useState<PaginationProps>({ ...defaultServiceCategoriesPagination });
-
-    useEffect(() => {
-        if (!isAvailableArray(serviceCategories?.data?.data)) {
-            setData([]);
-            return;
-        };
-
-        setData(clone(serviceCategories.data.data));
-    }, [serviceCategories]);
 
     const refresh = useCallback((newPagination?: PaginationProps, newParams?: any) => {
         const _pagination = newPagination ?? { ...pagination };
@@ -74,6 +62,8 @@ function useServiceCategories() {
                         totalPage: response.data?.totalPage ?? defaultServiceCategoriesPagination.totalPage,
                         totalItem: response.data?.totalItem ?? defaultServiceCategoriesPagination.totalItem,
                     }))
+
+                    setData(() => isAvailableArray(response?.data?.data) ? response.data.data : [])
                 }
             }
         ))
@@ -98,11 +88,20 @@ function useServiceCategories() {
         })
     }, [pagination, refresh])
 
+    useEffect(() => {
+        if (!!preventFirstCall) {
+            return;
+        }
+        refresh();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+
+
     return {
         data,
         loading,
         pagination,
-        rowsPerPageOptions: DEFAULT_PAGINATION.rowsPerPageOptions,
+        rowsPerPageOptions: DEFAULT_PROPS.rowsPerPageOptions,
 
         refresh,
         handleChangePage,

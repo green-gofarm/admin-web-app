@@ -6,6 +6,7 @@ import roomReducer from './room/reducer';
 import feedbackReducer from './feedback/reducer';
 import userReducer from './user/reducer';
 import orderReducer from './order/reducer';
+import tagReducer from './tag/reducer';
 
 const rootReducer = combineReducers({
     auth: authReducer,
@@ -14,7 +15,8 @@ const rootReducer = combineReducers({
     room: roomReducer,
     feedback: feedbackReducer,
     user: userReducer,
-    order: orderReducer
+    order: orderReducer,
+    tag: tagReducer,
 });
 
 export default rootReducer;

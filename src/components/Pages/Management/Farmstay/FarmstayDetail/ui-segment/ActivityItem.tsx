@@ -30,9 +30,10 @@ function ActivityItem({ item }: IActivityItem) {
 
     return (
         <Card className="custom-card customs-cards">
-            <Card.Body className="d-md-flex bg-white">
+            <Card.Body className="d-flex bg-white">
                 <Box
-                    minWidth="fit-content"
+                    minHeight="120px"
+                    minWidth="160px"
                 >
                     <Box
                         component="img"
@@ -42,13 +43,14 @@ function ActivityItem({ item }: IActivityItem) {
                         sx={{
                             position: "relative",
                             height: "120px",
+                            width: "160px",
                             backgroundPosition: "center",
                             backgroundSize: "cover",
                             backgroundRepeat: "no-repeat"
                         }}
                     />
                 </Box>
-                <Box margin="0 0 4px 24px">
+                <Box margin="0 0 4px 24px" flexGrow="1">
                     <Grid container spacing={1}>
                         <Grid item xs={8}>
                             <Box

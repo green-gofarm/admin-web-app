@@ -54,7 +54,7 @@ export const clearFarmstayDetail = (): IReduxAction => ({
 })
 
 
-
+//Activity
 export const getActivityDetail = (farmstayId: any, activityId: any, option?: IReduxActionOption): IReduxAction => ({
     type: type.GET_ACTIVITY_DETAIL,
     payload: { farmstayId, activityId, option: option ?? getEmptyOption() }
@@ -73,7 +73,6 @@ export const clearActivityDetail = (): IReduxAction => ({
     type: type.CLEAR_ACTIVITY_DETAIL
 })
 
-
 export const getActivitySchedule = (data: any, option?: IReduxActionOption): IReduxAction => ({
     type: type.GET_ACTIVITY_SCHEDULE,
     payload: { data, option: option ?? getEmptyOption() }
@@ -86,4 +85,38 @@ export const getActivityScheduleSuccess = (data: any): IReduxAction => ({
 
 export const getActivityScheduleFailed = (): IReduxAction => ({
     type: type.GET_ACTIVITY_SCHEDULE_FAILED
+})
+
+
+// Room
+export const getRoomDetail = (farmstayId: any, roomId: any, option?: IReduxActionOption): IReduxAction => ({
+    type: type.GET_ROOM_DETAIL,
+    payload: { farmstayId, roomId, option: option ?? getEmptyOption() }
+})
+
+export const getRoomDetailSuccess = (data: any): IReduxAction => ({
+    type: type.GET_ROOM_DETAIL_SUCCESS,
+    payload: data
+})
+
+export const getRoomDetailFailed = (): IReduxAction => ({
+    type: type.GET_ROOM_DETAIL_FAILED
+})
+
+export const clearRoomDetail = (): IReduxAction => ({
+    type: type.CLEAR_ROOM_DETAIL
+})
+
+export const getRoomSchedule = (data: any, option?: IReduxActionOption): IReduxAction => ({
+    type: type.GET_ROOM_SCHEDULE,
+    payload: { data, option: option ?? getEmptyOption() }
+})
+
+export const getRoomScheduleSuccess = (data: any): IReduxAction => ({
+    type: type.GET_ROOM_SCHEDULE_SUCCESS,
+    payload: data
+})
+
+export const getRoomScheduleFailed = (): IReduxAction => ({
+    type: type.GET_ROOM_SCHEDULE_FAILED
 })

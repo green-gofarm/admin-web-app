@@ -2,16 +2,14 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { Box, CircularProgress, Grid } from "@mui/material";
 import { Status } from "../../../../setting/Status";
 import MuiTables from "../../../Mui-Table/MuiTable";
-import EllipsisWrapper from "../../../General/Wrapper/EllipsisWrapper";
 import ViewIconAction from "../../../General/Action/IconAction/ViewIconAction";
-import { FARMSTAY_SORT_BY_OPTIONS, LIST_FARMSTAY_STATUS, findFarmstayStatus } from "../../../../setting/farmstay-setting";
+import { FARMSTAY_SORT_BY_OPTIONS, LIST_FARMSTAY_STATUS, findFarmstayStatus, isActiveFarmstay, isInActiveFarmstay, isPendingApproveFarmstay } from "../../../../setting/farmstay-setting";
 import { createCodeString } from "../../../../helpers/stringUtils";
 import { useNavigate } from "react-router-dom";
 import ActivateFarmstay from "./action/ActivateFarmstay";
 import InactivateFarmstay from "./action/InactivateFarmstay";
 import LockIconAction from "../../../General/Action/IconAction/LockIconAction";
 import UnlockIconAction from "../../../General/Action/IconAction/UnlockIconAction";
-import AvatarWrapper from "../../../General/Wrapper/AvatarWrapper";
 import useFarmstays, { defaultFarmstaysPagination } from "./hooks/useFarmstays";
 import { Card, FormGroup } from "react-bootstrap";
 import Select from 'react-select';
@@ -19,6 +17,13 @@ import useDelayLoading from "../../../../hooks/useDelayLoading";
 import { removeNullProps } from "../../../../setting/general-props";
 import SearchIcon from "@mui/icons-material/Search";
 import useBackUrl from "../../../../hooks/useBackUrl";
+import { getHostFromList } from "../../../../setting/host-setting";
+import useAllHosts from "../Account/hooks/useAllHosts";
+import ConditionWrapper from "../../../General/Wrapper/ConditionWrapper";
+
+import GradingIcon from "@mui/icons-material/Grade";
+import TooltipIconAction from "../../../General/Icon/TooltipIconAction";
+import DisplayLinkUser from "../../../General/DisplayLinkUser";
 
 interface FilterProps {
     status: any,
@@ -28,6 +33,7 @@ export default function FarmstayTable() {
 
     const navigate = useNavigate();
     const { createBackUrl } = useBackUrl();
+    const { allHosts } = useAllHosts();
 
     const [filters, setFilters] = useState<FilterProps>({
         status: null,
@@ -65,7 +71,7 @@ export default function FarmstayTable() {
     useEffect(() => {
         const params = {
             Name: searchText || null,
-            status: filters.status?.value ?? null
+            Status: filters.status?.value ?? null
         }
         refresh(undefined, removeNullProps(params));
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -84,8 +90,8 @@ export default function FarmstayTable() {
 
     const handleSubmit = () => {
         const params = {
-            name: searchText || null,
-            status: filters.status?.value ?? null
+            Name: searchText || null,
+            Status: filters.status?.value ?? null
         }
         refresh(undefined, removeNullProps(params));
     }
@@ -103,45 +109,15 @@ export default function FarmstayTable() {
         },
         {
             key: "name",
-            label: "Tên gọi",
-            render: (row: any) => (
-                <Box
-                    display="flex"
-                    alignItems="center"
-                    gap="8px"
-                >
-                    <AvatarWrapper
-                        src={require("../../../../assets/img/photos/farmstay.jpg")}
-                        name={row.name}
-                    />
-                    {row.name}
-                </Box>
-            )
+            label: "Tên",
         },
         {
-            key: "email",
+            key: "hostId",
             label: "Chủ sở hữu",
             render: (row) => (
-                <Box
-                    display="flex"
-                    alignItems="center"
-                    gap="8px"
-                >
-                    <AvatarWrapper
-                        src={row.avatarURL}
-                        name={row.name}
-                    />
-                    {row.name}
-                </Box>
-            )
-        },
-        {
-            key: "address",
-            label: "Địa chỉ",
-            render: (row) => (
-                <EllipsisWrapper breakWidth={200}>
-                    {row.address}
-                </EllipsisWrapper>
+                <DisplayLinkUser
+                    user={getHostFromList(allHosts, row?.hostId)}
+                />
             )
         },
         {
@@ -173,25 +149,41 @@ export default function FarmstayTable() {
                     component="div"
                     display="flex"
                 >
-                    <ViewIconAction
-                        onClick={() => navigate(`/management/farmstay/all/${row.id}?backUrl=${createBackUrl()}`)}
-                    />
-                    <LockIconAction
-                        onClick={() => {
-                            setOpenInactivate(true);
-                            setSelectedFarmstay(row);
-                        }}
-                    />
-                    <UnlockIconAction
-                        onClick={() => {
-                            setOpenActive(true);
-                            setSelectedFarmstay(row);
-                        }}
-                    />
+                    <ConditionWrapper isRender={isPendingApproveFarmstay(row.status)}>
+                        <TooltipIconAction
+                            title="Phê duyệt"
+                            Icon={GradingIcon}
+                            onClick={() => navigate(`/management/farmstay/preview/${row.id}?backUrl=${createBackUrl()}`)}
+                        />
+                    </ConditionWrapper>
+
+                    <ConditionWrapper isRender={isActiveFarmstay(row.status) || isInActiveFarmstay(row.status)}>
+                        <ViewIconAction
+                            onClick={() => navigate(`/management/farmstay/all/${row.id}?backUrl=${createBackUrl()}`)}
+                        />
+                    </ConditionWrapper>
+
+                    <ConditionWrapper isRender={isActiveFarmstay(row.status)}>
+                        <LockIconAction
+                            onClick={() => {
+                                setOpenInactivate(true);
+                                setSelectedFarmstay(row);
+                            }}
+                        />
+                    </ConditionWrapper>
+
+                    <ConditionWrapper isRender={isInActiveFarmstay(row.status)}>
+                        <UnlockIconAction
+                            onClick={() => {
+                                setOpenActive(true);
+                                setSelectedFarmstay(row);
+                            }}
+                        />
+                    </ConditionWrapper>
                 </Box>
             )
         },
-    ], [createBackUrl, navigate]);
+    ], [allHosts, createBackUrl, navigate]);
 
     const handleCloseActive = useCallback(() => setOpenActive(false), []);
     const handleCloseInactivate = useCallback(() => setOpenInactivate(false), []);
@@ -210,7 +202,6 @@ export default function FarmstayTable() {
                                     className="form-control"
                                     autoFocus
                                     placeholder="Tìm kiếm theo tên"
-                                    disabled={delay}
                                     onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
                                 />
                                 <span className="input-group-append">

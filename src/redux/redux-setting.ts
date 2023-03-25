@@ -1,3 +1,8 @@
+import { TagState } from './tag/reducer';
+import { FarmstayState } from "./farmstay/reducer";
+import { RoomState } from "./room/reducer";
+import { ServiceState } from "./service/reducer";
+
 export interface IReduxActionOption {
     onSuccess?: Function;
     onFailure?: Function;
@@ -22,21 +27,11 @@ export interface RootState {
         user: any
     };
 
-    farmstay: {
-        farmstays: any,
-        allFarmstays: any[],
-        farmstayDetail: any,
-        activityDetail: any,
-        activitySchedule: any
-    };
+    farmstay: FarmstayState;
 
-    service: {
-        serviceCategories: any
-    };
+    service: ServiceState;
 
-    room: {
-        roomCategories: any
-    };
+    room: RoomState;
 
     feedback: {
         feedbacks: any
@@ -57,4 +52,6 @@ export interface RootState {
         orders: any,
         disbursements: any,
     }
+
+    tag: TagState;
 }

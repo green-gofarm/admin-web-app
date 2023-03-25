@@ -1,86 +1,126 @@
-import React, { Fragment } from 'react'
+import { Fragment, useMemo } from 'react'
 import { Table } from 'react-bootstrap';
-import { convertToMoney } from '../../../../../../helpers/stringUtils';
+import { convertToMoney, createCodeString } from '../../../../../../helpers/stringUtils';
+import { isAvailableArray } from '../../../../../../helpers/arrayUtils';
+import useAllServiceCategories from '../../../ServiceCategory/hooks/useAllServiceCategories';
+import { getServiceCategoryLabel } from '../../../../../../setting/service-category-setting';
 import { Box } from '@mui/material';
+import { Status } from '../../../../../../setting/Status';
+import { findServiceStatus } from '../../../../../../setting/service-status-setting';
 
-const data = [
-    {
-        category: "Dịch vụ phòng",
-        services: [
-            { name: "Chăn, gối", price: 500000 },
-            { name: "Điều hòa không khí", price: 500000 },
-            { name: "Máy sấy tóc", price: 500000 },
-            { name: "Máy pha trà/cà phê", price: 500000 },
-            { name: "Tủ lạnh", price: 500000 },
-            { name: "Internet - Wifi", price: 500000 },
-            { name: "TV màn hình phẳng", price: 500000 },
-            { name: "Điện thoại bàn", price: 500000 },
-        ]
-    },
-    {
-        category: "Dịch vụ ăn uống",
-        services: [
-            { name: "Buffet sáng", price: 500000 },
-            { name: "Nhà hàng", price: 500000 },
-            { name: "Quầy bar", price: 500000 },
-        ]
-    },
-    {
-        category: "Dịch vụ giặt ủi",
-        services: [
-            { name: "Giặt ủi quần áo", price: 500000 }
-        ]
-    },
-    {
-        category: "Dịch vụ xe đưa đón",
-        services: [
-            { name: "Xe đưa đón sân bay", price: 500000 },
-            { name: "Xe đưa đón du lịch", price: 500000 },
-        ]
-    },
-    {
-        category: "Khác",
-        services: [
-            { name: "Cho phép mang vật nuôi", price: 500000 },
-            { name: "Dịch vụ đặt tour", price: 500000 },
-            { name: "Đưa đón đến ga tàu", price: 500000 },
-            { name: "Đưa đón đến bến xe", price: 500000 },
-            { name: "Lễ tân 24/24", price: 500000 },
-            { name: "Phòng họp", price: 500000 },
-            { name: "Phòng tập thể dục", price: 500000 },
-            { name: "Spa & Massage", price: 500000 },
-            { name: "Tiệc nướng ngoài trời", price: 500000 },
-        ]
+interface ServiceTabProps {
+    detail?: any,
+    loading?: boolean,
+}
+
+
+function ServiceTab({
+    detail,
+    loading
+}: ServiceTabProps) {
+
+    const categories = useAllServiceCategories();
+
+    const services: any[] = useMemo(() => {
+        if (!isAvailableArray(detail?.services)) return [];
+        return detail.services;
+    }, [detail]);
+
+    const groups = useMemo(() => {
+        if (services.length < 1) return null;
+
+        const map: { [key: string]: any[] | null } = {};
+        services.forEach(service => {
+            const key = service.categoryId + "";
+            if (key) {
+                if (!map[key]) {
+                    map[key] = [];
+                }
+
+                map[key]?.push(service);
+            }
+        })
+        return map;
+    }, [services]);
+
+    if (groups === null) {
+        return <i>Chưa có dịch vụ</i>
     }
-];
 
-function ServiceTab() {
+
     return (
         <div>
-            {data.map((item, index) =>
-                <Fragment key={index}>
+            {Object.keys(groups).map((key) =>
+                <Fragment key={key}>
                     <h5 className="mb-2 mt-3 fw-semibold">
-                        {item.category}
+                        {getServiceCategoryLabel(categories, key) ?? "NO_CATEGORY"}
                     </h5>
                     <div className="table-responsive">
                         <Table className="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Mã</th>
+                                    <th>Ảnh đại diện</th>
+                                    <th>Tên dịch vụ</th>
+                                    <th>Mô tả</th>
+                                    <th>Giá</th>
+                                    <th>Trạng thái</th>
+                                </tr>
+                            </thead>
                             <tbody>
-                                {item.services.map((item, jd) =>
-                                    <tr key={jd}>
+                                {groups[key]?.map((service) =>
+                                    <tr key={service.id}>
                                         <Box
                                             component="td"
                                             className="fw-semibold"
-                                            width="80%"
                                         >
-                                            {item.name}
+                                            {createCodeString("SV", service.id)}
+                                        </Box>
+                                        <Box
+                                            component="td"
+                                            className="fw-semibold"
+                                        >
+                                            <Box
+                                                component="img"
+                                                className="br-5 "
+                                                src={service.image ?? "../../../../../../assets/img/photos/1.jpg"}
+                                                alt="Activity img"
+                                                sx={{
+                                                    position: "relative",
+                                                    height: "80px !important",
+                                                    width: "80px !important",
+                                                    backgroundPosition: "center",
+                                                    backgroundSize: "cover",
+                                                    backgroundRepeat: "no-repeat"
+                                                }}
+                                            />
+                                        </Box>
+                                        <Box
+                                            component="td"
+                                            className="fw-semibold"
+                                        >
+                                            {service.name}
+                                        </Box>
+                                        <Box
+                                            component="td"
+                                            className="fw-semibold"
+                                            width="50%"
+                                        >
+                                            {service.description}
                                         </Box>
                                         <Box
                                             component="td"
                                             className="fw-semibold"
                                         >
                                             <Box marginLeft="auto">
-                                                {convertToMoney(item.price)}
+                                                {convertToMoney(service.price) ?? "FREE"}
                                             </Box>
+                                        </Box>
+                                        <Box
+                                            component="td"
+                                            className="fw-semibold"
+                                        >
+                                            <Status statusObject={findServiceStatus(service.status)} />
                                         </Box>
                                     </tr>
                                 )}

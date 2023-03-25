@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import useAdmins from "../hooks/useAdmins";
 import useDelayLoading from "../../../../../hooks/useDelayLoading";
 import { ROLES } from "../../../../../setting/setting";
+import StringWrapper from "../../../../General/Wrapper/StringWrapper";
 
 export default function AdminTable() {
 
@@ -53,12 +54,12 @@ export default function AdminTable() {
         {
             key: "email",
             label: "Email",
-            render: (row) => row.email
+            render: (row) => <StringWrapper text={row.email} />
         },
         {
             key: "phoneNumber",
             label: "Số điện thoại",
-            render: (row) => row.phoneNumber
+            render: (row) => <StringWrapper text={row.phoneNumber} />
         },
         {
             key: "status",

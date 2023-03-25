@@ -53,3 +53,8 @@ export const FARMSTAY_SORT_BY_OPTIONS: SortByProps[] = [
     { label: "Đánh giá cao nhất", value: 3, sortValue: { orderBy: "rating", orderDirection: "desc" } },
     { label: "Đánh giá thấp nhất tới cao", value: 4, sortValue: { orderBy: "rating", orderDirection: "asc" } },
 ]
+
+export const isDraftFarmstay = (status: any) => status === FARMSTAY_STATUSES.DRAFT;
+export const isPendingApproveFarmstay = (status: any) => status === FARMSTAY_STATUSES.PENDING;
+export const isActiveFarmstay = (status: any) => status === FARMSTAY_STATUSES.ACTIVE;
+export const isInActiveFarmstay = (status: any) => status === FARMSTAY_STATUSES.INACTIVE;

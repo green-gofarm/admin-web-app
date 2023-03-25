@@ -1,5 +1,5 @@
 import { searchHosts } from './../../../../../redux/user/action';
-import { DEFAULT_PAGINATION } from './../../../../Mui-Table/setting';
+
 import { useCallback } from 'react';
 import { PaginationProps } from './../../../../../setting/general-props';
 import { useEffect, useState } from 'react';
@@ -99,7 +99,7 @@ function useHosts(preventFirstCall?: boolean) {
         data,
         loading,
         pagination,
-        rowsPerPageOptions: DEFAULT_PAGINATION.rowsPerPageOptions,
+        rowsPerPageOptions: DEFAULT_PROPS.rowsPerPageOptions,
 
         refresh,
         handleChangePage,

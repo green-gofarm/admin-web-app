@@ -1,6 +1,6 @@
 import { FEEDBACK_STATUSES } from './../../../../../setting/feedback-setting';
 import { searchFeedbacks } from './../../../../../redux/feedback/action';
-import { DEFAULT_PAGINATION } from './../../../../Mui-Table/setting';
+
 import { useCallback } from 'react';
 import { PaginationProps } from './../../../../../setting/general-props';
 import { useEffect, useState } from 'react';
@@ -43,7 +43,7 @@ function useReportedFeedback(preventFirstCall?: boolean) {
             orderBy: _pagination.orderBy ?? defaultReportedFeedbacksPagination.orderBy,
             orderDirection: _pagination.orderDirection ?? defaultReportedFeedbacksPagination.orderDirection,
             ..._params,
-            status: FEEDBACK_STATUSES.REPORTED
+            Status: FEEDBACK_STATUSES.REPORTED
         };
 
         if (newParams) {
@@ -102,7 +102,7 @@ function useReportedFeedback(preventFirstCall?: boolean) {
         data,
         loading,
         pagination,
-        rowsPerPageOptions: DEFAULT_PAGINATION.rowsPerPageOptions,
+        rowsPerPageOptions: DEFAULT_PROPS.rowsPerPageOptions,
 
         refresh,
         handleChangePage,

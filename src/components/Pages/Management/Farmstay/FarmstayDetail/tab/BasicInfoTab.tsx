@@ -5,6 +5,7 @@ import { Card, Table } from 'react-bootstrap';
 import { isAvailableArray } from '../../../../../../helpers/arrayUtils';
 import StringWrapper from '../../../../../General/Wrapper/StringWrapper';
 import useContactInfo from '../hooks/useContactInfo';
+import useFarmstayImages from '../hooks/useFarmstayImages';
 
 
 interface IBasicInfo {
@@ -19,6 +20,7 @@ function BasicInfoTab({
     const position: any = [10.797056, 106.659840];
 
     const contactInfo = useContactInfo(detail);
+    const images = useFarmstayImages(detail);
 
     return (
         <Grid container spacing={2}>
@@ -40,7 +42,9 @@ function BasicInfoTab({
                             Hình ảnh
                         </h5>
                         <Box className='file-detailimg'>
-                            <FarmImageGeneralView />
+                            <FarmImageGeneralView
+                                images={images?.others}
+                            />
                         </Box>
                     </Card.Body>
                 </Card>

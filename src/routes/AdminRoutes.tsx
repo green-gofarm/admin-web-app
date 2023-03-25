@@ -84,6 +84,9 @@ const WithdrawalRequestDetail = React.lazy(() =>
 const ActivityDetail = React.lazy(() =>
     import("../components/Pages/Management/Farmstay/Activity/ActivityDetail")
 );
+const RoomDetail = React.lazy(() =>
+    import("../components/Pages/Management/Farmstay/Room/RoomDetail")
+);
 
 // Error pages
 const Custompages = React.lazy(() => import("../shade/layouts/custompages"));
@@ -206,6 +209,10 @@ function AdminRoutes() {
                                                 <Route
                                                     path="/management/farmstay/all/:id/activity/:activityId"
                                                     element={<ActivityDetail />}
+                                                />
+                                                <Route
+                                                    path="/management/farmstay/all/:id/room/:roomId"
+                                                    element={<RoomDetail />}
                                                 />
                                             </Route>
 

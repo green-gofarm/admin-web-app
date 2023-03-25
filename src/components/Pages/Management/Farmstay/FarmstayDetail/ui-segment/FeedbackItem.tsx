@@ -1,7 +1,4 @@
-import { Link } from "react-router-dom"
 import { formatTimeString } from "../../../../../../helpers/dateUtils"
-import ReplyIcon from '@mui/icons-material/Reply';
-import FlagIcon from '@mui/icons-material/Flag';
 import { isNumber } from "../../../../../../helpers/numberUtils";
 
 interface IFeedbackItem {
@@ -29,15 +26,6 @@ function FeedbackItem({
             <div className="media-body">
                 <h5 className="mt-0 mb-1 font-weight-semibold tx-16">
                     {item?.user?.name}
-                    {/* <span
-                        className="fs-14 ms-0"
-                        data-bs-toggle="tooltip"
-                        data-placement="top"
-                        title=""
-                        data-bs-original-title="verified"
-                    >
-                        <i className="fa fa-check-circle text-success"></i>
-                    </span> */}
                 </h5>
                 <span className="text-muted tx-13">{formatTimeString(item?.createdDate)}</span>
                 <div className="text-warning mt-1">
@@ -52,16 +40,6 @@ function FeedbackItem({
                     {item?.comment}
                 </p>
             </div>
-            <p className="mb-1">
-                <span className="float-end">
-                    <Link to="#" className="new ms-3">
-                        <ReplyIcon />
-                    </Link>
-                    <Link to="#" className="new ms-3 mt-6">
-                        <FlagIcon />
-                    </Link>
-                </span>
-            </p>
         </div>
     )
 }

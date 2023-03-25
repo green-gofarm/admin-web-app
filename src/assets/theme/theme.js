@@ -33,17 +33,17 @@ const theme = createTheme(adaptV4Theme({
         },
         MuiDialogContent: {
             root: {
-                padding: "1rem"
+                padding: "16px 20px"
             }
         },
         MuiDialogTitle: {
             root: {
-                padding: "1rem"
+                padding: "16px 20px"
             }
         },
         MuiDialogActions: {
             root: {
-                padding: "1rem"
+                padding: "16px 20px"
             }
         },
         MuiSvgIcon: {

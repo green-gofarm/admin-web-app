@@ -1,9 +1,12 @@
+import { isAvailableArray } from "../helpers/arrayUtils";
 import { STATUS_COLORS } from "./color";
 
 
-export const CUSTOMER_STATUSES = {
-    ACTIVE: 1,
-    BANNED: 2,
+export enum CUSTOMER_STATUSES {
+    ACTIVE = 1,
+    REGISTER_PENDING = 2,
+    INACTIVE = 3,
+    BANNED = 4,
 }
 
 export const LIST_CUSTOMER_STATUS = [
@@ -38,3 +41,8 @@ export const CUSTOMER_SORT_BY_OPTIONS: SortByProps[] = [
     { label: "Ngày tạo gần nhất", value: 1, sortValue: { orderBy: "createdDate", orderDirection: "desc" } },
     { label: "Ngày tạo xa nhất", value: 2, sortValue: { orderBy: "createdDate", orderDirection: "asc" } },
 ]
+
+export const getCustomerFromList = (list: any, id: any) => {
+    if (!isAvailableArray(list)) return null;
+    return list.find(item => item.id === id) ?? null;
+}

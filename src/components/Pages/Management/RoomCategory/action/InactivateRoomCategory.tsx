@@ -1,8 +1,13 @@
 import { memo, useState } from 'react'
 import { Box } from '@mui/material';
 import ConfirmModel from '../../../../General/Model/ConfirmModel';
+import { useDispatch } from 'react-redux';
+import { SERVICE_CATEGORY_STATUSES } from '../../../../../setting/service-category-setting';
+import { toast } from 'react-toastify';
+import useDelayLoading from '../../../../../hooks/useDelayLoading';
+import { updateRoomCategory } from '../../../../../redux/room/action';
 
-interface _IInactivateRoomCategory {
+interface InactivateRoomCategoryProps {
     open?: boolean,
     roomCategory?: any,
     refresh?: any,
@@ -14,26 +19,42 @@ function InactivateRoomCategory({
     roomCategory,
     refresh,
     onClose,
-}: _IInactivateRoomCategory) {
-    const [loading] = useState(false);
+}: InactivateRoomCategoryProps) {
+
+    const dispatch = useDispatch();
+    const [loading, setLoading] = useState<boolean>(false);
+    const delay = useDelayLoading(loading);
 
     const handleSubmit = () => {
         if (!roomCategory?.id) return;
-        onClose && onClose();
-        refresh && refresh();
+        dispatch(updateRoomCategory(
+            roomCategory.id,
+            { status: SERVICE_CATEGORY_STATUSES.INACTIVE },
+            {
+                loading: setLoading,
+                onSuccess: () => {
+                    toast.success("Cập nhật thành công");
+                    onClose && onClose();
+                    refresh && refresh();
+                },
+                onFailure: () => {
+                    toast.error("Cập nhật thất bại");
+                }
+            }
+        ))
     }
 
     return (
         <ConfirmModel
             open={open}
-            title="Ẩn loại phòng"
+            title="Khóa loại phòng"
             description={(
                 <Box display="inline-block">
-                    Bạn có chắc chắn muốn ẩn
+                    Bạn có chắc chắn muốn khóa
                     <b>{` ${roomCategory?.name ?? ""}`}</b> ?
                 </Box>
             )}
-            loading={loading}
+            loading={delay}
             onCancel={onClose}
             onConfirm={handleSubmit}
         />

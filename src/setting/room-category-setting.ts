@@ -1,9 +1,9 @@
+import { isAvailableArray } from "../helpers/arrayUtils";
 import { STATUS_COLORS } from "./color";
 
-export const ROOM_CATEGORY_STATUSES = {
-    ACTIVE: 1,
-    INACTIVE: 2,
-    DELETED: 3,
+export enum ROOM_CATEGORY_STATUSES {
+    ACTIVE = 1,
+    INACTIVE = 2,
 }
 
 export const LIST_ROOM_CATEGORY_STATUS = [
@@ -19,14 +19,14 @@ export const LIST_ROOM_CATEGORY_STATUS = [
         textColor: STATUS_COLORS.DISABLED.textColor,
         bgColor: STATUS_COLORS.DISABLED.bgColor
     },
-    {
-        label: "Đã xóa",
-        value: ROOM_CATEGORY_STATUSES.DELETED,
-        textColor: STATUS_COLORS.DELETED.textColor,
-        bgColor: STATUS_COLORS.DELETED.bgColor
-    },
 ]
 
 export const findRoomCategoryStatus = (value: number) => {
     return value != null && LIST_ROOM_CATEGORY_STATUS.find(item => item.value === value);
+}
+
+
+export const getRoomCategoryLabel = (categories: any, id: any): string | null => {
+    if (!isAvailableArray(categories)) return null;
+    return categories.find(item => item.id + "" === id + "")?.name ?? null;
 }

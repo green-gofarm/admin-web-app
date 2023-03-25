@@ -1,4 +1,4 @@
-import { Link, useLocation, useParams, useSearchParams } from "react-router-dom";
+import { Link, useParams, useSearchParams } from "react-router-dom";
 import PageHeader, { IBreadcrumbItem } from "../../../General/PageHeader";
 import { Box, Divider, Grid } from "@mui/material";
 import DetailPageHeaderTitle from "../../../General/DetailPageHeaderTitle";
@@ -10,6 +10,7 @@ import IconLabelDetail from "../../../General/Item/IconLabelDetail";
 import { Status } from "../../../../setting/Status";
 import { findOrderStatus } from "../../../../setting/order-setting";
 import HomeIcon from '@mui/icons-material/Home';
+import useBackUrl from "../../../../hooks/useBackUrl";
 
 const print = () => {
     window.print();
@@ -93,7 +94,7 @@ function OrderDetail() {
 
     const { id } = useParams();
     const [searchParams] = useSearchParams();
-    const location = useLocation();
+    const { createBackUrl } = useBackUrl();
 
     return (
         <Box marginBottom="1.3rem">
@@ -147,11 +148,11 @@ function OrderDetail() {
                                         <Box padding="0 4px">
                                             <IconLabelDetail
                                                 icon={<i className="fa fa-user me-2"></i>}
-                                                label="Chủ sở hửu:"
+                                                label="Chủ sở hữu:"
                                                 value={
                                                     <Box
                                                         component={Link}
-                                                        to={`/management/account/host/${detail.customer.userId}?backUrl=${location.pathname + location.search}`}
+                                                        to={`/management/account/host/${detail.customer.userId}?backUrl=${createBackUrl()}`}
                                                         display="flex"
                                                         alignItems="center"
                                                         gap="8px"
@@ -209,7 +210,7 @@ function OrderDetail() {
                                                 <Box
                                                     component={Link}
                                                     className="tag tag-rounded btn"
-                                                    to={`/management/farmstay/${detail.farmstay.id}?backUrl=${location.pathname + location.search}`}
+                                                    to={`/management/farmstay/${detail.farmstay.id}?backUrl=${createBackUrl()}`}
                                                 >
                                                     <Box
                                                         display="flex"

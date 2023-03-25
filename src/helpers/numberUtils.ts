@@ -1,6 +1,6 @@
 export const PERCENT_PRECISION = 4;
 
-export const isNumber = (number: any): boolean => {
+export const isNumber = (number: any): number is number => {
     return number != null && (!isNaN(number) || typeof number === "number");
 }
 

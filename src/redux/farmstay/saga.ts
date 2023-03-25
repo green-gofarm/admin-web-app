@@ -122,10 +122,63 @@ function* watchActivity() {
     yield takeLatest(types.GET_ACTIVITY_SCHEDULE, getActivitySchedule);
 }
 
+
+function* getRoomDetail(action: IReduxAction): Generator<any, void, any> {
+    const option: IReduxActionOption = action.payload?.option
+
+    option?.loading && option.loading(true);
+    try {
+        yield put(actions.clearFarmstayDetail());
+
+        const response = yield call(apis.getRoomDetail, action.payload.farmstayId, action.payload.roomId);
+
+        yield put(actions.getRoomDetailSuccess(response));
+        option?.onSuccess && option.onSuccess(response);
+    } catch (error) {
+        console.log(error);
+
+        yield put(actions.getRoomDetailFailed());
+        option?.onFailure && option.onFailure(error);
+
+    }
+
+    option?.loading && option.loading(false);
+}
+
+function* getRoomSchedule(action: IReduxAction): Generator<any, void, any> {
+    const data = action.payload.data;
+    const option: IReduxActionOption = action.payload?.option
+
+    option?.loading && option.loading(true);
+    try {
+        yield put(actions.clearFarmstayDetail());
+
+        const response = yield call(apis.getRoomSchedule, data.farmstayId, data.roomId, data.date);
+
+        yield put(actions.getRoomScheduleSuccess(response));
+        option?.onSuccess && option.onSuccess(response);
+    } catch (error) {
+        console.log(error);
+
+        yield put(actions.getRoomScheduleFailed());
+        option?.onFailure && option.onFailure(error);
+
+    }
+
+    option?.loading && option.loading(false);
+}
+
+function* watchRoom() {
+    yield takeLatest(types.GET_ROOM_DETAIL, getRoomDetail);
+    yield takeLatest(types.GET_ROOM_SCHEDULE, getRoomSchedule);
+}
+
+
 function* watchFarmstay() {
     yield all([
         fork(watchSearch),
-        fork(watchActivity)
+        fork(watchActivity),
+        fork(watchRoom),
     ]);
 }
 

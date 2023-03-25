@@ -1,57 +1,106 @@
-import { Box, Button, Grid } from '@mui/material'
+import { Box, Grid } from '@mui/material'
 import { Card } from 'react-bootstrap'
-import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
-import ThumbDownAltIcon from '@mui/icons-material/ThumbDownAlt';
-import FarmImageGeneralView from './FarmImageGeneralView';
+import AvatarWrapper from '../../../../General/Wrapper/AvatarWrapper'
+import IconLabelDetail from '../../../../General/Item/IconLabelDetail'
+import { Link } from 'react-router-dom'
+import useBackUrl from '../../../../../hooks/useBackUrl'
+import useContactInfo from './hooks/useContactInfo'
+import StringWrapper from '../../../../General/Wrapper/StringWrapper'
+import useFarmstayImages from './hooks/useFarmstayImages'
 
 interface IFarmstayDetailHeader {
     detail?: any,
+    loading?: boolean,
 }
 
 function FarmstayPreviewHeader({
-    detail
+    detail,
+    loading
 }: IFarmstayDetailHeader) {
+
+    const { createBackUrl } = useBackUrl();
+
+    const contactInfo = useContactInfo(detail);
+    const images = useFarmstayImages(detail);
+
     return (
         <Card className="custom-card customs-cards">
-            <Card.Body className=" d-md-flex bg-white">
-                <Grid container spacing={2} alignItems="center">
-                    <Grid item xs={12}>
-                        <FarmImageGeneralView />
-                    </Grid>
-                    <Grid item xs={12} md={6}>
-                        <Box component="h4" className="font-weight-semibold" margin="0 !important">
-                            {detail?.name}
-                        </Box>
-                    </Grid>
-
-                    <Grid item xs={12} md={6}>
+            <Card.Body className="d-flex bg-white">
+                <div className="">
+                    <span className="pos-relative">
                         <Box
-                            marginLeft="auto"
-                            display="flex"
-                            justifyContent="flex-end"
-                            gap="8px"
-                            height="32px"
-                        >
-                            <Button
-                                color="error"
-                                variant="contained"
-                                size="small"
-                                startIcon={<ThumbDownAltIcon fontSize="small" />}
-                            >
-                                Từ chối
-                            </Button>
+                            component="img"
+                            className="br-5 "
+                            src={images?.avatar ?? require("../../../../../assets/img/photos/farmstay.jpg")}
+                            alt="Farmstay logo"
+                            sx={{
+                                position: "relative",
+                                width: "96px",
+                                height: "96px",
+                                backgroundPosition: "center",
+                                backgroundSize: "cover",
+                                backgroundRepeat: "no-repeat"
+                            }}
+                        />
+                        <span className="bg-success text-white wd-1 ht-1 rounded-pill profile-online"></span>
+                    </span>
+                </div>
+                <Box
+                    className="prof-details"
+                    margin="0 0 4px 24px"
+                    flexGrow="1"
+                >
+                    <Grid container spacing={0}>
+                        <Grid item xs={12}>
+                            <h4 className="font-weight-semibold">
+                                {detail?.name}
+                            </h4>
+                        </Grid>
+                        <Grid item xs={12} lg={6}>
+                            <IconLabelDetail
+                                icon={<i className="fa fa-user me-2"></i>}
+                                label="Chủ sở hữu:"
+                                value={
+                                    <Box
+                                        component={Link}
+                                        to={`/management/account/host/${detail?.host?.userId}?backUrl=${createBackUrl()}`}
+                                        display="flex"
+                                        alignItems="center"
+                                        gap="8px"
+                                        className="tag tag-rounded"
+                                    >
+                                        <AvatarWrapper
+                                            name={detail?.host.name}
+                                            avatarProps={{
+                                                width: "22px !important",
+                                                height: "22px !important",
+                                                fontSize: "12px !important"
+                                            }}
+                                        />
+                                        {detail?.host.name}
+                                    </Box>
+                                }
+                            />
+                            <IconLabelDetail
+                                icon={<i className="fa fa-location-arrow me-2"></i>}
+                                label="Địa chỉ:"
+                                value={detail?.address}
+                            />
+                        </Grid>
+                        <Grid item xs={12} lg={6}>
 
-                            <Button
-                                color="primary"
-                                variant="contained"
-                                size="small"
-                                startIcon={<ThumbUpAltIcon fontSize="small" />}
-                            >
-                                Chấp nhận
-                            </Button>
-                        </Box>
+                            <IconLabelDetail
+                                icon={<i className="fa fa-address-book me-2"></i>}
+                                label="Liên hệ"
+                                value={
+                                    contactInfo[0]
+                                        ? <StringWrapper text={contactInfo[0].value} />
+                                        : <i>Chưa có thông tin liên hệ</i>
+                                }
+                            />
+                        </Grid>
                     </Grid>
-                </Grid>
+                </Box>
             </Card.Body>
         </Card>
     )

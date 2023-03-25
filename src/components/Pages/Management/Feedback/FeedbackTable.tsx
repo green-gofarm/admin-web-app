@@ -80,8 +80,8 @@ export default function FeedbackTable() {
     useEffect(() => {
         const params = {
             Comment: searchText || null,
-            status: filters.status?.value ?? null,
-            type: filters.type?.value ?? null
+            Status: filters.status?.value ?? null,
+            Type: filters.type?.value ?? null
         };
         refresh(undefined, removeNullProps(params));
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -100,8 +100,8 @@ export default function FeedbackTable() {
 
     const handleSubmit = () => {
         const params = {
-            name: searchText || null,
-            status: filters.status?.value ?? null
+            Name: searchText || null,
+            Status: filters.status?.value ?? null
         };
         refresh(undefined, removeNullProps(params));
     }
@@ -254,7 +254,6 @@ export default function FeedbackTable() {
                                     className="form-control"
                                     autoFocus
                                     placeholder="Tìm kiếm theo từ khóa"
-                                    disabled={delay}
                                     onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
                                 />
                                 <span className="input-group-append">

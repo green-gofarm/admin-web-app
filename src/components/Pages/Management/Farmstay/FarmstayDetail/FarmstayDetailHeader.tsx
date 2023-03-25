@@ -7,18 +7,22 @@ import { Link } from 'react-router-dom'
 import useBackUrl from '../../../../../hooks/useBackUrl'
 import useContactInfo from './hooks/useContactInfo'
 import StringWrapper from '../../../../General/Wrapper/StringWrapper'
+import useFarmstayImages from './hooks/useFarmstayImages'
 
 interface IFarmstayDetailHeader {
     detail?: any,
+    loading?: boolean,
 }
 
 function FarmstayDetailHeader({
-    detail
+    detail,
+    loading,
 }: IFarmstayDetailHeader) {
 
     const { createBackUrl } = useBackUrl();
 
     const contactInfo = useContactInfo(detail);
+    const images = useFarmstayImages(detail);
 
     return (
         <Card className="custom-card customs-cards">
@@ -28,7 +32,7 @@ function FarmstayDetailHeader({
                         <Box
                             component="img"
                             className="br-5 "
-                            src={require("../../../../../assets/img/photos/farmstay.jpg")}
+                            src={images?.avatar ?? require("../../../../../assets/img/photos/farmstay.jpg")}
                             alt="Farmstay logo"
                             sx={{
                                 position: "relative",
@@ -56,7 +60,7 @@ function FarmstayDetailHeader({
                         <Grid item xs={12} lg={6}>
                             <IconLabelDetail
                                 icon={<i className="fa fa-user me-2"></i>}
-                                label="Chủ sở hửu:"
+                                label="Chủ sở hữu:"
                                 value={
                                     <Box
                                         component={Link}

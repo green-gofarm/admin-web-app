@@ -2,7 +2,6 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { Box, CircularProgress, FormGroup, Grid } from "@mui/material";
 import { Status } from "../../../../setting/Status";
 import MuiTables from "../../../Mui-Table/MuiTable";
-import AvatarWrapper from "../../../General/Wrapper/AvatarWrapper";
 import { LIST_WITHDRAWAL_REQUEST_STATUS, WITHDRAWAL_REQUEST_SORT_BY_OPTIONS, findWithdrawalRequestStatus } from "../../../../setting/withdrawl-request-setting";
 import { convertToMoney, createCodeString } from "../../../../helpers/stringUtils";
 
@@ -15,7 +14,7 @@ import { Card } from "react-bootstrap";
 import useDisbursement, { defaultDisbursementsPagination } from "./hooks/useDisbursement";
 import useDelayLoading from "../../../../hooks/useDelayLoading";
 import { removeNullProps } from "../../../../setting/general-props";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useBackUrl from "../../../../hooks/useBackUrl";
 
 export default function WithdrawalRequestTable() {
@@ -56,7 +55,7 @@ export default function WithdrawalRequestTable() {
     useEffect(() => {
         const params = {
             OrderId: searchText || null,
-            status: filters.status?.value ?? null
+            Status: filters.status?.value ?? null
         }
         refresh(undefined, removeNullProps(params));
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -76,7 +75,7 @@ export default function WithdrawalRequestTable() {
     const handleSubmit = () => {
         const params = {
             OrderId: searchText || null,
-            status: filters.status?.value ?? null
+            Status: filters.status?.value ?? null
         }
         refresh(undefined, removeNullProps(params));
     }
@@ -86,24 +85,23 @@ export default function WithdrawalRequestTable() {
 
     const columns = useMemo(() => [
         {
-            key: "code",
-            label: "Mã đơn",
-            render: (row: any) => createCodeString("WR", row.orderId)
+            key: "id",
+            label: "Mã",
+            render: (row: any) => createCodeString("WR", row.id)
         },
         {
-            key: "host",
-            label: "Người yêu cầu",
+            key: "orderId",
+            label: "Mã đơn hàng",
             render: (row: any) => (
                 <Box
+                    component={Link}
+                    to={`/management/order/${row.orderId}?backUrl=${createBackUrl()}`}
                     display="flex"
                     alignItems="center"
                     gap="8px"
+                    className="tag tag-rounded"
                 >
-                    <AvatarWrapper
-                        src={"Trọng"}
-                        name={"Trọng"}
-                    />
-                    {"Trọng"}
+                    {createCodeString("OR", row.orderId)}
                 </Box>
             )
         },
@@ -158,7 +156,6 @@ export default function WithdrawalRequestTable() {
                                     className="form-control"
                                     autoFocus
                                     placeholder="Tìm kiếm theo tên mã tài khoản chủ farmstay"
-                                    disabled={delay}
                                     onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
                                 />
                                 <span className="input-group-append">

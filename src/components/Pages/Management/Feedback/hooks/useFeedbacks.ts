@@ -1,5 +1,5 @@
 import { searchFeedbacks } from './../../../../../redux/feedback/action';
-import { DEFAULT_PAGINATION } from './../../../../Mui-Table/setting';
+
 import { useCallback } from 'react';
 import { PaginationProps } from './../../../../../setting/general-props';
 import { useEffect, useState } from 'react';
@@ -100,7 +100,7 @@ function useFeedbacks(preventFirstCall?: boolean) {
         data,
         loading,
         pagination,
-        rowsPerPageOptions: DEFAULT_PAGINATION.rowsPerPageOptions,
+        rowsPerPageOptions: DEFAULT_PROPS.rowsPerPageOptions,
 
         refresh,
         handleChangePage,

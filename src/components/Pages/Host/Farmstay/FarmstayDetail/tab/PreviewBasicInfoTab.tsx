@@ -22,7 +22,7 @@ function PreviewBasicInfoTab({
             <IconLabelDetail
                 className="mb-4"
                 icon={<i className="fa fa-user me-2"></i>}
-                label="Chủ sở hửu:"
+                label="Chủ sở hữu:"
                 value={
                     <Box
                         component={Link}

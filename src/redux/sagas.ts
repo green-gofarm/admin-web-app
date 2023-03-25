@@ -6,6 +6,7 @@ import watchRoom from "./room/saga";
 import watchFeedback from "./feedback/saga";
 import watchUser from "./user/saga";
 import watchOrder from "./order/saga";
+import watchTag from "./tag/saga";
 
 export default function* rootSaga() {
     yield all([
@@ -15,6 +16,7 @@ export default function* rootSaga() {
         watchRoom(),
         watchFeedback(),
         watchUser(),
-        watchOrder()
+        watchOrder(),
+        watchTag(),
     ]);
 }

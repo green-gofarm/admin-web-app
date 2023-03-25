@@ -4,6 +4,7 @@ import 'moment/locale/vi';
 export const dateFormat = 'DD/MM/YYYY';
 export const dateFormat2 = 'yyyy-MM-DD';
 export const isoFormat = 'YYYY-MM-DDTHH:mm:ssZ';
+export const isoFormatV2 = 'YYYY-MM-DDTHH:mm:ss';
 export const iso8601Format = 'YYYY-MM-DDTHH:mm:ss.SSSZZ';
 export const datetimeFormat = 'DD/MM/YYYY HH:mm:ss';
 export const datetimeFormatV2 = 'DD-MM-YYYY HH:mm:ss';
@@ -27,6 +28,7 @@ export const isValidDate = (date: any, customFormat?: string): boolean => {
             || moment(date, datetimeFormatV2, true).isValid()
             || moment(date, datetimeFormatReverseDate, true).isValid()
             || moment(date, isoFormat, true).isValid()
+            || moment(date, isoFormatV2, true).isValid()
             || moment(date, iso8601Format, true).isValid()
             || moment(date, "MM/DD/YYYY", true).isValid()
             || moment(date, "MM/DD/YYYY", true).isValid()

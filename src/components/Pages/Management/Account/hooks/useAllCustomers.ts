@@ -1,8 +1,8 @@
+import { searchAllCustomers } from './../../../../../redux/user/action';
 import { useEffect, useState } from 'react';
 import { RootState } from '../../../../../redux/redux-setting';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
-import { searchAllHosts } from '../../../../../redux/user/action';
 
 function useAllCustomers() {
     const dispatch = useDispatch();
@@ -12,7 +12,7 @@ function useAllCustomers() {
 
     useEffect(() => {
         if (allCustomers.length < 1) {
-            dispatch(searchAllHosts({
+            dispatch(searchAllCustomers({
                 loading: setLoading
             }));
         }

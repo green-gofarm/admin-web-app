@@ -1,74 +1,59 @@
-import React, { Fragment, useMemo } from 'react'
-import categoryJson from "../../../RoomCategory/room-category.json";
-import roomInventoryJson from "../room-inventory.json";
+import { useMemo } from 'react'
 import { isAvailableArray } from '../../../../../../helpers/arrayUtils';
-import { Table } from 'react-bootstrap';
+import { Card, Table } from 'react-bootstrap';
+import RoomRowItem from '../ui-segment/RoomRowItem';
+import useAllRoomCategories from '../../../RoomCategory/hooks/useAllRoomCategories';
 import { Box } from '@mui/material';
-import { convertToMoney } from '../../../../../../helpers/stringUtils';
-import { findRoomStatus } from '../../../../../../setting/room-setting';
-import { Status } from '../../../../../../setting/Status';
+interface RoomTabProps {
+    detail?: any,
+    loading?: boolean,
+}
 
-const categoryObject = JSON.parse(JSON.stringify(categoryJson));
-const categoryData = categoryObject.data;
+function RoomTab({
+    detail,
+    loading
+}: RoomTabProps) {
 
-const inventoryObject = JSON.parse(JSON.stringify(roomInventoryJson));
-const inventoryData = inventoryObject.data;
+    useAllRoomCategories();
 
-function RoomTab() {
+    const rooms: any[] = useMemo(() => {
+        if (!isAvailableArray(detail?.rooms)) return [];
+        return detail.rooms;
+    }, [detail]);
 
-    const availableCategory = useMemo(() => categoryData?.filter((item: any) => inventoryData?.find((i: any) => i?.roomCategoryId === item.id)), []);
-
-    if (!isAvailableArray(availableCategory) || !isAvailableArray(inventoryData)) {
-        return <i>Chưa đưa lên phòng nào</i>;
+    if (!isAvailableArray(rooms)) {
+        return <i>Chưa có phòng</i>
     }
 
+
     return (
-        <div>
-            {availableCategory.map((category, index) =>
-                <Fragment key={index}>
-                    <h5 className="mb-2 mt-3 fw-semibold">
-                        {category.name}
-                    </h5>
-                    <div className="table-responsive">
-                        <Table className="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th className="text-start">Tên phòng</th>
-                                    <th className="w-150">Trạng thái</th>
-                                    <th>Giá</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {inventoryData.filter(i => i.roomCategoryId === category.id).map((item, jd) =>
-                                    <tr key={jd}>
-                                        <Box
-                                            component="td"
-                                            className="fw-semibold"
-                                        >
-                                            {item.name}
-                                        </Box>
-                                        <Box
-                                            component="td"
-                                            className="fw-semibold"
-                                        >
-                                            <Status statusObject={findRoomStatus(item?.status)} />
-                                        </Box>
-                                        <Box
-                                            component="td"
-                                            className="fw-semibold"
-                                        >
-                                            <Box marginLeft="auto">
-                                                {convertToMoney(item.defaultPrice)}
-                                            </Box>
-                                        </Box>
-                                    </tr>
-                                )}
-                            </tbody>
-                        </Table>
-                    </div>
-                </Fragment>
-            )}
-        </div>
+        <Card>
+            <Card.Body>
+                <div className="table-responsive">
+                    <Table className="table table-bordered">
+                        <thead>
+                            <tr>
+                                <Box component="th">Mã</Box>
+                                <Box component="th">Tên</Box>
+                                <Box component="th">Phân loại</Box>
+                                <Box component="th">Mô tả</Box>
+                                <Box component="th">Đơn giá</Box>
+                                <Box component="th">Trạng thái</Box>
+                                <Box component="th"></Box>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {rooms.map((item) =>
+                                <RoomRowItem
+                                    key={item.id}
+                                    item={item}
+                                />
+                            )}
+                        </tbody>
+                    </Table>
+                </div>
+            </Card.Body>
+        </Card>
     )
 }
 

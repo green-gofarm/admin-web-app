@@ -25,8 +25,9 @@ export const ENP = {
     FARMSTAY: `${DOMAIN}/farmstays`,
     SERVICE_CATEGORY: `${DOMAIN}/service-categories`,
     ROOM_CATEGORY: `${DOMAIN}/room-categories`,
-    FEEDBACK: `${DOMAIN}/feedbacks`,
+    FEEDBACK: `${DOMAIN}/feedback`,
     USER: `${DOMAIN}/users`,
     BOOKING: `${DOMAIN}/bookings`,
     DISBURSEMENT: `${DOMAIN}/disbursements`,
+    TAG_CATEGORY: `${DOMAIN}/tag-categories`,
 }

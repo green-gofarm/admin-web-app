@@ -5,7 +5,6 @@ import { Card, FormGroup, OverlayTrigger, Popover } from "react-bootstrap";
 import SearchIcon from "@mui/icons-material/Search";
 import Select from "react-select";
 import { FEEDBACK_SORT_BY_OPTIONS, FEEDBACK_TYPE_OPTIONS, findFeedbackStatus } from "../../../../../setting/feedback-setting";
-import useAllFarmstays from "../../Farmstay/hooks/useAllFarmstay";
 import useReportedFeedback, { defaultReportedFeedbacksPagination } from "../hooks/useReportedFeedback";
 import useDelayLoading from "../../../../../hooks/useDelayLoading";
 import { removeNullProps } from "../../../../../setting/general-props";
@@ -30,8 +29,6 @@ interface FilterProps {
 }
 
 export default function FeedbackTable() {
-
-    const { allFarmstays } = useAllFarmstays();
 
     // State
     const [openView, setOpenView] = useState<boolean>(false);
@@ -75,7 +72,7 @@ export default function FeedbackTable() {
 
     useEffect(() => {
         const params = {
-            name: searchText || null,
+            Name: searchText || null,
             type: filters.type?.value ?? null
         };
         refresh(undefined, removeNullProps(params));
@@ -95,7 +92,7 @@ export default function FeedbackTable() {
 
     const handleSubmit = () => {
         const params = {
-            name: searchText || null,
+            Name: searchText || null,
             type: filters.type?.value ?? null
         };
         refresh(undefined, removeNullProps(params));
@@ -249,7 +246,6 @@ export default function FeedbackTable() {
                                     className="form-control"
                                     autoFocus
                                     placeholder="Tìm kiếm theo từ khóa"
-                                    disabled={delay}
                                     onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
                                 />
                                 <span className="input-group-append">

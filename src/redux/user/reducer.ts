@@ -30,7 +30,7 @@ function userReducer(state = initialState, action: IReduxAction) {
         case type.SEARCH_USERS_FAILED:
             return { ...state, users: null };
         case type.SEARCH_ALL_USERS_SUCCESS:
-            return { ...state, allUsers: action.payload };
+            return { ...state, allUsers: action.payload.data.data };
         case type.SEARCH_ALL_USERS_FAILED:
             return { ...state, allUsers: [] };
 
@@ -39,7 +39,7 @@ function userReducer(state = initialState, action: IReduxAction) {
         case type.SEARCH_HOSTS_FAILED:
             return { ...state, hosts: null };
         case type.SEARCH_ALL_HOSTS_SUCCESS:
-            return { ...state, allHosts: action.payload };
+            return { ...state, allHosts: action.payload.data.data };
         case type.SEARCH_ALL_HOSTS_FAILED:
             return { ...state, allHosts: [] };
 
@@ -48,7 +48,7 @@ function userReducer(state = initialState, action: IReduxAction) {
         case type.SEARCH_CUSTOMERS_FAILED:
             return { ...state, customers: null };
         case type.SEARCH_ALL_CUSTOMERS_SUCCESS:
-            return { ...state, allCustomers: action.payload };
+            return { ...state, allCustomers: action.payload.data.data };
         case type.SEARCH_ALL_CUSTOMERS_FAILED:
             return { ...state, allCustomers: [] };
 
@@ -57,7 +57,7 @@ function userReducer(state = initialState, action: IReduxAction) {
         case type.SEARCH_ADMINS_FAILED:
             return { ...state, admins: null };
         case type.SEARCH_ALL_ADMINS_SUCCESS:
-            return { ...state, allAdmins: action.payload };
+            return { ...state, allAdmins: action.payload.data.data };
         case type.SEARCH_ALL_ADMINS_FAILED:
             return { ...state, allAdmins: [] };
 

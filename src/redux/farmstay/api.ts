@@ -58,3 +58,33 @@ export function getActivitySchedule(farmstayId: any, activityId: any, date: any)
     const url = `${ENP.FARMSTAY}/${farmstayId}/activities/${activityId}/schedule`;
     return axiosRequest(url, option, _params);
 }
+
+
+
+export function getRoomDetail(farmstayId: any, room: any) {
+    const option: AxiosRequestConfig = {
+        method: METHOD.GET,
+        headers: {
+            "Content-Type": "application/json"
+        },
+    }
+
+    const url = `${ENP.FARMSTAY}/${farmstayId}/rooms/${room}`;
+    return axiosRequest(url, option);
+}
+
+export function getRoomSchedule(farmstayId: any, roomId: any, date: any) {
+    const option: AxiosRequestConfig = {
+        method: METHOD.GET,
+        headers: {
+            "Content-Type": "application/json"
+        },
+    }
+
+    const _params: Record<string, string> = {
+        date,
+    }
+
+    const url = `${ENP.FARMSTAY}/${farmstayId}/rooms/${roomId}/schedule`;
+    return axiosRequest(url, option, _params);
+}

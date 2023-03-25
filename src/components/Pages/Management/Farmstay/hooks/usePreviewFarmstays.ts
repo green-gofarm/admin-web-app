@@ -1,5 +1,5 @@
 import { FARMSTAY_STATUSES } from '../../../../../setting/farmstay-setting';
-import { DEFAULT_PAGINATION } from '../../../../Mui-Table/setting';
+
 import { useCallback } from 'react';
 import { PaginationProps } from '../../../../../setting/general-props';
 import { searchFarmstay } from '../../../../../redux/farmstay/action';
@@ -43,7 +43,7 @@ function usePreviewFarmstays(preventFirstCall?: boolean) {
             orderBy: _pagination.orderBy ?? defaultFarmstaysPagination.orderBy,
             orderDirection: _pagination.orderDirection ?? defaultFarmstaysPagination.orderDirection,
             ..._params,
-            status: FARMSTAY_STATUSES.PENDING
+            Status: FARMSTAY_STATUSES.PENDING
         };
 
         if (newParams) {
@@ -102,7 +102,7 @@ function usePreviewFarmstays(preventFirstCall?: boolean) {
         data,
         loading,
         pagination,
-        rowsPerPageOptions: DEFAULT_PAGINATION.rowsPerPageOptions,
+        rowsPerPageOptions: DEFAULT_PROPS.rowsPerPageOptions,
 
         refresh,
         handleChangePage,

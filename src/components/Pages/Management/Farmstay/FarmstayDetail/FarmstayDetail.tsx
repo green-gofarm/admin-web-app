@@ -107,7 +107,10 @@ function FarmstayDetail() {
 
             <Grid container spacing={2}>
                 <Grid item xs={12}>
-                    <FarmstayDetailHeader detail={farmstayDetail} />
+                    <FarmstayDetailHeader
+                        detail={farmstayDetail}
+                        loading={loading}
+                    />
                     <div className="profile-tab tab-menu-heading">
                         <Tab.Container
                             onSelect={(newTab) => handleChangeTab(newTab)}
@@ -137,23 +140,38 @@ function FarmstayDetail() {
                                                 loading={loading}
                                             />
                                         </Tab.Pane>
-                                        <TabPaneContentBody eventKey={TAB_KEYS.Room}>
-                                            <RoomTab />
-                                        </TabPaneContentBody>
+                                        <Tab.Pane eventKey={TAB_KEYS.Room}>
+                                            <RoomTab
+                                                detail={farmstayDetail}
+                                                loading={loading}
+                                            />
+                                        </Tab.Pane>
                                         <TabPaneContentBody eventKey={TAB_KEYS.Service}>
-                                            <ServiceTab />
+                                            <ServiceTab
+                                                detail={farmstayDetail}
+                                                loading={loading}
+                                            />
                                         </TabPaneContentBody>
                                         <TabPaneContentBody eventKey={TAB_KEYS.Policies}>
-                                            <PolicyTab />
+                                            <PolicyTab
+                                                detail={farmstayDetail}
+                                                loading={loading}
+                                            />
                                         </TabPaneContentBody>
                                         <Tab.Pane eventKey={TAB_KEYS.FAQ}>
-                                            <FAQTab />
-                                        </Tab.Pane>
-                                        <Tab.Pane eventKey={TAB_KEYS.OrderHistory}>
-                                            <OrderHistoryTab />
+                                            <FAQTab
+                                                detail={farmstayDetail}
+                                                loading={loading}
+                                            />
                                         </Tab.Pane>
                                         <Tab.Pane eventKey={TAB_KEYS.Feedback}>
                                             <FeedbackTab />
+                                        </Tab.Pane>
+                                        <Tab.Pane eventKey={TAB_KEYS.OrderHistory}>
+                                            <OrderHistoryTab
+                                                detail={farmstayDetail}
+                                                loading={loading}
+                                            />
                                         </Tab.Pane>
                                     </Tab.Content>
                                 </Grid>

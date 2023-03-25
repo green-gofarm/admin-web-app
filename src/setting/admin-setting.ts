@@ -1,8 +1,11 @@
 import { STATUS_COLORS } from "./color";
 
-export const ADMIN_STATUSES = {
-    ACTIVE: 1,
-    DELETED: 3,
+
+export enum ADMIN_STATUSES {
+    ACTIVE = 1,
+    REGISTER_PENDING = 2,
+    INACTIVE = 3,
+    BANNED = 4,
 }
 
 export const LIST_ADMIN_STATUS = [
@@ -14,7 +17,7 @@ export const LIST_ADMIN_STATUS = [
     },
     {
         label: "Ngưng hoạt động",
-        value: ADMIN_STATUSES.DELETED,
+        value: ADMIN_STATUSES.INACTIVE,
         textColor: STATUS_COLORS.DELETED.textColor,
         bgColor: STATUS_COLORS.DELETED.bgColor
     },

@@ -1,10 +1,7 @@
 import { searchRoomCategories } from './../../../../../redux/room/action';
-import { DEFAULT_PAGINATION } from '../../../../Mui-Table/setting';
 import { useCallback } from 'react';
 import { PaginationProps } from '../../../../../setting/general-props';
 import { useEffect, useState } from 'react';
-import { RootState } from '../../../../../redux/redux-setting';
-import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { isAvailableArray } from '../../../../../helpers/arrayUtils';
 import { clone } from 'lodash';
@@ -26,23 +23,13 @@ export const defaultRoomCategoriesPagination: PaginationProps = {
     totalItem: 0,
 }
 
-function useRoomCategories() {
+function useRoomCategories(preventFirstCall?: boolean) {
     const dispatch = useDispatch();
-    const roomCategories = useSelector((state: RootState) => state.room.roomCategories);
 
     const [data, setData] = useState<any[]>([]);
     const [params, setParams] = useState(null);
     const [loading, setLoading] = useState(false);
     const [pagination, setPagination] = useState<PaginationProps>({ ...defaultRoomCategoriesPagination });
-
-    useEffect(() => {
-        if (!isAvailableArray(roomCategories?.data?.data)) {
-            setData([]);
-            return;
-        };
-
-        setData(clone(roomCategories.data.data));
-    }, [roomCategories]);
 
     const refresh = useCallback((newPagination?: PaginationProps, newParams?: any) => {
         const _pagination = newPagination ?? { ...pagination };
@@ -74,6 +61,8 @@ function useRoomCategories() {
                         totalPage: response.data?.totalPage ?? defaultRoomCategoriesPagination.totalPage,
                         totalItem: response.data?.totalItem ?? defaultRoomCategoriesPagination.totalItem,
                     }))
+
+                    setData(() => isAvailableArray(response?.data?.data) ? response.data.data : [])
                 }
             }
         ))
@@ -98,11 +87,20 @@ function useRoomCategories() {
         })
     }, [pagination, refresh])
 
+    useEffect(() => {
+        if (!!preventFirstCall) {
+            return;
+        }
+        refresh();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+
+
     return {
         data,
         loading,
         pagination,
-        rowsPerPageOptions: DEFAULT_PAGINATION.rowsPerPageOptions,
+        rowsPerPageOptions: DEFAULT_PROPS.rowsPerPageOptions,
 
         refresh,
         handleChangePage,
