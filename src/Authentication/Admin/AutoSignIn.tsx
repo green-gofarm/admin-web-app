@@ -55,7 +55,7 @@ function AutoSignIn() {
         async function signIn() {
             const token = await getFirebaseToken();
 
-            if (token && !user) {
+            if (token) {
                 dispatch(signInAdmin({
                     loading: setLoading,
                     onFailure: (error: any) => {
@@ -67,7 +67,7 @@ function AutoSignIn() {
 
         signIn();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [user]);
+    }, []);
 
     if (loading) {
         return <Loader />

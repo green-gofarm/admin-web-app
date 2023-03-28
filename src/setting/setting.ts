@@ -1,3 +1,5 @@
+import { Accept } from "react-dropzone";
+
 export enum ROLES {
     ADMIN = 1,
     HOST = 2,
@@ -37,4 +39,8 @@ export const CRUD_MODE = {
 
 export const Interceptors = {
     pageNumber: (page: number) => page >= 1 ? page : 1
+}
+
+export const imageAcceptType: Accept = {
+    "image/*": [".png", ".gif", ".jpeg", ".jpg"],
 }

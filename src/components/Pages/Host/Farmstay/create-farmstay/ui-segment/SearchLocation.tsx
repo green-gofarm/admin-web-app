@@ -10,6 +10,7 @@ import useDelayLoading from '../../../../../../hooks/useDelayLoading';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import CloseIcon from '@mui/icons-material/Close';
 import EscapeWrapper from '../../../../../General/Wrapper/EscapeWrapper';
+import { Location } from '../CreateFarmstay';
 
 
 const searchUrl = "https://nominatim.openstreetmap.org/search?";
@@ -31,7 +32,7 @@ async function searchApi(searchText: string) {
 
 
 interface SearchLocationProps {
-    onSelect: (position: any) => void
+    onSelect?: (location: Location) => void
 }
 
 function SearchLocation({ onSelect }: SearchLocationProps) {
@@ -41,7 +42,14 @@ function SearchLocation({ onSelect }: SearchLocationProps) {
     const [loading, setLoading] = useState(false);
     const delay = useDelayLoading(loading);
 
+    const [open, setOpen] = useState(false);
+
     const handleSubmit = async () => {
+        if (!searchText) {
+            setSearchItems([]);
+            return;
+        };
+
         setLoading(true);
 
         try {
@@ -57,6 +65,7 @@ function SearchLocation({ onSelect }: SearchLocationProps) {
         }
 
         setLoading(false);
+        setOpen(true);
     }
 
     const timer: any = useRef();
@@ -84,7 +93,13 @@ function SearchLocation({ onSelect }: SearchLocationProps) {
             <Box>
                 <Paper
                     component="div"
-                    sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: "50vw" }}
+                    sx={{
+                        p: '2px 4px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        width: "50vw",
+                        maxWidth: "500px"
+                    }}
                 >
                     <InputBase
                         sx={{ ml: 1, flex: 1 }}
@@ -126,12 +141,18 @@ function SearchLocation({ onSelect }: SearchLocationProps) {
 
                     </IconButton>
                 </Paper>
-                {isAvailableArray(searchItems) || (searchText && !delay)
+                {open && !delay
                     ? <Paper
                         sx={{
                             p: '2px 4px',
+                            marginTop: "4px",
                             width: "50vw",
-                            marginTop: "4px"
+                            maxWidth: "500px"
+                        }}
+                        onKeyDown={(e) => {
+                            if (e.key === "Escape") {
+                                setOpen(false);
+                            }
                         }}
                     >
                         <List
@@ -143,8 +164,11 @@ function SearchLocation({ onSelect }: SearchLocationProps) {
                             {searchItems.map((item, index) =>
                                 <ListItem key={index}>
                                     <ListItemButton onClick={() => {
-                                        onSelect(item);
-                                        setSearchItems([]);
+                                        onSelect && onSelect({
+                                            lat: item.lat,
+                                            lng: item.lon,
+                                        });
+                                        setOpen(false);
                                     }}>
                                         <ListItemIcon>
                                             <LocationOnIcon />

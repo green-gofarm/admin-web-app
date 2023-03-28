@@ -7,10 +7,11 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { isAvailableArray } from '../../../../../../helpers/arrayUtils';
+import { ContactItem } from '../CreateFarmstay';
 
 
 interface GetNameStepProps {
-    defaultContactInfo: [] | null,
+    defaultContactInfo: ContactItem[] | [],
     onBack: () => void,
     onContinue: (contactInfo: any) => void;
 }
@@ -18,7 +19,7 @@ interface GetNameStepProps {
 const useStyles = makeStyles({
     header: {
         width: "100%",
-        height: "100px",
+        height: "60px",
         display: "flex",
         alignItems: "center",
     },
@@ -45,6 +46,14 @@ const useStyles = makeStyles({
     },
 });
 
+const initialList: ContactItem[] = [
+    { method: "Số điện thoại", value: "" },
+    { method: "Email", value: "" },
+    { method: "Zalo", value: "" },
+    { method: "Facebook", value: "" },
+    { method: "Twitter", value: "" },
+]
+
 function GetContactInfo({
     defaultContactInfo,
     onContinue,
@@ -53,13 +62,36 @@ function GetContactInfo({
 
     const classes = useStyles();
 
-    const [contactInfo, setContactInfo] = useState<any[]>(
+    const [contactInfo, setContactInfo] = useState<ContactItem[]>(
         isAvailableArray(defaultContactInfo)
             ? defaultContactInfo
-            : [{ method: "", value: "" }]
+            : initialList
     );
+
+    const [error, setError] = useState<any>(null);
+
+    const validate = (contactInfo: ContactItem[]) => {
+        if (contactInfo.length === 0) {
+            setError('Vui lòng cung cấp ít nhất 1 phương thức liên lạc.');
+            return false;
+        }
+
+        const hasOneValid = contactInfo.find((item) => !!item.method && !!item.value);
+
+        if (!hasOneValid) {
+            setError('Vui lòng cung cấp ít nhất 1 phương thức liên lạc.');
+            return false;
+        }
+
+        setError("");
+        return true;
+    }
+
     const handleContinue = () => {
-        onContinue(contactInfo);
+        if (validate(contactInfo)) {
+            const validContactItems = contactInfo.filter((item) => !!item.method && !!item.value);
+            onContinue(validContactItems);
+        }
     }
 
     const handleAdd = () => {
@@ -93,11 +125,11 @@ function GetContactInfo({
         <Container>
             <Box className={classes.header}>
                 <Box className={classes.step}>
-                    Bước 3/4
+                    Bước 4/5
                 </Box>
             </Box>
 
-            <Box maxWidth="600px">
+            <Box>
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
                         <Box>
@@ -108,7 +140,7 @@ function GetContactInfo({
                     </Grid>
 
                     {contactInfo.map((item: any, index) =>
-                        <Grid item xs={12} key={index}>
+                        <Grid item xs={12} md={6} key={index}>
                             <Box
                                 display="flex"
                                 alignItems="center"
@@ -121,19 +153,20 @@ function GetContactInfo({
                                         type="text"
                                         className="form-control"
                                         required
-                                        autoFocus
+                                        autoFocus={!item.method}
                                         onChange={(e) => handleUpdate("method", e.target.value ?? "", index)}
                                         placeholder="Phương thức (ví dụ: sđt, email, v.v.)"
                                     />
                                 </Box>
-                                <Box flexGrow={1}>
+                                <Box flexGrow={2}>
                                     <Form.Control
                                         value={item.value ?? ""}
                                         type="text"
                                         className="form-control"
                                         required
+                                        autoFocus={index === 0}
                                         onChange={(e) => handleUpdate("value", e.target.value ?? "", index)}
-                                        placeholder="Giá trị (ví dụ: 090xxxxx,  email@example.com, v.v.)"
+                                        placeholder=""
                                     />
                                 </Box>
                                 <Box className="btn btn-secondary shadow" onClick={() => handleRemove(index)}>
@@ -145,9 +178,21 @@ function GetContactInfo({
 
                     <Grid item xs={12}>
                         <Box className="btn btn-primary shadow" onClick={handleAdd}>
-                            <AddIcon />
+                            <AddIcon /> Thêm phương thức khác
                         </Box>
                     </Grid>
+
+                    {error
+                        ? <Grid item xs={12}>
+                            <Form.Control.Feedback
+                                style={{ display: "inline-block" }}
+                                type="invalid"
+                            >
+                                {error}
+                            </Form.Control.Feedback>
+                        </Grid>
+                        : null
+                    }
 
                     <Grid item xs={12}>
                         <footer className={classes.footer}>

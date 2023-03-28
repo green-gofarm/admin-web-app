@@ -1,39 +1,60 @@
 import { memo, useState } from 'react'
 import { Box } from '@mui/material';
 import ConfirmModel from '../../../../General/Model/ConfirmModel';
+import { useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
+import useDelayLoading from '../../../../../hooks/useDelayLoading';
+import { reviewFarmstay } from '../../../../../redux/farmstay/action';
+import { FARMSTAY_STATUSES } from '../../../../../setting/farmstay-setting';
 
-interface _IApproveFarmstay {
+interface ApproveFarmstayProps {
     open?: boolean,
     farmstay?: any,
-    refresh?: any,
+    onSuccessCallback?: any,
     onClose: Function
 }
 
 function ApproveFarmstay({
     open,
     farmstay,
-    refresh,
+    onSuccessCallback,
     onClose,
-}: _IApproveFarmstay) {
-    const [loading] = useState(false);
+}: ApproveFarmstayProps) {
+
+    const dispatch = useDispatch();
+    const [loading, setLoading] = useState<boolean>(false);
+    const delay = useDelayLoading(loading);
 
     const handleSubmit = () => {
-        if (!farmstay?.farmstay?.id) return;
-        onClose && onClose();
-        refresh && refresh();
+        if (!farmstay?.id) return;
+        dispatch(reviewFarmstay(
+            farmstay.id,
+            { status: FARMSTAY_STATUSES.ACTIVE },
+            {
+                loading: setLoading,
+                onSuccess: () => {
+                    toast.success("Cập nhật thành công");
+                    onClose && onClose();
+                    onSuccessCallback && onSuccessCallback();
+                },
+                onFailure: () => {
+                    toast.error("Cập nhật thất bại");
+                }
+            }
+        ))
     }
 
     return (
         <ConfirmModel
             open={open}
-            title="Phê duyệt"
+            title="Phê duyệt farmstay"
             description={(
                 <Box display="inline-block">
-                    Bạn có chắc chắn chấp thuận cho farmstay
-                    <b>{` ${farmstay?.farmstay?.name ?? ""}`}</b> ?
+                    Xác nhận đồng ý phê duyệt farmstay
+                    <b>{` ${farmstay?.name ?? ""}`}</b> ?
                 </Box>
             )}
-            loading={loading}
+            loading={delay}
             onCancel={onClose}
             onConfirm={handleSubmit}
         />

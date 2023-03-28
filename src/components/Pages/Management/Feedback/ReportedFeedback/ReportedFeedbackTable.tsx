@@ -11,10 +11,8 @@ import { createCodeString } from "../../../../../helpers/stringUtils";
 import EllipsisWrapper from "../../../../General/Wrapper/EllipsisWrapper";
 import ViewIconAction from "../../../../General/Action/IconAction/ViewIconAction";
 import LockIconAction from "../../../../General/Action/IconAction/LockIconAction";
-import UnlockIconAction from "../../../../General/Action/IconAction/UnlockIconAction";
 import MuiTables from "../../../../Mui-Table/MuiTable";
 import ViewFeedback from "../action/ViewFeedback";
-import UnbanFeedback from "../action/UnbanFeedback";
 import BanFeedback from "../action/BanFeedback";
 import DisplayUser from "../../../../General/DisplayUser";
 import { Link } from "react-router-dom";
@@ -30,7 +28,6 @@ export default function FeedbackTable() {
     // State
     const [openView, setOpenView] = useState<boolean>(false);
     const [openBan, setOpenBan] = useState<boolean>(false);
-    const [openUnban, setOpenUnban] = useState<boolean>(false);
     const [selectedFeedback, setSelectedFeedback] = useState<any>(null);
 
 
@@ -140,20 +137,12 @@ export default function FeedbackTable() {
                             setSelectedFeedback(row);
                         }}
                     />
-
-                    <UnlockIconAction
-                        onClick={() => {
-                            setOpenUnban(true);
-                            setSelectedFeedback(row);
-                        }}
-                    />
                 </Box>
             )
         },
     ], [allCustomers, createBackUrl]);
 
     const handleCloseView = useCallback(() => setOpenView(false), []);
-    const handleCloseUnban = useCallback(() => setOpenUnban(false), []);
     const handleCloseBan = useCallback(() => setOpenBan(false), []);
 
     return (
@@ -241,16 +230,11 @@ export default function FeedbackTable() {
                 onClose={handleCloseView}
             />
 
-            <UnbanFeedback
-                open={openUnban}
-                feedback={selectedFeedback}
-                onClose={handleCloseUnban}
-            />
-
             <BanFeedback
                 open={openBan}
                 feedback={selectedFeedback}
                 onClose={handleCloseBan}
+                refresh={refresh}
             />
         </>
     );

@@ -14,16 +14,10 @@ export const LIST_SERVICE_STATUS = [
         bgColor: STATUS_COLORS.ACTIVE.bgColor
     },
     {
-        label: "Đã ẩn",
+        label: "Đã khóa",
         value: SERVICE_STATUSES.INACTIVE,
         textColor: STATUS_COLORS.DISABLED.textColor,
         bgColor: STATUS_COLORS.DISABLED.bgColor
-    },
-    {
-        label: "Đã xóa",
-        value: SERVICE_STATUSES.DELETED,
-        textColor: STATUS_COLORS.DELETED.textColor,
-        bgColor: STATUS_COLORS.DELETED.bgColor
     },
 ]
 

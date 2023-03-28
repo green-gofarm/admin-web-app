@@ -26,25 +26,25 @@ const SignIn = () => {
             const provider = new GoogleAuthProvider();
             await auth.signInWithPopup(provider);
             const token = await getFirebaseToken();
-            console.log(token);
-            // if (token) {
-            //     dispatch(signInHost({
-            //         loading: setLoadingSignIn,
-            //         onSuccess: (response: any) => {
-            //             toast.success("Đăng nhập thành công");
-            //             const path = searchParams.get("backUrl") ?? "/";
-            //             navigate(path);
-            //         },
-            //         onFailure: (error: AxiosError | any) => {
-            //             auth.signOut();
-            //             if (error?.response?.status === 404) {
-            //                 setErrorMessage("Tài khoản không tồn tại.")
-            //             } else {
-            //                 setErrorMessage("Đăng nhập thất bại");
-            //             }
-            //         }
-            //     }));
-            // }
+
+            if (token) {
+                dispatch(signInHost({
+                    loading: setLoadingSignIn,
+                    onSuccess: (response: any) => {
+                        toast.success("Đăng nhập thành công");
+                        const path = searchParams.get("backUrl") ?? "/";
+                        navigate(path);
+                    },
+                    onFailure: (error: AxiosError | any) => {
+                        auth.signOut();
+                        if (error?.response?.status === 404) {
+                            setErrorMessage("Tài khoản không tồn tại.")
+                        } else {
+                            setErrorMessage("Đăng nhập thất bại");
+                        }
+                    }
+                }));
+            }
         } catch (error) {
             console.error('Error signing in with Google:', error);
         }

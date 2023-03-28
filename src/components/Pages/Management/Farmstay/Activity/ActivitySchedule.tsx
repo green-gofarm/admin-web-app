@@ -4,35 +4,12 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import { Box } from "@mui/material";
 import viLocale from '@fullcalendar/core/locales/vi';
-import { Card } from "react-bootstrap";
 import useActivitySchedule from "./hooks/useActivitySchedule";
 import { useCallback, useMemo, useState } from "react";
 import { formatDate, isThePast } from "../../../../../helpers/dateUtils";
 import ActivityEvent from "./activity-event/ActivityEvent";
 import { STATUS_COLORS } from "../../../../../setting/color";
-
-// let todayStr = new Date().toISOString().replace(/T.*$/, ""); // YYYY-MM-DD of today
-// let nextDateStr = (function getDateStr(): string {
-//     let today = new Date();
-//     let nextDate = new Date(today.setDate(today.getDate() + 1));
-//     return nextDate.toISOString().replace(/T.*$/, ""); // YYYY-MM-DD of today
-// })();
-
-// const INITIAL_EVENTS = [
-//     {
-//         id: "1",
-//         title: "Hết vé",
-//         start: todayStr,
-//         backgroundColor: '#f34343', // background color of the event
-//         borderColor: '#f34343', // border color of the event
-//         textColor: '#FFFFFF', // 
-//     },
-//     {
-//         id: "2",
-//         title: "Còn vé",
-//         start: nextDateStr,
-//     },
-// ]
+import CustomizedCard from "../../../../General/Card/CustomizedCard";
 
 const getColorProps = (date: string | null) => {
     if (!date) return null;
@@ -99,10 +76,9 @@ function ActivitySchedule({
 
     return (
         <>
-            <Card>
-                <Card.Body className="border-0">
-                    <h5 className="mb-2 mt-1 fw-semibold">Lịch hoạt động</h5>
-
+            <CustomizedCard
+                title="Lịch hoạt động"
+                content={
                     <Box
                         textTransform="capitalize"
                         id="calendar2"
@@ -130,8 +106,8 @@ function ActivitySchedule({
                             datesSet={handleChangeDate}
                         />
                     </Box>
-                </Card.Body>
-            </Card>
+                }
+            />
 
             <ActivityEvent
                 open={!!anchorEl && !!selectedEvent}

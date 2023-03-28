@@ -5,7 +5,7 @@ export const dateFormat = 'DD/MM/YYYY';
 export const dateFormat2 = 'yyyy-MM-DD';
 export const isoFormat = 'YYYY-MM-DDTHH:mm:ssZ';
 export const isoFormatV2 = 'YYYY-MM-DDTHH:mm:ss';
-export const iso8601Format = 'YYYY-MM-DDTHH:mm:ss.SSSZZ';
+export const iso8601Format = 'YYYY-MM-DDTHH:mm:ss.SSSZ';
 export const datetimeFormat = 'DD/MM/YYYY HH:mm:ss';
 export const datetimeFormatV2 = 'DD-MM-YYYY HH:mm:ss';
 export const datetimeFormatReverseDate = 'YYYY-MM-DD HH:mm:ss';
@@ -65,26 +65,6 @@ export const getLastDayOfMonth = () => {
     return lastDay;
 }
 
-
-export const convertBeDateToIso = (date: any) => {
-    if (!isValidDate(date)) return null;
-    if (!moment(date, datetimeFormatV2, true).isValid()) return null;
-
-    const array = date.split(" ");
-    const reverseDateYear = (date: any) => {
-        const temp = date.split("-");
-        temp.reverse();
-        return temp.join("-");
-    }
-
-    const newArray = [];
-    newArray.push(reverseDateYear(array[0]));
-    newArray.push("T");
-    newArray.push(array[1]);
-    newArray.push("Z");
-    return newArray.join("");
-}
-
 export const toMonthName = (monthNumber: number) => {
     const date = new Date();
     date.setMonth(monthNumber);
@@ -97,13 +77,6 @@ export const toMonthName = (monthNumber: number) => {
 export const formatDate = (date: any, format = dateFormat) => isValidDate(date) ? moment(new Date(date)).format(format) : 'N/A';
 
 export const formatLocalDate = (date: any, format = dateFormat) => date ? moment(date).local().format(format) : 'N/A';
-
-export const formatDateTime = (date: any, format = datetimeFormat, invalidStr = 'N/A') => {
-    if (!isValidDate(date)) return invalidStr;
-
-    let theDate = convertBeDateToIso(date) || date;
-    return moment(new Date(theDate)).format(format);
-}
 
 export const formatLocalDateTime = (date: any, format = datetimeFormat, invalidStr = 'N/A') => isValidDate(date) ? moment(date).local().format(format) : invalidStr;
 
@@ -170,4 +143,9 @@ export const convertISOToNaturalFormat = (isoDateString?: string, format?: strin
     if (!isValidDate(isoDateString)) return isoDateString;
     const formattedDate = moment(isoDateString).format(format ?? "Do MMMM YYYY");
     return formattedDate;
+}
+
+export const isExpire = (dateString: string | any) => {
+    if (!isValidDate(dateString)) return true;
+    return new Date(dateString).getTime() <= Date.now();
 }

@@ -11,7 +11,7 @@ const WithAuthBackDropLoader: FC<WithAuthBackDropLoaderProps> = ({
   return (
     <>
       {open ? (
-        <BackDropLoader open={open} text="Đang lấy thông tin tài khoản" />
+        <BackDropLoader open={open} text="Đang kiểm tra thông tin tài khoản" />
       ) : null}
     </>
   );

@@ -70,7 +70,7 @@ function RoomDetailHeader({
                         <Box
                             component="img"
                             className="br-5 "
-                            src={images?.avatar ?? require("../../../../../assets/img/photos/farmstay.jpg")}
+                            src={images?.avatar ?? require("../../../../../assets/img/photos/1.jpg")}
                             alt="Farmstay logo"
                             sx={{
                                 position: "relative",
@@ -85,12 +85,6 @@ function RoomDetailHeader({
                     </Box>
                     {renderContent()}
                 </Box>
-            </Grid>
-            <Grid item xs={12}>
-                <h5 className="mt-1 fw-semibold">Mô tả</h5>
-                <p className="tx-13">
-                    {detail?.description}
-                </p>
             </Grid>
         </Grid>
     )

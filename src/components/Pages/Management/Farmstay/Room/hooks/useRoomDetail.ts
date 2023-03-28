@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import { getRoomDetail } from './../../../../../../redux/farmstay/action';
 import { useEffect, useState } from 'react';
 import { RootState } from '../../../../../../redux/redux-setting';
@@ -11,13 +12,21 @@ function useRoomDetail(farmstayId: any, roomId: any) {
 
     const [loading, setLoading] = useState<boolean>(false);
 
-    useEffect(() => {
+    const refresh = useCallback(() => {
         if (farmstayId && roomId) {
             dispatch(getRoomDetail(farmstayId, roomId, { loading: setLoading }));
         }
-    }, [roomId, dispatch, farmstayId])
+    }, [dispatch, farmstayId, roomId])
 
-    return { detail, loading };
+    useEffect(() => {
+        if (farmstayId && roomId) {
+            refresh()
+        }
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [farmstayId, roomId])
+
+    return { detail, loading, refresh };
 }
 
 export default useRoomDetail;

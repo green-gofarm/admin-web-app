@@ -3,41 +3,98 @@ import { FC, memo, useCallback, useState } from "react";
 import CustomizedDialogTitle from "../../../../General/Dialog/CustomizedDialogTitle";
 import { Container } from "react-bootstrap";
 import GetNameStep from "./step/GetNameStep";
-import GetLocationStep from "./step/GetLocationStep";
+import GetAddress from "./step/GetAddress";
 import ConfirmStep from "./step/ConfirmStep";
 import GuideStep from "./step/GuideStep";
 import GetContactInfo from "./step/GetContactInfo";
+import GetLocation from "./step/GetLocation";
+import { useDispatch } from "react-redux";
+import { createFarmstay } from "../../../../../redux/farmstay/action";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../../../redux/redux-setting";
+import { toast } from "react-toastify";
 
 interface CreateFarmstayProps {
     open?: boolean,
     onClose: () => void,
+    refresh: () => void,
 }
 
 enum STEPS {
     GET_NAME = "GET_NAME",
+    GET_ADDRESS = "GET_ADDRESS",
     GET_LOCATION = "GET_LOCATION",
     GET_CONTACT_INFO = "GET_CONTACT_INFO",
     CONFIRM = "CONFIRM",
     GUIDE = "GUIDE"
 }
 
-interface Farmstay {
-    name: string | null;
-    addressDetail: string | null;
-    position: any,
-    contactInfo: any,
+export type ContactItem = {
+    method: string,
+    value: string,
 }
 
+export type Location = {
+    lat: number | null,
+    lng: number | null
+}
+
+export type Address = {
+    country: "Việt Nam";
+    province: {
+        code: any,
+        name: string | null
+    };
+    district: {
+        code: any,
+        name: string | null
+    };
+    ward: {
+        code: any,
+        name: string | null
+    };
+    detail: string | null;
+}
+interface Farmstay {
+    name: string | null;
+    address: Address;
+    location: Location;
+    contactInfo: ContactItem[] | [];
+}
 
 const CreateFarmstay: FC<CreateFarmstayProps> = ({
     open,
     onClose,
+    refresh,
 }) => {
+
+    const dispatch = useDispatch();
+    const user = useSelector((state: RootState) => state.auth.user);
+
+    const [loading, setLoading] = useState<boolean>(false);
 
     const [farmstay, setFarmstay] = useState<Farmstay>({
         name: null,
-        addressDetail: null,
-        position: null,
+        address: {
+            country: "Việt Nam",
+            province: {
+                code: null,
+                name: null,
+            },
+            district: {
+                code: null,
+                name: null,
+            },
+            ward: {
+                code: null,
+                name: null,
+            },
+            detail: null,
+        },
+        location: {
+            lat: null,
+            lng: null
+        },
         contactInfo: [],
     });
 
@@ -50,6 +107,33 @@ const CreateFarmstay: FC<CreateFarmstayProps> = ({
         }));
     }, []);
 
+    const handleCreate = () => {
+        const data = {
+            name: farmstay.name,
+            address: JSON.stringify(farmstay.address),
+            latitude: farmstay.location.lat,
+            longitude: farmstay.location.lng,
+            contactInformation: JSON.stringify(farmstay.contactInfo),
+        }
+
+
+        dispatch(createFarmstay(
+            user.id,
+            data,
+            {
+                loading: setLoading,
+                onSuccess: () => {
+                    setCurrentStep(STEPS.GUIDE);
+                    toast.success("Thêm mới farmstay thành công.");
+                },
+                onFailure: (error: any) => {
+                    console.log(error);
+                    toast.error("Có lỗi xảy ra");
+                }
+            }
+        ));
+    }
+
     const renderContent = () => {
         if (currentStep === STEPS.GET_NAME) {
             return (
@@ -57,6 +141,19 @@ const CreateFarmstay: FC<CreateFarmstayProps> = ({
                     defaultName={farmstay.name}
                     onContinue={(name: string) => {
                         handleOnChange("name", name);
+                        setCurrentStep(STEPS.GET_ADDRESS)
+                    }}
+                />
+            )
+        }
+
+        if (currentStep === STEPS.GET_ADDRESS) {
+            return (
+                <GetAddress
+                    defaultAddress={farmstay.address}
+                    onBack={() => setCurrentStep(STEPS.GET_NAME)}
+                    onContinue={(address) => {
+                        handleOnChange("address", address);
                         setCurrentStep(STEPS.GET_LOCATION)
                     }}
                 />
@@ -65,13 +162,11 @@ const CreateFarmstay: FC<CreateFarmstayProps> = ({
 
         if (currentStep === STEPS.GET_LOCATION) {
             return (
-                <GetLocationStep
-                    defaultAddressDetail={farmstay.addressDetail}
-                    defaultPosition={farmstay.position}
-                    onBack={() => setCurrentStep(STEPS.GET_NAME)}
-                    onContinue={(position, detail) => {
-                        handleOnChange("position", position);
-                        handleOnChange("addressDetail", detail);
+                <GetLocation
+                    defaultLocation={farmstay.location}
+                    onBack={() => setCurrentStep(STEPS.GET_ADDRESS)}
+                    onContinue={(location) => {
+                        handleOnChange("location", location);
                         setCurrentStep(STEPS.GET_CONTACT_INFO)
                     }}
                 />
@@ -96,7 +191,8 @@ const CreateFarmstay: FC<CreateFarmstayProps> = ({
                 <ConfirmStep
                     farmstay={farmstay}
                     onBack={() => setCurrentStep(STEPS.GET_CONTACT_INFO)}
-                    onConfirm={() => setCurrentStep(STEPS.GUIDE)}
+                    onConfirm={() => handleCreate()}
+                    loading={loading}
                 />
             )
         }
@@ -104,7 +200,10 @@ const CreateFarmstay: FC<CreateFarmstayProps> = ({
         if (currentStep === STEPS.GUIDE) {
             return (
                 <GuideStep
-                    onClose={onClose}
+                    onClose={() => {
+                        onClose && onClose();
+                        refresh && refresh();
+                    }}
                 />
             )
         }

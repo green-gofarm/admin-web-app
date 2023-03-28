@@ -8,6 +8,8 @@ import useBackUrl from '../../../../../hooks/useBackUrl'
 import useContactInfo from './hooks/useContactInfo'
 import StringWrapper from '../../../../General/Wrapper/StringWrapper'
 import useFarmstayImages from './hooks/useFarmstayImages'
+import useFarmstayAddress from './hooks/useFarmstayAddress'
+import { renderAddress } from '../../../../../setting/farmstay-setting'
 
 interface IFarmstayDetailHeader {
     detail?: any,
@@ -23,6 +25,7 @@ function FarmstayDetailHeader({
 
     const contactInfo = useContactInfo(detail);
     const images = useFarmstayImages(detail);
+    const address = useFarmstayAddress(detail);
 
     return (
         <Card className="custom-card customs-cards">
@@ -32,7 +35,7 @@ function FarmstayDetailHeader({
                         <Box
                             component="img"
                             className="br-5 "
-                            src={images?.avatar ?? require("../../../../../assets/img/photos/farmstay.jpg")}
+                            src={images?.avatar ?? require("../../../../../assets/img/photos/1.jpg")}
                             alt="Farmstay logo"
                             sx={{
                                 position: "relative",
@@ -102,7 +105,7 @@ function FarmstayDetailHeader({
                             <IconLabelDetail
                                 icon={<i className="fa fa-location-arrow me-2"></i>}
                                 label="Địa chỉ:"
-                                value={detail?.address}
+                                value={renderAddress(address)}
                             />
                             <IconLabelDetail
                                 icon={<i className="fa fa-address-book me-2"></i>}

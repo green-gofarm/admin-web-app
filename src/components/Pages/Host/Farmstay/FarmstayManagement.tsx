@@ -1,18 +1,28 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import PageHeader from "../../../General/PageHeader";
-import { Box, Grid } from "@mui/material";
+import { Box, Button, Grid } from "@mui/material";
 import AddFarmstayItem from "./ui-segment/AddFarmstayItem";
-import json from "./farmstay.json";
 import { isAvailableArray } from "../../../../helpers/arrayUtils";
 import FarmstayItem from "./ui-segment/FarmstayItem";
 import { useNavigate } from "react-router-dom";
 import CreateFarmstay from "./create-farmstay/CreateFarmstay";
-
-const data = JSON.parse(JSON.stringify(json)).data;
+import useHostFarmstays from "./hooks/useHostFarmstays";
+import ConditionWrapper from "../../../General/Wrapper/ConditionWrapper";
+import SkeletonFarmstayItem from "./ui-segment/SkeletonFarmstayItem";
+import useDelayLoading from "../../../../hooks/useDelayLoading";
 
 export default function FarmstayManagement() {
 
     const navigate = useNavigate();
+
+    const {
+        data,
+        loading,
+        pagination,
+        refresh
+    } = useHostFarmstays();
+
+    const delay = useDelayLoading(loading);
 
     // State
     const [openCreate, setOpenCreate] = useState(false);
@@ -54,13 +64,41 @@ export default function FarmstayManagement() {
                         )
                         : null
                     }
+                    <ConditionWrapper isRender={delay}>
+                        {new Array(pagination.pageSize - data.length).fill("").map((_, index) =>
+                            <Grid item xs={12} sm={6} md={4} xl={3} key={"skt" + index}>
+                                <SkeletonFarmstayItem />
+                            </Grid>
+                        )}
+                    </ConditionWrapper>
                 </Grid>
+
+                <ConditionWrapper isRender={pagination.totalItem > pagination.page * pagination.pageSize}>
+                    <Box
+                        width="100%"
+                        display="flex"
+                        justifyContent="center"
+                        marginTop="2rem"
+                    >
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={() => refresh({
+                                ...pagination,
+                                pageSize: pagination.totalItem,
+                            })}
+                        >
+                            Xem tất cả
+                        </Button>
+                    </Box>
+                </ConditionWrapper>
             </Box>
 
             {openCreate
                 ? <CreateFarmstay
                     open={openCreate}
                     onClose={handleCloseCreateFarmStay}
+                    refresh={refresh}
                 />
                 : null
             }

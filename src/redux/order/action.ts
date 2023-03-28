@@ -72,3 +72,9 @@ export const getDisbursementDetailFailed = (): IReduxAction => ({
 export const clearDisbursementDetail = (): IReduxAction => ({
     type: type.CLEAR_DISBURSEMENT_DETAIL
 })
+
+
+export const reviewBooking = (hostId: any, orderId: any, data: any, option?: ReduxActionOption): IReduxAction => ({
+    type: type.REVIEW_BOOKING,
+    payload: { hostId, orderId, data, option: option ?? getEmptyOption() }
+})

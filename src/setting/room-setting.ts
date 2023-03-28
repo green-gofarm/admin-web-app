@@ -1,20 +1,21 @@
 import { STATUS_COLORS } from "./color";
 
-export const ROOM_STATUSES = {
-    AVAILABLE: 1,
-    DISABLED: 2,
+export enum ROOM_STATUSES {
+    ACTIVE = 1,
+    INACTIVE = 2,
+    DELETED = 3,
 }
 
 export const LIST_ROOM_STATUS = [
     {
         label: "Đang khai thác",
-        value: ROOM_STATUSES.AVAILABLE,
+        value: ROOM_STATUSES.ACTIVE,
         textColor: STATUS_COLORS.ACTIVE.textColor,
         bgColor: STATUS_COLORS.ACTIVE.bgColor
     },
     {
-        label: "Tạm ngưng",
-        value: ROOM_STATUSES.DISABLED,
+        label: "Đã khóa",
+        value: ROOM_STATUSES.INACTIVE,
         textColor: STATUS_COLORS.DISABLED.textColor,
         bgColor: STATUS_COLORS.DISABLED.bgColor
     },

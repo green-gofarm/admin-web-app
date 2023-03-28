@@ -167,23 +167,23 @@ export const updateFarmstayServices = (hostId: any, farmstayId: any, serviceId: 
 
 // CRUD rooms
 export const createFarmstayRooms = (hostId: any, farmstayId: any, data: any, option?: ReduxActionOption): IReduxAction => ({
-    type: type.CREATE_FARMSTAY_SERVICES,
+    type: type.CREATE_FARMSTAY_ROOMS,
     payload: { hostId, farmstayId, data, option: option ?? getEmptyOption() }
 })
 
 export const updateFarmstayRooms = (hostId: any, farmstayId: any, roomId: any, data: any, option?: ReduxActionOption): IReduxAction => ({
-    type: type.UPDATE_FARMSTAY_SERVICES,
+    type: type.UPDATE_FARMSTAY_ROOMS,
     payload: { hostId, farmstayId, roomId, data, option: option ?? getEmptyOption() }
 })
 
 // CRUD faqs
 export const createFarmstayFaqs = (hostId: any, farmstayId: any, data: any, option?: ReduxActionOption): IReduxAction => ({
-    type: type.CREATE_FARMSTAY_SERVICES,
+    type: type.CREATE_FARMSTAY_FAQS,
     payload: { hostId, farmstayId, data, option: option ?? getEmptyOption() }
 })
 
 export const updateFarmstayFaqs = (hostId: any, farmstayId: any, faqId: any, data: any, option?: ReduxActionOption): IReduxAction => ({
-    type: type.UPDATE_FARMSTAY_SERVICES,
+    type: type.UPDATE_FARMSTAY_FAQS,
     payload: { hostId, farmstayId, faqId, data, option: option ?? getEmptyOption() }
 })
 
@@ -191,4 +191,24 @@ export const updateFarmstayFaqs = (hostId: any, farmstayId: any, faqId: any, dat
 export const reviewFarmstay = (id: any, data: any, option?: ReduxActionOption): IReduxAction => ({
     type: type.REVIEW_FARMSTAY,
     payload: { id, data, option: option ?? getEmptyOption() }
+})
+
+export const storeProvinces = (data: any): IReduxAction => ({
+    type: type.STORE_PROVINCES,
+    payload: data,
+})
+
+export const storeDistricts = (data: any): IReduxAction => ({
+    type: type.STORE_DISTRICTS,
+    payload: data,
+})
+
+export const storeWards = (data: any): IReduxAction => ({
+    type: type.STORE_WARDS,
+    payload: data,
+})
+
+export const uploadImage = (data: any, option?: ReduxActionOption): IReduxAction => ({
+    type: type.UPLOAD_IMAGE,
+    payload: { data, option: option ?? getEmptyOption() }
 })

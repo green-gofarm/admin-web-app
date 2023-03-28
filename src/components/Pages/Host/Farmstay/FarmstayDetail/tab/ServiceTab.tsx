@@ -1,154 +1,255 @@
-import React, { Fragment, useState } from 'react'
-import { Card, Table } from 'react-bootstrap';
+import { Fragment, useMemo, useState } from 'react'
+import { Table } from 'react-bootstrap';
 import { convertToMoney } from '../../../../../../helpers/stringUtils';
+import { isAvailableArray } from '../../../../../../helpers/arrayUtils';
 import { Box, Button, Grid } from '@mui/material';
-import AddIcon from "@mui/icons-material/Add";
-import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-import LockIcon from "@mui/icons-material/Lock";
+import { Status } from '../../../../../../setting/Status';
+import { SERVICE_STATUSES, findServiceStatus } from '../../../../../../setting/service-status-setting';
+import useAllServiceCategories from '../../../../Management/ServiceCategory/hooks/useAllServiceCategories';
+import { getServiceCategoryLabel } from '../../../../../../setting/service-category-setting';
+import { Add } from '@mui/icons-material';
+import ConditionWrapper from '../../../../../General/Wrapper/ConditionWrapper';
+import LockIconAction from '../../../../../General/Action/IconAction/LockIconAction';
+import UnlockIconAction from '../../../../../General/Action/IconAction/UnlockIconAction';
+import DeleteIconAction from '../../../../../General/Action/IconAction/DeleteIconAction';
+import LockService from '../action/LockService';
+import UnlockService from '../action/UnlockService';
+import DeleteService from '../action/DeleteService';
+import CreateService from '../action/CreateService';
 
-const data = [
-    {
-        category: "Dịch vụ phòng",
-        services: [
-            { name: "Chăn, gối", price: 500000 },
-            { name: "Điều hòa không khí", price: 500000 },
-            { name: "Máy sấy tóc", price: 500000 },
-            { name: "Máy pha trà/cà phê", price: 500000 },
-            { name: "Tủ lạnh", price: 500000 },
-            { name: "Internet - Wifi", price: 500000 },
-            { name: "TV màn hình phẳng", price: 500000 },
-            { name: "Điện thoại bàn", price: 500000 },
-        ]
-    },
-    {
-        category: "Dịch vụ ăn uống",
-        services: [
-            { name: "Buffet sáng", price: 500000 },
-            { name: "Nhà hàng", price: 500000 },
-            { name: "Quầy bar", price: 500000 },
-        ]
-    },
-    {
-        category: "Dịch vụ giặt ủi",
-        services: [
-            { name: "Giặt ủi quần áo", price: 500000 }
-        ]
-    },
-    {
-        category: "Dịch vụ xe đưa đón",
-        services: [
-            { name: "Xe đưa đón sân bay", price: 500000 },
-            { name: "Xe đưa đón du lịch", price: 500000 },
-        ]
-    },
-    {
-        category: "Khác",
-        services: [
-            { name: "Cho phép mang vật nuôi", price: 500000 },
-            { name: "Dịch vụ đặt tour", price: 500000 },
-            { name: "Đưa đón đến ga tàu", price: 500000 },
-            { name: "Đưa đón đến bến xe", price: 500000 },
-            { name: "Lễ tân 24/24", price: 500000 },
-            { name: "Phòng họp", price: 500000 },
-            { name: "Phòng tập thể dục", price: 500000 },
-            { name: "Spa & Massage", price: 500000 },
-            { name: "Tiệc nướng ngoài trời", price: 500000 },
-        ]
-    }
-];
+interface ServiceTabProps {
+    detail?: any,
+    loading?: boolean,
+    refresh?: () => void
+}
 
-function ServiceTab() {
 
-    const [openCreate, setOpenCreate] = useState<boolean>(false);
+function ServiceTab({
+    detail,
+    loading,
+    refresh
+}: ServiceTabProps) {
+
+    const categories = useAllServiceCategories();
+
+    const services: any[] = useMemo(() => {
+        if (!isAvailableArray(detail?.services)) return [];
+        return detail.services;
+    }, [detail]);
+
+    const groups = useMemo(() => {
+        if (services.length < 1) return null;
+
+        const map: { [key: string]: any[] | null } = {};
+        services.forEach(service => {
+            const key = service.categoryId + "";
+            if (key) {
+                if (!map[key]) {
+                    map[key] = [];
+                }
+
+                map[key]?.push(service);
+            }
+        })
+        return map;
+    }, [services]);
+
+    // State 
+    const [openAddNew, setOpenAddNew] = useState<boolean>(false);
+    const [openLock, setOpenLock] = useState<boolean>(false);
+    const [openUnlock, setOpenUnlock] = useState<boolean>(false);
+    const [openDelete, setOpenDelete] = useState<boolean>(false);
+    const [selectedService, setSelectedService] = useState(null)
 
     return (
-        <Grid container spacing={2}>
 
-            <Grid item xs={12}>
-                <Box
-                    width="100%"
-                    display="flex"
-                    justifyContent="flex-end"
-                >
-                    <Button
-                        color="primary"
-                        variant="contained"
-                        startIcon={<AddIcon />}
-                        onClick={() => setOpenCreate(true)}
-                    >
-                        THÊM MỚI
-                    </Button>
-                </Box>
-            </Grid>
+        <>
+            <Grid container spacing={2}>
+                <Grid item xs={12}>
+                    <div className="main-content-body main-content-body-contacts card custom-card">
+                        <Box
+                            display="flex"
+                            alignItems="center"
+                            justifyContent="space-between"
+                            className="main-contact-info-header"
+                            padding="16px 20px 20px 20px !important"
+                        >
+                            <Box
+                                className='h5'
+                                margin="0 !important"
+                            >
+                                Danh sách dịch vụ
+                            </Box>
 
-            <Grid item xs={12}>
-                <Card>
-                    <Card.Body>
-                        {data.map((item, index) =>
-                            <Fragment key={index}>
-                                <Box
-                                    display="flex"
-                                    justifyContent="space-between"
-                                    alignItems="center"
-                                    className='mb-2'
-                                >
-                                    <h5 className="mb-0 fw-semibold">
-                                        {item.category}
-                                    </h5>
-                                </Box>
-                                <div className="table-responsive">
-                                    <Table className="table table-bordered">
-                                        <tbody>
-                                            {item.services.map((item, jd) =>
-                                                <tr key={jd}>
-                                                    <Box
-                                                        component="td"
-                                                        className="fw-semibold"
-                                                        width="80%"
-                                                    >
-                                                        {item.name}
-                                                    </Box>
-                                                    <Box
-                                                        component="td"
-                                                        className="fw-semibold"
-                                                    >
-                                                        <Box marginLeft="auto">
-                                                            {convertToMoney(item.price)}
-                                                        </Box>
-                                                    </Box>
-                                                    <Box
-                                                        component="td"
-                                                        className="fw-semibold"
-                                                    >
-                                                        <Box
-                                                            display="flex"
-                                                            gap="8px"
-                                                        >
+
+                            <Button
+                                color="primary"
+                                variant="contained"
+                                startIcon={<Add />}
+                                onClick={() => setOpenAddNew(true)}
+                            >
+                                Thêm dịch vụ
+                            </Button>
+                        </Box>
+                        <Box padding="20px" className="main-contact-info-body">
+                            {!groups
+                                ? <i>Chưa có dịch vụ nào</i>
+                                : Object.keys(groups).map((key) =>
+                                    <Fragment key={key}>
+                                        <h5 className="mb-2 mt-3 fw-semibold">
+                                            {getServiceCategoryLabel(categories, key) ?? "NO_CATEGORY"}
+                                        </h5>
+                                        <div className="">
+                                            <Table className="table table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Ảnh đại diện</th>
+                                                        <th>Tên dịch vụ</th>
+                                                        <th>Mô tả</th>
+                                                        <th>Giá</th>
+                                                        <th>Trạng thái</th>
+                                                        <th></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {groups[key]?.map((service) =>
+                                                        <tr key={service.id}>
                                                             <Box
-                                                                className="btn btn-warning shadow"
-                                                            // onClick={() => setOpenLock(true)}
+                                                                component="td"
+                                                                className="fw-semibold"
+                                                                minWidth="fit-content"
                                                             >
-                                                                <LockIcon /> Khóa
+                                                                <Box
+                                                                    component="img"
+                                                                    className="br-5 "
+                                                                    src={service.image ?? "../../../../../../assets/img/photos/1.jpg"}
+                                                                    alt="Activity img"
+                                                                    sx={{
+                                                                        position: "relative",
+                                                                        height: "60px",
+                                                                        width: "60px !important",
+                                                                        backgroundPosition: "center",
+                                                                        backgroundSize: "auto",
+                                                                        backgroundRepeat: "no-repeat"
+                                                                    }}
+                                                                />
                                                             </Box>
                                                             <Box
-                                                                className="btn btn-secondary shadow"
-                                                            // onClick={() => setOpenDelete(true)}
+                                                                component="td"
+                                                                className="fw-semibold"
                                                             >
-                                                                <DeleteForeverIcon /> Xóa
+                                                                {service.name}
                                                             </Box>
-                                                        </Box>
-                                                    </Box>
-                                                </tr>
-                                            )}
-                                        </tbody>
-                                    </Table>
-                                </div>
-                            </Fragment>
-                        )}
-                    </Card.Body>
-                </Card>
+                                                            <Box
+                                                                component="td"
+                                                                className="fw-semibold"
+                                                                minWidth="40%"
+                                                                width="40%"
+                                                            >
+                                                                {service.description}
+                                                            </Box>
+                                                            <Box
+                                                                component="td"
+                                                                className="fw-semibold"
+                                                            >
+                                                                <Box marginLeft="auto">
+                                                                    {convertToMoney(service.price) ?? "FREE"}
+                                                                </Box>
+                                                            </Box>
+                                                            <Box
+                                                                component="td"
+                                                                className="fw-semibold"
+                                                            >
+                                                                <Status statusObject={findServiceStatus(service.status)} />
+                                                            </Box>
+                                                            <Box
+                                                                component="td"
+                                                                className="fw-semibold"
+                                                                display="flex"
+                                                                gap="8px"
+                                                            >
+                                                                <ConditionWrapper isRender={service.status === SERVICE_STATUSES.ACTIVE}>
+                                                                    <LockIconAction
+                                                                        title='Khóa'
+                                                                        onClick={() => {
+                                                                            setOpenLock(true);
+                                                                            setSelectedService(service)
+                                                                        }}
+                                                                    />
+                                                                </ConditionWrapper>
+
+                                                                <ConditionWrapper isRender={service.status === SERVICE_STATUSES.INACTIVE}>
+                                                                    <UnlockIconAction
+                                                                        title='Mở khóa'
+                                                                        onClick={() => {
+                                                                            setOpenUnlock(true);
+                                                                            setSelectedService(service)
+                                                                        }}
+                                                                    />
+                                                                </ConditionWrapper>
+
+                                                                <DeleteIconAction
+                                                                    title="Xóa"
+                                                                    onClick={() => {
+                                                                        setOpenDelete(true);
+                                                                        setSelectedService(service)
+                                                                    }}
+                                                                />
+                                                            </Box>
+                                                        </tr>
+                                                    )}
+                                                </tbody>
+                                            </Table>
+                                        </div>
+                                    </Fragment>
+                                )
+                            }
+
+                        </Box>
+                    </div>
+                </Grid>
             </Grid>
-        </Grid>
+
+            {openAddNew
+                ? <CreateService
+                    open={openAddNew}
+                    onClose={() => setOpenAddNew(false)}
+                    farmstayId={detail?.id}
+                    onSuccessCallback={refresh}
+                />
+                : null
+            }
+
+            {openLock
+                ? <LockService
+                    open={openLock}
+                    onClose={() => setOpenLock(false)}
+                    service={selectedService}
+                    onSuccessCallback={refresh}
+                />
+                : null
+            }
+
+            {openUnlock
+                ? <UnlockService
+                    open={openUnlock}
+                    onClose={() => setOpenUnlock(false)}
+                    service={selectedService}
+                    onSuccessCallback={refresh}
+                />
+                : null
+            }
+
+            {openDelete
+                ? <DeleteService
+                    open={openDelete}
+                    onClose={() => setOpenDelete(false)}
+                    service={selectedService}
+                    onSuccessCallback={refresh}
+                />
+                : null
+            }
+        </>
     )
 }
 

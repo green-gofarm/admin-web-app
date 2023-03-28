@@ -1,14 +1,19 @@
 import { Box, Grid } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles/makeStyles';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import Lightbox from 'react-image-lightbox';
 import 'react-image-lightbox/style.css';
+import { isAvailableArray } from '../../helpers/arrayUtils';
+
+const defaultImage = require("../../assets/img/photos/1.jpg");
+
 
 const useStyles = makeStyles({
     bigContainer: {
         position: "relative",
         width: "100%",
         height: '100%',
+        minHeight: "160px",
         overflow: "hidden"
     },
     container: {
@@ -27,22 +32,22 @@ const useStyles = makeStyles({
     },
 });
 
-const FarmImageGeneralView = () => {
+interface ImageViewProps {
+    images?: any[]
+}
+
+const ImageView = ({
+    images
+}: ImageViewProps) => {
     const classes = useStyles();
 
     const [photoIndex, setPhotoIndex] = useState(0);
     const [isOpen, setIsOpen] = useState(false);
 
-    const images = [
-        "https://random.imagecdn.app/800/600",
-        "https://random.imagecdn.app/800/600",
-        "https://random.imagecdn.app/800/600",
-        "https://random.imagecdn.app/800/600",
-        "https://random.imagecdn.app/800/600",
-        "https://random.imagecdn.app/800/600",
-        "https://random.imagecdn.app/800/600",
-        "https://random.imagecdn.app/800/600",
-    ];
+    const _images = useMemo(() => {
+        if (!isAvailableArray(images)) return [];
+        return images;
+    }, [images]);
 
     const handleImageClick = (index: number) => {
         setPhotoIndex(index);
@@ -55,7 +60,7 @@ const FarmImageGeneralView = () => {
                 <Grid item xs={12} lg={6}>
                     <Box className={classes.bigContainer}>
                         <img
-                            src={images[0]}
+                            src={_images[0] ?? defaultImage}
                             alt={`media${1}`}
                             onClick={() => handleImageClick(0)}
                             className={`${classes.box} br-5`}
@@ -68,7 +73,7 @@ const FarmImageGeneralView = () => {
                         <Grid item xs={12} lg={6}>
                             <Box className={classes.container}>
                                 <img
-                                    src={images[0]}
+                                    src={_images[1] ?? defaultImage}
                                     alt={`media${1}`}
                                     onClick={() => handleImageClick(1)}
                                     className={`${classes.box} br-5`}
@@ -78,7 +83,7 @@ const FarmImageGeneralView = () => {
                         <Grid item xs={12} lg={6}>
                             <Box className={classes.container}>
                                 <img
-                                    src={images[0]}
+                                    src={_images[2] ?? defaultImage}
                                     alt={`media${1}`}
                                     onClick={() => handleImageClick(2)}
                                     className={`${classes.box} br-5`}
@@ -88,7 +93,7 @@ const FarmImageGeneralView = () => {
                         <Grid item xs={12} lg={6}>
                             <Box className={classes.container}>
                                 <img
-                                    src={images[0]}
+                                    src={_images[3] ?? defaultImage}
                                     alt={`media${1}`}
                                     onClick={() => handleImageClick(3)}
                                     className={`${classes.box} br-5`}
@@ -98,7 +103,7 @@ const FarmImageGeneralView = () => {
                         <Grid item xs={12} lg={6}>
                             <Box className={classes.container}>
                                 <img
-                                    src={images[0]}
+                                    src={_images[4] ?? defaultImage}
                                     alt={`media${1}`}
                                     onClick={() => handleImageClick(4)}
                                     className={`${classes.box} br-5`}
@@ -109,18 +114,21 @@ const FarmImageGeneralView = () => {
                 </Grid>
             </Grid>
 
-            {isOpen && (
-                <Lightbox
-                    mainSrc={images[photoIndex]}
-                    nextSrc={images[(photoIndex + 1) % images.length]}
-                    prevSrc={images[(photoIndex + images.length - 1) % images.length]}
-                    onCloseRequest={() => setIsOpen(false)}
-                    onMovePrevRequest={() => setPhotoIndex((photoIndex + images.length - 1) % images.length)}
-                    onMoveNextRequest={() => setPhotoIndex((photoIndex + 1) % images.length)}
-                />
-            )}
+            {isOpen && _images.length > 0 && photoIndex + 1 <= _images.length
+                ? (
+                    <Lightbox
+                        mainSrc={_images[photoIndex]}
+                        nextSrc={_images[(photoIndex + 1) % _images.length]}
+                        prevSrc={_images[(photoIndex + _images.length - 1) % _images.length]}
+                        onCloseRequest={() => setIsOpen(false)}
+                        onMovePrevRequest={() => setPhotoIndex((photoIndex + _images.length - 1) % _images.length)}
+                        onMoveNextRequest={() => setPhotoIndex((photoIndex + 1) % _images.length)}
+                    />
+                )
+                : null
+            }
         </>
     );
 };
 
-export default FarmImageGeneralView;
+export default ImageView;

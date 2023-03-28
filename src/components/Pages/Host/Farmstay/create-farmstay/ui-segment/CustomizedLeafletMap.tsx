@@ -40,21 +40,12 @@ interface HandlerProps {
 function Handler({ onClick, selectPosition }: HandlerProps) {
     const map = useMap();
 
-    const mapEvent = useMapEvents({
-        click: () => {
-            mapEvent.locate();
-        },
-        locationfound: (location) => {
-            // async function getLocation() {
-            //     try {
-            //         const data = await reserveApi(location.latlng.lat, location.latlng.lng);
-            //         onClick && onClick(data);
-            //     } catch (error) {
-            //         onClick && onClick(null);
-            //     }
-            // }
-
-            // getLocation();
+    useMapEvents({
+        click: (e) => {
+            onClick && onClick({
+                lat: e.latlng.lat,
+                lon: e.latlng.lng,
+            })
         },
     })
 

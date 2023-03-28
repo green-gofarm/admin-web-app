@@ -59,3 +59,16 @@ export function getDisbursementDetail(id: any) {
     const url = `${ENP.DISBURSEMENT}/${id}`;
     return axiosRequest(url, option);
 }
+
+export function reviewBooking(hostId: any, orderId: any, data: any) {
+    const option: AxiosRequestConfig = {
+        method: METHOD.POST,
+        headers: {
+            "Content-Type": "application/json"
+        },
+        data: JSON.stringify(data ?? {})
+    }
+
+    const url = `${ENP.HOST}/${hostId}/farmstays/${orderId}`;
+    return axiosRequest(url, option);
+}

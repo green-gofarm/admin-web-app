@@ -1,5 +1,5 @@
-import React from 'react'
-import FarmImageGeneralView from '../FarmstayDetail/FarmImageGeneralView'
+import CustomizedCard from '../../../../General/Card/CustomizedCard'
+import ImageView from '../../../../General/ImageView'
 
 interface RoomImageProps {
     detail: any,
@@ -14,8 +14,9 @@ function RoomImage({
 }: RoomImageProps) {
     return (
         <>
-            <FarmImageGeneralView
-                images={images?.others}
+            <CustomizedCard
+                title={`Hình ảnh (${images?.others?.length ?? 0})`}
+                content={<ImageView images={images?.others} />}
             />
         </>
     )

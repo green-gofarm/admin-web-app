@@ -11,6 +11,10 @@ export interface FarmstayState {
 
     roomDetail: any,
     roomSchedule: any,
+
+    provinces: any[],
+    districts: any[],
+    wards: any[],
 }
 
 const initialState: FarmstayState = {
@@ -23,6 +27,10 @@ const initialState: FarmstayState = {
 
     roomDetail: null,
     roomSchedule: null,
+
+    provinces: [],
+    districts: [],
+    wards: [],
 };
 
 function farmstayReducer(state = initialState, action: IReduxAction) {
@@ -67,6 +75,13 @@ function farmstayReducer(state = initialState, action: IReduxAction) {
             return { ...state, roomSchedule: action.payload.data };
         case type.GET_ROOM_SCHEDULE_FAILED:
             return { ...state, roomSchedule: null };
+
+        case type.STORE_PROVINCES:
+            return { ...state, provinces: action.payload };
+        case type.STORE_DISTRICTS:
+            return { ...state, districts: action.payload };
+        case type.STORE_WARDS:
+            return { ...state, wards: action.payload };
         default:
             return state
     }

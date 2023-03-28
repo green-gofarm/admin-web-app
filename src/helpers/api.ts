@@ -30,4 +30,5 @@ export const ENP = {
     BOOKING: `${DOMAIN}/bookings`,
     DISBURSEMENT: `${DOMAIN}/disbursements`,
     TAG_CATEGORY: `${DOMAIN}/tag-categories`,
+    IMAGES: `${DOMAIN}/images`
 }

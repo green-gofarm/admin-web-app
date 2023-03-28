@@ -1,5 +1,5 @@
 import { getFarmstayDetail } from './../../../../../../redux/farmstay/action';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { RootState } from './../../../../../../redux/redux-setting';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux'
@@ -11,13 +11,24 @@ function useFarmstayDetail(id: any) {
 
     const [loading, setLoading] = useState<boolean>(false);
 
-    useEffect(() => {
+    const refresh = useCallback(() => {
         if (id) {
             dispatch(getFarmstayDetail(id, { loading: setLoading }));
         }
     }, [dispatch, id])
 
-    return { farmstayDetail, loading };
+    useEffect(() => {
+        if (id) {
+            refresh()
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [id])
+
+    return {
+        farmstayDetail,
+        loading,
+        refresh,
+    };
 }
 
 export default useFarmstayDetail

@@ -319,7 +319,7 @@ function* updateFarmstayPolicies(action: IReduxAction): Generator<any, void, any
             apis.updateFarmstayPolicies,
             action.payload.hostId,
             action.payload.farmstayId,
-            action.payload.policies,
+            action.payload.policyId,
             action.payload.data
         );
         option?.onSuccess && option.onSuccess(response);
@@ -437,6 +437,21 @@ function* reviewFarmstay(action: IReduxAction): Generator<any, void, any> {
     option?.loading && option.loading(false);
 }
 
+function* uploadImage(action: IReduxAction): Generator<any, void, any> {
+    const option: IReduxActionOption = action.payload.option
+
+    option?.loading && option.loading(true);
+    try {
+        const response = yield call(apis.uploadImage, action.payload.data)
+        option?.onSuccess && option.onSuccess(response);
+    } catch (error) {
+        option?.onFailure && option.onFailure(error);
+        console.log(error);
+    }
+
+    option?.loading && option.loading(false);
+}
+
 function* watchCRUD() {
     yield takeLatest(types.CREATE_FARMSTAY, createFarmstay);
     yield takeLatest(types.UPDATE_FARMSTAY, updateFarmstay);
@@ -457,6 +472,8 @@ function* watchCRUD() {
     yield takeLatest(types.UPDATE_FARMSTAY_FAQS, updateFarmstayFaqs);
 
     yield takeLatest(types.REVIEW_FARMSTAY, reviewFarmstay);
+
+    yield takeLatest(types.UPLOAD_IMAGE, uploadImage);
 }
 
 function* watchFarmstay() {

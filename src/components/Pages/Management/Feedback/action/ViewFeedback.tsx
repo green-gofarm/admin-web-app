@@ -49,7 +49,7 @@ function ViewFeedback({
                                 marginRight="8px"
                             >
                                 <i className='fa fa-user'></i>
-                                {feedback?.user.name}
+                                {feedback?.user}
                             </Box>
 
                             <Box

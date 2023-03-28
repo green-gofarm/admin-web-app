@@ -20,12 +20,21 @@ const App = React.lazy(() => import("../shade/layouts/App"));
 const BookingRequestManagement = React.lazy(() => import("../components/Pages/Host/BookingRequest/BookingRequestManagement"));
 const FarmstayManagement = React.lazy(() => import("../components/Pages/Host/Farmstay/FarmstayManagement"));
 const WithdrawalRequestManagement = React.lazy(() => import("../components/Pages/Host/WithdrawalRequest//WithdrawalRequestManagement"));
+const OrderManagement = React.lazy(() => import("../components/Pages/Host/Order/OrderManagement"));
+const OrderDetail = React.lazy(() =>
+    import("../components/Pages/Management/Order/OrderDetail")
+);
 
 // Detail
 const BookingRequestDetail = React.lazy(() => import("../components/Pages/Host/BookingRequest/BookingRequestDetail"));
-const WithdrawalRequestDetail = React.lazy(() => import("../components/Pages/Host/WithdrawalRequest/WithdrawalRequestDetail"));
+const WithdrawalRequestDetail = React.lazy(() => import("../components/Pages/Management/WithdrawalRequest/WithdrawalRequestDetail"));
 const FarmstayDetail = React.lazy(() => import("../components/Pages/Host/Farmstay/FarmstayDetail/FarmstayDetail"));
-
+const ActivityDetail = React.lazy(() =>
+    import("../components/Pages/Host/Farmstay/Activity/ActivityDetail")
+);
+const RoomDetail = React.lazy(() =>
+    import("../components/Pages/Host/Farmstay/Room/RoomDetail")
+);
 // Error pages
 const Custompages = React.lazy(() => import("../shade/layouts/custompages"));
 
@@ -55,6 +64,11 @@ function HostRoutes() {
                                         element={<Navigate to="/management/farmstay" />}
                                     />
 
+                                    <Route
+                                        path="/management"
+                                        element={<Navigate to="/management/farmstay" />}
+                                    />
+
                                     <Route path="/management/farmstay">
                                         <Route
                                             index
@@ -64,6 +78,27 @@ function HostRoutes() {
                                         <Route
                                             path="/management/farmstay/:id"
                                             element={<FarmstayDetail />}
+                                        />
+
+                                        <Route
+                                            path="/management/farmstay/:id/activity/:activityId"
+                                            element={<ActivityDetail />}
+                                        />
+                                        <Route
+                                            path="/management/farmstay/:id/room/:roomId"
+                                            element={<RoomDetail />}
+                                        />
+                                    </Route>
+
+                                    <Route path="/management/order">
+                                        <Route
+                                            index
+                                            element={<OrderManagement />}
+                                        />
+
+                                        <Route
+                                            path="/management/order/:id"
+                                            element={<OrderDetail />}
                                         />
                                     </Route>
 
@@ -97,6 +132,7 @@ function HostRoutes() {
 
                             <Route element={<Custompages />}>
                                 <Route path="*" element={<Error404 />}></Route>
+                                <Route path="/404" element={<Error404 />}></Route>
                             </Route>
                         </Route>
                     </Routes>

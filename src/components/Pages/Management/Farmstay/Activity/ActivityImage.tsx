@@ -1,5 +1,5 @@
-import React from 'react'
-import FarmImageGeneralView from '../FarmstayDetail/FarmImageGeneralView'
+import CustomizedCard from '../../../../General/Card/CustomizedCard'
+import ImageView from '../../../../General/ImageView'
 
 interface ActivityImageProps {
     detail: any,
@@ -14,7 +14,10 @@ function ActivityImage({
 }: ActivityImageProps) {
     return (
         <>
-            <FarmImageGeneralView />
+            <CustomizedCard
+                title={`Hình ảnh (${images?.others?.length ?? 0})`}
+                content={<ImageView images={images?.others} />}
+            />
         </>
     )
 }

@@ -21,7 +21,7 @@ const useStyles = makeStyles({
     },
     header: {
         width: "100%",
-        height: "100px",
+        height: "60px",
         display: "flex",
         alignItems: "center",
     },
@@ -97,7 +97,7 @@ function GetNameStep({
         <Container>
             <Box className={classes.header}>
                 <Box className={classes.step}>
-                    Bước 1/4
+                    Bước 1/5
                 </Box>
             </Box>
             <Grid container spacing={1}>

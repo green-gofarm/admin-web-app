@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import FaqItem from '../ui-segment/FaqItem'
 // import { Grid } from '@mui/material';
-import { Accordion } from 'react-bootstrap';
+import { Accordion, Card } from 'react-bootstrap';
 import { isAvailableArray } from '../../../../../../helpers/arrayUtils';
 
 
@@ -23,7 +23,11 @@ function FAQTab({
     }, [detail]);
 
     if (!isAvailableArray(faqs)) {
-        return <i>Chưa có FAQ</i>
+        return <Card>
+            <Card.Body>
+                <i>Chưa có câu hỏi nào</i>
+            </Card.Body>
+        </Card>
     }
 
     return (

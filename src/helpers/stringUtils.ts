@@ -1,6 +1,6 @@
 
 
-export const isString = (string: any) => {
+export const isString = (string: any): string is string => {
     return string != null && typeof string === "string";
 }
 

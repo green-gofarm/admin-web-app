@@ -1,26 +1,55 @@
 import { memo, useState } from 'react'
 import { Box } from '@mui/material';
+import { useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
+import useDelayLoading from '../../../../../../hooks/useDelayLoading';
+import { updateFarmstayActivities } from '../../../../../../redux/farmstay/action';
+import { ACTIVITY_STATUSES } from '../../../../../../setting/activity-status-setting';
+import useCurrentUser from '../../../../../../hooks/useCurrentUser';
 import ConfirmModel from '../../../../../General/Model/ConfirmModel';
 
 interface LockActivityProps {
     open?: boolean,
     activity?: any,
-    refresh?: any,
-    onClose: Function
+    onSuccessCallback?: () => void,
+    onClose: () => void,
 }
 
 function LockActivity({
     open,
     activity,
-    refresh,
+    onSuccessCallback,
     onClose,
 }: LockActivityProps) {
-    const [loading] = useState(false);
+
+    const dispatch = useDispatch();
+    const [loading, setLoading] = useState<boolean>(false);
+    const delay = useDelayLoading(loading);
+
+    const user = useCurrentUser();
 
     const handleSubmit = () => {
         if (!activity?.id) return;
-        onClose && onClose();
-        refresh && refresh();
+        if (!activity?.farmstayId) return;
+        if (!user?.id) return;
+
+        dispatch(updateFarmstayActivities(
+            user.id,
+            activity.farmstayId,
+            activity.id,
+            { status: ACTIVITY_STATUSES.INACTIVE },
+            {
+                loading: setLoading,
+                onSuccess: () => {
+                    toast.success("Cập nhật thành công");
+                    onClose && onClose();
+                    onSuccessCallback && onSuccessCallback();
+                },
+                onFailure: () => {
+                    toast.error("Cập nhật thất bại");
+                }
+            }
+        ))
     }
 
     return (
@@ -29,10 +58,11 @@ function LockActivity({
             title="Khóa hoạt động"
             description={(
                 <Box display="inline-block">
-                    Xác nhận khóa lại hoạt động này?
+                    Bạn có chắc chắn muốn khóa
+                    <b>{` ${activity?.name ?? ""}`}</b> ?
                 </Box>
             )}
-            loading={loading}
+            loading={delay}
             onCancel={onClose}
             onConfirm={handleSubmit}
         />

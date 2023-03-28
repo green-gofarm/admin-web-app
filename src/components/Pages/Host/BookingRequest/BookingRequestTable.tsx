@@ -1,35 +1,48 @@
 import { useCallback, useMemo, useState } from "react";
-import json from "./order.json";
-import { Box } from "@mui/material";
+import { Box, Button, Grid } from "@mui/material";
 import MuiTables from "../../../Mui-Table/MuiTable";
-import AvatarWrapper from "../../../General/Wrapper/AvatarWrapper";
 import ViewIconAction from "../../../General/Action/IconAction/ViewIconAction";
 import { convertToMoney, createCodeString } from "../../../../helpers/stringUtils";
-import { formatTimeString, isValidDate } from "../../../../helpers/dateUtils";
-import { useLocation, useNavigate } from "react-router-dom";
+import { isExpire } from "../../../../helpers/dateUtils";
+import { useNavigate } from "react-router-dom";
 import ApproveIconAction from "../../../General/Action/IconAction/ApproveIconAction";
 import RejectIconAction from "../../../General/Action/IconAction/RejectIconAction";
 import { BookingCountdown } from "./ui-segment/BookingCountdown";
 import ApproveBookingRequest from "./action/ApproveBookingRequest";
 import RejectBookingRequest from "./action/RejectBookingRequest";
-
-const dataObject = JSON.parse(JSON.stringify(json));
-const data = dataObject.data;
-
-const isExpire = (dateString: string | any) => {
-    console.log(isValidDate(dateString));
-    if (!isValidDate(dateString)) return true;
-    return new Date(dateString).getTime() <= Date.now();
-}
+import useBookingRequests from "./hooks/useBookingRequests";
+import useDelayLoading from "../../../../hooks/useDelayLoading";
+import DisplayLinkUser from "../../../General/DisplayLinkUser";
+import useAllCustomers from "../../Management/Account/hooks/useAllCustomers";
+import { getCustomerFromList } from "../../../../setting/customer-setting";
+import useBackUrl from "../../../../hooks/useBackUrl";
+import { Badge, Card } from "react-bootstrap";
+import RefreshIcon from "@mui/icons-material/Refresh";
+import DisplayLinkFarmstay from "../../../General/Link/DisplayLinkFarmstay";
+import { getFarmstayFromList } from "../../../../setting/farmstay-setting";
+import useAllFarmstays from "../../Management/Farmstay/hooks/useAllFarmstay";
 
 export default function BookingRequestTable() {
-
     const navigate = useNavigate();
-    const location = useLocation();
+    const { createBackUrl } = useBackUrl();
+    const { allFarmstays } = useAllFarmstays();
+    const { allCustomers } = useAllCustomers();
 
     const [openApprove, setOpenApprove] = useState<boolean>(false);
     const [openReject, setOpenReject] = useState<boolean>(false);
     const [selectedBookingRequest, setSelectedBookingRequest] = useState<any>(null);
+
+    const {
+        data,
+        handleChangePage,
+        handleChangeRowsPerPage,
+        loading,
+        pagination,
+        refresh,
+        rowsPerPageOptions
+    } = useBookingRequests();
+
+    const delay = useDelayLoading(loading);
 
     const columns = useMemo(() => [
         {
@@ -38,20 +51,22 @@ export default function BookingRequestTable() {
             render: (row: any) => createCodeString("OD", row.id)
         },
         {
-            key: "user",
+            key: "customerId",
             label: "Khách hàng",
             render: (row: any) => (
-                <Box
-                    display="flex"
-                    alignItems="center"
-                    gap="8px"
-                >
-                    <AvatarWrapper
-                        src={row.customer.avatarURL}
-                        name={row.customer.name}
-                    />
-                    {row.customer.name}
-                </Box>
+                <DisplayLinkUser
+                    user={getCustomerFromList(allCustomers, row.customerId)}
+                />
+            )
+        },
+        {
+            key: "farmstayId",
+            label: "Farmstay",
+            render: (row: any) => (
+                <DisplayLinkFarmstay
+                    farmstayPath="/management/farmstay"
+                    farmstay={getFarmstayFromList(allFarmstays, row?.farmstayId)}
+                />
             )
         },
         {
@@ -61,14 +76,9 @@ export default function BookingRequestTable() {
             render: (row: any) => convertToMoney(row.totalPrice)
         },
         {
-            key: "createdDate",
-            label: "Ngày tạo đơn",
-            render: (row: any) => formatTimeString(row.createdDate)
-        },
-        {
-            key: "expiredTime",
+            key: "approveExpiredTime",
             label: "Thời hạn duyệt",
-            render: (row: any) => <BookingCountdown dateString={row.expiredTime} />
+            render: (row: any) => <BookingCountdown dateString={row.approveExpiredTime} />
         },
         {
             key: "action",
@@ -82,9 +92,9 @@ export default function BookingRequestTable() {
                     fontSize="13px"
                 >
                     <ViewIconAction
-                        onClick={() => navigate(`/management/booking-request/${row.id}?backUrl=${location.pathname + location.search}`)}
+                        onClick={() => navigate(`/management/booking-request/${row.id}?backUrl=${createBackUrl}`)}
                     />
-                    {isExpire(row.expiredTime)
+                    {isExpire(row.approveExpiredTime)
                         ? null
                         : <>
                             <ApproveIconAction
@@ -104,28 +114,75 @@ export default function BookingRequestTable() {
                 </Box>
             )
         },
-    ], [location, navigate]);
+    ], [allCustomers, allFarmstays, createBackUrl, navigate]);
 
     const handleCloseApprove = useCallback(() => setOpenApprove(false), []);
     const handleCloseReject = useCallback(() => setOpenReject(false), []);
 
     return (
         <>
-            <MuiTables
-                data={data}
-                columns={columns}
-            />
+            <Grid container spacing={2}>
+                <Grid item xs={12}>
+                    <Card className="custom-card">
+                        <Card.Body>
+                            <Box
+                                display="flex"
+                                alignItems="center"
+                                justifyContent="space-between"
+                            >
+                                <Box component="h5" fontWeight="500" className="mb-0">
+                                    Đang có
+                                    <Badge
+                                        bg=""
+                                        className=" badge-primary-transparent tx-16 font-weight-bold text-primiary ms-2 me-2"
+                                    >
+                                        {pagination.totalItem}
+                                    </Badge>
+                                    đơn cần duyệt
+                                </Box>
+
+                                <Button
+                                    variant="outlined"
+                                    color="primary"
+                                    startIcon={<RefreshIcon />}
+                                    onClick={() => refresh()}
+                                >
+                                    Làm mới
+                                </Button>
+                            </Box>
+                        </Card.Body>
+                    </Card>
+                </Grid>
+                <Grid item xs={12}>
+
+                    <MuiTables
+                        data={data}
+                        columns={columns}
+                        loadingData={delay}
+                        pagination={{
+                            count: pagination.totalItem,
+                            handleChangePage,
+                            handleChangeRowsPerPage,
+                            rowsPerPageOptions,
+                            page: pagination.page,
+                            rowsPerPage: pagination.pageSize,
+                        }}
+                    />
+                </Grid>
+            </Grid>
 
             <ApproveBookingRequest
                 open={openApprove}
                 onClose={handleCloseApprove}
                 request={selectedBookingRequest}
+                refresh={refresh}
             />
 
             <RejectBookingRequest
                 open={openReject}
                 onClose={handleCloseReject}
                 request={selectedBookingRequest}
+                refresh={refresh}
             />
         </>
     );

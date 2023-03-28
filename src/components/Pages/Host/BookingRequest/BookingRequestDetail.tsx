@@ -1,15 +1,27 @@
-import { Link, useLocation, useParams, useSearchParams } from "react-router-dom";
+import { Link, useParams, useSearchParams } from "react-router-dom";
 import PageHeader, { IBreadcrumbItem } from "../../../General/PageHeader";
 import { Box, Divider, Grid } from "@mui/material";
 import DetailPageHeaderTitle from "../../../General/DetailPageHeaderTitle";
 import { convertToMoney, createCodeString } from "../../../../helpers/stringUtils";
 import { Alert, Button, Card, Table } from "react-bootstrap";
-import { convertISOToNaturalFormat } from "../../../../helpers/dateUtils";
-import AvatarWrapper from "../../../General/Wrapper/AvatarWrapper";
+import { convertISOToNaturalFormat, formatDate, isExpire } from "../../../../helpers/dateUtils";
 import IconLabelDetail from "../../../General/Item/IconLabelDetail";
 import { Status } from "../../../../setting/Status";
-import { findOrderStatus } from "../../../../setting/order-setting";
+import { ORDER_STATUSES, findOrderStatus } from "../../../../setting/order-setting";
 import HomeIcon from '@mui/icons-material/Home';
+import useBackUrl from "../../../../hooks/useBackUrl";
+import StringWrapper from "../../../General/Wrapper/StringWrapper";
+import ConditionWrapper from "../../../General/Wrapper/ConditionWrapper";
+import { useMemo } from "react";
+import { isAvailableArray } from "../../../../helpers/arrayUtils";
+import DisplayLinkUser from "../../../General/DisplayLinkUser";
+import useOrderDetail from "../../Management/Order/hooks/useOrderDetail";
+import useUserDetail from "../../Management/Account/hooks/useUserDetail";
+import { getFarmstayFromList } from "../../../../setting/farmstay-setting";
+import { ROLES } from "../../../../setting/setting";
+import useAllFarmstays from "../../Management/Farmstay/hooks/useAllFarmstay";
+import useContactInfo from "../../Management/Farmstay/FarmstayDetail/hooks/useContactInfo";
+import FeedbackItem from "../Farmstay/FarmstayDetail/ui-segment/FeedbackItem";
 
 const breadcrumb: Array<IBreadcrumbItem> = [
     {
@@ -29,67 +41,36 @@ const breadcrumb: Array<IBreadcrumbItem> = [
     }
 ]
 
-const detail = {
-    "id": 1,
-    "customerId": 111,
-    "farmstayId": 1,
-    "totalPrice": 1000000,
-    "reimbursement": 200000,
-    "status": 1,
-    "expiredTime": "2023-02-10T12:00:00Z",
-    "checkInTime": "2023-02-15T14:00:00Z",
-    "createdDate": "2022-05-04 11:45:00",
-    "updatedDate": "2022-05-04 11:45:00",
-    "customer": {
-        "email": "chauvdpse62163@fpt.edu.vn",
-        "name": "Võ Diệp Phước Châu",
-        "phoneNumber": "0901111111",
-        "firstName": null,
-        "lastName": null,
-        "role": "customer",
-        "gender": 1,
-        "grade": null,
-        "status": 1,
-        "birthday": null,
-        "address": null,
-        "avatarURL": null,
-        "createdDate": null,
-        "updatedDate": null,
-        "id": 111,
-        "userId": 111,
-        "uuid": null
-    },
-    "farmstay": {
-        "id": 1,
-        "rating": 5,
-        "name": "Nông trại vui vẻ",
-        "description": "Trải nghiệm cuộc sống vùng quê sông nước",
-        "contactInformation": "Email: wifildt@gmail.com, Phone: 0901234567",
-        "address": "160 Pasteur, phường 6, quận 3, thành phố Hồ Chí Minh",
-        "country": "Việt Nam",
-        "city": "Thành phố Hồ Chí Minh",
-        "status": 1,
-        "hostId": 1,
-        "images": "image1.jpg,image2.jpg,image3.jpg",
-        "createdDate": "2022-01-01 10:00:00",
-        "updatedDate": "2022-01-02 12:00:00",
-        "host": {
-            "userId": 45,
-            "name": "Lê Danh Trọng",
-            "contract": "https://cozyfarmhouse.com/contract.pdf",
-            "bankAccountName": "LE DANH TRONG",
-            "bankAccountNumber": "1234567890",
-            "createdDate": "2022-01-01 10:00:00",
-            "updatedDate": "2022-01-02 12:00:00"
-        }
-    }
-};
-
 function BookingRequestDetail() {
 
-    const { id } = useParams();
     const [searchParams] = useSearchParams();
-    const location = useLocation();
+    const { createBackUrl } = useBackUrl();
+
+    const { id } = useParams();
+    const { detail } = useOrderDetail(id);
+    const { detail: customer } = useUserDetail(detail?.customerId, ROLES.CUSTOMER);
+
+    const { allFarmstays } = useAllFarmstays();
+    const farmstay = useMemo(() =>
+        getFarmstayFromList(allFarmstays, detail?.farmstayId),
+        [allFarmstays, detail?.farmstayId]
+    );
+    const contactInfo = useContactInfo(farmstay);
+
+    const activities: any[] = useMemo(() => {
+        if (!isAvailableArray(detail?.activities)) return [];
+        return detail.activities;
+    }, [detail?.activities]);
+
+    const rooms: any[] = useMemo(() => {
+        if (!isAvailableArray(detail?.rooms)) return [];
+        return detail.rooms;
+    }, [detail?.rooms]);
+
+    const feedbacks: any[] = useMemo(() => {
+        if (!isAvailableArray(detail?.feedbacks)) return [];
+        return detail?.feedbacks;
+    }, [detail?.feedbacks]);
 
     return (
         <Box marginBottom="1.3rem">
@@ -109,13 +90,23 @@ function BookingRequestDetail() {
                 breadcrumb={breadcrumb}
             />
 
-            <Grid container spacing={2}>
+            <Grid
+                container
+                spacing={2}
+                maxWidth="1000px"
+                margin="0 auto"
+            >
                 <Grid item xs={12}>
                     <Card className=" custom-card">
                         <Card.Header className="border-bottom">
-                            <Alert variant="info">
-                                {`Đơn sẽ quá hạn vào ${convertISOToNaturalFormat(detail.expiredTime, "HH:mm [ngày] Do MMMM YYYY")}`}
-                            </Alert>
+                            {isExpire(detail?.approveExpiredTime)
+                                ? <Alert variant="info">
+                                    {`Đơn đã quá hạn vào ngày ${convertISOToNaturalFormat(detail?.approveExpiredTime, "Do MMMM YYYY")}`}
+                                </Alert>
+                                : <Alert variant="error">
+                                    {`Đơn sẽ quá hạn vào ${convertISOToNaturalFormat(detail?.approveExpiredTime, "HH:mm [ngày] Do MMMM YYYY")}`}
+                                </Alert>
+                            }
                             <Button
                                 variant=''
                                 type="button"
@@ -158,30 +149,15 @@ function BookingRequestDetail() {
                                         width="100%"
                                         textAlign="left"
                                     >
-                                        <p className="h3">Thông tin khách hàng:</p>
+                                        <p className="h4">Thông tin khách hàng:</p>
                                         <Box padding="0 4px">
                                             <IconLabelDetail
                                                 icon={<i className="fa fa-user me-2"></i>}
-                                                label="Chủ sở hửu:"
+                                                label="Người đặt:"
                                                 value={
-                                                    <Box
-                                                        component={Link}
-                                                        to="#"
-                                                        display="flex"
-                                                        alignItems="center"
-                                                        gap="8px"
-                                                        className="tag tag-rounded"
-                                                    >
-                                                        <AvatarWrapper
-                                                            name={detail.customer.name}
-                                                            avatarProps={{
-                                                                width: "22px !important",
-                                                                height: "22px !important",
-                                                                fontSize: "12px !important"
-                                                            }}
-                                                        />
-                                                        {detail.customer.name}
-                                                    </Box>
+                                                    <DisplayLinkUser
+                                                        user={customer}
+                                                    />
                                                 }
                                                 className="mb-1"
                                             />
@@ -189,9 +165,9 @@ function BookingRequestDetail() {
                                                 icon={<i className="fa fa-phone me-2"></i>}
                                                 label="Sđt:"
                                                 value={
-                                                    <a className="tag tag-rounded" href={`tel:${detail.customer.phoneNumber}`}>
-                                                        {detail.customer.phoneNumber}
-                                                    </a>
+                                                    <StringWrapper
+                                                        text={customer?.phoneNumber}
+                                                    />
                                                 }
                                                 className="mb-1"
                                             />
@@ -199,9 +175,9 @@ function BookingRequestDetail() {
                                                 icon={<i className="fa fa-envelope me-2"></i>}
                                                 label="Email:"
                                                 value={
-                                                    <a className="tag tag-rounded" href={`mailTo:${detail.customer.email}`}>
-                                                        {detail.customer.email}
-                                                    </a>
+                                                    <StringWrapper
+                                                        text={customer?.email}
+                                                    />
                                                 }
                                                 className="mb-1"
                                             />
@@ -217,14 +193,14 @@ function BookingRequestDetail() {
                                         flexDirection="column"
                                         alignItems="flex-end"
                                     >
-                                        <p className="h3">Đơn hàng:</p>
+                                        <p className="h4">Đơn hàng:</p>
                                         <IconLabelDetail
-                                            label="Đến: "
+                                            label="Farmstay: "
                                             value={
                                                 <Box
                                                     component={Link}
                                                     className="tag tag-rounded btn"
-                                                    to={`/management/farmstay/${detail.farmstay.id}?backUrl=${location.pathname + location.search}`}
+                                                    to={`/management/farmstay/all/${detail?.farmstayId}?backUrl=${createBackUrl()}`}
                                                 >
                                                     <Box
                                                         display="flex"
@@ -232,28 +208,35 @@ function BookingRequestDetail() {
                                                         gap="8px"
                                                     >
                                                         <HomeIcon />
-                                                        {detail.farmstay.name}
+                                                        {detail?.farmstayName}
                                                     </Box>
                                                 </Box>
                                             }
                                             className="mb-2"
                                         />
 
-                                        <span className="mb-2">
-                                            Lập đơn ngày {convertISOToNaturalFormat(detail.createdDate)}
-                                        </span>
+                                        <IconLabelDetail
+                                            label="Ngày lập đơn:"
+                                            value={convertISOToNaturalFormat(detail?.createdDate)}
+                                            className="mb-2"
+                                        />
+
+                                        <ConditionWrapper isRender={detail?.status === ORDER_STATUSES.CUSTOMER_CANCEL}>
+                                            <IconLabelDetail
+                                                label="Ngày hủy đơn:"
+                                                value={convertISOToNaturalFormat(detail?.cancelDate)}
+                                                className="mb-2"
+                                            />
+                                        </ConditionWrapper>
+
                                         <Box marginTop="2px" className="mb-1">
-                                            <Status statusObject={findOrderStatus(detail.status)} />
+                                            <Status statusObject={findOrderStatus(detail?.status)} />
                                         </Box>
                                     </Box>
                                 </Grid>
 
                                 <Grid item xs={12}>
-                                    <Grid container spacing={1} alignItems="center">
-
-                                        <Grid item xs={12}>
-                                            <p className="h3">Chi tiết:</p>
-                                        </Grid>
+                                    <Grid container spacing={1} alignItems="flex-start">
                                         <Grid item xs={12}>
                                             <Divider />
                                         </Grid>
@@ -262,18 +245,19 @@ function BookingRequestDetail() {
                                             <Box className="h6" margin="2px 0 !important">Ngày check-in</Box>
                                         </Grid>
                                         <Grid item xs={9}>
-                                            {convertISOToNaturalFormat(detail.createdDate)}
+                                            {convertISOToNaturalFormat(detail?.checkInDate)}
                                         </Grid>
                                         <Grid item xs={12}>
                                             <Divider />
                                         </Grid>
 
                                         <Grid item xs={3}>
-                                            <Box className="h6" margin="2px 0 !important">Ngày check-out</Box>
+                                            <Box className="h6" margin="2px 0 !important">Ngày hoàn thành (dự kiến)</Box>
                                         </Grid>
                                         <Grid item xs={9}>
-                                            {convertISOToNaturalFormat(detail.createdDate)}
+                                            {convertISOToNaturalFormat(detail?.completedDate)}
                                         </Grid>
+
                                         <Grid item xs={12}>
                                             <Divider />
                                         </Grid>
@@ -282,7 +266,19 @@ function BookingRequestDetail() {
                                             <Box className="h6" margin="2px 0 !important">Liên hệ</Box>
                                         </Grid>
                                         <Grid item xs={9}>
-                                            {detail.farmstay.contactInformation}
+                                            <Box
+                                                display="flex"
+                                                flexDirection="column"
+                                                gap="8px"
+                                            >
+                                                {contactInfo.map((item, index) =>
+                                                    <IconLabelDetail
+                                                        key={index}
+                                                        label={item.method}
+                                                        value={<StringWrapper text={item.value} />}
+                                                    />
+                                                )}
+                                            </Box>
                                         </Grid>
                                         <Grid item xs={12}>
                                             <Divider />
@@ -292,7 +288,7 @@ function BookingRequestDetail() {
                                             <Box className="h6" margin="2px 0 !important">Địa chỉ</Box>
                                         </Grid>
                                         <Grid item xs={9}>
-                                            {detail.farmstay.address}
+                                            {detail?.farmstay?.address}
                                         </Grid>
                                         <Grid item xs={12}>
                                             <Divider />
@@ -300,77 +296,86 @@ function BookingRequestDetail() {
                                     </Grid>
                                 </Grid>
                             </Grid>
-                            <div className="table-responsive mg-t-40">
-                                <Table className="table table-invoice table-bordered">
-                                    <thead>
-                                        <tr>
-                                            <th className="wd-20p">Loại</th>
-                                            <th className="wd-40p">Tên</th>
-                                            <th className="tx-right">Số lượng</th>
-                                            <th className="tx-right">Giá</th>
-                                            <th className="tx-right">Thành tiền</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>Hoạt động</td>
-                                            <td className="tx-12">Câu cá trên hồ</td>
-                                            <td className="tx-center">2</td>
-                                            <td className="tx-right">{convertToMoney(1000000)}</td>
-                                            <td className="tx-right">{convertToMoney(1000000 * 2)}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Phòng ở</td>
-                                            <td className="tx-12">Phòng một giường</td>
-                                            <td className="tx-center">1</td>
-                                            <td className="tx-right">{convertToMoney(2000000)}</td>
-                                            <td className="tx-right">{convertToMoney(2000000 * 2)}</td>
-                                        </tr>
-                                        <tr>
-                                            <td className="valign-middle"
-                                                colSpan={2} rowSpan={4}
-                                            >
-                                                <div className="invoice-notes">
-                                                    <label className="main-content-label tx-13">
-                                                        Ghi chú
-                                                    </label>
-                                                    <i>
-                                                        Không có ghi chú
-                                                    </i>
-                                                </div>
-                                                {/*<!-- invoice-notes --> */}
-                                            </td>
-                                            <td className="tx-right">Tổng tiền</td>
-                                            <td className="tx-right" colSpan={2}>
-                                                {convertToMoney(6000000)}
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td className="tx-right">VAT</td>
-                                            <td className="tx-right" colSpan={2}>
-                                                10%
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td className="tx-right">Phí</td>
-                                            <td className="tx-right" colSpan={2}>
-                                                10%
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td className="tx-right tx-uppercase tx-bold tx-inverse">
-                                                Phải thanh toán
-                                            </td>
-                                            <td className="tx-right" colSpan={2}>
-                                                <h4 className="tx-bold">
-                                                    {convertToMoney(7200000)}
-                                                </h4>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </Table>
-                            </div>
                         </Card.Body>
+                        <Card.Body>
+                            <p className="h4">Chi tiết</p>
+                            <Table className="table table-invoice table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th className="wd-20p">Mã</th>
+                                        <th className="wd-20p">Loại</th>
+                                        <th className="wd-40p">Tên</th>
+                                        <th className="tx-right">Ngày</th>
+                                        <th className="tx-right">Giá</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {rooms.map(item =>
+                                        <tr key={item.roomId}>
+                                            <td>{createCodeString("R", item.roomId)}</td>
+                                            <td>Phòng</td>
+                                            <td className="tx-12">{item.name ?? "UN_KNOWN"}</td>
+                                            <td className="tx-center">{formatDate(item.date)}</td>
+                                            <td className="tx-right">{convertToMoney(item.price)}</td>
+                                        </tr>
+                                    )}
+                                    {activities.map(item =>
+                                        <tr key={item.activityId + item.orderId}>
+                                            <td>{createCodeString("AC", item.activityId)}</td>
+                                            <td>Hoạt động</td>
+                                            <td className="tx-12">{item.name ?? "UN_KNOWN"}</td>
+                                            <td className="tx-center">{formatDate(item.date)}</td>
+                                            <td className="tx-right">{convertToMoney(item.price)}</td>
+                                        </tr>
+                                    )}
+                                    <tr>
+                                        <td className="valign-middle"
+                                            colSpan={2} rowSpan={4}
+                                        >
+                                            {/*<!-- invoice-notes --> */}
+                                        </td>
+                                        <td className="tx-right">Tổng tiền</td>
+                                        <td className="tx-right" colSpan={2}>
+                                            {convertToMoney(detail?.totalPrice)}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td className="tx-right">VAT</td>
+                                        <td className="tx-right" colSpan={2}>
+                                            10%
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td className="tx-right">Phí</td>
+                                        <td className="tx-right" colSpan={2}>
+                                            10%
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td className="tx-right tx-uppercase tx-bold tx-inverse">
+                                            Phải thanh toán
+                                        </td>
+                                        <td className="tx-right" colSpan={2}>
+                                            <h4 className="tx-bold">
+                                                {convertToMoney(7200000)}
+                                            </h4>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </Table>
+                        </Card.Body>
+                        <ConditionWrapper isRender={isAvailableArray(feedbacks)}>
+                            <Card.Footer>
+                                <p className="h4">Đánh giá từ khách hàng</p>
+                                <Divider />
+                                {feedbacks.map(item =>
+                                    <FeedbackItem
+                                        key={item.id}
+                                        item={item}
+                                    />
+                                )}
+                            </Card.Footer>
+                        </ConditionWrapper>
                     </Card>
                 </Grid>
             </Grid>

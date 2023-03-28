@@ -9,14 +9,15 @@ import FarmstayDetailHeader from './FarmstayDetailHeader';
 import Navigation, { NavigationItem } from '../../../../General/Tab/Navigation';
 import DetailPageHeaderTitle from '../../../../General/DetailPageHeaderTitle';
 import BasicInfoTab from './tab/BasicInfoTab';
-import TabPaneContentBody from '../../../../General/Tab/TabPaneContentBody';
 import ActivityTab from './tab/ActivityTab';
 import RoomTab from './tab/RoomTab';
 import ServiceTab from './tab/ServiceTab';
 import PolicyTab from './tab/PolicyTab';
 import FAQTab from './tab/FAQTab';
-import OrderHistoryTab from './tab/OrderHistoryTab';
-import FeedbackTab from './tab/FeedbackTab';
+import useFarmstayDetailTab, { TAB_KEYS } from '../../../Management/Farmstay/FarmstayDetail/hooks/useFarmstayDetailTab';
+import useFarmstayDetail from '../../../Management/Farmstay/FarmstayDetail/hooks/useFarmstayDetail';
+import FeedbackTab from '../../../Management/Farmstay/FarmstayDetail/tab/FeedbackTab';
+import OrderHistoryTab from '../../../Management/Farmstay/FarmstayDetail/tab/OrderHistoryTab';
 
 const breadcrumb: Array<IBreadcrumbItem> = [
     {
@@ -35,17 +36,6 @@ const breadcrumb: Array<IBreadcrumbItem> = [
         }
     }
 ]
-
-const TAB_KEYS = {
-    About: "About",
-    Activity: "Activity",
-    Room: "Room",
-    Service: "Service",
-    Policies: "Policies",
-    FAQ: "FAQ",
-    OrderHistory: "OrderHistory",
-    Feedback: "Feedback",
-}
 
 const tabOptions: NavigationItem[] = [
     {
@@ -82,34 +72,13 @@ const tabOptions: NavigationItem[] = [
     },
 ]
 
-const detail = {
-    id: 1,
-    rating: 3,
-    name: "Nông trại vui vẻ",
-    description: "Trải nghiệm cuộc sống vùng quê sông nước",
-    contactInformation: "Email: wifildt@gmail.com, Phone: 0901234567",
-    address: "160 Pasteur, phường 6, quận 3, thành phố Hồ Chí Minh",
-    country: "Việt Nam",
-    city: "Thành phố Hồ Chí Minh",
-    status: 1,
-    hostId: 1,
-    images: "image1.jpg,image2.jpg,image3.jpg",
-    createdDate: "2022-01-01 10:00:00",
-    updatedDate: "2022-01-02 12:00:00",
-    host: {
-        userId: 45,
-        name: "Lê Danh Trọng",
-        bankAccountName: "LE DANH TRONG",
-        bankAccountNumber: "1234567890",
-        createdDate: "2022-01-01 10:00:00",
-        updatedDate: "2022-01-02 12:00:00"
-    }
-};
-
 function FarmstayDetail() {
 
     const { id } = useParams();
+    const { tab, handleChangeTab } = useFarmstayDetailTab();
     const [searchParams] = useSearchParams();
+
+    const { farmstayDetail, loading, refresh } = useFarmstayDetail(id);
 
     return (
         <Box marginBottom="1.3rem">
@@ -133,42 +102,84 @@ function FarmstayDetail() {
 
             <Grid container spacing={2}>
                 <Grid item xs={12}>
-                    <FarmstayDetailHeader detail={detail} />
+                    <FarmstayDetailHeader
+                        detail={farmstayDetail}
+                        loading={loading}
+                        refresh={refresh}
+                    />
                     <div className="profile-tab tab-menu-heading">
-                        <Tab.Container defaultActiveKey="About">
+                        <Tab.Container
+                            onSelect={(newTab) => handleChangeTab(newTab)}
+                            activeKey={tab}
+                        >
                             <Grid
                                 container
                                 spacing={2}
                             >
                                 <Grid item xs={12}>
-                                    <Navigation data={tabOptions} />
+                                    <Navigation
+                                        data={tabOptions}
+                                    />
                                 </Grid>
 
                                 <Grid item xs={12}>
                                     <Tab.Content>
                                         <Tab.Pane eventKey={TAB_KEYS.About}>
-                                            <BasicInfoTab detail={detail} />
+                                            <BasicInfoTab
+                                                detail={farmstayDetail}
+                                                loading={loading}
+                                                refresh={refresh}
+                                            />
                                         </Tab.Pane>
                                         <Tab.Pane eventKey={TAB_KEYS.Activity}>
-                                            <ActivityTab />
+                                            <ActivityTab
+                                                detail={farmstayDetail}
+                                                loading={loading}
+                                                refresh={refresh}
+                                            />
                                         </Tab.Pane>
-                                        <TabPaneContentBody eventKey={TAB_KEYS.Room}>
-                                            <RoomTab />
-                                        </TabPaneContentBody>
+                                        <Tab.Pane eventKey={TAB_KEYS.Room}>
+                                            <RoomTab
+                                                detail={farmstayDetail}
+                                                loading={loading}
+                                                refresh={refresh}
+                                            />
+                                        </Tab.Pane>
                                         <Tab.Pane eventKey={TAB_KEYS.Service}>
-                                            <ServiceTab />
+                                            <ServiceTab
+                                                detail={farmstayDetail}
+                                                loading={loading}
+                                                refresh={refresh}
+                                            />
                                         </Tab.Pane>
-                                        <TabPaneContentBody eventKey={TAB_KEYS.Policies}>
-                                            <PolicyTab />
-                                        </TabPaneContentBody>
+                                        <Tab.Pane eventKey={TAB_KEYS.Policies}>
+                                            <PolicyTab
+                                                detail={farmstayDetail}
+                                                loading={loading}
+                                                refresh={refresh}
+                                            />
+                                        </Tab.Pane>
+
                                         <Tab.Pane eventKey={TAB_KEYS.FAQ}>
-                                            <FAQTab />
+                                            <FAQTab
+                                                detail={farmstayDetail}
+                                                loading={loading}
+                                                refresh={refresh}
+                                            />
                                         </Tab.Pane>
-                                        <Tab.Pane eventKey={TAB_KEYS.OrderHistory}>
-                                            <OrderHistoryTab />
-                                        </Tab.Pane>
+
                                         <Tab.Pane eventKey={TAB_KEYS.Feedback}>
-                                            <FeedbackTab />
+                                            <FeedbackTab
+                                                detail={farmstayDetail}
+                                                loading={loading}
+                                            />
+                                        </Tab.Pane>
+
+                                        <Tab.Pane eventKey={TAB_KEYS.OrderHistory}>
+                                            <OrderHistoryTab
+                                                detail={farmstayDetail}
+                                                loading={loading}
+                                            />
                                         </Tab.Pane>
                                     </Tab.Content>
                                 </Grid>

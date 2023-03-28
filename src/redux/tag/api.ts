@@ -39,7 +39,7 @@ export function createTag(data: any) {
         headers: {
             "Content-Type": "application/json"
         },
-        data: JSON.stringify(data ?? {})
+        data: JSON.stringify([data] ?? {})
     }
 
     const url = `${ENP.TAG_CATEGORY}`;

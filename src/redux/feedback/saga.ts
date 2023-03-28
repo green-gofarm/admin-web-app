@@ -22,8 +22,28 @@ function* searchFeedbacks(action: IReduxAction): Generator<any, void, any> {
     option?.loading && option.loading(false);
 }
 
+function* updateFeedbackStatus(action: IReduxAction): Generator<any, void, any> {
+    const option: IReduxActionOption = action.payload?.option
+
+    option?.loading && option.loading(true);
+    try {
+        const response = yield call(
+            apis.updateFeedbackStatus,
+            action.payload.id,
+            action.payload.data
+        );
+        option?.onSuccess && option.onSuccess(response);
+    } catch (error) {
+        option?.onFailure && option.onFailure(error);
+        console.log(error);
+    }
+
+    option?.loading && option.loading(false);
+}
+
 function* watchSearch() {
     yield takeLatest(types.SEARCH_FEEDBACKS, searchFeedbacks);
+    yield takeLatest(types.UPDATE_FEEDBACK_STATUS, updateFeedbackStatus);
 }
 
 function* watchFeedback() {

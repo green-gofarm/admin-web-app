@@ -59,7 +59,7 @@ const Sidebar = () => {
               items.active = false;
               items.selected = false;
               if (location.pathname === items.path || location.pathname === items.path + "/") {
-                items.active = true;
+                items.active = false;
                 items.selected = true;
               }
               if (items.children) {
@@ -67,7 +67,7 @@ const Sidebar = () => {
                   submenu.active = false;
                   submenu.selected = false;
                   if (location.pathname === submenu.path || location.pathname === submenu.path + "/") {
-                    items.active = true;
+                    items.active = false;
                     items.selected = true;
                     submenu.active = true;
                     submenu.selected = true;

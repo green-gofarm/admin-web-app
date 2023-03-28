@@ -1,13 +1,9 @@
-import { Box, Grid } from '@mui/material'
-import FarmImageGeneralView from '../FarmImageGeneralView'
-import { MapContainer, TileLayer } from "react-leaflet";
-import { Card, Table } from 'react-bootstrap';
-import { isAvailableArray } from '../../../../../../helpers/arrayUtils';
-import StringWrapper from '../../../../../General/Wrapper/StringWrapper';
+import { Grid } from '@mui/material'
 import useContactInfo from '../hooks/useContactInfo';
 import useFarmstayImages from '../hooks/useFarmstayImages';
-
-
+import CustomizedCard from '../../../../../General/Card/CustomizedCard';
+import ImageView from '../../../../../General/ImageView';
+import LeafletViewMap from '../../../../../General/Map/LeafletViewMap';
 interface IBasicInfo {
     detail: any,
     loading: boolean,
@@ -17,7 +13,6 @@ function BasicInfoTab({
     detail,
     loading,
 }: IBasicInfo) {
-    const position: any = [10.797056, 106.659840];
 
     const contactInfo = useContactInfo(detail);
     const images = useFarmstayImages(detail);
@@ -25,89 +20,69 @@ function BasicInfoTab({
     return (
         <Grid container spacing={2}>
             <Grid item xs={12}>
-                <Card>
-                    <Card.Body>
-                        <h5 className="mb-2 fw-semibold">Mô tả</h5>
-                        <p className="mb-3 tx-13">
+                <CustomizedCard
+                    title="Mô tả"
+                    content={
+                        <p className="tx-13">
                             {detail?.description}
                         </p>
-                    </Card.Body>
-                </Card>
+                    }
+                />
             </Grid>
 
             <Grid item xs={12}>
-                <Card>
-                    <Card.Body>
-                        <h5 className="mb-2 fw-semibold">
-                            Hình ảnh
-                        </h5>
-                        <Box className='file-detailimg'>
-                            <FarmImageGeneralView
-                                images={images?.others}
-                            />
-                        </Box>
-                    </Card.Body>
-                </Card>
+                <CustomizedCard
+                    title="Phương thức liên hệ"
+                    content={
+                        <div className="media-list p-0">
+                            {contactInfo.map((contact, index) => {
+                                if (index % 2 === 0) {
+                                    // create a new media-body every two items
+                                    return (
+                                        <div key={index} className="media">
+                                            <div className="media-body">
+                                                <div>
+                                                    <label>{contact.method}:</label>{" "}
+                                                    <span className="tx-medium">{contact.value}</span>
+                                                </div>
+                                                {contactInfo.length > index + 1 && (
+                                                    <div>
+                                                        <label>{contactInfo[index + 1].method}:</label>{" "}
+                                                        <span className="tx-medium">
+                                                            {contactInfo[index + 1].value}
+                                                        </span>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </div>
+                                    )
+                                }
+                                return null;
+                            })}
+                        </div>
+                    }
+                />
             </Grid>
 
             <Grid item xs={12}>
-                <Card>
-                    <Card.Body>
-                        <h5 className="mb-2 fw-semibold">Thông tin liên hệ</h5>
-                        {isAvailableArray(contactInfo)
-                            ? <div className="table-responsive">
-                                <Table className="table table-bordered">
-                                    <thead>
-                                        <tr>
-                                            <th className="text-start">Phương thức</th>
-                                            <th></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {contactInfo.map((item, jd) =>
-                                            <tr key={jd}>
-                                                <Box
-                                                    component="td"
-                                                    className="fw-semibold"
-                                                >
-                                                    {item.method}
-                                                </Box>
-                                                <Box
-                                                    component="td"
-                                                    className="fw-semibold"
-                                                >
-                                                    <StringWrapper
-                                                        text={item.value}
-                                                    />
-                                                </Box>
-                                            </tr>
-                                        )}
-                                    </tbody>
-                                </Table>
-                            </div>
-                            : <Box className="mb-3 tx-13">
-                                <i>Chưa có thông tin liên hệ</i>
-                            </Box>
-                        }
-
-                    </Card.Body>
-                </Card>
+                <CustomizedCard
+                    title={`Hình ảnh (${images?.others?.length ?? 0})`}
+                    content={<ImageView images={images?.others} />}
+                />
             </Grid>
 
             <Grid item xs={12}>
-                <Card>
-                    <Card.Body>
-                        <h5 className="mb-2 fw-semibold">
-                            Vị trí
-                        </h5>
-                        <MapContainer center={position} zoom={13} scrollWheelZoom={false} className='mapleaflet ht-300' id="leaflet1" style={{ height: "400px" }}>
-                            <TileLayer
-                                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                            />
-                        </MapContainer>
-                    </Card.Body>
-                </Card>
+                <CustomizedCard
+                    title="Location"
+                    content={
+                        <LeafletViewMap
+                            location={{
+                                lat: detail?.latitude,
+                                lng: detail?.longitude
+                            }}
+                        />
+                    }
+                />
             </Grid>
         </Grid>
     )

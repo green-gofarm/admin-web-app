@@ -1,26 +1,55 @@
 import { memo, useState } from 'react'
 import { Box } from '@mui/material';
+import { useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
+import useDelayLoading from '../../../../../../hooks/useDelayLoading';
+import { updateFarmstayActivities } from '../../../../../../redux/farmstay/action';
+import { ACTIVITY_STATUSES } from '../../../../../../setting/activity-status-setting';
+import useCurrentUser from '../../../../../../hooks/useCurrentUser';
 import ConfirmModel from '../../../../../General/Model/ConfirmModel';
 
-interface LockActivityProps {
+interface DeleteActivityProps {
     open?: boolean,
     activity?: any,
-    refresh?: any,
-    onClose: Function
+    onSuccessCallback?: () => void,
+    onClose: () => void,
 }
 
 function DeleteActivity({
     open,
     activity,
-    refresh,
+    onSuccessCallback,
     onClose,
-}: LockActivityProps) {
-    const [loading] = useState(false);
+}: DeleteActivityProps) {
+
+    const dispatch = useDispatch();
+    const [loading, setLoading] = useState<boolean>(false);
+    const delay = useDelayLoading(loading);
+
+    const user = useCurrentUser();
 
     const handleSubmit = () => {
         if (!activity?.id) return;
-        onClose && onClose();
-        refresh && refresh();
+        if (!activity?.farmstayId) return;
+        if (!user?.id) return;
+
+        dispatch(updateFarmstayActivities(
+            user.id,
+            activity.farmstayId,
+            activity.id,
+            { status: ACTIVITY_STATUSES.DELETED },
+            {
+                loading: setLoading,
+                onSuccess: () => {
+                    toast.success("Xóa thành công");
+                    onClose && onClose();
+                    onSuccessCallback && onSuccessCallback();
+                },
+                onFailure: () => {
+                    toast.error("Xóa thất bại");
+                }
+            }
+        ))
     }
 
     return (
@@ -29,11 +58,11 @@ function DeleteActivity({
             title="Xóa hoạt động"
             description={(
                 <Box display="inline-block">
-                    Xác nhận xóa hoạt động này ?
-
+                    Bạn có chắc chắn muốn xóa
+                    <b>{` ${activity?.name ?? ""}`}</b> ?
                 </Box>
             )}
-            loading={loading}
+            loading={delay}
             onCancel={onClose}
             onConfirm={handleSubmit}
         />

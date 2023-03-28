@@ -118,8 +118,5 @@ const SignUp = () => {
         </div>
     );
 }
-SignUp.propTypes = {};
-
-SignUp.defaultProps = {};
 
 export default SignUp;

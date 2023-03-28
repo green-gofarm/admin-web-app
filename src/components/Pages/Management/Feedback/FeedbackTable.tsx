@@ -4,7 +4,7 @@ import { Status } from "../../../../setting/Status";
 import MuiTables from "../../../Mui-Table/MuiTable";
 import EllipsisWrapper from "../../../General/Wrapper/EllipsisWrapper";
 import ViewIconAction from "../../../General/Action/IconAction/ViewIconAction";
-import { FEEDBACK_SORT_BY_OPTIONS, LIST_FEEDBACK_STATUS, findFeedbackStatus } from "../../../../setting/feedback-setting";
+import { FEEDBACK_SORT_BY_OPTIONS, FEEDBACK_STATUSES, LIST_FEEDBACK_STATUS, findFeedbackStatus } from "../../../../setting/feedback-setting";
 import { createCodeString } from "../../../../helpers/stringUtils";
 import { Card, FormGroup } from "react-bootstrap";
 import LockIconAction from "../../../General/Action/IconAction/LockIconAction";
@@ -22,6 +22,7 @@ import { Link } from "react-router-dom";
 import useBackUrl from "../../../../hooks/useBackUrl";
 import DisplayUser from "../../../General/DisplayUser";
 import { getCustomerFromList } from "../../../../setting/customer-setting";
+import ConditionWrapper from "../../../General/Wrapper/ConditionWrapper";
 
 interface FilterProps {
     status: any,
@@ -167,19 +168,23 @@ export default function FeedbackTable() {
                         }}
                     />
 
-                    <LockIconAction
-                        onClick={() => {
-                            setOpenBan(true);
-                            setSelectedFeedback(row);
-                        }}
-                    />
+                    <ConditionWrapper isRender={row.status === FEEDBACK_STATUSES.ACTIVE}>
+                        <LockIconAction
+                            onClick={() => {
+                                setOpenBan(true);
+                                setSelectedFeedback(row);
+                            }}
+                        />
+                    </ConditionWrapper>
 
-                    <UnlockIconAction
-                        onClick={() => {
-                            setOpenUnban(true);
-                            setSelectedFeedback(row);
-                        }}
-                    />
+                    <ConditionWrapper isRender={row.status === FEEDBACK_STATUSES.BANNED}>
+                        <UnlockIconAction
+                            onClick={() => {
+                                setOpenUnban(true);
+                                setSelectedFeedback(row);
+                            }}
+                        />
+                    </ConditionWrapper>
                 </Box>
             )
         },
@@ -292,12 +297,14 @@ export default function FeedbackTable() {
                 open={openUnban}
                 feedback={selectedFeedback}
                 onClose={handleCloseUnban}
+                refresh={refresh}
             />
 
             <BanFeedback
                 open={openBan}
                 feedback={selectedFeedback}
                 onClose={handleCloseBan}
+                refresh={refresh}
             />
         </>
     );

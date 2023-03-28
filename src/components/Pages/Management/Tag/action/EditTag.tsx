@@ -6,9 +6,9 @@ import CustomizedDialogActions from '../../../../General/Dialog/CustomizedDialog
 import useDelayLoading from '../../../../../hooks/useDelayLoading';
 import { useDispatch } from 'react-redux';
 import { useForm } from "react-hook-form";
-import { updateServiceCategory } from '../../../../../redux/service/action';
 import { toast } from 'react-toastify';
 import useTagDetail from '../hooks/useTagDetail';
+import { updateTag } from '../../../../../redux/tag/action';
 interface EditTagProps {
     open?: boolean,
     tagCategory?: any,
@@ -39,7 +39,9 @@ function EditTag({
     });
 
     const handleUpdate = (data: any) => {
-        dispatch(updateServiceCategory(detail.id, data, {
+        if (!detail?.id) return;
+
+        dispatch(updateTag(detail?.id, data, {
             loading: setLoadingUpdate,
             onSuccess: () => {
                 toast.success("Cập nhật thành công.");

@@ -19,13 +19,18 @@ function ActivityTab({
         return detail.activities;
     }, [detail]);
 
-    if (!isAvailableArray(activities)) {
-        return <i>Chưa có hoạt động</i>
-    }
-
-
     return (
         <Grid container spacing={2}>
+            {activities.length < 1
+                ? <Grid item xs={12}>
+                    <Card>
+                        <Card.Body>
+                            <i>Chưa có hoạt động nào</i>
+                        </Card.Body>
+                    </Card>
+                </Grid>
+                : null
+            }
             {activities.map((item) =>
                 <Grid item xs={12} key={item.id}>
                     <Card>

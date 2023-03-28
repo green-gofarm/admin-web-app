@@ -1,215 +1,325 @@
-import { memo } from 'react'
-import { Button, Form, InputGroup } from 'react-bootstrap';
-import { Box, Dialog, DialogContent, Grid } from '@mui/material';
-import CustomizedDialogTitle from '../../../../../General/Dialog/CustomizedDialogTitle';
+import { memo, useCallback, useState } from 'react'
+import { Button, Form, FormGroup, InputGroup } from 'react-bootstrap';
+import { Box, CircularProgress, Dialog, DialogContent, Grid } from '@mui/material';
 import CustomizedDialogActions from '../../../../../General/Dialog/CustomizedDialogActions';
-import Dropzone from 'react-dropzone';
-import makeStyles from '@mui/styles/makeStyles/makeStyles';
-
-const useStyles = makeStyles({
-    bigContainer: {
-        position: "relative",
-        width: "100%",
-        height: '100%',
-        overflow: "hidden"
-    },
-    container: {
-        position: "relative",
-        width: "100%",
-        height: '160px',
-        overflow: "hidden"
-    },
-    box: {
-        position: "absolute",
-        top: 0,
-        left: 0,
-        width: "100%",
-        height: "100%",
-        objectFit: "cover",
-    },
-});
+import SingleImageDropzone from '../ui-segment/SingleImageDropzone';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../../../../redux/redux-setting';
+import VALIDATOR from './validator';
+import useDelayLoading from '../../../../../../hooks/useDelayLoading';
+import { createFarmstayActivities, uploadImage } from '../../../../../../redux/farmstay/action';
+import { isAvailableArray } from '../../../../../../helpers/arrayUtils';
+import { toast } from 'react-toastify';
+import { useDispatch } from 'react-redux';
 
 interface CreateActivityProps {
     open?: boolean,
-    refresh?: any,
-    onClose: Function
+    onSuccessCallback?: any,
+    onClose: Function,
+    farmstayId: any,
 }
 
-const Image = () => (
-    <Dropzone>
-        {({ getRootProps, getInputProps }) => (
-            <Box
-                height="160px !important"
-                className="dropzone dz-clickable"
-            >
-                <div className="dz-message needsclick" {...getRootProps()}>
-                    <div className="mb-2 mt-5 dropzoneicon ">
-                        <i className="mdi mdi-apple-mobileme"></i>
-                    </div>
-                    <p style={{ color: "#9393b5" }}>
-                        Ảnh hoạt động
-                    </p>
-                </div>
-            </Box>
-        )}
-    </Dropzone>
-)
+type Activity = {
+    name: string | null,
+    price: string | null,
+    description: string | null,
+    slot: string | null
+}
+
+interface Errors {
+    name: string,
+    price: string,
+    slot: string | null,
+    description: string,
+    file: string
+}
+
+const initialErrors: Errors = {
+    name: '',
+    price: '',
+    slot: '',
+    description: '',
+    file: ''
+};
 
 function CreateActivity({
     open,
-    refresh,
+    onSuccessCallback,
     onClose,
+    farmstayId,
 }: CreateActivityProps) {
 
-    const classes = useStyles();
+    const dispatch = useDispatch();
 
-    const handleSubmit = () => {
-        onClose && onClose();
-        refresh && refresh();
+    // State
+    const [file, setFile] = useState<File | null>(null);
+
+    // Redux
+    const user = useSelector((state: RootState) => state.auth.user);
+
+    const [activity, setActivity] = useState<Activity>({
+        name: "",
+        price: "",
+        slot: "",
+        description: "",
+    })
+
+    const [errors, setErrors] = useState<Errors>(initialErrors);
+
+    const [loading, setLoading] = useState<boolean>(false);
+    const delay = useDelayLoading(loading);
+
+    const handleOnChangeAddress = useCallback((key: keyof Activity, value: any) => {
+        setActivity(prev => ({
+            ...prev,
+            [key]: value,
+        }));
+
+        setErrors(prev => ({
+            ...prev,
+            [key]: "",
+        }));
+    }, []);
+
+    const validate = (activity: Activity, file: File | null) => {
+        const tempActivityError: Errors = {
+            name: VALIDATOR.isRequired(activity.name),
+            description: VALIDATOR.isRequired(activity.description),
+            price: VALIDATOR.isRequired(activity.price) || VALIDATOR.isNumberString(activity.price),
+            slot: VALIDATOR.isRequired(activity.price) || VALIDATOR.isNumberString(activity.price),
+            file: file != null ? VALIDATOR.NO_ERROR : VALIDATOR.REQUIRED_MESSAGE,
+        }
+
+        setErrors(tempActivityError);
+
+        return Object.values(tempActivityError).every(i => i === VALIDATOR.NO_ERROR);
+    }
+
+    const preparedImagesData = (link: any) => {
+        const newData = {
+            avatar: link,
+            others: []
+        }
+
+        return JSON.stringify(newData);
+    }
+
+    const getNewFileLink = async (file: File) => {
+        return new Promise<any[]>((resolve, rj) => {
+            const formData = new FormData();
+            formData.append("files", file);
+
+            dispatch(uploadImage(
+                formData,
+                {
+                    loading: setLoading,
+                    onSuccess: (response: any) => {
+                        if (isAvailableArray(response?.data)) {
+                            const link = response.data[0];
+                            resolve(link);
+                            return;
+                        }
+                    },
+                    onFailure: (error: any) => {
+                        rj("Có lỗi xảy ra: Upload failed");
+                    }
+                }
+            ));
+        })
+    }
+
+    const handleSubmit = async () => {
+        if (!user?.id) return;
+        if (!farmstayId) return;
+        if (!validate(activity, file)) return;
+        if (!file) return;
+
+        const price = activity.price;
+        const slot = activity.slot;
+        if (!price) return;
+        if (!slot) return;
+
+        try {
+            const linkNewFile = await getNewFileLink(file);
+            const images = preparedImagesData(linkNewFile);
+
+            const data = {
+                images,
+                name: activity.name,
+                price: parseFloat(price),
+                slot: parseInt(slot),
+                description: activity.description,
+                tags: []
+            }
+
+            dispatch(createFarmstayActivities(
+                user.id,
+                farmstayId,
+                data,
+                {
+                    loading: setLoading,
+                    onSuccess: () => {
+                        toast.success("Thêm mới thành công.");
+                        onClose && onClose();
+                        onSuccessCallback && onSuccessCallback();
+                    },
+                    onFailure: () => {
+                        toast.error("Thêm mới thất bại");
+                    }
+                })
+            )
+        } catch (error) {
+            console.log(error);
+            toast.error("Thêm mới thất bại");
+        }
     }
 
     const handleClose = () => {
         onClose && onClose();
-        refresh && refresh();
     }
 
     return (
         <Dialog
             open={Boolean(open)}
             onClose={handleClose}
-            maxWidth="lg"
+            maxWidth="md"
             fullWidth
         >
-            <CustomizedDialogTitle
-                title="THÊM HOẠT ĐỘNG MỚI"
-                onClose={handleClose}
-            />
             <DialogContent>
-                <Box padding="16px 0">
-                    <Grid container spacing={2}>
-                        <Grid item xs={12} md={4}>
-                            <Dropzone>
-                                {({ getRootProps, getInputProps }) => (
-                                    <Box
-                                        height="240px !important"
-                                        className="dropzone dz-clickable"
-                                    >
-                                        <div className="dz-message needsclick" {...getRootProps()}>
-                                            <Box marginTop="80px" className="mb-2 dropzoneicon ">
-                                                <i className="mdi mdi-apple-mobileme"></i>
-                                            </Box>
-                                            <p style={{ color: "#9393b5" }}>
-                                                Ảnh đại diện
-                                            </p>
-                                        </div>
-                                    </Box>
-                                )}
-                            </Dropzone>
-                        </Grid>
-
-                        <Grid item xs={12} md={8}>
-                            <Grid container spacing={2}>
-                                <Grid item xs={12}>
-                                    <InputGroup className="input-group mb-3">
-                                        <InputGroup.Text className="input-group-text">
-                                            Tên hoạt động
-                                        </InputGroup.Text>
-                                        <Form.Control
-                                            aria-label="Amount (to the nearest dollar)"
-                                            className="form-control"
-                                            type="text"
-                                        />
-                                    </InputGroup>
-                                </Grid>
-
-                                <Grid item xs={12}>
-                                    <InputGroup className="input-group mb-3">
-                                        <InputGroup.Text className="input-group-text">
-                                            Giá vé
-                                        </InputGroup.Text>
-                                        <Form.Control
-                                            aria-label="Amount (to the nearest dollar)"
-                                            className="form-control"
-                                            type="text"
-                                        />
-                                        <InputGroup.Text className="input-group-text">
-                                            đ
-                                        </InputGroup.Text>
-                                    </InputGroup>
-                                </Grid>
-
-                                <Grid item xs={12}>
-                                    <textarea
-                                        className="form-control"
-                                        rows={3}
-                                        defaultValue=""
-                                        required
-                                        placeholder='Mô tả'
-                                    />
-                                </Grid>
-                            </Grid>
-                        </Grid>
-
-
-                        <Grid item xs={12} md={6}>
-                            <Box className={classes.bigContainer}>
-                                <Dropzone>
-                                    {({ getRootProps, getInputProps }) => (
-                                        <Box
-                                            height="336px !important"
-                                            className="dropzone dz-clickable"
-                                        >
-                                            <div className="dz-message needsclick" {...getRootProps()}>
-                                                <Box marginTop="120px" className="mb-2 mt-6 dropzoneicon ">
-                                                    <i className="mdi mdi-apple-mobileme"></i>
-                                                </Box>
-                                                <p style={{ color: "#9393b5" }}>
-                                                    Ảnh hoạt động
-                                                </p>
-                                            </div>
-                                        </Box>
-                                    )}
-                                </Dropzone>
-                            </Box>
-                        </Grid>
-
-                        <Grid item xs={12} md={6}>
-                            <Grid container spacing={2}>
-                                <Grid item xs={12} md={6}>
-                                    <Box className={classes.container}>
-                                        <Image />
-                                    </Box>
-                                </Grid>
-                                <Grid item xs={12} md={6}>
-                                    <Box className={classes.container}>
-                                        <Image />
-                                    </Box>
-                                </Grid>
-                                <Grid item xs={12} md={6}>
-                                    <Box className={classes.container}>
-                                        <Image />
-                                    </Box>
-                                </Grid>
-                                <Grid item xs={12} md={6}>
-                                    <Box className={classes.container}>
-                                        <Image />
-                                    </Box>
-                                </Grid>
-                            </Grid>
-                        </Grid>
-                    </Grid>
+                <Box className='card-title mb-2'>
+                    Thêm hoạt động mới
                 </Box>
-            </DialogContent>
+                <Grid container spacing={0} columnSpacing={2}>
+                    <Grid item xs={12}>
+                        <FormGroup className="has-danger">
+                            <Form.Label>
+                                Ảnh đại diện *
+                            </Form.Label>
+                            <SingleImageDropzone
+                                file={file}
+                                setFile={setFile}
+                            />
+                            {errors.file
+                                ? <div className="invalid-feedback">Thông tin bắt buộc.</div>
+                                : null
+                            }
+                        </FormGroup>
+                    </Grid>
+
+                    <Grid item xs={12}>
+                        <FormGroup className="has-danger">
+                            <Form.Label>
+                                Tên hoạt động *
+                            </Form.Label>
+                            <Form.Control
+                                aria-label="Activity name"
+                                className={`form-control ${errors.name ? "is-invalid" : ""}`}
+                                type="text"
+                                value={activity.name ?? ""}
+                                onChange={(e) => handleOnChangeAddress("name", e.target.value ?? "")}
+                            />
+                            {errors.name
+                                ? <div className="invalid-feedback">Thông tin bắt buộc.</div>
+                                : null
+                            }
+                        </FormGroup>
+                    </Grid>
+
+                    <Grid item xs={12} md={6}>
+                        <FormGroup className="has-danger">
+                            <Form.Label>
+                                Số người trên 1 lượt *
+                            </Form.Label>
+                            <InputGroup className="input-group mb-3">
+                                <Form.Control
+                                    aria-label=""
+                                    className={`form-control ${errors.slot ? "is-invalid" : ""}`}
+                                    type="number"
+                                    value={activity.slot ?? ""}
+                                    onChange={(e) => handleOnChangeAddress("slot", e.target.value ?? "")}
+                                />
+                            </InputGroup>
+                            {errors.slot
+                                ? <div className="invalid-feedback">Thông tin bắt buộc.</div>
+                                : null
+                            }
+                        </FormGroup>
+                    </Grid>
+
+                    <Grid item xs={12} md={6}>
+                        <FormGroup className="has-danger">
+                            <Form.Label>
+                                Đơn giá *
+                            </Form.Label>
+                            <InputGroup className="input-group mb-3">
+                                <Form.Control
+                                    aria-label=""
+                                    className={`form-control ${errors.price ? "is-invalid" : ""}`}
+                                    type="number"
+                                    value={activity.price ?? ""}
+                                    onChange={(e) => handleOnChangeAddress("price", e.target.value ?? "")}
+                                />
+                                <InputGroup.Text className="input-group-text">
+                                    đ
+                                </InputGroup.Text>
+                            </InputGroup>
+                            {errors.price
+                                ? <div className="invalid-feedback">Thông tin bắt buộc.</div>
+                                : null
+                            }
+                        </FormGroup>
+                    </Grid>
+
+                    <Grid item xs={12}>
+                        <FormGroup className="has-danger">
+                            <Form.Label>
+                                Mô tả *
+                            </Form.Label>
+                            <textarea
+                                rows={3}
+                                required
+                                placeholder='Mô tả'
+                                value={activity.description ?? ""}
+                                className={`form-control ${errors.description ? "is-invalid" : ""}`}
+                                onChange={(e) => handleOnChangeAddress("description", e.target.value ?? "")}
+                            />
+                            {errors.description
+                                ? <div className="invalid-feedback">Thông tin bắt buộc.</div>
+                                : null
+                            }
+                        </FormGroup>
+                    </Grid>
+                </Grid>
+            </DialogContent >
 
             <CustomizedDialogActions>
-                <Button variant="secondary" onClick={handleClose}>
+                <Button
+                    variant="secondary"
+                    onClick={handleClose}
+                    disabled={delay}
+                >
                     Hủy
                 </Button>
-                <Button variant="primary" onClick={handleSubmit}>
-                    Xác nhận
+                <Button
+                    variant="primary"
+                    onClick={handleSubmit}
+                    disabled={delay}
+                >
+                    <Box
+                        display="flex"
+                        alignItems="center"
+                        gap="8px"
+                    >
+                        {delay
+                            ? <CircularProgress size={16} thickness={4} sx={{ color: "#fff" }} />
+                            : null
+                        }
+                        Lưu lại
+                    </Box>
+
                 </Button>
             </CustomizedDialogActions>
-        </Dialog>
+        </Dialog >
     )
 }
 

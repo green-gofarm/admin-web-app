@@ -15,6 +15,7 @@ function useAllRoomCategories() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [dispatch]);
 
+    return allRoomCategories;
 }
 
 export default useAllRoomCategories

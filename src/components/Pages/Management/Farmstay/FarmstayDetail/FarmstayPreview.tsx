@@ -8,7 +8,6 @@ import { createCodeString } from '../../../../../helpers/stringUtils';
 import Navigation, { NavigationItem } from '../../../../General/Tab/Navigation';
 import DetailPageHeaderTitle from '../../../../General/DetailPageHeaderTitle';
 import BasicInfoTab from './tab/BasicInfoTab';
-import TabPaneContentBody from '../../../../General/Tab/TabPaneContentBody';
 import ActivityTab from './tab/ActivityTab';
 import RoomTab from './tab/RoomTab';
 import ServiceTab from './tab/ServiceTab';
@@ -135,18 +134,18 @@ function FarmstayPreview() {
                                                 loading={loading}
                                             />
                                         </Tab.Pane>
-                                        <TabPaneContentBody eventKey={TAB_KEYS.Service}>
+                                        <Tab.Pane eventKey={TAB_KEYS.Service}>
                                             <ServiceTab
                                                 detail={farmstayDetail}
                                                 loading={loading}
                                             />
-                                        </TabPaneContentBody>
-                                        <TabPaneContentBody eventKey={TAB_KEYS.Policies}>
+                                        </Tab.Pane>
+                                        <Tab.Pane eventKey={TAB_KEYS.Policies}>
                                             <PolicyTab
                                                 detail={farmstayDetail}
                                                 loading={loading}
                                             />
-                                        </TabPaneContentBody>
+                                        </Tab.Pane>
                                         <Tab.Pane eventKey={TAB_KEYS.FAQ}>
                                             <FAQTab
                                                 detail={farmstayDetail}

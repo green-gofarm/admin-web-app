@@ -21,13 +21,10 @@ export default function CustomizedDialogTitle({
             margin="0"
             borderBottom="1px solid #ededf5"
         >
-            <Box
-                fontWeight="600"
-                fontSize="1rem"
-                lineHeight="1.5"
-            >
+            <Box className="card-title">
                 {title}
             </Box>
+
             <Box marginRight="-4px">
                 <TooltipIconAction
                     title="Đóng"

@@ -4,12 +4,12 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import { Box } from "@mui/material";
 import viLocale from '@fullcalendar/core/locales/vi';
-import { Card } from "react-bootstrap";
 import useRoomSchedule from "./hooks/useRoomSchedule";
 import { useCallback, useMemo, useState } from "react";
 import { formatDate, isThePast } from "../../../../../helpers/dateUtils";
 import ActivityEvent from "./event/RoomEvent";
 import { STATUS_COLORS } from "../../../../../setting/color";
+import CustomizedCard from "../../../../General/Card/CustomizedCard";
 
 const getColorProps = (date: string | null) => {
     if (!date) return null;
@@ -76,10 +76,9 @@ function RoomSchedule({
 
     return (
         <>
-            <Card>
-                <Card.Body className="border-0">
-                    <h5 className="mb-2 mt-1 fw-semibold">Lịch hoạt động</h5>
-
+            <CustomizedCard
+                title="Lịch"
+                content={
                     <Box
                         textTransform="capitalize"
                         id="calendar2"
@@ -107,8 +106,8 @@ function RoomSchedule({
                             datesSet={handleChangeDate}
                         />
                     </Box>
-                </Card.Body>
-            </Card>
+                }
+            />
 
             <ActivityEvent
                 open={!!anchorEl && !!selectedEvent}

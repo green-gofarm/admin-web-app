@@ -17,3 +17,17 @@ export function searchFeedbacks(params: any) {
     const url = `${ENP.FEEDBACK}/search`;
     return axiosRequest(url, option, _params);
 }
+
+
+export function updateFeedbackStatus(feedbackId: any, data: any) {
+    const option: AxiosRequestConfig = {
+        method: METHOD.PATCH,
+        headers: {
+            "Content-Type": "application/json"
+        },
+        data: JSON.stringify(data ?? {})
+    }
+
+    const url = `${ENP.ADMIN}/feedbacks/${feedbackId}/search`;
+    return axiosRequest(url, option);
+}

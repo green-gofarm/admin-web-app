@@ -9,7 +9,6 @@ import FarmstayDetailHeader from './FarmstayDetailHeader';
 import Navigation, { NavigationItem } from '../../../../General/Tab/Navigation';
 import DetailPageHeaderTitle from '../../../../General/DetailPageHeaderTitle';
 import BasicInfoTab from './tab/BasicInfoTab';
-import TabPaneContentBody from '../../../../General/Tab/TabPaneContentBody';
 import ActivityTab from './tab/ActivityTab';
 import RoomTab from './tab/RoomTab';
 import ServiceTab from './tab/ServiceTab';
@@ -146,18 +145,18 @@ function FarmstayDetail() {
                                                 loading={loading}
                                             />
                                         </Tab.Pane>
-                                        <TabPaneContentBody eventKey={TAB_KEYS.Service}>
+                                        <Tab.Pane eventKey={TAB_KEYS.Service}>
                                             <ServiceTab
                                                 detail={farmstayDetail}
                                                 loading={loading}
                                             />
-                                        </TabPaneContentBody>
-                                        <TabPaneContentBody eventKey={TAB_KEYS.Policies}>
+                                        </Tab.Pane>
+                                        <Tab.Pane eventKey={TAB_KEYS.Policies}>
                                             <PolicyTab
                                                 detail={farmstayDetail}
                                                 loading={loading}
                                             />
-                                        </TabPaneContentBody>
+                                        </Tab.Pane>
                                         <Tab.Pane eventKey={TAB_KEYS.FAQ}>
                                             <FAQTab
                                                 detail={farmstayDetail}
@@ -165,7 +164,10 @@ function FarmstayDetail() {
                                             />
                                         </Tab.Pane>
                                         <Tab.Pane eventKey={TAB_KEYS.Feedback}>
-                                            <FeedbackTab />
+                                            <FeedbackTab
+                                                detail={farmstayDetail}
+                                                loading={loading}
+                                            />
                                         </Tab.Pane>
                                         <Tab.Pane eventKey={TAB_KEYS.OrderHistory}>
                                             <OrderHistoryTab

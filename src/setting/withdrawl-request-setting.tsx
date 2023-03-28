@@ -44,6 +44,6 @@ interface SortByProps {
 export const WITHDRAWAL_REQUEST_SORT_BY_OPTIONS: SortByProps[] = [
     { label: "Ngày tạo gần nhất", value: 1, sortValue: { orderBy: "createdDate", orderDirection: "desc" } },
     { label: "Ngày tạo xa nhất", value: 2, sortValue: { orderBy: "createdDate", orderDirection: "asc" } },
-    { label: "Giải ngân nhiều nhất", value: 1, sortValue: { orderBy: "amount", orderDirection: "desc" } },
-    { label: "Giải ngân ít nhất", value: 2, sortValue: { orderBy: "amount", orderDirection: "asc" } },
+    { label: "Giải ngân nhiều nhất", value: 3, sortValue: { orderBy: "amount", orderDirection: "desc" } },
+    { label: "Giải ngân ít nhất", value: 4, sortValue: { orderBy: "amount", orderDirection: "asc" } },
 ]

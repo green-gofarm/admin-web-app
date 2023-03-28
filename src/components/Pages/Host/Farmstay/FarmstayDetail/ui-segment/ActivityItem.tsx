@@ -3,12 +3,15 @@ import { Card } from 'react-bootstrap'
 import makeStyles from '@mui/styles/makeStyles/makeStyles';
 import { convertToMoney } from '../../../../../../helpers/stringUtils';
 import { Status } from '../../../../../../setting/Status';
-import { findActivityStatus } from '../../../../../../setting/activity-status-setting';
-import { useLocation, useNavigate } from 'react-router-dom';
-import LockIcon from '@mui/icons-material/Lock';
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import { ACTIVITY_STATUSES, findActivityStatus } from '../../../../../../setting/activity-status-setting';
+import { useNavigate } from 'react-router-dom';
+import useBackUrl from '../../../../../../hooks/useBackUrl';
+import useActivityImages from '../../../../Management/Farmstay/FarmstayDetail/hooks/useActivityImages';
+import { DeleteForever, Lock, LockOpen } from '@mui/icons-material';
 import { useState } from 'react';
+import ConditionWrapper from '../../../../../General/Wrapper/ConditionWrapper';
 import LockActivity from '../action/LockActivity';
+import UnLockActivity from '../action/UnLockActivity';
 import DeleteActivity from '../action/DeleteActivity';
 
 const useStylesEllipsis = makeStyles({
@@ -22,44 +25,56 @@ const useStylesEllipsis = makeStyles({
     }
 });
 interface IActivityItem {
-    item: any
+    item: any,
+    refresh?: () => void,
 }
 
-function ActivityItem({ item }: IActivityItem) {
+function ActivityItem({ item, refresh }: IActivityItem) {
     const classes = useStylesEllipsis();
     const navigate = useNavigate();
-    const location = useLocation();
+    const { createBackUrl } = useBackUrl();
+    const images = useActivityImages(item);
 
     const [openLock, setOpenLock] = useState<boolean>(false);
-    const [openDelete, setOpenDelete] = useState<boolean>(false)
+    const [openUnlock, setOpenUnlock] = useState<boolean>(false);
+    const [openDelete, setOpenDelete] = useState<boolean>(false);
 
     return (
         <>
             <Card className="custom-card customs-cards">
-                <Card.Body className="d-md-flex bg-white">
+                <Card.Body className="d-flex bg-white">
                     <Box
-                        minWidth="fit-content"
+                        height="120px"
+                        width="120px"
                     >
                         <Box
                             component="img"
                             className="br-5 "
-                            src={require("../../../../../../assets/img/png/fishing.jpg")}
+                            src={images?.avatar ?? "../../../../../../assets/img/photos/1.jpg"}
                             alt="Activity img"
                             sx={{
                                 position: "relative",
-                                height: "140px",
+                                height: "120px !important",
+                                width: "120px !important",
                                 backgroundPosition: "center",
                                 backgroundSize: "cover",
                                 backgroundRepeat: "no-repeat"
                             }}
                         />
                     </Box>
-                    <Box margin="0 0 4px 24px">
+                    <Box margin="0 0 4px 24px" flexGrow="1">
                         <Grid container spacing={1}>
                             <Grid item xs={8}>
-                                <h5 className="font-weight-semibold">
-                                    {item?.name}
-                                </h5>
+                                <Box
+                                    display="flex"
+                                    alignItems="center"
+                                    gap="8px"
+                                >
+                                    <h5 className="font-weight-semibold mb-0">
+                                        {item?.name ?? "No_Name"}
+                                    </h5>
+                                    <Status statusObject={findActivityStatus(item?.status)} />
+                                </Box>
                             </Grid>
                             <Grid item xs={4}>
                                 <Box
@@ -67,7 +82,7 @@ function ActivityItem({ item }: IActivityItem) {
                                     textAlign="right"
                                     className="font-weight-semibold"
                                 >
-                                    {convertToMoney(item?.defaultPrice)}
+                                    {convertToMoney(item?.price)}
                                 </Box>
                             </Grid>
                             <Grid item xs={8}>
@@ -75,18 +90,16 @@ function ActivityItem({ item }: IActivityItem) {
                                     {item?.description}
                                 </Typography>
                             </Grid>
-                            <Grid item xs={12}>
-                                <Status statusObject={findActivityStatus(item?.status)} />
-                            </Grid>
 
-                            <Grid item xs={12}>
+                            <Grid item xs={12} marginTop="auto">
                                 <Box
                                     display="flex"
                                     justifyContent="space-between"
+                                    marginTop="auto"
                                 >
                                     <Box
                                         className="btn btn-primary shadow"
-                                        onClick={() => navigate(`/management/farmstay/all/${item?.farmstayId}/activity/${item?.id}?backUrl=${location.pathname + location.search}`)}
+                                        onClick={() => navigate(`/management/farmstay/${item?.farmstayId}/activity/${item?.id}?backUrl=${createBackUrl()}`)}
                                     >
                                         Xem chi tiết
                                     </Box>
@@ -95,41 +108,87 @@ function ActivityItem({ item }: IActivityItem) {
                                         display="flex"
                                         gap="8px"
                                     >
-                                        <Box
-                                            className="btn btn-warning shadow"
-                                            onClick={() => setOpenLock(true)}
-                                        >
-                                            <LockIcon /> Khóa
-                                        </Box>
+                                        <ConditionWrapper isRender={item.status === ACTIVITY_STATUSES.ACTIVE}>
+                                            <Box
+                                                className="btn btn-warning shadow"
+                                                onClick={() => setOpenLock(true)}
+                                            >
+                                                <Box
+                                                    display="flex"
+                                                    gap="4px"
+                                                    alignItems="center"
+                                                >
+                                                    <Lock /> Khóa
+                                                </Box>
+                                            </Box>
+                                        </ConditionWrapper>
+
+                                        <ConditionWrapper isRender={item.status === ACTIVITY_STATUSES.INACTIVE}>
+                                            <Box
+                                                className="btn btn-primary shadow"
+                                                onClick={() => setOpenUnlock(true)}
+                                            >
+                                                <Box
+                                                    display="flex"
+                                                    gap="4px"
+                                                    alignItems="center"
+                                                >
+                                                    <LockOpen /> Mở khóa
+                                                </Box>
+                                            </Box>
+                                        </ConditionWrapper>
+
                                         <Box
                                             className="btn btn-secondary shadow"
                                             onClick={() => setOpenDelete(true)}
                                         >
-                                            <DeleteForeverIcon /> Xóa
+                                            <Box
+                                                display="flex"
+                                                gap="4px"
+                                                alignItems="center"
+                                            >
+                                                <DeleteForever /> Xóa
+                                            </Box>
                                         </Box>
                                     </Box>
                                 </Box>
                             </Grid>
                         </Grid>
-
-
                     </Box>
                 </Card.Body>
             </Card>
 
-            <LockActivity
-                open={openLock}
-                activity={item}
-                onClose={() => setOpenLock(false)}
-            />
+            {openLock
+                ? <LockActivity
+                    open={openLock}
+                    onClose={() => setOpenLock(false)}
+                    activity={item}
+                    onSuccessCallback={refresh}
+                />
+                : null
+            }
 
-            <DeleteActivity
-                open={openDelete}
-                activity={item}
-                onClose={() => setOpenDelete(false)}
-            />
+            {openUnlock
+                ? <UnLockActivity
+                    open={openUnlock}
+                    onClose={() => setOpenUnlock(false)}
+                    activity={item}
+                    onSuccessCallback={refresh}
+                />
+                : null
+            }
+
+            {openDelete
+                ? <DeleteActivity
+                    open={openDelete}
+                    onClose={() => setOpenDelete(false)}
+                    activity={item}
+                    onSuccessCallback={refresh}
+                />
+                : null
+            }
         </>
     )
 }
 
-export default ActivityItem
+export default ActivityItem;

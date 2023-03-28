@@ -1,4 +1,5 @@
 import { isAvailableArray } from "../helpers/arrayUtils";
+import { isString } from "../helpers/stringUtils";
 import { STATUS_COLORS } from "./color";
 
 export enum FARMSTAY_STATUSES {
@@ -63,4 +64,22 @@ export const isInActiveFarmstay = (status: any) => status === FARMSTAY_STATUSES.
 export const getFarmstayFromList = (list: any, id: any) => {
     if (!isAvailableArray(list)) return null;
     return list.find(item => item.id === id) ?? null;
+}
+
+export const renderAddress = (address: any) => {
+    if (!address) return "";
+
+    return Object.keys(address).reverse().reduce((prev, cur) => {
+        if (address[cur]) {
+            if (!prev) return address[cur];
+            if (isString(address[cur])) {
+                return prev + ", " + address[cur];
+            }
+
+            if (isString(address[cur].name)) {
+                return prev + ", " + address[cur].name;
+            }
+        }
+        return prev;
+    }, "");
 }

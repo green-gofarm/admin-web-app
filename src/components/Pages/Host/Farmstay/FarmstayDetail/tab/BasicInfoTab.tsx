@@ -1,190 +1,306 @@
 import { Box, Grid } from '@mui/material'
-import { Card, Form, FormGroup, Table } from 'react-bootstrap'
-import FarmImageGeneralView from '../FarmImageGeneralView'
-import Dropzone from "react-dropzone";
-import EditIconAction from '../../../../../General/Action/IconAction/EditIconAction';
-import UploadIconAction from '../../../../../General/Action/IconAction/UploadIconAction';
-import CustomizedLeafletMap from '../../create-farmstay/ui-segment/CustomizedLeafletMap';
+import { useState } from 'react';
+import useFarmstayAddress from '../../../../Management/Farmstay/FarmstayDetail/hooks/useFarmstayAddress';
+import { renderAddress } from '../../../../../../setting/farmstay-setting';
+import { convertISOToNaturalFormat } from '../../../../../../helpers/dateUtils';
+import UpdateFarmstayBasic from '../action/UpdateFarmstayBasic';
+import useFarmstayImages from '../../../../Management/Farmstay/FarmstayDetail/hooks/useFarmstayImages';
+import UpdateFarmstayImage from '../action/UpdateFarmstayImage';
+import useContactInfo from '../../../../Management/Farmstay/FarmstayDetail/hooks/useContactInfo';
+import UpdateFarmstayContactInfo from '../action/UpdateFarmstayContactInfo';
+import ImageView from '../../../../../General/ImageView';
+import LeafletViewMap from '../../../../../General/Map/LeafletViewMap';
+import UpdateFarmstayLocation from '../action/UpdateFarmstayLocation';
 
 interface IBasicInfo {
     detail: any,
+    loading: boolean,
+    refresh: () => void
 }
 
 function BasicInfoTab({
-    detail
+    detail,
+    loading,
+    refresh,
 }: IBasicInfo) {
 
+    const [openEditBasic, setOpenEditBasic] = useState<boolean>(false);
+    const [openEditImages, setOpenEditImages] = useState<boolean>(false);
+    const [openEditContactInfo, setOpenEditContactInfo] = useState<boolean>(false);
+    const [openEditLocation, setOpenEditLocation] = useState<boolean>(false);
+
+    const address = useFarmstayAddress(detail);
+    const images = useFarmstayImages(detail);
+    const contactInfo = useContactInfo(detail);
+
     const renderBasic = () => (
-        <Grid container spacing={2}>
-            <Grid item xs={12}>
-                <FormGroup className="form-group ">
-                    <Form.Label className="form-label">
-                        Tên
-                    </Form.Label>
+        <div className="main-content-body main-content-body-contacts card custom-card">
+            <Box
+                display="flex"
+                alignItems="center"
+                justifyContent="space-between"
+                className="main-contact-info-header"
+                padding="16px 20px 20px 20px !important"
+            >
+                <Box
+                    className='h5'
+                    margin="0 !important"
+                >
+                    Thông tin cơ bản
+                </Box>
 
-
-                    <Form.Control
-                        type="text"
-                        className="form-control"
-                        defaultValue={detail?.name}
-                        disabled
-                    />
-                </FormGroup>
-            </Grid>
-
-            <Grid item xs={12}>
-                <FormGroup className="form-group ">
-                    <Form.Label className="form-label">
-                        Ảnh đại diện
-                    </Form.Label>
-                    <Dropzone>
-                        {({ getRootProps, getInputProps }) => (
-                            <Box
-                                height="140px !important"
-                                className="dropzone dz-clickable"
-                            >
-                                <div className="dz-message needsclick" {...getRootProps()}>
-                                    <div className="mb-2 mt-4 dropzoneicon ">
-                                        <i className="mdi mdi-apple-mobileme"></i>
-                                    </div>
-                                    <p style={{ color: "#9393b5" }}>
-                                        Kéo thả vào đây hoặc nhấn để chọn logo
-                                    </p>
-                                </div>
-                            </Box>
-                        )}
-                    </Dropzone>
-                </FormGroup>
-            </Grid>
-        </Grid>
+                <Box
+                    className="btn ripple border btn-icon"
+                    width="32px !important"
+                    height="32px !important"
+                    padding="0"
+                    title="Cập nhật"
+                    onClick={() => setOpenEditBasic(true)}
+                >
+                    <i className="fe fe-edit"></i>
+                </Box>
+            </Box>
+            <Box padding="0 8px" className="main-contact-info-body">
+                <div className="media-list">
+                    <div className="media">
+                        <div className="media-body">
+                            <div>
+                                <label>Tên :</label>{" "}
+                                <span className="tx-medium">{detail?.name}</span>
+                            </div>
+                            <div>
+                                <label>Địa chỉ :</label>{" "}
+                                <span className="tx-medium">{renderAddress(address)}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="media mb-0">
+                        <div className="media-body">
+                            <div>
+                                <label>Mô tả :</label>{" "}
+                                <span className="tx-medium">
+                                    {detail?.description ?? <i>Chưa có mô tả</i>}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="media">
+                        <div className="media-body">
+                            <div>
+                                <label>Ngày tạo :</label>{" "}
+                                <span className="tx-medium">
+                                    {detail?.createdDate
+                                        ? convertISOToNaturalFormat(detail.createdDate)
+                                        : ""
+                                    }
+                                </span>
+                            </div>
+                            <div>
+                                <label>Lần cập nhật cuối :</label>{" "}
+                                <span className="tx-medium">
+                                    {detail?.updatedDate
+                                        ? convertISOToNaturalFormat(detail.updatedDate)
+                                        : ""
+                                    }
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </Box>
+        </div>
     )
+
+    const renderContactInfo = () => (
+        <div className="main-content-body main-content-body-contacts card custom-card">
+            <Box
+                display="flex"
+                alignItems="center"
+                justifyContent="space-between"
+                className="main-contact-info-header"
+                padding="16px 20px 20px 20px !important"
+            >
+                <Box
+                    className='h5'
+                    margin="0 !important"
+                >
+                    Phương thức liên lạc
+                </Box>
+
+                <Box
+                    className="btn ripple border btn-icon"
+                    width="32px !important"
+                    height="32px !important"
+                    padding="0"
+                    title="Cập nhật"
+                    onClick={() => setOpenEditContactInfo(true)}
+                >
+                    <i className="fe fe-edit"></i>
+                </Box>
+            </Box>
+            <Box padding="0 8px" className="main-contact-info-body">
+                <div className="media-list">
+                    {contactInfo.map((contact, index) => {
+                        if (index % 2 === 0) {
+                            // create a new media-body every two items
+                            return (
+                                <div key={index} className="media">
+                                    <div className="media-body">
+                                        <div>
+                                            <label>{contact.method}:</label>{" "}
+                                            <span className="tx-medium">{contact.value}</span>
+                                        </div>
+                                        {contactInfo.length > index + 1 && (
+                                            <div>
+                                                <label>{contactInfo[index + 1].method}:</label>{" "}
+                                                <span className="tx-medium">
+                                                    {contactInfo[index + 1].value}
+                                                </span>
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+                            )
+                        }
+                        return null;
+                    })}
+                </div>
+            </Box>
+        </div>
+    )
+
+    const renderImages = () => (
+        <div className="main-content-body main-content-body-contacts card custom-card">
+            <Box
+                display="flex"
+                alignItems="center"
+                justifyContent="space-between"
+                className="main-contact-info-header"
+                padding="16px 20px 20px 20px !important"
+            >
+                <Box
+                    className='h5'
+                    margin="0 !important"
+                >
+                    Hình ảnh
+                </Box>
+
+                <Box
+                    className="btn ripple border btn-icon"
+                    width="32px !important"
+                    height="32px !important"
+                    padding="0"
+                    title="Cập nhật"
+                    onClick={() => setOpenEditImages(true)}
+                >
+                    <i className="fe fe-edit"></i>
+                </Box>
+            </Box>
+            <Box padding="20px" className="main-contact-info-body">
+                <ImageView
+                    images={images?.others}
+                />
+            </Box>
+        </div>
+    )
+
+    const renderLocation = () => (
+        <div className="main-content-body main-content-body-contacts card custom-card">
+            <Box
+                display="flex"
+                alignItems="center"
+                justifyContent="space-between"
+                className="main-contact-info-header"
+                padding="16px 20px 20px 20px !important"
+            >
+                <Box
+                    className='h5'
+                    margin="0 !important"
+                >
+                    Vị trí
+                </Box>
+
+                <Box
+                    className="btn ripple border btn-icon"
+                    width="32px !important"
+                    height="32px !important"
+                    padding="0"
+                    title="Cập nhật"
+                    onClick={() => setOpenEditLocation(true)}
+                >
+                    <i className="fe fe-edit"></i>
+                </Box>
+            </Box>
+            <Box padding="20px" className="main-contact-info-body">
+                <LeafletViewMap
+                    location={{
+                        lat: detail?.latitude,
+                        lng: detail?.longitude
+                    }}
+                />
+            </Box>
+        </div>
+    )
+
+
 
     return (
         <Grid container spacing={2}>
             <Grid item xs={12}>
-                <Card>
-                    <Card.Body>
-                        <Box
-                            display="flex"
-                            justifyContent="space-between"
-                            alignItems="center"
-                            className='mb-2'
-                        >
-                            <h5 className="mb-0 fw-semibold">
-                                Thông tin cơ bản
-                            </h5>
-                            <EditIconAction />
-                        </Box>
-                        {renderBasic()}
-                    </Card.Body>
-                </Card>
-            </Grid>
-            <Grid item xs={12}>
-                <Card>
-                    <Card.Body>
-                        <Box
-                            display="flex"
-                            justifyContent="space-between"
-                            alignItems="center"
-                            className='mb-2'
-                        >
-                            <h5 className="mb-0 fw-semibold">
-                                Mô tả
-                            </h5>
-                            <EditIconAction />
-                        </Box>
-                        <p className="mb-3 tx-13">
-                            Hãy đến với nông trại của chúng tôi! Tại đây,
-                            bạn sẽ được trải nghiệm một cuộc sống đồng quê thực sự với những hoạt động nông nghiệp như gieo trồng,
-                            chăm sóc động vật và thu hoạch vụ mùa. Ngoài ra, bạn còn có thể tham gia các lớp học nấu ăn với các món
-                            ăn đặc trưng của vùng miền, hoặc tham gia các hoạt động giải trí như câu cá, đi bộ đường dài hoặc chèo thuyền trên sông.
-                        </p>
-                        <p className="mb-3 tx-13">
-                            Chúng tôi mong muốn mang lại cho bạn một kỳ nghỉ thật thoải mái
-                            và ý nghĩa bên gia đình và bạn bè. Với không gian xanh mát và yên tĩnh của nông trại,
-                        </p>
-
-                        <h5 className="mb-2 fw-semibold">
-                            Tiện nghi
-                        </h5>
-                        <div className="table-responsive">
-                            <Table className="table table-bordered">
-                                <tbody>
-                                    <tr>
-                                        <td className="fw-semibold">
-                                            Wifi
-                                        </td>
-                                        <td>Miễn phí tất cả các phòng</td>
-                                    </tr>
-                                    <tr>
-                                        <td className="fw-semibold">Dịch vụ dọn phòng</td>
-                                        <td>Dọn phòng hằng ngày</td>
-                                    </tr>
-                                    <tr>
-                                        <td className="fw-semibold">
-                                            Tiện nghi phòng
-                                        </td>
-                                        <td>Đầy đủ tiện nghi</td>
-                                    </tr>
-                                    <tr>
-                                        <td className="fw-semibold">
-                                            Dịch vụ đưa đón
-                                        </td>
-                                        <td>
-                                            Đón khách từ sân bay
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </Table>
-                        </div>
-                    </Card.Body>
-                </Card>
+                {renderBasic()}
             </Grid>
 
             <Grid item xs={12}>
-                <Card>
-                    <Card.Body>
-                        <Box
-                            display="flex"
-                            justifyContent="space-between"
-                            alignItems="center"
-                            className='mb-2'
-                        >
-                            <h5 className="mb-0 fw-semibold">
-                                Hình ảnh farmstay
-                            </h5>
-                            <UploadIconAction />
-                        </Box>
-                        <Box className='file-detailimg'>
-                            <FarmImageGeneralView />
-                        </Box>
-                    </Card.Body>
-                </Card>
-
+                {renderContactInfo()}
             </Grid>
 
             <Grid item xs={12}>
-                <Card>
-                    <Card.Body>
-                        <Box
-                            display="flex"
-                            justifyContent="space-between"
-                            alignItems="center"
-                            className='mb-2'
-                        >
-                            <h5 className="mb-0 fw-semibold">
-                                Vị trí
-                            </h5>
-                            <EditIconAction />
-                        </Box>
-                        <Box width="100%" height="500px">
-                            <CustomizedLeafletMap
-                                triggerValue={{ lat: 10.8231, lon: 106.6297 }}
-                            />
-                        </Box>
-                    </Card.Body>
-                </Card>
+                {renderImages()}
             </Grid>
+
+            <Grid item xs={12}>
+                {renderLocation()}
+            </Grid>
+
+            {openEditBasic
+                ? <UpdateFarmstayBasic
+                    open={openEditBasic}
+                    onClose={() => setOpenEditBasic(false)}
+                    onSuccessCallback={refresh}
+                    farmstay={detail}
+                />
+                : null
+            }
+
+            {openEditImages
+                ? <UpdateFarmstayImage
+                    open={openEditImages}
+                    onClose={() => setOpenEditImages(false)}
+                    onSuccessCallback={refresh}
+                    farmstay={detail}
+                />
+                : null
+            }
+
+            {openEditContactInfo
+                ? <UpdateFarmstayContactInfo
+                    open={openEditContactInfo}
+                    onClose={() => setOpenEditContactInfo(false)}
+                    onSuccessCallback={refresh}
+                    farmstay={detail}
+                />
+                : null
+            }
+
+            {openEditLocation
+                ? <UpdateFarmstayLocation
+                    open={openEditLocation}
+                    onClose={() => setOpenEditLocation(false)}
+                    onSuccessCallback={refresh}
+                    farmstay={detail}
+                />
+                : null
+            }
         </Grid>
     )
 }

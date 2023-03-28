@@ -186,6 +186,15 @@ function AdminRoutes() {
                                                 element={<Navigate to="/management/farmstay/preview" />}
                                             />
 
+                                            <Route
+                                                path="/management/farmstay/:id/activity/:activityId"
+                                                element={<ActivityDetail />}
+                                            />
+                                            <Route
+                                                path="/management/farmstay/:id/room/:roomId"
+                                                element={<RoomDetail />}
+                                            />
+
                                             <Route path="/management/farmstay/preview">
                                                 <Route
                                                     index
@@ -205,14 +214,6 @@ function AdminRoutes() {
                                                 <Route
                                                     path="/management/farmstay/all/:id"
                                                     element={<FarmstayDetail />}
-                                                />
-                                                <Route
-                                                    path="/management/farmstay/all/:id/activity/:activityId"
-                                                    element={<ActivityDetail />}
-                                                />
-                                                <Route
-                                                    path="/management/farmstay/all/:id/room/:roomId"
-                                                    element={<RoomDetail />}
                                                 />
                                             </Route>
 

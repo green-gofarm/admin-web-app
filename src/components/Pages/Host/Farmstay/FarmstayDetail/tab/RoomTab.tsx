@@ -1,75 +1,96 @@
-import React, { Fragment, useMemo } from 'react'
-import categoryJson from "../../../../Management/RoomCategory/room-category.json";
-import roomInventoryJson from "../room-inventory.json";
+import { useMemo, useState } from 'react'
+import { Card } from 'react-bootstrap'
+import { Box, Button, Grid } from '@mui/material';
 import { isAvailableArray } from '../../../../../../helpers/arrayUtils';
-import { Table } from 'react-bootstrap';
-import { Box } from '@mui/material';
-import { convertToMoney } from '../../../../../../helpers/stringUtils';
-import { findRoomStatus } from '../../../../../../setting/room-setting';
-import { Status } from '../../../../../../setting/Status';
+import AddAction from '../../../../../General/Action/ButtonAction/AddAction';
+import CreateRoom from '../action/CreateRoom';
+import RoomItem from '../ui-segment/RoomItem';
+import useAllRoomCategories from '../../../../Management/RoomCategory/hooks/useAllRoomCategories';
+import { Add } from '@mui/icons-material';
 
-const categoryObject = JSON.parse(JSON.stringify(categoryJson));
-const categoryData = categoryObject.data;
+interface RoomTabProps {
+    detail?: any,
+    loading?: boolean,
+    refresh: () => void,
+}
 
-const inventoryObject = JSON.parse(JSON.stringify(roomInventoryJson));
-const inventoryData = inventoryObject.data;
+function RoomTab({
+    detail,
+    loading,
+    refresh
+}: RoomTabProps) {
 
-function RoomTab() {
+    useAllRoomCategories();
 
-    const availableCategory = useMemo(() => categoryData?.filter((item: any) => inventoryData?.find((i: any) => i?.roomCategoryId === item.id)), []);
+    const rooms: any[] = useMemo(() => {
+        if (!isAvailableArray(detail?.rooms)) return [];
+        return detail.rooms;
+    }, [detail]);
 
-    if (!isAvailableArray(availableCategory) || !isAvailableArray(inventoryData)) {
-        return <i>Chưa đưa lên phòng nào</i>;
-    }
+    // State 
+    const [openAddNew, setOpenAddNew] = useState<boolean>(false);
 
     return (
-        <div>
-            {availableCategory.map((category, index) =>
-                <Fragment key={index}>
-                    <h5 className="mb-2 mt-3 fw-semibold">
-                        {category.name}
-                    </h5>
-                    <div className="table-responsive">
-                        <Table className="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th className="text-start">Tên phòng</th>
-                                    <th className="w-150">Trạng thái</th>
-                                    <th>Giá</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {inventoryData.filter(i => i.roomCategoryId === category.id).map((item, jd) =>
-                                    <tr key={jd}>
-                                        <Box
-                                            component="td"
-                                            className="fw-semibold"
-                                        >
-                                            {item.name}
-                                        </Box>
-                                        <Box
-                                            component="td"
-                                            className="fw-semibold"
-                                        >
-                                            <Status statusObject={findRoomStatus(item?.status)} />
-                                        </Box>
-                                        <Box
-                                            component="td"
-                                            className="fw-semibold"
-                                        >
-                                            <Box marginLeft="auto">
-                                                {convertToMoney(item.defaultPrice)}
-                                            </Box>
-                                        </Box>
-                                    </tr>
-                                )}
-                            </tbody>
-                        </Table>
-                    </div>
-                </Fragment>
-            )}
-        </div>
+        <>
+            <Grid container spacing={2}>
+                {rooms.length < 1
+                    ? <Grid item xs={12}>
+                        <Card>
+                            <Card.Body>
+                                <Box
+                                    display="flex"
+                                    alignItems="center"
+                                    justifyContent="center"
+                                    flexDirection="column"
+                                    gap="1rem"
+                                >
+                                    <AddAction
+                                        label="Thêm phòng mới"
+                                        onClick={() => setOpenAddNew(true)}
+                                    />
+                                </Box>
+                                <i>Chưa có hoạt động nào</i>
+                            </Card.Body>
+                        </Card>
+                    </Grid>
+                    : <Grid item xs={12}>
+                        <Box
+                            display="flex"
+                            justifyContent="center"
+                        >
+                            <Button
+                                color="primary"
+                                variant="contained"
+                                startIcon={<Add />}
+                                onClick={() => setOpenAddNew(true)}
+                            >
+                                Thêm phòng mới
+                            </Button>
+                        </Box>
+                    </Grid>
+                }
+                {rooms.map((item) =>
+                    <Grid item xs={12} key={item.id}>
+                        <Card>
+                            <Card.Body className="card-body p-0">
+                                <RoomItem item={item} refresh={refresh} />
+                            </Card.Body>
+                        </Card>
+                    </Grid>
+                )}
+            </Grid>
+
+            {openAddNew
+                ? <CreateRoom
+                    open={openAddNew}
+                    onClose={() => setOpenAddNew(false)}
+                    onSuccessCallback={refresh}
+                    farmstayId={detail?.id}
+                />
+                : null
+            }
+        </>
     )
 }
 
-export default RoomTab
+export default RoomTab;

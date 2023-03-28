@@ -10,7 +10,7 @@ interface GetNameStepProps {
 const useStyles = makeStyles({
     header: {
         width: "100%",
-        height: "100px",
+        height: "60px",
         display: "flex",
         alignItems: "center",
     },

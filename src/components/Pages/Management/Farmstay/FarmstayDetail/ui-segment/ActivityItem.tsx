@@ -32,8 +32,8 @@ function ActivityItem({ item }: IActivityItem) {
         <Card className="custom-card customs-cards">
             <Card.Body className="d-flex bg-white">
                 <Box
-                    minHeight="120px"
-                    minWidth="160px"
+                    height="120px"
+                    width="120px"
                 >
                     <Box
                         component="img"
@@ -43,7 +43,7 @@ function ActivityItem({ item }: IActivityItem) {
                         sx={{
                             position: "relative",
                             height: "120px",
-                            width: "160px",
+                            width: "120px",
                             backgroundPosition: "center",
                             backgroundSize: "cover",
                             backgroundRepeat: "no-repeat"
@@ -82,7 +82,7 @@ function ActivityItem({ item }: IActivityItem) {
                         <Grid item xs={12}>
                             <Box
                                 className="btn btn-primary shadow"
-                                onClick={() => navigate(`/management/farmstay/all/${item?.farmstayId}/activity/${item?.id}?backUrl=${createBackUrl()}`)}
+                                onClick={() => navigate(`/management/farmstay/${item?.farmstayId}/activity/${item?.id}?backUrl=${createBackUrl()}`)}
                             >
                                 Xem chi tiết
                             </Box>

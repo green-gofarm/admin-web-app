@@ -49,7 +49,7 @@ export default function FarmstayPreviewTable() {
                     gap="8px"
                 >
                     <AvatarWrapper
-                        src={require("../../../../../assets/img/photos/farmstay.jpg")}
+                        src={JSON.parse(row.images)?.avatar ?? "../../../../../assets/img/photos/1.jpg"}
                         name={row.name}
                     />
                     {row.name}

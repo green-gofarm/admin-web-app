@@ -10,6 +10,7 @@ import useRoomImages from '../FarmstayDetail/hooks/useRoomImages';
 import RoomDetailHeader from './RoomDetailHeader';
 import RoomImage from './RoomImage';
 import useAllRoomCategories from '../../RoomCategory/hooks/useAllRoomCategories';
+import RoomDescription from './RoomDescription';
 
 const breadcrumb: Array<IBreadcrumbItem> = [
     {
@@ -49,7 +50,7 @@ function RoomDetail() {
                     >
                         <DetailPageHeaderTitle
                             backUrl={searchParams.get("backUrl") ?? "/management/farmstay"}
-                            title="Chi tiết hoạt động"
+                            title="Chi tiết phòng"
                         />
                     </Box>
                 }
@@ -69,17 +70,21 @@ function RoomDetail() {
                     </Card>
 
                 </Grid>
-                <Grid item xs={12}>
-                    <Card>
-                        <Card.Body className="border-0">
-                            <RoomImage
-                                detail={detail}
-                                loading={loading}
-                                images={images}
-                            />
-                        </Card.Body>
-                    </Card>
 
+                <Grid item xs={12}>
+                    <RoomDescription
+                        detail={detail}
+                        loading={loading}
+                        images={images}
+                    />
+                </Grid>
+
+                <Grid item xs={12}>
+                    <RoomImage
+                        detail={detail}
+                        loading={loading}
+                        images={images}
+                    />
                 </Grid>
 
                 <Grid item xs={12}>

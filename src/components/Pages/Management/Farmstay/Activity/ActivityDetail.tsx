@@ -9,6 +9,7 @@ import useActivityDetail from './hooks/useActivityDetail';
 import ActivityImage from './ActivityImage';
 import useActivityImages from '../FarmstayDetail/hooks/useActivityImages';
 import { Card } from 'react-bootstrap';
+import ActivityDescription from './ActivityDescription';
 
 const breadcrumb: Array<IBreadcrumbItem> = [
     {
@@ -18,14 +19,6 @@ const breadcrumb: Array<IBreadcrumbItem> = [
     {
         text: "Farmstay",
         href: "/management/farmstay"
-    },
-    {
-        text: "Danh sách",
-        href: "/management/farmstay/all"
-    },
-    {
-        text: "Chi tiết farmstay",
-        active: false,
     },
     {
         text: "Hoạt động",
@@ -75,17 +68,20 @@ function ActivityDetail() {
                     </Card>
 
                 </Grid>
-                <Grid item xs={12}>
-                    <Card>
-                        <Card.Body className="border-0">
-                            <ActivityImage
-                                detail={detail}
-                                loading={loading}
-                                images={images}
-                            />
-                        </Card.Body>
-                    </Card>
 
+                <Grid item xs={12}>
+                    <ActivityDescription
+                        detail={detail}
+                        loading={loading}
+                    />
+                </Grid>
+
+                <Grid item xs={12}>
+                    <ActivityImage
+                        detail={detail}
+                        loading={loading}
+                        images={images}
+                    />
                 </Grid>
 
                 <Grid item xs={12}>

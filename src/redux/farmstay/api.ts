@@ -123,10 +123,10 @@ export function createFarmstayActivities(hostId: any, farmstayId: any, data: any
         headers: {
             "Content-Type": "application/json"
         },
-        data: JSON.stringify(data ?? {})
+        data: JSON.stringify([data] ?? {})
     }
 
-    const url = `${ENP.HOST}/${hostId}/farmstays/${farmstayId}`;
+    const url = `${ENP.HOST}/${hostId}/farmstays/${farmstayId}/activities`;
     return axiosRequest(url, option);
 }
 
@@ -150,10 +150,10 @@ export function createFarmstayServices(hostId: any, farmstayId: any, data: any) 
         headers: {
             "Content-Type": "application/json"
         },
-        data: JSON.stringify(data ?? {})
+        data: JSON.stringify([data] ?? {})
     }
 
-    const url = `${ENP.HOST}/${hostId}/farmstays/${farmstayId}`;
+    const url = `${ENP.HOST}/${hostId}/farmstays/${farmstayId}/services`;
     return axiosRequest(url, option);
 }
 
@@ -180,7 +180,7 @@ export function createFarmstayPolicies(hostId: any, farmstayId: any, data: any) 
         data: JSON.stringify(data ?? {})
     }
 
-    const url = `${ENP.HOST}/${hostId}/farmstays/${farmstayId}`;
+    const url = `${ENP.HOST}/${hostId}/farmstays/${farmstayId}/policies`;
     return axiosRequest(url, option);
 }
 
@@ -204,10 +204,10 @@ export function createFarmstayRooms(hostId: any, farmstayId: any, data: any) {
         headers: {
             "Content-Type": "application/json"
         },
-        data: JSON.stringify(data ?? {})
+        data: JSON.stringify([data] ?? {})
     }
 
-    const url = `${ENP.HOST}/${hostId}/farmstays/${farmstayId}`;
+    const url = `${ENP.HOST}/${hostId}/farmstays/${farmstayId}/rooms`;
     return axiosRequest(url, option);
 }
 
@@ -234,7 +234,7 @@ export function createFarmstayFaqs(hostId: any, farmstayId: any, data: any) {
         data: JSON.stringify(data ?? {})
     }
 
-    const url = `${ENP.HOST}/${hostId}/farmstays/${farmstayId}`;
+    const url = `${ENP.HOST}/${hostId}/farmstays/${farmstayId}/faqs`;
     return axiosRequest(url, option);
 }
 
@@ -263,5 +263,19 @@ export function reviewFarmstay(id: any, data: any) {
     }
 
     const url = `${ENP.ADMIN}/farmstays/${id}/status`;
+    return axiosRequest(url, option);
+}
+
+
+export function uploadImage(formData: any) {
+    const option: AxiosRequestConfig = {
+        method: METHOD.POST,
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        },
+        data: formData,
+    }
+
+    const url = ENP.IMAGES
     return axiosRequest(url, option);
 }

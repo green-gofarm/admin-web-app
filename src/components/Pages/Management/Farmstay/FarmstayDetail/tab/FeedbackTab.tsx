@@ -1,29 +1,44 @@
-import json from "../../../Feedback/feedback.json";
 import FeedbackItem from '../ui-segment/FeedbackItem';
 import { isAvailableArray } from '../../../../../../helpers/arrayUtils';
-import { Button, Card } from "react-bootstrap";
+import { Card } from "react-bootstrap";
+import useFarmstayFeedbacks from "../hooks/useFarmstayFeedbacks";
 
-const dataObject = JSON.parse(JSON.stringify(json));
-const data = dataObject.data;
+interface FeedbackTabProps {
+    detail?: any,
+    loading?: boolean,
+}
 
-function FeedbackTab() {
+
+function FeedbackTab({
+    detail,
+    loading,
+}: FeedbackTabProps) {
+
+    const { data } = useFarmstayFeedbacks(detail?.id);
+
     return (
-        <Card>
-            <Card.Body className="card-body p-0">
+        <>
+            <Card>
+                <Card.Header className='border-bottom'>
+                    <Card.Title>
+                        Danh sách phản hồi
+                    </Card.Title>
+                </Card.Header>
                 {isAvailableArray(data)
-                    ? data.map((item, index) =>
-                        <FeedbackItem
-                            key={index}
-                            item={item}
-                        />
-                    )
-                    : null
+                    ? <Card.Body className="card-body p-0">
+                        {data.map((item, index) =>
+                            <FeedbackItem
+                                key={index}
+                                item={item}
+                            />
+                        )}
+                    </Card.Body>
+                    : <Card.Body>
+                        <i>Chưa có feedback nào</i>
+                    </Card.Body>
                 }
-                <Card.Footer>
-                    <Button variant="" className="btn btn-light">Xem thêm</Button>
-                </Card.Footer>
-            </Card.Body>
-        </Card>
+            </Card>
+        </>
     )
 }
 

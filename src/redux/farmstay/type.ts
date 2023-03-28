@@ -50,3 +50,9 @@ export const CREATE_FARMSTAY_FAQS = "farmstay/CREATE_FARMSTAY_FAQS";
 export const UPDATE_FARMSTAY_FAQS = "farmstay/UPDATE_FARMSTAY_FAQS";
 
 export const REVIEW_FARMSTAY = "farmstay/REVIEW_FARMSTAY";
+
+export const STORE_PROVINCES = "farmstay/STORE_PROVINCES";
+export const STORE_DISTRICTS = "farmstay/STORE_DISTRICTS";
+export const STORE_WARDS = "farmstay/STORE_WARDS";
+
+export const UPLOAD_IMAGE = "farmstay/UPLOAD_IMAGE";

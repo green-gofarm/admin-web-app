@@ -35,6 +35,7 @@ function IconLabelDetail({
             }
             {label
                 ? <Box
+                    width="fit-content"
                     className="font-weight-semibold"
                 >
                     {label}

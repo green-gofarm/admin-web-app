@@ -42,5 +42,9 @@ export const SERVICE_CATEGORY_SORT_BY_OPTIONS: SortByProps[] = [
 
 export const getServiceCategoryLabel = (categories: any, id: any): string | null => {
     if (!isAvailableArray(categories)) return null;
-    return categories.find(item => item.id + "" === id + "")?.name ?? null;
+    const result = categories.find(item => {
+        console.log({ itemId: item.id, id });
+        return item.id + "" === id + ""
+    })?.name;
+    return result ?? null;
 }
