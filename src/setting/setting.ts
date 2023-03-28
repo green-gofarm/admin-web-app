@@ -6,29 +6,19 @@ export enum ROLES {
     CUSTOMER = 3
 }
 
-export const CURRENT_ROLE: ROLES = ROLES.HOST;
+export const CURRENT_ROLE: ROLES = ROLES.ADMIN;
 
-export const GENDERS = {
-    male: "Male",
-    female: "Female"
+enum GENDERS {
+    male = 1,
+    female = 2,
+    other = 3
 }
 
 export const genderOptions = [
-    { label: "Male", value: GENDERS.male },
-    { label: "Female", value: GENDERS.female }
+    { label: "Nam", value: GENDERS.male },
+    { label: "Nữ", value: GENDERS.female },
+    { label: "Khác", value: GENDERS.other }
 ]
-
-export const convertNumberToGender = (genderNumber?: number | string | null) => {
-    if (genderNumber === 1 || genderNumber === "1") return GENDERS.male;
-    if (genderNumber === 0 || genderNumber === "0") return GENDERS.female;
-    return null;
-}
-
-export const convertGenderToNumber = (gender?: string) => {
-    if (gender === GENDERS.male) return 1;
-    if (gender === GENDERS.female) return 0;
-    return null;
-}
 
 export const CRUD_MODE = {
     view: "view",

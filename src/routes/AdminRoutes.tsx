@@ -10,7 +10,7 @@ const AuthSignIn = React.lazy(() => import("../Authentication/Admin/SignIn"));
 // const AuthSignUp = React.lazy(() => import("../Authentication/SignUp"))
 
 // Profile
-const AdminProfile = React.lazy(() => import("../components/Pages/Profile/AdminProfile"));
+const AdminProfile = React.lazy(() => import("../components/Pages/Profile/Admin/Profile"));
 
 //Notification
 const AdminNotifications = React.lazy(() => import("../components/Pages/Notifications/AdminNotifications"));

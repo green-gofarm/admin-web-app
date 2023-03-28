@@ -10,7 +10,7 @@ const AuthSignIn = React.lazy(() => import("../Authentication/Host/SignIn"));
 const AuthSignUp = React.lazy(() => import("../Authentication/Host/SignUp"))
 
 // Profile
-const AdminProfile = React.lazy(() => import("../components/Pages/Profile/AdminProfile"));
+const HostProfile = React.lazy(() => import("../components/Pages/Profile/Host/Profile"));
 
 // Notification
 const AdminNotifications = React.lazy(() => import("../components/Pages/Notifications/AdminNotifications"));
@@ -124,7 +124,7 @@ function HostRoutes() {
                                         />
                                     </Route>
 
-                                    <Route path="/profile" element={<AdminProfile />} />
+                                    <Route path="/profile" element={<HostProfile />} />
 
                                     <Route path="/notification" element={<AdminNotifications />} />
                                 </Route>

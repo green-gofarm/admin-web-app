@@ -68,6 +68,11 @@ function userReducer(state = initialState, action: IReduxAction) {
         case type.GET_USER_DETAIL_FAILED:
             return { ...state, userDetail: null };
 
+        case type.UPDATE_ADMIN_MY_PROFILE_SUCCESS:
+            return { ...state, userDetail: action.payload.data };
+        case type.UPDATE_HOST_MY_PROFILE_SUCCESS:
+            return { ...state, userDetail: action.payload.data };
+
         default:
             return state
     }

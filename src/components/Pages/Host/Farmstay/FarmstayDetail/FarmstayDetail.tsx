@@ -1,6 +1,6 @@
 import { Box, Grid } from '@mui/material';
 import { useParams, useSearchParams } from 'react-router-dom';
-import { Dropdown, Tab } from 'react-bootstrap';
+import { Tab } from 'react-bootstrap';
 
 import PageHeader, { IBreadcrumbItem } from '../../../../General/PageHeader';
 
@@ -189,7 +189,6 @@ function FarmstayDetail() {
                     </div>
                 </Grid>
             </Grid>
-
         </Box>
     )
 }

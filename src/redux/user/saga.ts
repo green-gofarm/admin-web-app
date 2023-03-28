@@ -183,6 +183,45 @@ function* getUserDetail(action: IReduxAction): Generator<any, void, any> {
     option?.loading && option.loading(false);
 }
 
+
+function* updateAdminMyProfile(action: IReduxAction): Generator<any, void, any> {
+    const option: IReduxActionOption = action.payload?.option
+
+    option?.loading && option.loading(true);
+    try {
+        const response = yield call(apis.updateAdminMyProfile, action.payload.data);
+
+        yield put(actions.updateAdminMyProfileSuccess(response));
+        option?.onSuccess && option.onSuccess(response);
+    } catch (error) {
+        console.log(error);
+        option?.onFailure && option.onFailure(error);
+
+    }
+
+    option?.loading && option.loading(false);
+}
+
+
+function* updateHostMyProfile(action: IReduxAction): Generator<any, void, any> {
+    const option: IReduxActionOption = action.payload?.option
+
+    option?.loading && option.loading(true);
+    try {
+        const response = yield call(apis.updateHostMyProfile, action.payload.data);
+
+        yield put(actions.updateHostMyProfileSuccess(response));
+        option?.onSuccess && option.onSuccess(response);
+    } catch (error) {
+        console.log(error);
+        option?.onFailure && option.onFailure(error);
+
+    }
+
+    option?.loading && option.loading(false);
+}
+
+
 function* watchAll() {
     yield takeLatest(types.SEARCH_USERS, searchUsers);
     yield takeLatest(types.SEARCH_ALL_USERS, searchAllUsers);
@@ -198,6 +237,8 @@ function* watchAll() {
 
     yield takeLatest(types.GET_USER_DETAIL, getUserDetail);
 
+    yield takeLatest(types.UPDATE_ADMIN_MY_PROFILE, updateAdminMyProfile);
+    yield takeLatest(types.UPDATE_HOST_MY_PROFILE, updateHostMyProfile);
 }
 
 function* watchUser() {

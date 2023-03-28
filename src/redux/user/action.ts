@@ -141,3 +141,25 @@ export const getUserDetailFailed = (): IReduxAction => ({
 export const clearUserDetail = (): IReduxAction => ({
     type: type.CLEAR_USER_DETAIL
 })
+
+
+//update user
+export const updateHostMyProfile = (data: any, option?: IReduxActionOption): IReduxAction => ({
+    type: type.UPDATE_HOST_MY_PROFILE,
+    payload: { data, option: option ?? getEmptyOption() }
+})
+
+export const updateHostMyProfileSuccess = (data: any): IReduxAction => ({
+    type: type.UPDATE_HOST_MY_PROFILE_SUCCESS,
+    payload: data,
+})
+
+export const updateAdminMyProfile = (data: any, option?: IReduxActionOption): IReduxAction => ({
+    type: type.UPDATE_ADMIN_MY_PROFILE,
+    payload: { data, option: option ?? getEmptyOption() }
+})
+
+export const updateAdminMyProfileSuccess = (data: any): IReduxAction => ({
+    type: type.UPDATE_ADMIN_MY_PROFILE_SUCCESS,
+    payload: data,
+})

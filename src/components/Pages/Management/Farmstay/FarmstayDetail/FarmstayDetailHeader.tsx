@@ -9,7 +9,8 @@ import useContactInfo from './hooks/useContactInfo'
 import StringWrapper from '../../../../General/Wrapper/StringWrapper'
 import useFarmstayImages from './hooks/useFarmstayImages'
 import useFarmstayAddress from './hooks/useFarmstayAddress'
-import { renderAddress } from '../../../../../setting/farmstay-setting'
+import { findFarmstayStatus, renderAddress } from '../../../../../setting/farmstay-setting'
+import { Status } from '../../../../../setting/Status'
 
 interface IFarmstayDetailHeader {
     detail?: any,
@@ -46,7 +47,6 @@ function FarmstayDetailHeader({
                                 backgroundRepeat: "no-repeat"
                             }}
                         />
-                        <span className="bg-success text-white wd-1 ht-1 rounded-pill profile-online"></span>
                     </span>
                 </div>
                 <Box
@@ -56,9 +56,17 @@ function FarmstayDetailHeader({
                 >
                     <Grid container spacing={0}>
                         <Grid item xs={12}>
-                            <h4 className="font-weight-semibold">
+                            <Box
+                                component="h4"
+                                className="font-weight-semibold"
+                                display="flex"
+                                justifyContent="space-between"
+                                gap="8px"
+                                textTransform="capitalize"
+                            >
                                 {detail?.name}
-                            </h4>
+                                <Status statusObject={findFarmstayStatus(detail?.status)} />
+                            </Box>
                         </Grid>
                         <Grid item xs={12} lg={6}>
                             <IconLabelDetail

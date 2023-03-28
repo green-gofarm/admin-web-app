@@ -54,3 +54,31 @@ export function getUserDetail(id: any, role: any) {
     const url = `${ENP.ADMIN}/${rolePath}/${id}`;
     return axiosRequest(url, option);
 }
+
+
+export function updateHostMyProfile(data: any) {
+    const option: AxiosRequestConfig = {
+        method: METHOD.PATCH,
+        headers: {
+            "Content-Type": "application/json"
+        },
+        data: JSON.stringify(data ?? {})
+    }
+
+    const url = `${ENP.HOST}/my-profile`;
+    return axiosRequest(url, option);
+}
+
+
+export function updateAdminMyProfile(data: any) {
+    const option: AxiosRequestConfig = {
+        method: METHOD.PATCH,
+        headers: {
+            "Content-Type": "application/json"
+        },
+        data: JSON.stringify(data ?? {})
+    }
+
+    const url = `${ENP.ADMIN}/my-profile`;
+    return axiosRequest(url, option);
+}
