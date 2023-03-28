@@ -38,6 +38,10 @@ function CreateTag({
             loading: setLoadingCreate,
             onSuccess: () => {
                 toast.success("Thêm mới thành công.");
+                reset({
+                    name: "",
+                    description: "",
+                })
                 onClose && onClose();
                 refresh && refresh();
             },

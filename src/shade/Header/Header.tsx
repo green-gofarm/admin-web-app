@@ -256,7 +256,7 @@ export default function Header() {
                             </EllipsisWrapper>
                           </h6>
                           <span className="dropdown-title-text subtext op-6  tx-12">
-                            {CURRENT_ROLE}
+                            {user?.email}
                           </span>
                         </div>
                       </Box>

@@ -22,9 +22,6 @@ const Overview = React.lazy(() =>
 );
 
 // Management
-const AdminManagement = React.lazy(() =>
-    import("../components/Pages/Management/Account/admin/AdminManagement")
-);
 const HostManagement = React.lazy(() =>
     import("../components/Pages/Management/Account/host/HostManagement")
 );
@@ -60,14 +57,11 @@ const ReportedFeedbackManagement = React.lazy(() =>
 );
 
 // Detail
-const AdminDetail = React.lazy(() =>
-    import("../components/Pages/Management/Account/admin/AdminDetail")
-);
 const CustomerDetail = React.lazy(() =>
-    import("../components/Pages/Management/Account/customer/CustomerDetail")
+    import("../components/Pages/Management/Account/customer/customer-detail/CustomerDetail")
 );
 const HostDetail = React.lazy(() =>
-    import("../components/Pages/Management/Account/host/HostDetail")
+    import("../components/Pages/Management/Account/host/host-detail/HostDetail")
 );
 const FarmstayDetail = React.lazy(() =>
     import("../components/Pages/Management/Farmstay/FarmstayDetail/FarmstayDetail")
@@ -142,18 +136,6 @@ function AdminRoutes() {
                                                 index
                                                 element={<Navigate to="/management/account/host" />}
                                             />
-
-                                            <Route path="/management/account/admin"                                        >
-                                                <Route
-                                                    index
-                                                    element={<AdminManagement />}
-                                                />
-
-                                                <Route
-                                                    path="/management/account/admin/:id"
-                                                    element={<AdminDetail />}
-                                                />
-                                            </Route>
 
                                             <Route path="/management/account/host"                                        >
                                                 <Route

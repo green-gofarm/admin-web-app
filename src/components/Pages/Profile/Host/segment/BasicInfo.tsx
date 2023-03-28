@@ -287,7 +287,7 @@ function BasicInfo({
 
                                 <Grid item xs={12} md={9}>
                                     <Form.Control
-                                        type="text"
+                                        type="number"
                                         {...register("phoneNumber")}
                                         className="form-control"
                                         disabled={!openEdit}

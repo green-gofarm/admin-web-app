@@ -45,13 +45,6 @@ const MENUITEMS = [
         active: false,
         children: [
           {
-            path: "/management/account/admin",
-            type: "link",
-            active: false,
-            selected: false,
-            title: "Quản trị viên",
-          },
-          {
             path: "/management/account/host",
             type: "link",
             active: false,
