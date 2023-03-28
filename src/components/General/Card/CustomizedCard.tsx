@@ -13,13 +13,17 @@ function CustomizedCard({
     content,
 }: CustomizedCardProps) {
     return (
-        <div className="main-content-body main-content-body-contacts card custom-card">
+        <Box
+            className="main-content-body main-content-body-contacts card custom-card"
+            overflow="visible !important"
+        >
             <Box
                 display="flex"
                 alignItems="center"
                 justifyContent="space-between"
                 className="main-contact-info-header"
                 padding="16px 20px 20px 20px !important"
+                width="100%"
             >
                 <Box
                     className='h5'
@@ -28,12 +32,18 @@ function CustomizedCard({
                     {title}
                 </Box>
 
-                {panel}
+                <Box justifySelf="right">
+                    {panel}
+                </Box>
             </Box>
-            <Box padding="20px" className="main-contact-info-body">
+            <Box
+                padding="20px"
+                className="main-contact-info-body"
+                overflow="visible !important"
+            >
                 {content}
             </Box>
-        </div>
+        </Box>
     )
 }
 

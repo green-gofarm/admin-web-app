@@ -1,5 +1,5 @@
 import { Fragment, useMemo, useState } from 'react'
-import { Table } from 'react-bootstrap';
+import { Dropdown, Table } from 'react-bootstrap';
 import { convertToMoney } from '../../../../../../helpers/stringUtils';
 import { isAvailableArray } from '../../../../../../helpers/arrayUtils';
 import { Box, Button, Grid } from '@mui/material';
@@ -7,15 +7,13 @@ import { Status } from '../../../../../../setting/Status';
 import { SERVICE_STATUSES, findServiceStatus } from '../../../../../../setting/service-status-setting';
 import useAllServiceCategories from '../../../../Management/ServiceCategory/hooks/useAllServiceCategories';
 import { getServiceCategoryLabel } from '../../../../../../setting/service-category-setting';
-import { Add } from '@mui/icons-material';
+import { Add, DeleteForever, Edit, Lock, LockOpen } from '@mui/icons-material';
 import ConditionWrapper from '../../../../../General/Wrapper/ConditionWrapper';
-import LockIconAction from '../../../../../General/Action/IconAction/LockIconAction';
-import UnlockIconAction from '../../../../../General/Action/IconAction/UnlockIconAction';
-import DeleteIconAction from '../../../../../General/Action/IconAction/DeleteIconAction';
 import LockService from '../action/LockService';
 import UnlockService from '../action/UnlockService';
 import DeleteService from '../action/DeleteService';
 import CreateService from '../action/CreateService';
+import UpdateService from '../action/UpdateService';
 
 interface ServiceTabProps {
     detail?: any,
@@ -56,6 +54,7 @@ function ServiceTab({
 
     // State 
     const [openAddNew, setOpenAddNew] = useState<boolean>(false);
+    const [openUpdate, setOpenUpdate] = useState<boolean>(false);
     const [openLock, setOpenLock] = useState<boolean>(false);
     const [openUnlock, setOpenUnlock] = useState<boolean>(false);
     const [openDelete, setOpenDelete] = useState<boolean>(false);
@@ -165,36 +164,90 @@ function ServiceTab({
                                                             <Box
                                                                 component="td"
                                                                 className="fw-semibold"
-                                                                display="flex"
-                                                                gap="8px"
                                                             >
-                                                                <ConditionWrapper isRender={service.status === SERVICE_STATUSES.ACTIVE}>
-                                                                    <LockIconAction
-                                                                        title='Khóa'
-                                                                        onClick={() => {
-                                                                            setOpenLock(true);
-                                                                            setSelectedService(service)
-                                                                        }}
-                                                                    />
-                                                                </ConditionWrapper>
-
-                                                                <ConditionWrapper isRender={service.status === SERVICE_STATUSES.INACTIVE}>
-                                                                    <UnlockIconAction
-                                                                        title='Mở khóa'
-                                                                        onClick={() => {
-                                                                            setOpenUnlock(true);
-                                                                            setSelectedService(service)
-                                                                        }}
-                                                                    />
-                                                                </ConditionWrapper>
-
-                                                                <DeleteIconAction
-                                                                    title="Xóa"
-                                                                    onClick={() => {
-                                                                        setOpenDelete(true);
-                                                                        setSelectedService(service)
-                                                                    }}
-                                                                />
+                                                                <Dropdown as="span">
+                                                                    <Dropdown.Toggle
+                                                                        variant=''
+                                                                        className="ms-2 br-5 p-2 border "
+                                                                        data-bs-toggle="dropdown"
+                                                                    >
+                                                                        <i className="fe fe-more-vertical align-middle"></i>
+                                                                    </Dropdown.Toggle>
+                                                                    <Dropdown.Menu className="dropdown-menu tx-13" style={{ margin: "0px" }}>
+                                                                        <ConditionWrapper isRender={service.status === SERVICE_STATUSES.ACTIVE}>
+                                                                            <Dropdown.Item
+                                                                                className="dropdown-item"
+                                                                                href="#"
+                                                                                onClick={() => {
+                                                                                    setOpenLock(true);
+                                                                                    setSelectedService(service)
+                                                                                }}
+                                                                            >
+                                                                                <Box
+                                                                                    display="flex"
+                                                                                    alignItems="center"
+                                                                                    gap="8px"
+                                                                                >
+                                                                                    <Lock />
+                                                                                    Khóa
+                                                                                </Box>
+                                                                            </Dropdown.Item>
+                                                                        </ConditionWrapper>
+                                                                        <ConditionWrapper isRender={service.status === SERVICE_STATUSES.INACTIVE}>
+                                                                            <Dropdown.Item
+                                                                                className="dropdown-item"
+                                                                                href="#"
+                                                                                onClick={() => {
+                                                                                    setOpenUnlock(true);
+                                                                                    setSelectedService(service)
+                                                                                }}
+                                                                            >
+                                                                                <Box
+                                                                                    display="flex"
+                                                                                    alignItems="center"
+                                                                                    gap="8px"
+                                                                                >
+                                                                                    <LockOpen />
+                                                                                    Mở khóa
+                                                                                </Box>
+                                                                            </Dropdown.Item>
+                                                                        </ConditionWrapper>
+                                                                        <Dropdown.Item
+                                                                            className="dropdown-item"
+                                                                            href="#"
+                                                                            onClick={() => {
+                                                                                setOpenUpdate(true);
+                                                                                setSelectedService(service)
+                                                                            }}
+                                                                        >
+                                                                            <Box
+                                                                                display="flex"
+                                                                                alignItems="center"
+                                                                                gap="8px"
+                                                                            >
+                                                                                <Edit />
+                                                                                Cập nhật
+                                                                            </Box>
+                                                                        </Dropdown.Item>
+                                                                        <Dropdown.Item
+                                                                            className="dropdown-item"
+                                                                            href="#"
+                                                                            onClick={() => {
+                                                                                setOpenDelete(true);
+                                                                                setSelectedService(service)
+                                                                            }}
+                                                                        >
+                                                                            <Box
+                                                                                display="flex"
+                                                                                alignItems="center"
+                                                                                gap="8px"
+                                                                            >
+                                                                                <DeleteForever />
+                                                                                Xóa
+                                                                            </Box>
+                                                                        </Dropdown.Item>
+                                                                    </Dropdown.Menu>
+                                                                </Dropdown>
                                                             </Box>
                                                         </tr>
                                                     )}
@@ -215,6 +268,16 @@ function ServiceTab({
                     open={openAddNew}
                     onClose={() => setOpenAddNew(false)}
                     farmstayId={detail?.id}
+                    onSuccessCallback={refresh}
+                />
+                : null
+            }
+
+            {openUpdate
+                ? <UpdateService
+                    open={openUpdate}
+                    onClose={() => setOpenUpdate(false)}
+                    service={selectedService}
                     onSuccessCallback={refresh}
                 />
                 : null

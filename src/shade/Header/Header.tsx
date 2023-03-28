@@ -264,9 +264,6 @@ export default function Header() {
                     <Dropdown.Item className="dropdown-item" href={`/profile`}>
                       <i className="far fa-user-circle"></i>Hồ sơ cá nhân
                     </Dropdown.Item>
-                    <Dropdown.Item className="dropdown-item" href={`/message`}>
-                      <i className="far fa-comment-dots"></i>Tin nhắn
-                    </Dropdown.Item>
                     <Dropdown.Item className="dropdown-item" href={`/notification`}>
                       <i className="far fa-bell"></i>Thông báo
                     </Dropdown.Item>

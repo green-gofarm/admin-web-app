@@ -12,6 +12,7 @@ import { cloneDeep } from 'lodash';
 import CustomizedDialogActions from '../../../../../General/Dialog/CustomizedDialogActions';
 import SingleImageDropzone from '../ui-segment/SingleImageDropzone';
 import { isAvailableArray } from '../../../../../../helpers/arrayUtils';
+import CustomizedDialogTitle from '../../../../../General/Dialog/CustomizedDialogTitle';
 
 interface UpdateFarmstayAvatarProps {
     open?: boolean,
@@ -97,19 +98,10 @@ function UpdateFarmstayAvatar({
     }
 
     const renderContent = () => (
-        <Box
-            display="flex"
-            flexDirection="column"
-            gap="1rem"
-        >
-            <Box className='h5 card-title mb-0'>
-                Ảnh đại diện
-            </Box>
-            <SingleImageDropzone
-                file={file}
-                setFile={setFile}
-            />
-        </Box >
+        <SingleImageDropzone
+            file={file}
+            setFile={setFile}
+        />
     )
 
     return (
@@ -119,6 +111,10 @@ function UpdateFarmstayAvatar({
             maxWidth="sm"
             fullWidth
         >
+            <CustomizedDialogTitle
+                title='Ảnh đại diện'
+                onClose={onClose}
+            />
             <DialogContent>
                 {renderContent()}
             </DialogContent>

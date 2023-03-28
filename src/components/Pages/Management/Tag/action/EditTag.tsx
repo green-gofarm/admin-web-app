@@ -9,6 +9,7 @@ import { useForm } from "react-hook-form";
 import { toast } from 'react-toastify';
 import useTagDetail from '../hooks/useTagDetail';
 import { updateTag } from '../../../../../redux/tag/action';
+import InvalidFeedback from '../../../../General/InvalidFeedback';
 interface EditTagProps {
     open?: boolean,
     tagCategory?: any,
@@ -94,7 +95,7 @@ function EditTag({
                     {...register("name", { required: true })}
                 />
                 {errors.name
-                    ? <div className="invalid-feedback">Thông tin bắt buộc.</div>
+                    ? <InvalidFeedback />
                     : null
                 }
             </FormGroup>

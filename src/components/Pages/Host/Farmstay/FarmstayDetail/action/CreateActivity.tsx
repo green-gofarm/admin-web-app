@@ -11,11 +11,13 @@ import { createFarmstayActivities, uploadImage } from '../../../../../../redux/f
 import { isAvailableArray } from '../../../../../../helpers/arrayUtils';
 import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
+import CustomizedDialogTitle from '../../../../../General/Dialog/CustomizedDialogTitle';
+import InvalidFeedback from '../../../../../General/InvalidFeedback';
 
 interface CreateActivityProps {
     open?: boolean,
     onSuccessCallback?: any,
-    onClose: Function,
+    onClose: () => void,
     farmstayId: any,
 }
 
@@ -185,10 +187,12 @@ function CreateActivity({
             maxWidth="md"
             fullWidth
         >
+            <CustomizedDialogTitle
+                title='Thêm hoạt động'
+                onClose={onClose}
+            />
+
             <DialogContent>
-                <Box className='card-title mb-2'>
-                    Thêm hoạt động mới
-                </Box>
                 <Grid container spacing={0} columnSpacing={2}>
                     <Grid item xs={12}>
                         <FormGroup className="has-danger">
@@ -200,7 +204,7 @@ function CreateActivity({
                                 setFile={setFile}
                             />
                             {errors.file
-                                ? <div className="invalid-feedback">Thông tin bắt buộc.</div>
+                                ? <InvalidFeedback />
                                 : null
                             }
                         </FormGroup>
@@ -215,11 +219,12 @@ function CreateActivity({
                                 aria-label="Activity name"
                                 className={`form-control ${errors.name ? "is-invalid" : ""}`}
                                 type="text"
+                                autoFocus
                                 value={activity.name ?? ""}
                                 onChange={(e) => handleOnChangeAddress("name", e.target.value ?? "")}
                             />
                             {errors.name
-                                ? <div className="invalid-feedback">Thông tin bắt buộc.</div>
+                                ? <InvalidFeedback />
                                 : null
                             }
                         </FormGroup>
@@ -240,7 +245,7 @@ function CreateActivity({
                                 />
                             </InputGroup>
                             {errors.slot
-                                ? <div className="invalid-feedback">Thông tin bắt buộc.</div>
+                                ? <InvalidFeedback />
                                 : null
                             }
                         </FormGroup>
@@ -264,7 +269,7 @@ function CreateActivity({
                                 </InputGroup.Text>
                             </InputGroup>
                             {errors.price
-                                ? <div className="invalid-feedback">Thông tin bắt buộc.</div>
+                                ? <InvalidFeedback />
                                 : null
                             }
                         </FormGroup>
@@ -284,7 +289,7 @@ function CreateActivity({
                                 onChange={(e) => handleOnChangeAddress("description", e.target.value ?? "")}
                             />
                             {errors.description
-                                ? <div className="invalid-feedback">Thông tin bắt buộc.</div>
+                                ? <InvalidFeedback />
                                 : null
                             }
                         </FormGroup>

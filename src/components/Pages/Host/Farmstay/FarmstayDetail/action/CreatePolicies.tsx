@@ -9,6 +9,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../../redux/redux-setting';
 import { createFarmstayPolicies } from '../../../../../../redux/farmstay/action';
 import { toast } from 'react-toastify';
+import CustomizedDialogTitle from '../../../../../General/Dialog/CustomizedDialogTitle';
 
 interface PolicyItem {
     name: string,
@@ -105,67 +106,58 @@ function CreatePolicies({
     }
 
     const renderContent = () => (
-        <Box
-            display="flex"
-            flexDirection="column"
-            gap="1rem"
-        >
-            <Box className='h5 card-title mb-0'>
-                Thêm quy định mới
-            </Box>
 
-            <Grid container spacing={2}>
-                {policies.map((item: any, index) =>
-                    <>
-                        <Grid item xs={12} key={index}>
-                            <Box
-                                display="flex"
-                                alignItems="center"
-                                width="100%"
-                                gap="8px"
-                            >
-                                <Box flexGrow={1}>
-                                    <Form.Control
-                                        value={item.name ?? ""}
-                                        type="text"
-                                        className="form-control"
-                                        required
-                                        autoFocus={!item.name}
-                                        onChange={(e) => handleUpdate("name", e.target.value ?? "", index)}
-                                        placeholder="Tiêu chí"
-                                    />
-                                </Box>
-                                <Box className="btn btn-secondary shadow" onClick={() => handleRemove(index)}>
-                                    <DeleteForever />
-                                </Box>
-                            </Box>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <FormGroup>
-                                <textarea
-                                    value={item.description ?? ""}
-                                    className="form-control"
-                                    onChange={(e) => handleUpdate("description", e.target.value ?? "", index)}
-                                    placeholder="Nội dung"
-                                />
-                            </FormGroup>
-                        </Grid>
-                    </>
-                )}
-
-                {error
-                    ? <Grid item xs={12}>
-                        <Form.Control.Feedback
-                            style={{ display: "inline-block" }}
-                            type="invalid"
+        <Grid container spacing={2}>
+            {policies.map((item: any, index) =>
+                <>
+                    <Grid item xs={12} key={index}>
+                        <Box
+                            display="flex"
+                            alignItems="center"
+                            width="100%"
+                            gap="8px"
                         >
-                            {error}
-                        </Form.Control.Feedback>
+                            <Box flexGrow={1}>
+                                <Form.Control
+                                    value={item.name ?? ""}
+                                    type="text"
+                                    className="form-control"
+                                    required
+                                    autoFocus={!item.name}
+                                    onChange={(e) => handleUpdate("name", e.target.value ?? "", index)}
+                                    placeholder="Tiêu chí"
+                                />
+                            </Box>
+                            <Box className="btn btn-secondary shadow" onClick={() => handleRemove(index)}>
+                                <DeleteForever />
+                            </Box>
+                        </Box>
                     </Grid>
-                    : null
-                }
-            </Grid>
-        </Box >
+                    <Grid item xs={12}>
+                        <FormGroup>
+                            <textarea
+                                value={item.description ?? ""}
+                                className="form-control"
+                                onChange={(e) => handleUpdate("description", e.target.value ?? "", index)}
+                                placeholder="Nội dung"
+                            />
+                        </FormGroup>
+                    </Grid>
+                </>
+            )}
+
+            {error
+                ? <Grid item xs={12}>
+                    <Form.Control.Feedback
+                        style={{ display: "inline-block" }}
+                        type="invalid"
+                    >
+                        {error}
+                    </Form.Control.Feedback>
+                </Grid>
+                : null
+            }
+        </Grid>
     )
 
     return (
@@ -175,6 +167,10 @@ function CreatePolicies({
             maxWidth="sm"
             fullWidth
         >
+            <CustomizedDialogTitle
+                title='Thêm quy định'
+                onClose={onClose}
+            />
             <DialogContent>
                 {renderContent()}
             </DialogContent>

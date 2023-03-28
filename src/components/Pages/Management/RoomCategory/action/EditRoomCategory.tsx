@@ -9,6 +9,7 @@ import { useForm } from "react-hook-form";
 import { toast } from 'react-toastify';
 import useRoomCategoryDetail from '../hooks/useRoomCategoryDetail';
 import { updateRoomCategory } from '../../../../../redux/room/action';
+import InvalidFeedback from '../../../../General/InvalidFeedback';
 interface EditRoomCategoryProps {
     open?: boolean,
     roomCategory?: any,
@@ -92,7 +93,7 @@ function EditRoomCategory({
                     {...register("name", { required: true })}
                 />
                 {errors.name
-                    ? <div className="invalid-feedback">Thông tin bắt buộc.</div>
+                    ? <InvalidFeedback />
                     : null
                 }
             </FormGroup>

@@ -8,6 +8,7 @@ import { useDispatch } from 'react-redux';
 import { useForm } from "react-hook-form";
 import { toast } from 'react-toastify';
 import { createRoomCategory } from '../../../../../redux/room/action';
+import InvalidFeedback from '../../../../General/InvalidFeedback';
 interface CreateRoomCategoryProp {
     open?: boolean,
     refresh?: any,
@@ -70,7 +71,7 @@ function CreateRoomCategory({
                     {...register("name", { required: true })}
                 />
                 {errors.name
-                    ? <div className="invalid-feedback">Thông tin bắt buộc.</div>
+                    ? <InvalidFeedback />
                     : null
                 }
             </FormGroup>

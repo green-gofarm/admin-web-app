@@ -39,7 +39,7 @@ const theme = createTheme(adaptV4Theme({
         },
         MuiDialogTitle: {
             root: {
-                padding: "16px 20px"
+                padding: "16px 20px 12px 20px"
             }
         },
         MuiDialogActions: {

@@ -11,6 +11,7 @@ import CustomizedDialogActions from '../../../../../General/Dialog/CustomizedDia
 import { Location } from '../../create-farmstay/CreateFarmstay';
 import IconLabelDetail from '../../../../../General/Item/IconLabelDetail';
 import CustomizedMap from '../../create-farmstay/ui-segment/CustomizedMap';
+import CustomizedDialogTitle from '../../../../../General/Dialog/CustomizedDialogTitle';
 
 interface UpdateFarmstayLocationProps {
     open?: boolean,
@@ -66,43 +67,33 @@ function UpdateFarmstayLocation({
     }
 
     const renderContent = () => (
-        <Box
-            display="flex"
-            flexDirection="column"
-            gap="1rem"
-        >
-            <Box className='h5 card-title mb-0'>
-                Vị trí farmstay
-            </Box>
-
-            <Grid container spacing={2}>
-                <Grid item xs={12}>
-                    <Box
-                        display="flex"
-                        gap="8px"
-                        flexWrap="wrap"
-                    >
-                        <IconLabelDetail
-                            icon={<i className='fa fa-map-marker'></i>}
-                            label="Kinh độ"
-                            value={location.lng ?? <i>Chưa có</i>}
-                        />
-                        <IconLabelDetail
-                            icon={<i className='fa fa-map-marker'></i>}
-                            label="Vĩ độ"
-                            value={location.lat ?? <i>Chưa có</i>}
-                        />
-                    </Box>
-                </Grid>
-
-                <Grid item xs={12}>
-                    <CustomizedMap
-                        location={location}
-                        onSelect={(location) => setLocation(location)}
+        <Grid container spacing={2}>
+            <Grid item xs={12}>
+                <Box
+                    display="flex"
+                    gap="8px"
+                    flexWrap="wrap"
+                >
+                    <IconLabelDetail
+                        icon={<i className='fa fa-map-marker'></i>}
+                        label="Kinh độ"
+                        value={location.lng ?? <i>Chưa có</i>}
                     />
-                </Grid>
+                    <IconLabelDetail
+                        icon={<i className='fa fa-map-marker'></i>}
+                        label="Vĩ độ"
+                        value={location.lat ?? <i>Chưa có</i>}
+                    />
+                </Box>
             </Grid>
-        </Box >
+
+            <Grid item xs={12}>
+                <CustomizedMap
+                    location={location}
+                    onSelect={(location) => setLocation(location)}
+                />
+            </Grid>
+        </Grid>
     )
 
     return (
@@ -112,6 +103,10 @@ function UpdateFarmstayLocation({
             maxWidth="lg"
             fullWidth
         >
+            <CustomizedDialogTitle
+                title='Cập nhật vị trí farmstay'
+                onClose={onClose}
+            />
             <DialogContent>
                 {renderContent()}
             </DialogContent>

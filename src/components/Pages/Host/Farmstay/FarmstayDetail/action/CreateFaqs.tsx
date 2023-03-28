@@ -9,6 +9,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../../redux/redux-setting';
 import { createFarmstayFaqs } from '../../../../../../redux/farmstay/action';
 import { toast } from 'react-toastify';
+import CustomizedDialogTitle from '../../../../../General/Dialog/CustomizedDialogTitle';
 
 interface FAQItem {
     question: string,
@@ -105,67 +106,57 @@ function CreateFaqs({
     }
 
     const renderContent = () => (
-        <Box
-            display="flex"
-            flexDirection="column"
-            gap="1rem"
-        >
-            <Box className='h5 card-title mb-0'>
-                Thêm câu hỏi thông dụng
-            </Box>
-
-            <Grid container spacing={2}>
-                {faqs.map((item: any, index) =>
-                    <>
-                        <Grid item xs={12} key={index}>
-                            <Box
-                                display="flex"
-                                alignItems="center"
-                                width="100%"
-                                gap="8px"
-                            >
-                                <Box flexGrow={1}>
-                                    <Form.Control
-                                        value={item.question ?? ""}
-                                        type="text"
-                                        className="form-control"
-                                        required
-                                        autoFocus={!item.question}
-                                        onChange={(e) => handleUpdate("question", e.target.value ?? "", index)}
-                                        placeholder="Câu hỏi"
-                                    />
-                                </Box>
-                                <Box className="btn btn-secondary shadow" onClick={() => handleRemove(index)}>
-                                    <DeleteForever />
-                                </Box>
-                            </Box>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <FormGroup>
-                                <textarea
-                                    value={item.answer ?? ""}
-                                    className="form-control"
-                                    onChange={(e) => handleUpdate("answer", e.target.value ?? "", index)}
-                                    placeholder="Trả lời"
-                                />
-                            </FormGroup>
-                        </Grid>
-                    </>
-                )}
-
-                {error
-                    ? <Grid item xs={12}>
-                        <Form.Control.Feedback
-                            style={{ display: "inline-block" }}
-                            type="invalid"
+        <Grid container spacing={2}>
+            {faqs.map((item: any, index) =>
+                <>
+                    <Grid item xs={12} key={index}>
+                        <Box
+                            display="flex"
+                            alignItems="center"
+                            width="100%"
+                            gap="8px"
                         >
-                            {error}
-                        </Form.Control.Feedback>
+                            <Box flexGrow={1}>
+                                <Form.Control
+                                    value={item.question ?? ""}
+                                    type="text"
+                                    className="form-control"
+                                    required
+                                    autoFocus={!item.question}
+                                    onChange={(e) => handleUpdate("question", e.target.value ?? "", index)}
+                                    placeholder="Câu hỏi"
+                                />
+                            </Box>
+                            <Box className="btn btn-secondary shadow" onClick={() => handleRemove(index)}>
+                                <DeleteForever />
+                            </Box>
+                        </Box>
                     </Grid>
-                    : null
-                }
-            </Grid>
-        </Box >
+                    <Grid item xs={12}>
+                        <FormGroup>
+                            <textarea
+                                value={item.answer ?? ""}
+                                className="form-control"
+                                onChange={(e) => handleUpdate("answer", e.target.value ?? "", index)}
+                                placeholder="Trả lời"
+                            />
+                        </FormGroup>
+                    </Grid>
+                </>
+            )}
+
+            {error
+                ? <Grid item xs={12}>
+                    <Form.Control.Feedback
+                        style={{ display: "inline-block" }}
+                        type="invalid"
+                    >
+                        {error}
+                    </Form.Control.Feedback>
+                </Grid>
+                : null
+            }
+        </Grid>
     )
 
     return (
@@ -175,6 +166,10 @@ function CreateFaqs({
             maxWidth="sm"
             fullWidth
         >
+            <CustomizedDialogTitle
+                title='Thêm câu hỏi'
+                onClose={onClose}
+            />
             <DialogContent>
                 {renderContent()}
             </DialogContent>
@@ -187,7 +182,7 @@ function CreateFaqs({
                     justifyContent="space-between"
                 >
                     <Box className="btn btn-primary shadow" onClick={handleAdd}>
-                        <Add /> Thêm quy định
+                        <Add /> Thêm câu hỏi
                     </Box>
 
                     <Box

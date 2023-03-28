@@ -9,6 +9,7 @@ import { useForm } from "react-hook-form";
 import { toast } from 'react-toastify';
 import { reviewFarmstay } from '../../../../../redux/farmstay/action';
 import { FARMSTAY_STATUSES } from '../../../../../setting/farmstay-setting';
+import InvalidFeedback from '../../../../General/InvalidFeedback';
 interface RejectFarmstayProps {
     open?: boolean,
     farmstay?: any,
@@ -77,7 +78,7 @@ function RejectFarmstay({
                 />
 
                 {errors.extras
-                    ? <div className="invalid-feedback">Thông tin bắt buộc.</div>
+                    ? <InvalidFeedback />
                     : null
                 }
             </FormGroup>

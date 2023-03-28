@@ -1,6 +1,6 @@
 import { Box, Grid } from '@mui/material';
 import { useParams, useSearchParams } from 'react-router-dom';
-import { Tab } from 'react-bootstrap';
+import { Dropdown, Tab } from 'react-bootstrap';
 
 import PageHeader, { IBreadcrumbItem } from '../../../../General/PageHeader';
 
@@ -81,7 +81,7 @@ function FarmstayDetail() {
     const { farmstayDetail, loading, refresh } = useFarmstayDetail(id);
 
     return (
-        <Box marginBottom="1.3rem">
+        <Box marginBottom="1.3rem" overflow="visible">
             {/* <!-- breadcrumb --> */}
             <PageHeader
                 title={
@@ -160,7 +160,7 @@ function FarmstayDetail() {
                                             />
                                         </Tab.Pane>
 
-                                        <Tab.Pane eventKey={TAB_KEYS.FAQ}>
+                                        <Tab.Pane style={{ overflow: "visible" }} eventKey={TAB_KEYS.FAQ}>
                                             <FAQTab
                                                 detail={farmstayDetail}
                                                 loading={loading}
@@ -173,6 +173,7 @@ function FarmstayDetail() {
                                                 detail={farmstayDetail}
                                                 loading={loading}
                                             />
+
                                         </Tab.Pane>
 
                                         <Tab.Pane eventKey={TAB_KEYS.OrderHistory}>
@@ -188,6 +189,7 @@ function FarmstayDetail() {
                     </div>
                 </Grid>
             </Grid>
+
         </Box>
     )
 }

@@ -12,6 +12,7 @@ import CustomizedDialogActions from '../../../../../General/Dialog/CustomizedDia
 import { isAvailableArray } from '../../../../../../helpers/arrayUtils';
 import SingleImageDropzone from '../../FarmstayDetail/ui-segment/SingleImageDropzone';
 import { updateFarmstayActivities, uploadImage } from '../../../../../../redux/farmstay/action';
+import CustomizedDialogTitle from '../../../../../General/Dialog/CustomizedDialogTitle';
 
 interface UpdateActivityAvatarProps {
     open?: boolean,
@@ -99,19 +100,10 @@ function UpdateActivityAvatar({
     }
 
     const renderContent = () => (
-        <Box
-            display="flex"
-            flexDirection="column"
-            gap="1rem"
-        >
-            <Box className='h5 card-title mb-0'>
-                Ảnh đại diện
-            </Box>
-            <SingleImageDropzone
-                file={file}
-                setFile={setFile}
-            />
-        </Box >
+        <SingleImageDropzone
+            file={file}
+            setFile={setFile}
+        />
     )
 
     return (
@@ -121,6 +113,10 @@ function UpdateActivityAvatar({
             maxWidth="sm"
             fullWidth
         >
+            <CustomizedDialogTitle
+                title='Ảnh đại diện'
+                onClose={onClose}
+            />
             <DialogContent>
                 {renderContent()}
             </DialogContent>

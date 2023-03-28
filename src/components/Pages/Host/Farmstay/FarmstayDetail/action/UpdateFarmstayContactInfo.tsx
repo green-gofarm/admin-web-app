@@ -12,6 +12,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../../redux/redux-setting';
 import { updateFarmstay } from '../../../../../../redux/farmstay/action';
 import { toast } from 'react-toastify';
+import CustomizedDialogTitle from '../../../../../General/Dialog/CustomizedDialogTitle';
 
 interface UpdateFarmstayContactInfoProps {
     open?: boolean,
@@ -116,72 +117,62 @@ function UpdateFarmstayContactInfo({
     }
 
     const renderContent = () => (
-        <Box
-            display="flex"
-            flexDirection="column"
-            gap="1rem"
-        >
-            <Box className='h5 card-title mb-0'>
-                Phương thức liên lạc
-            </Box>
-
-            <Grid container spacing={2}>
-                {contactInfo.map((item: any, index) =>
-                    <Grid item xs={12} md={6} key={index}>
-                        <Box
-                            display="flex"
-                            alignItems="center"
-                            width="100%"
-                            gap="8px"
-                        >
-                            <Box flexGrow={1}>
-                                <Form.Control
-                                    value={item.method ?? ""}
-                                    type="text"
-                                    className="form-control"
-                                    required
-                                    autoFocus={!item.method}
-                                    onChange={(e) => handleUpdate("method", e.target.value ?? "", index)}
-                                    placeholder="Tên phương thức"
-                                />
-                            </Box>
-                            <Box flexGrow={2}>
-                                <Form.Control
-                                    value={item.value ?? ""}
-                                    type="text"
-                                    className="form-control"
-                                    required
-                                    autoFocus={index === 0}
-                                    onChange={(e) => handleUpdate("value", e.target.value ?? "", index)}
-                                    placeholder=""
-                                />
-                            </Box>
-                            <Box className="btn btn-secondary shadow" onClick={() => handleRemove(index)}>
-                                <DeleteForever />
-                            </Box>
+        <Grid container spacing={2}>
+            {contactInfo.map((item: any, index) =>
+                <Grid item xs={12} md={6} key={index}>
+                    <Box
+                        display="flex"
+                        alignItems="center"
+                        width="100%"
+                        gap="8px"
+                    >
+                        <Box flexGrow={1}>
+                            <Form.Control
+                                value={item.method ?? ""}
+                                type="text"
+                                className="form-control"
+                                required
+                                autoFocus={!item.method}
+                                onChange={(e) => handleUpdate("method", e.target.value ?? "", index)}
+                                placeholder="Tên phương thức"
+                            />
                         </Box>
-                    </Grid>
-                )}
-
-                <Grid item xs={12}>
-                    <Box className="btn btn-primary shadow" onClick={handleAdd}>
-                        <Add /> Thêm phương thức khác
+                        <Box flexGrow={2}>
+                            <Form.Control
+                                value={item.value ?? ""}
+                                type="text"
+                                className="form-control"
+                                required
+                                autoFocus={index === 0}
+                                onChange={(e) => handleUpdate("value", e.target.value ?? "", index)}
+                                placeholder=""
+                            />
+                        </Box>
+                        <Box className="btn btn-secondary shadow" onClick={() => handleRemove(index)}>
+                            <DeleteForever />
+                        </Box>
                     </Box>
                 </Grid>
+            )}
 
-                {error
-                    ? <Grid item xs={12}>
-                        <Form.Control.Feedback
-                            style={{ display: "inline-block" }}
-                            type="invalid"
-                        >
-                            {error}
-                        </Form.Control.Feedback>
-                    </Grid>
-                    : null
-                }
+            <Grid item xs={12}>
+                <Box className="btn btn-primary shadow" onClick={handleAdd}>
+                    <Add /> Thêm phương thức khác
+                </Box>
             </Grid>
-        </Box >
+
+            {error
+                ? <Grid item xs={12}>
+                    <Form.Control.Feedback
+                        style={{ display: "inline-block" }}
+                        type="invalid"
+                    >
+                        {error}
+                    </Form.Control.Feedback>
+                </Grid>
+                : null
+            }
+        </Grid>
     )
 
     return (
@@ -191,6 +182,11 @@ function UpdateFarmstayContactInfo({
             maxWidth="md"
             fullWidth
         >
+            <CustomizedDialogTitle
+                title='Thông tin liên hệ'
+                onClose={onClose}
+            />
+
             <DialogContent>
                 {renderContent()}
             </DialogContent>

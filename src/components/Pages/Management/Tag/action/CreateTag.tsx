@@ -8,6 +8,7 @@ import { useDispatch } from 'react-redux';
 import { useForm } from "react-hook-form";
 import { toast } from 'react-toastify';
 import { createTag } from '../../../../../redux/tag/action';
+import InvalidFeedback from '../../../../General/InvalidFeedback';
 interface CreateTagProps {
     open?: boolean,
     refresh?: any,
@@ -70,7 +71,7 @@ function CreateTag({
                     {...register("name", { required: true })}
                 />
                 {errors.name
-                    ? <div className="invalid-feedback">Thông tin bắt buộc.</div>
+                    ? <InvalidFeedback />
                     : null
                 }
             </FormGroup>

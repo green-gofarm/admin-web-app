@@ -15,6 +15,7 @@ import useDistricts from '../../hooks/useDistricts';
 import useWards from '../../hooks/useWards';
 import VALIDATOR from './validator';
 import makeStyles from '@mui/styles/makeStyles/makeStyles';
+import CustomizedDialogTitle from '../../../../../General/Dialog/CustomizedDialogTitle';
 
 
 const useStyles = makeStyles({
@@ -228,11 +229,6 @@ function UpdateFarmstayBasic({
         <>
             <Grid container spacing={2}>
                 <Grid item xs={12}>
-                    <Box className='h5 card-title mb-0'>
-                        Cập nhật thông tin
-                    </Box>
-                </Grid>
-                <Grid item xs={12}>
                     <FormGroup>
                         <Form.Label>
                             Tên farmstay *
@@ -442,6 +438,10 @@ function UpdateFarmstayBasic({
             maxWidth="md"
             fullWidth
         >
+            <CustomizedDialogTitle
+                title='Cập nhật thông tin'
+                onClose={onClose}
+            />
             <DialogContent>
                 {renderContent()}
             </DialogContent>

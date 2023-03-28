@@ -13,11 +13,13 @@ import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
 import Select from "react-select";
 import useAllServiceCategories from '../../../../Management/ServiceCategory/hooks/useAllServiceCategories';
+import CustomizedDialogTitle from '../../../../../General/Dialog/CustomizedDialogTitle';
+import InvalidFeedback from '../../../../../General/InvalidFeedback';
 
 interface CreateServiceProps {
     open?: boolean,
     onSuccessCallback?: any,
-    onClose: Function,
+    onClose: () => void,
     farmstayId: any,
 }
 
@@ -104,7 +106,7 @@ function CreateService({
     }
 
     const getNewFileLink = async (file: File) => {
-        return new Promise<any[]>((resolve, rj) => {
+        return new Promise<any>((resolve, rj) => {
             const formData = new FormData();
             formData.append("files", file);
 
@@ -180,10 +182,12 @@ function CreateService({
             maxWidth="md"
             fullWidth
         >
+            <CustomizedDialogTitle
+                title='Thêm Dịch vụ'
+                onClose={onClose}
+            />
+
             <DialogContent>
-                <Box className='card-title mb-2'>
-                    Thêm dịch vụ
-                </Box>
                 <Grid container spacing={0} columnSpacing={2}>
                     <Grid item xs={12}>
                         <FormGroup className="has-danger">
@@ -195,7 +199,7 @@ function CreateService({
                                 setFile={setFile}
                             />
                             {errors.file
-                                ? <div className="invalid-feedback">Thông tin bắt buộc.</div>
+                                ? <InvalidFeedback />
                                 : null
                             }
                         </FormGroup>
@@ -214,7 +218,7 @@ function CreateService({
                                 onChange={(e) => handleOnChange("name", e.target.value ?? "")}
                             />
                             {errors.name
-                                ? <div className="invalid-feedback">Thông tin bắt buộc.</div>
+                                ? <InvalidFeedback />
                                 : null
                             }
                         </FormGroup>
@@ -237,7 +241,7 @@ function CreateService({
                             // menuPortalTarget={document.body}
                             />
                             {errors.serviceCategory
-                                ? <div className="invalid-feedback">Thông tin bắt buộc.</div>
+                                ? <InvalidFeedback />
                                 : null
                             }
                         </FormGroup>
@@ -261,7 +265,7 @@ function CreateService({
                                 </InputGroup.Text>
                             </InputGroup>
                             {errors.price
-                                ? <div className="invalid-feedback">Thông tin bắt buộc.</div>
+                                ? <InvalidFeedback />
                                 : null
                             }
                         </FormGroup>
@@ -281,7 +285,7 @@ function CreateService({
                                 onChange={(e) => handleOnChange("description", e.target.value ?? "")}
                             />
                             {errors.description
-                                ? <div className="invalid-feedback">Thông tin bắt buộc.</div>
+                                ? <InvalidFeedback />
                                 : null
                             }
                         </FormGroup>

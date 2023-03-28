@@ -6,15 +6,16 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../../redux/redux-setting';
 import VALIDATOR from './validator';
 import useDelayLoading from '../../../../../../hooks/useDelayLoading';
-import { createFarmstayActivities, updateFarmstayActivities, uploadImage } from '../../../../../../redux/farmstay/action';
-import { isAvailableArray } from '../../../../../../helpers/arrayUtils';
+import { updateFarmstayActivities } from '../../../../../../redux/farmstay/action';
 import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
+import CustomizedDialogTitle from '../../../../../General/Dialog/CustomizedDialogTitle';
+import InvalidFeedback from '../../../../../General/InvalidFeedback';
 
 interface UpdateActivityBasicInfoProps {
     open?: boolean,
     onSuccessCallback?: any,
-    onClose: Function,
+    onClose: () => void,
     activity: any,
 }
 
@@ -142,10 +143,11 @@ function UpdateActivityBasicInfo({
             maxWidth="md"
             fullWidth
         >
+            <CustomizedDialogTitle
+                title='Cập nhật thông tin'
+                onClose={onClose}
+            />
             <DialogContent>
-                <Box className='card-title mb-2'>
-                    Cập nhật thông tin
-                </Box>
                 <Grid container spacing={0} columnSpacing={2}>
                     <Grid item xs={12}>
                         <FormGroup className="has-danger">
@@ -156,11 +158,12 @@ function UpdateActivityBasicInfo({
                                 aria-label="Activity name"
                                 className={`form-control ${errors.name ? "is-invalid" : ""}`}
                                 type="text"
+                                autoFocus
                                 value={data.name ?? ""}
                                 onChange={(e) => handleOnChangeAddress("name", e.target.value ?? "")}
                             />
                             {errors.name
-                                ? <div className="invalid-feedback">Thông tin bắt buộc.</div>
+                                ? <InvalidFeedback />
                                 : null
                             }
                         </FormGroup>
@@ -181,7 +184,7 @@ function UpdateActivityBasicInfo({
                                 />
                             </InputGroup>
                             {errors.slot
-                                ? <div className="invalid-feedback">Thông tin bắt buộc.</div>
+                                ? <InvalidFeedback />
                                 : null
                             }
                         </FormGroup>
@@ -205,7 +208,7 @@ function UpdateActivityBasicInfo({
                                 </InputGroup.Text>
                             </InputGroup>
                             {errors.price
-                                ? <div className="invalid-feedback">Thông tin bắt buộc.</div>
+                                ? <InvalidFeedback />
                                 : null
                             }
                         </FormGroup>
@@ -225,7 +228,7 @@ function UpdateActivityBasicInfo({
                                 onChange={(e) => handleOnChangeAddress("description", e.target.value ?? "")}
                             />
                             {errors.description
-                                ? <div className="invalid-feedback">Thông tin bắt buộc.</div>
+                                ? <InvalidFeedback />
                                 : null
                             }
                         </FormGroup>

@@ -13,11 +13,13 @@ import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
 import useAllRoomCategories from '../../../../Management/RoomCategory/hooks/useAllRoomCategories';
 import Select from "react-select";
+import CustomizedDialogTitle from '../../../../../General/Dialog/CustomizedDialogTitle';
+import InvalidFeedback from '../../../../../General/InvalidFeedback';
 
 interface CreateRoomProps {
     open?: boolean,
     onSuccessCallback?: any,
-    onClose: Function,
+    onClose: () => void,
     farmstayId: any,
 }
 
@@ -190,10 +192,11 @@ function CreateRoom({
             maxWidth="md"
             fullWidth
         >
+            <CustomizedDialogTitle
+                title='Thêm phòng'
+                onClose={onClose}
+            />
             <DialogContent>
-                <Box className='card-title mb-2'>
-                    Thêm phòng mới
-                </Box>
                 <Grid container spacing={0} columnSpacing={2}>
                     <Grid item xs={12}>
                         <FormGroup className="has-danger">
@@ -205,7 +208,7 @@ function CreateRoom({
                                 setFile={setFile}
                             />
                             {errors.file
-                                ? <div className="invalid-feedback">Thông tin bắt buộc.</div>
+                                ? <InvalidFeedback />
                                 : null
                             }
                         </FormGroup>
@@ -220,11 +223,12 @@ function CreateRoom({
                                 aria-label="name"
                                 className={`form-control ${errors.name ? "is-invalid" : ""}`}
                                 type="text"
+                                autoFocus
                                 value={room.name ?? ""}
                                 onChange={(e) => handleOnChange("name", e.target.value ?? "")}
                             />
                             {errors.name
-                                ? <div className="invalid-feedback">Thông tin bắt buộc.</div>
+                                ? <InvalidFeedback />
                                 : null
                             }
                         </FormGroup>
@@ -247,7 +251,7 @@ function CreateRoom({
                             // menuPortalTarget={document.body}
                             />
                             {errors.roomCategory
-                                ? <div className="invalid-feedback">Thông tin bắt buộc.</div>
+                                ? <InvalidFeedback />
                                 : null
                             }
                         </FormGroup>
@@ -271,7 +275,7 @@ function CreateRoom({
                                 </InputGroup.Text>
                             </InputGroup>
                             {errors.price
-                                ? <div className="invalid-feedback">Thông tin bắt buộc.</div>
+                                ? <InvalidFeedback />
                                 : null
                             }
                         </FormGroup>
@@ -291,7 +295,7 @@ function CreateRoom({
                                 onChange={(e) => handleOnChange("description", e.target.value ?? "")}
                             />
                             {errors.description
-                                ? <div className="invalid-feedback">Thông tin bắt buộc.</div>
+                                ? <InvalidFeedback />
                                 : null
                             }
                         </FormGroup>

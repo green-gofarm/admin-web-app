@@ -30,7 +30,7 @@ function FAQTab({
 
 
     return (
-        <>
+        <Box minHeight="400px">
             <Grid container spacing={2}>
                 {faqs.length < 1
                     ? <Grid item xs={12}>
@@ -44,7 +44,7 @@ function FAQTab({
                                     gap="1rem"
                                 >
                                     <AddAction
-                                        label="Thêm hoạt động mới"
+                                        label="Thêm câu hỏi"
                                         onClick={() => setOpenAddNew(true)}
                                     />
                                 </Box>
@@ -68,16 +68,18 @@ function FAQTab({
                         </Box>
                     </Grid>
                 }
-                <Accordion defaultActiveKey="0">
-                    {faqs.map((item, index) =>
-                        <FaqItem
-                            key={index}
-                            item={item}
-                            eventKey={index + ""}
-                            refresh={refresh}
-                        />
-                    )}
-                </Accordion>
+                <Grid item xs={12}>
+                    <Accordion defaultActiveKey="0" style={{ overflow: "visible" }}>
+                        {faqs.map((item, index) =>
+                            <FaqItem
+                                key={index}
+                                item={item}
+                                eventKey={index + ""}
+                                refresh={refresh}
+                            />
+                        )}
+                    </Accordion>
+                </Grid>
             </Grid>
 
             {openAddNew
@@ -89,7 +91,7 @@ function FAQTab({
                 />
                 : null
             }
-        </>
+        </Box>
     )
 }
 

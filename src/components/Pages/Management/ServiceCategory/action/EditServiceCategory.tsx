@@ -9,6 +9,7 @@ import { useDispatch } from 'react-redux';
 import { useForm } from "react-hook-form";
 import { updateServiceCategory } from '../../../../../redux/service/action';
 import { toast } from 'react-toastify';
+import InvalidFeedback from '../../../../General/InvalidFeedback';
 interface _IEditServiceCategory {
     open?: boolean,
     serviceCategory?: any,
@@ -92,7 +93,7 @@ function EditServiceCategory({
                     {...register("name", { required: true })}
                 />
                 {errors.name
-                    ? <div className="invalid-feedback">Thông tin bắt buộc.</div>
+                    ? <InvalidFeedback />
                     : null
                 }
             </FormGroup>

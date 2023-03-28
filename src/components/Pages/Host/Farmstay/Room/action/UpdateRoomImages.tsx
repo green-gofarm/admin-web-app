@@ -15,6 +15,7 @@ import { imageAcceptType } from '../../../../../../setting/setting';
 import { toast } from 'react-toastify';
 import { cloneDeep } from 'lodash';
 import { updateFarmstayRooms, uploadImage } from '../../../../../../redux/farmstay/action';
+import CustomizedDialogTitle from '../../../../../General/Dialog/CustomizedDialogTitle';
 
 const useStyles = makeStyles({
     panel: {
@@ -168,86 +169,76 @@ function UpdateRoomImages({
     }
 
     const renderContent = () => (
-        <Box
-            display="flex"
-            flexDirection="column"
-            gap="2rem"
-        >
-            <Box className='card-title mb-0'>
-                Cập nhật Ảnh
-            </Box>
-
-            <Grid container spacing={2}>
-                <Grid item xs={12}>
-                    <Dropzone
-                        multiple={false}
-                        onDrop={(acceptedFiles) => {
-                            handleAcceptedFiles(acceptedFiles);
-                        }}
-                        accept={imageAcceptType}
-                    >
-                        {({ getRootProps }) => (
-                            <div className="dz-message needsclick" {...getRootProps()}>
-                                <div className="dropzone dz-clickable bg-gray-200">
-                                    <div className="mb-2 mt-5 dropzoneicon ">
-                                        <i className="mdi mdi-apple-mobileme"></i>
-                                    </div>
-                                    <p style={{ color: "#9393b5" }}>Thả ảnh hoặc ấn vào đây để chọn file.</p>
+        <Grid container spacing={2}>
+            <Grid item xs={12}>
+                <Dropzone
+                    multiple={false}
+                    onDrop={(acceptedFiles) => {
+                        handleAcceptedFiles(acceptedFiles);
+                    }}
+                    accept={imageAcceptType}
+                >
+                    {({ getRootProps }) => (
+                        <div className="dz-message needsclick" {...getRootProps()}>
+                            <div className="dropzone dz-clickable bg-gray-200">
+                                <div className="mb-2 mt-5 dropzoneicon ">
+                                    <i className="mdi mdi-apple-mobileme"></i>
                                 </div>
+                                <p style={{ color: "#9393b5" }}>Thả ảnh hoặc ấn vào đây để chọn file.</p>
                             </div>
-                        )}
-                    </Dropzone>
-                </Grid>
-
-                {links.map((link, index) =>
-                    <Grid item xs={12} sm={6} md={4} key={index}>
-                        <Box
-                            className="dropzone bg-gray-200"
-                            sx={{ cursor: "auto !important" }}
-                            position="relative"
-                        >
-                            <img
-                                height="100%"
-                                alt="Ảnh"
-                                src={link}
-                            />
-
-                            <Box className={classes.panel}>
-                                <Tooltip title="Xóa">
-                                    <IconButton onClick={() => handleRemoveLink(index)}>
-                                        <DeleteForever sx={{ color: "#fff" }} />
-                                    </IconButton>
-                                </Tooltip>
-                            </Box>
-                        </Box>
-                    </Grid>
-                )}
-                {files.map((file, index) =>
-                    <Grid item xs={12} sm={6} md={4} key={index}>
-                        <Box
-                            className="dropzone bg-gray-200"
-                            sx={{ cursor: "auto !important" }}
-                            position="relative"
-                        >
-                            <img
-                                height="100%"
-                                alt="Ảnh"
-                                src={file.preview}
-                            />
-
-                            <Box className={classes.panel}>
-                                <Tooltip title="Xóa">
-                                    <IconButton onClick={() => handleRemoveFile(index)}>
-                                        <DeleteForever sx={{ color: "#fff" }} />
-                                    </IconButton>
-                                </Tooltip>
-                            </Box>
-                        </Box>
-                    </Grid>
-                )}
-
+                        </div>
+                    )}
+                </Dropzone>
             </Grid>
-        </Box >
+
+            {links.map((link, index) =>
+                <Grid item xs={12} sm={6} md={4} key={index}>
+                    <Box
+                        className="dropzone bg-gray-200"
+                        sx={{ cursor: "auto !important" }}
+                        position="relative"
+                    >
+                        <img
+                            height="100%"
+                            alt="Ảnh"
+                            src={link}
+                        />
+
+                        <Box className={classes.panel}>
+                            <Tooltip title="Xóa">
+                                <IconButton onClick={() => handleRemoveLink(index)}>
+                                    <DeleteForever sx={{ color: "#fff" }} />
+                                </IconButton>
+                            </Tooltip>
+                        </Box>
+                    </Box>
+                </Grid>
+            )}
+            {files.map((file, index) =>
+                <Grid item xs={12} sm={6} md={4} key={index}>
+                    <Box
+                        className="dropzone bg-gray-200"
+                        sx={{ cursor: "auto !important" }}
+                        position="relative"
+                    >
+                        <img
+                            height="100%"
+                            alt="Ảnh"
+                            src={file.preview}
+                        />
+
+                        <Box className={classes.panel}>
+                            <Tooltip title="Xóa">
+                                <IconButton onClick={() => handleRemoveFile(index)}>
+                                    <DeleteForever sx={{ color: "#fff" }} />
+                                </IconButton>
+                            </Tooltip>
+                        </Box>
+                    </Box>
+                </Grid>
+            )}
+
+        </Grid>
     )
 
     return (
@@ -257,6 +248,10 @@ function UpdateRoomImages({
             maxWidth="lg"
             fullWidth
         >
+            <CustomizedDialogTitle
+                title='Cập nhật ảnh'
+                onClose={onClose}
+            />
             <DialogContent>
                 {renderContent()}
             </DialogContent>

@@ -6,66 +6,73 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../../redux/redux-setting';
 import VALIDATOR from './validator';
 import useDelayLoading from '../../../../../../hooks/useDelayLoading';
-import { updateFarmstayRooms } from '../../../../../../redux/farmstay/action';
+import { updateFarmstayServices, uploadImage } from '../../../../../../redux/farmstay/action';
 import { isAvailableArray } from '../../../../../../helpers/arrayUtils';
 import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
-import useAllRoomCategories from '../../../../Management/RoomCategory/hooks/useAllRoomCategories';
 import Select from "react-select";
+import useAllServiceCategories from '../../../../Management/ServiceCategory/hooks/useAllServiceCategories';
 import CustomizedDialogTitle from '../../../../../General/Dialog/CustomizedDialogTitle';
+import SingleImageUpdate from '../ui-segment/SingleImageUpdate';
 import InvalidFeedback from '../../../../../General/InvalidFeedback';
 
-interface CreateRoomProps {
+interface UpdateServiceProps {
     open?: boolean,
     onSuccessCallback?: any,
     onClose: () => void,
-    room: any,
+    service: any,
 }
 
-type Room = {
+type Service = {
     name: string | null,
     price: string | null,
     description: string | null,
-    roomCategory: any | null,
+    serviceCategory: any | null,
 }
 
 interface Errors {
     name: string,
     price: string,
     description: string,
-    roomCategory: string,
+    file: string,
+    serviceCategory: string,
 }
 
 const initialErrors: Errors = {
     name: '',
     price: '',
     description: '',
-    roomCategory: ''
+    file: '',
+    serviceCategory: ''
 };
 
-function UpdateRoomBasic({
+function UpdateService({
     open,
     onSuccessCallback,
     onClose,
-    room,
-}: CreateRoomProps) {
+    service,
+}: UpdateServiceProps) {
 
     const dispatch = useDispatch();
-    const categories = useAllRoomCategories();
+    const categories = useAllServiceCategories();
 
     const categoryOptions = useMemo(() => {
         if (!isAvailableArray(categories)) return [];
         return categories.map((item: any) => ({ label: item.name, value: item.id }));
     }, [categories]);
 
+    // State
+    const [avatar, setAvatar] = useState<string | null>(service?.image ?? null);
+    const [file, setFile] = useState<File | null>(null);
+
     // Redux
     const user = useSelector((state: RootState) => state.auth.user);
 
-    const [data, setData] = useState<Room>({
-        name: room?.name ?? "",
-        price: "" + (room?.price ?? ""),
-        description: room?.description ?? "",
-        roomCategory: categoryOptions.find((item: any) => item.value === room?.roomCategoryId) ?? null,
+    const [data, setData] = useState<Service>({
+        name: service?.name ?? "",
+        price: "" + (service?.price ?? ""),
+        description: service?.description ?? "",
+        serviceCategory: categoryOptions.find((item: any) => item.value === service?.categoryId) ?? null,
     })
 
     const [errors, setErrors] = useState<Errors>(initialErrors);
@@ -73,7 +80,7 @@ function UpdateRoomBasic({
     const [loading, setLoading] = useState<boolean>(false);
     const delay = useDelayLoading(loading);
 
-    const handleOnChange = useCallback((key: keyof Room, value: any) => {
+    const handleOnChange = useCallback((key: keyof Service, value: any) => {
         setData(prev => ({
             ...prev,
             [key]: value,
@@ -85,12 +92,17 @@ function UpdateRoomBasic({
         }));
     }, []);
 
-    const validate = (data: Room) => {
+    const validate = (data: Service, file: File | null) => {
         const tempErrors: Errors = {
             name: VALIDATOR.isRequired(data.name),
             description: VALIDATOR.isRequired(data.description),
             price: VALIDATOR.isRequired(data.price) || VALIDATOR.isNumberString(data.price),
-            roomCategory: VALIDATOR.isRequired(data.roomCategory?.value) || VALIDATOR.isNumberString(data.roomCategory?.value),
+            serviceCategory: VALIDATOR.isRequired(data.serviceCategory?.value) || VALIDATOR.isNumberString(data.serviceCategory?.value),
+            file: (() => {
+                if (avatar) return VALIDATOR.NO_ERROR;
+                if (file) return VALIDATOR.NO_ERROR;
+                return VALIDATOR.REQUIRED_MESSAGE;
+            })(),
         }
 
         setErrors(tempErrors);
@@ -98,43 +110,79 @@ function UpdateRoomBasic({
         return Object.values(tempErrors).every(i => i === VALIDATOR.NO_ERROR);
     }
 
+    const getNewFileLink = async (file: File | null) => {
+        return new Promise<any>((resolve, rj) => {
+            if (avatar) {
+                resolve(avatar);
+                return
+            }
+            if (!file) {
+                rj("Error");
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append("files", file);
+
+            dispatch(uploadImage(
+                formData,
+                {
+                    loading: setLoading,
+                    onSuccess: (response: any) => {
+                        if (isAvailableArray(response?.data)) {
+                            const link = response.data[0];
+                            resolve(link);
+                            return;
+                        }
+                    },
+                    onFailure: (error: any) => {
+                        rj("Có lỗi xảy ra: Upload failed");
+                    }
+                }
+            ));
+        })
+    }
+
     const handleSubmit = async () => {
         if (!user?.id) return;
-        if (!room?.farmstayId) return;
-        if (!room?.id) return;
-        if (!validate(data)) return;
+        if (!service?.id) return;
+        if (!service?.farmstayId) return;
+        if (!validate(data, file)) return;
 
         const price = data.price;
         if (!price) return;
 
         try {
-            const prepareData = {
+            const newLink = await getNewFileLink(file);
+
+            const preparedData = {
+                image: newLink,
                 name: data.name,
                 price: parseFloat(price),
-                roomCategoryId: data.roomCategory?.value,
+                categoryId: data.serviceCategory?.value,
                 description: data.description,
             }
 
-            dispatch(updateFarmstayRooms(
+            dispatch(updateFarmstayServices(
                 user.id,
-                room.farmstayId,
-                room.id,
-                prepareData,
+                service.farmstayId,
+                service.id,
+                preparedData,
                 {
                     loading: setLoading,
                     onSuccess: () => {
-                        toast.success("Thêm mới thành công.");
+                        toast.success("Cập nhật thành công.");
                         onClose && onClose();
                         onSuccessCallback && onSuccessCallback();
                     },
                     onFailure: () => {
-                        toast.error("Thêm mới thất bại");
+                        toast.error("Cập nhật thất bại");
                     }
                 })
             )
         } catch (error) {
             console.log(error);
-            toast.error("Thêm mới thất bại");
+            toast.error("Cập nhật thất bại");
         }
     }
 
@@ -150,21 +198,39 @@ function UpdateRoomBasic({
             fullWidth
         >
             <CustomizedDialogTitle
-                title='Cập nhật thông tin'
+                title='Cập nhật'
                 onClose={onClose}
             />
+
             <DialogContent>
                 <Grid container spacing={0} columnSpacing={2}>
                     <Grid item xs={12}>
                         <FormGroup className="has-danger">
                             <Form.Label>
-                                Tên phòng *
+                                Ảnh đại diện *
+                            </Form.Label>
+                            <SingleImageUpdate
+                                file={file}
+                                setFile={setFile}
+                                link={avatar}
+                                clear={() => setAvatar(null)}
+                            />
+                            {errors.file
+                                ? <InvalidFeedback />
+                                : null
+                            }
+                        </FormGroup>
+                    </Grid>
+
+                    <Grid item xs={12}>
+                        <FormGroup className="has-danger">
+                            <Form.Label>
+                                Tên dịch vụ *
                             </Form.Label>
                             <Form.Control
                                 aria-label="name"
                                 className={`form-control ${errors.name ? "is-invalid" : ""}`}
                                 type="text"
-                                autoFocus
                                 value={data.name ?? ""}
                                 onChange={(e) => handleOnChange("name", e.target.value ?? "")}
                             />
@@ -178,11 +244,11 @@ function UpdateRoomBasic({
                     <Grid item xs={12} md={6}>
                         <FormGroup className="has-danger">
                             <Form.Label>
-                                Loại phòng *
+                                Loại dịch vụ *
                             </Form.Label>
                             <Select
-                                value={data.roomCategory}
-                                onChange={(option) => handleOnChange("roomCategory", option)}
+                                value={data.serviceCategory}
+                                onChange={(option) => handleOnChange("serviceCategory", option)}
                                 options={categoryOptions}
                                 placeholder=""
                                 isSearchable
@@ -191,7 +257,7 @@ function UpdateRoomBasic({
                                 className="formselect"
                             // menuPortalTarget={document.body}
                             />
-                            {errors.roomCategory
+                            {errors.serviceCategory
                                 ? <InvalidFeedback />
                                 : null
                             }
@@ -201,7 +267,7 @@ function UpdateRoomBasic({
                     <Grid item xs={12} md={6}>
                         <FormGroup className="has-danger">
                             <Form.Label>
-                                Giá phòng * (1 ngày)
+                                Giá dịch vụ *
                             </Form.Label>
                             <InputGroup className="input-group mb-3">
                                 <Form.Control
@@ -275,4 +341,4 @@ function UpdateRoomBasic({
     )
 }
 
-export default memo(UpdateRoomBasic);
+export default memo(UpdateService);
