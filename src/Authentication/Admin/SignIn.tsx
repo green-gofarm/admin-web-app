@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Col, Row } from 'react-bootstrap';
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 // import { auth } from '../Firebase/firebase';
 import { Box } from '@mui/material';
 import { GoogleAuthProvider, auth, getFirebaseToken } from '../../Firebase/firebase';
@@ -9,12 +9,15 @@ import { useDispatch } from 'react-redux';
 import { signInAdmin } from '../../redux/auth/action';
 import { toast } from 'react-toastify';
 import WithAuthBackDropLoader from '../../components/General/WithAuthBackDropLoader';
+import useBackUrl from '../../hooks/useBackUrl';
 
 const SignIn = () => {
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const [searchParams] = useSearchParams();
+
+    const { getBackUrl } = useBackUrl();
+
 
     // State
     const [loadingSignIn, setLoadingSignIn] = useState(false);
@@ -30,8 +33,7 @@ const SignIn = () => {
                     loading: setLoadingSignIn,
                     onSuccess: (response: any) => {
                         toast.success("Đăng nhập thành công");
-                        const path = searchParams.get("backUrl") ?? "/";
-                        navigate(path);
+                        navigate(getBackUrl() ?? "/");
                     },
                     onFailure: (error: any) => {
                         auth.signOut();

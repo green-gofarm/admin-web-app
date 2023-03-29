@@ -69,6 +69,6 @@ export function reviewBooking(hostId: any, orderId: any, data: any) {
         data: JSON.stringify(data ?? {})
     }
 
-    const url = `${ENP.HOST}/${hostId}/farmstays/${orderId}`;
+    const url = `${ENP.HOST}/${hostId}/bookings/${orderId}/review`;
     return axiosRequest(url, option);
 }

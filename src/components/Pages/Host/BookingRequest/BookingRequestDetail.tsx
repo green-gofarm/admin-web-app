@@ -1,4 +1,4 @@
-import { Link, useParams, useSearchParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import PageHeader, { IBreadcrumbItem } from "../../../General/PageHeader";
 import { Box, Divider, Grid } from "@mui/material";
 import DetailPageHeaderTitle from "../../../General/DetailPageHeaderTitle";
@@ -13,14 +13,14 @@ import useBackUrl from "../../../../hooks/useBackUrl";
 import StringWrapper from "../../../General/Wrapper/StringWrapper";
 import ConditionWrapper from "../../../General/Wrapper/ConditionWrapper";
 import { useMemo } from "react";
-import { isAvailableArray } from "../../../../helpers/arrayUtils";
-import DisplayLinkUser from "../../../General/DisplayLinkUser";
-import useOrderDetail from "../../Management/Order/hooks/useOrderDetail";
-import useUserDetail from "../../Management/Account/hooks/useUserDetail";
 import { getFarmstayFromList } from "../../../../setting/farmstay-setting";
-import { ROLES } from "../../../../setting/setting";
-import useAllFarmstays from "../../Management/Farmstay/hooks/useAllFarmstay";
+import { isAvailableArray } from "../../../../helpers/arrayUtils";
 import useContactInfo from "../../Management/Farmstay/FarmstayDetail/hooks/useContactInfo";
+import { ROLES } from "../../../../setting/setting";
+import useUserDetail from "../../Management/Account/hooks/useUserDetail";
+import useAllFarmstays from "../../Management/Farmstay/hooks/useAllFarmstay";
+import UserTag from "../../../General/Wrapper/UserTag";
+import useOrderDetail from "../../Management/Order/hooks/useOrderDetail";
 import FeedbackItem from "../Farmstay/FarmstayDetail/ui-segment/FeedbackItem";
 
 const breadcrumb: Array<IBreadcrumbItem> = [
@@ -43,12 +43,20 @@ const breadcrumb: Array<IBreadcrumbItem> = [
 
 function BookingRequestDetail() {
 
-    const [searchParams] = useSearchParams();
+    const { getBackUrl } = useBackUrl();
     const { createBackUrl } = useBackUrl();
 
     const { id } = useParams();
     const { detail } = useOrderDetail(id);
     const { detail: customer } = useUserDetail(detail?.customerId, ROLES.CUSTOMER);
+
+    const feeExtras = useMemo(() => {
+        if (!detail?.payment?.feeExtras) return [];
+
+        const fees = JSON.parse(detail.payment.feeExtras);
+        if (!isAvailableArray(fees)) return [];
+        return fees;
+    }, [detail?.payment?.feeExtras]);
 
     const { allFarmstays } = useAllFarmstays();
     const farmstay = useMemo(() =>
@@ -72,6 +80,10 @@ function BookingRequestDetail() {
         return detail?.feedbacks;
     }, [detail?.feedbacks]);
 
+    const isExpired = useMemo(() => {
+        return isExpire(detail?.approveExpiredTime)
+    }, [detail?.approveExpiredTime]);
+
     return (
         <Box marginBottom="1.3rem">
             <PageHeader
@@ -82,7 +94,7 @@ function BookingRequestDetail() {
                         gap="8px"
                     >
                         <DetailPageHeaderTitle
-                            backUrl={searchParams.get("backUrl") ?? "/management/order"}
+                            backUrl={getBackUrl() ?? "/management/order"}
                             title="Chi tiết đơn hàng"
                         />
                     </Box>
@@ -99,7 +111,7 @@ function BookingRequestDetail() {
                 <Grid item xs={12}>
                     <Card className=" custom-card">
                         <Card.Header className="border-bottom">
-                            {isExpire(detail?.approveExpiredTime)
+                            {isExpired
                                 ? <Alert variant="info">
                                     {`Đơn đã quá hạn vào ngày ${convertISOToNaturalFormat(detail?.approveExpiredTime, "Do MMMM YYYY")}`}
                                 </Alert>
@@ -107,20 +119,26 @@ function BookingRequestDetail() {
                                     {`Đơn sẽ quá hạn vào ${convertISOToNaturalFormat(detail?.approveExpiredTime, "HH:mm [ngày] Do MMMM YYYY")}`}
                                 </Alert>
                             }
-                            <Button
-                                variant=''
-                                type="button"
-                                className="btn ripple btn-primary mb-1 me-2"
-                            >
-                                <i className="fe fe-thumbs-up me-1"></i> Nhận đơn
-                            </Button>
-                            <Button
-                                variant=''
-                                type="button"
-                                className="btn ripple btn-secondary mb-1 me-2"
-                            >
-                                <i className="fe fe-thumbs-down me-1"></i> Từ chối
-                            </Button>
+                            {!isExpired
+                                ? <>
+                                    <Button
+                                        variant=''
+                                        type="button"
+                                        className="btn ripple btn-primary mb-1 me-2"
+                                    >
+                                        <i className="fe fe-thumbs-up me-1"></i> Nhận đơn
+                                    </Button>
+                                    <Button
+                                        variant=''
+                                        type="button"
+                                        className="btn ripple btn-secondary mb-1 me-2"
+                                    >
+                                        <i className="fe fe-thumbs-down me-1"></i> Từ chối
+                                    </Button>
+                                </>
+                                : null
+                            }
+
                         </Card.Header>
                         <Card.Body>
                             <div className="d-lg-flex">
@@ -155,9 +173,7 @@ function BookingRequestDetail() {
                                                 icon={<i className="fa fa-user me-2"></i>}
                                                 label="Người đặt:"
                                                 value={
-                                                    <DisplayLinkUser
-                                                        user={customer}
-                                                    />
+                                                    <UserTag user={customer} />
                                                 }
                                                 className="mb-1"
                                             />
@@ -314,16 +330,16 @@ function BookingRequestDetail() {
                                         <tr key={item.roomId}>
                                             <td>{createCodeString("R", item.roomId)}</td>
                                             <td>Phòng</td>
-                                            <td className="tx-12">{item.name ?? "UN_KNOWN"}</td>
+                                            <td className="tx-12">{item.roomName ?? "UN_KNOWN"}</td>
                                             <td className="tx-center">{formatDate(item.date)}</td>
                                             <td className="tx-right">{convertToMoney(item.price)}</td>
                                         </tr>
                                     )}
                                     {activities.map(item =>
-                                        <tr key={item.activityId + item.orderId}>
+                                        <tr key={item.activityId}>
                                             <td>{createCodeString("AC", item.activityId)}</td>
                                             <td>Hoạt động</td>
-                                            <td className="tx-12">{item.name ?? "UN_KNOWN"}</td>
+                                            <td className="tx-12">{item.activityName ?? "UN_KNOWN"}</td>
                                             <td className="tx-center">{formatDate(item.date)}</td>
                                             <td className="tx-right">{convertToMoney(item.price)}</td>
                                         </tr>
@@ -339,25 +355,31 @@ function BookingRequestDetail() {
                                             {convertToMoney(detail?.totalPrice)}
                                         </td>
                                     </tr>
-                                    <tr>
-                                        <td className="tx-right">VAT</td>
-                                        <td className="tx-right" colSpan={2}>
-                                            10%
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td className="tx-right">Phí</td>
-                                        <td className="tx-right" colSpan={2}>
-                                            10%
-                                        </td>
-                                    </tr>
+                                    {feeExtras.map((item, index) =>
+                                        <tr key={index}>
+                                            <td className="tx-right">{item.type}</td>
+                                            <td className="tx-right">{`${item.percent * 100}%`}</td>
+                                            <td className="tx-right">
+                                                {convertToMoney(item.amount)}
+                                            </td>
+                                        </tr>
+                                    )}
+                                    {feeExtras.length < 1
+                                        ? <tr >
+                                            <td className="tx-right">Phí</td>
+                                            <td className="tx-right" colSpan={2}>
+                                                {convertToMoney(detail?.payment?.fee)}
+                                            </td>
+                                        </tr>
+                                        : null
+                                    }
                                     <tr>
                                         <td className="tx-right tx-uppercase tx-bold tx-inverse">
                                             Phải thanh toán
                                         </td>
                                         <td className="tx-right" colSpan={2}>
                                             <h4 className="tx-bold">
-                                                {convertToMoney(7200000)}
+                                                {convertToMoney(detail?.payment?.amount)}
                                             </h4>
                                         </td>
                                     </tr>

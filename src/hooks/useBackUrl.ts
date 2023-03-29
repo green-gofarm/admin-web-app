@@ -12,7 +12,7 @@ function useBackUrl() {
 
     const getBackUrl = useCallback(() => {
         const backUrl = searchParams.get("backUrl");
-        return backUrl ? decodeURIComponent(backUrl) : "";
+        return backUrl ? decodeURIComponent(backUrl) : null;
     }, [searchParams]);
 
     return {

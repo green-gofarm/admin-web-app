@@ -1,5 +1,4 @@
-import React from 'react'
-import { useParams, useSearchParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import PageHeader, { IBreadcrumbItem } from '../../../../General/PageHeader';
 import { Box, Grid } from '@mui/material';
 import DetailPageHeaderTitle from '../../../../General/DetailPageHeaderTitle';
@@ -10,6 +9,7 @@ import ActivityImage from './ActivityImage';
 import useActivityImages from '../FarmstayDetail/hooks/useActivityImages';
 import { Card } from 'react-bootstrap';
 import ActivityDescription from './ActivityDescription';
+import useBackUrl from '../../../../../hooks/useBackUrl';
 
 const breadcrumb: Array<IBreadcrumbItem> = [
     {
@@ -31,7 +31,7 @@ const breadcrumb: Array<IBreadcrumbItem> = [
 
 function ActivityDetail() {
     const { id, activityId } = useParams();
-    const [searchParams] = useSearchParams();
+    const { getBackUrl } = useBackUrl();
 
     const { detail, loading } = useActivityDetail(id, activityId);
     const images = useActivityImages(detail);
@@ -47,7 +47,7 @@ function ActivityDetail() {
                         gap="8px"
                     >
                         <DetailPageHeaderTitle
-                            backUrl={searchParams.get("backUrl") ?? "/management/farmstay"}
+                            backUrl={getBackUrl() ?? "/management/farmstay"}
                             title="Chi tiết hoạt động"
                         />
                     </Box>

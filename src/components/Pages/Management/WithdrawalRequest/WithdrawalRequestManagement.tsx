@@ -8,7 +8,7 @@ const breadcrumb: Array<IBreadcrumbItem> = [
         href: "/management"
     },
     {
-        text: "Yêu cầu thanh toán",
+        text: "Giải ngân",
         active: true,
         props: {
             "aria-current": "page"
@@ -20,7 +20,7 @@ const WithdrawalRequestManagement = () => {
     return (
         <Box marginBottom="1.3rem">
             <PageHeader
-                title="Yêu cầu thanh toán"
+                title="Giải ngân"
                 breadcrumb={breadcrumb}
             />
 

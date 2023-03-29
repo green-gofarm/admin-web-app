@@ -7,7 +7,6 @@ import { Box } from "@mui/material";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/redux-setting";
 import EllipsisWrapper from "../../components/General/Wrapper/EllipsisWrapper";
-import { CURRENT_ROLE } from "../../setting/setting";
 
 export default function Header() {
   const navigate = useNavigate();

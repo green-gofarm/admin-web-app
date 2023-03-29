@@ -10,17 +10,17 @@ import { Status } from "../../../../setting/Status";
 import { ORDER_STATUSES, findOrderStatus } from "../../../../setting/order-setting";
 import HomeIcon from '@mui/icons-material/Home';
 import useBackUrl from "../../../../hooks/useBackUrl";
-import useOrderDetail from "./hooks/useOrderDetail";
-import useUserDetail from "../Account/hooks/useUserDetail";
-import { ROLES } from "../../../../setting/setting";
-import DisplayLinkUser from "../../../General/DisplayLinkUser";
 import StringWrapper from "../../../General/Wrapper/StringWrapper";
 import ConditionWrapper from "../../../General/Wrapper/ConditionWrapper";
-import useAllFarmstays from "../Farmstay/hooks/useAllFarmstay";
 import { useMemo } from "react";
 import { getFarmstayFromList } from "../../../../setting/farmstay-setting";
-import useContactInfo from "../Farmstay/FarmstayDetail/hooks/useContactInfo";
 import { isAvailableArray } from "../../../../helpers/arrayUtils";
+import useContactInfo from "../../Management/Farmstay/FarmstayDetail/hooks/useContactInfo";
+import { ROLES } from "../../../../setting/setting";
+import useUserDetail from "../../Management/Account/hooks/useUserDetail";
+import useAllFarmstays from "../../Management/Farmstay/hooks/useAllFarmstay";
+import UserTag from "../../../General/Wrapper/UserTag";
+import useOrderDetail from "../../Management/Order/hooks/useOrderDetail";
 import FeedbackItem from "../Farmstay/FarmstayDetail/ui-segment/FeedbackItem";
 
 const breadcrumb: Array<IBreadcrumbItem> = [
@@ -139,9 +139,7 @@ function OrderDetail() {
                                                 icon={<i className="fa fa-user me-2"></i>}
                                                 label="Người đặt:"
                                                 value={
-                                                    <DisplayLinkUser
-                                                        user={customer}
-                                                    />
+                                                    <UserTag user={customer} />
                                                 }
                                                 className="mb-1"
                                             />
@@ -373,4 +371,4 @@ function OrderDetail() {
     )
 }
 
-export default OrderDetail
+export default OrderDetail;

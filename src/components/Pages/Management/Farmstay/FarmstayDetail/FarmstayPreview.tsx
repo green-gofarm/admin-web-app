@@ -1,5 +1,5 @@
 import { Box, Grid } from '@mui/material';
-import { useParams, useSearchParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { Tab } from 'react-bootstrap';
 
 import PageHeader, { IBreadcrumbItem } from '../../../../General/PageHeader';
@@ -16,6 +16,7 @@ import FAQTab from './tab/FAQTab';
 import useFarmstayDetail from './hooks/useFarmstayDetail';
 import useFarmstayDetailTab, { TAB_KEYS } from './hooks/useFarmstayDetailTab';
 import FarmstayPreviewHeader from './FarmstayPreviewHeader';
+import useBackUrl from '../../../../../hooks/useBackUrl';
 
 const breadcrumb: Array<IBreadcrumbItem> = [
     {
@@ -70,7 +71,7 @@ function FarmstayPreview() {
 
     const { id } = useParams();
     const { tab, handleChangeTab } = useFarmstayDetailTab();
-    const [searchParams] = useSearchParams();
+    const { getBackUrl } = useBackUrl();
 
     const { farmstayDetail, loading } = useFarmstayDetail(id);
 
@@ -84,7 +85,7 @@ function FarmstayPreview() {
                         gap="8px"
                     >
                         <DetailPageHeaderTitle
-                            backUrl={searchParams.get("backUrl") ?? "/management/farmstay"}
+                            backUrl={getBackUrl() ?? "/management/farmstay"}
                             title="Chi tiết farmstay"
                             code={createCodeString("FR", id)}
                         />

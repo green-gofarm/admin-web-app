@@ -97,7 +97,7 @@ export default function CustomizedTableBody({
     return (
 
         <TableBody>
-            {loadingData ? renderSkeleton() : renderContent()}
+            {loadingData && data.length < 1 ? renderSkeleton() : renderContent()}
         </TableBody>
     )
 }

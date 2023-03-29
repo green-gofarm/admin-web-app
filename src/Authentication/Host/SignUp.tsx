@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { GoogleAuthProvider, auth, getFirebaseToken } from "../../Firebase/firebase"
 import { Box, Grid } from '@mui/material';
 import GoogleButton from '../google-button/GoogleButton';
@@ -8,14 +8,15 @@ import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
 import { AxiosError } from 'axios';
 import { Alert } from "react-bootstrap";
+import useBackUrl from '../../hooks/useBackUrl';
 
 
 const SignUp = () => {
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const [searchParams] = useSearchParams();
     const [errorMessage, setErrorMessage] = useState("");
+    const { getBackUrl } = useBackUrl();
 
     // State
     const [loadingSignIn, setLoadingSignIn] = useState(false);
@@ -31,8 +32,7 @@ const SignUp = () => {
                     loading: setLoadingSignIn,
                     onSuccess: (response: any) => {
                         toast.success("Đăng ký thành công");
-                        // const path = searchParams.get("backUrl") ?? "/";
-                        // navigate(path);
+                        // navigate(getBackUrl() ?? "/");
                     },
                     onFailure: (error: AxiosError | any) => {
                         console.log(error);

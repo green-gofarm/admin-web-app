@@ -2,7 +2,6 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import MuiTables from "../../../../Mui-Table/MuiTable";
 import { Box, CircularProgress, Grid } from "@mui/material";
 import { Status } from "../../../../../setting/Status";
-import AvatarWrapper from "../../../../General/Wrapper/AvatarWrapper";
 import { HOST_SORT_BY_OPTIONS, LIST_HOST_STATUS, findHostStatus } from "../../../../../setting/host-setting";
 import ViewIconAction from "../../../../General/Action/IconAction/ViewIconAction";
 import LockIconAction from "../../../../General/Action/IconAction/LockIconAction";
@@ -23,6 +22,7 @@ import StringWrapper from "../../../../General/Wrapper/StringWrapper";
 import { isActiveUser, isBannedUser } from "../../../../../setting/user-setting";
 import ConditionWrapper from "../../../../General/Wrapper/ConditionWrapper";
 import useBackUrl from "../../../../../hooks/useBackUrl";
+import UserTag from "../../../../General/Wrapper/UserTag";
 
 
 interface FilterProps {
@@ -112,17 +112,7 @@ export default function HostTable() {
             key: "name",
             label: "Họ và tên",
             render: (row: any) => (
-                <Box
-                    display="flex"
-                    alignItems="center"
-                    gap="8px"
-                >
-                    <AvatarWrapper
-                        src={row.avatarURL}
-                        name={row.name}
-                    />
-                    {row.name}
-                </Box>
+                <UserTag user={row} />
             )
         },
         {
@@ -152,7 +142,7 @@ export default function HostTable() {
                     columnGap="8px"
                 >
                     <ViewIconAction
-                        onClick={() => navigate(`/management/account/host/${row.id}?backUrl={${createBackUrl()}}`)}
+                        onClick={() => navigate(`/management/account/host/${row.id}?backUrl=${createBackUrl()}`)}
                     />
 
                     <ConditionWrapper isRender={isActiveUser(row.status)}>

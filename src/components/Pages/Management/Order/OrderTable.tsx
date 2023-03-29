@@ -16,7 +16,7 @@ import { Card, FormGroup } from "react-bootstrap";
 import useBackUrl from "../../../../hooks/useBackUrl";
 import useAllCustomers from "../Account/hooks/useAllCustomers";
 import { getCustomerFromList } from "../../../../setting/customer-setting";
-import DisplayLinkUser from "../../../General/DisplayLinkUser";
+import UserLinkTag from "../../../General/Wrapper/UserLinkTag";
 
 interface FilterProps {
     status: any
@@ -100,7 +100,7 @@ export default function OrderTable() {
             key: "customerId",
             label: "Khách hàng",
             render: (row: any) => (
-                <DisplayLinkUser
+                <UserLinkTag
                     user={getCustomerFromList(allCustomers, row.customerId)}
                 />
             )

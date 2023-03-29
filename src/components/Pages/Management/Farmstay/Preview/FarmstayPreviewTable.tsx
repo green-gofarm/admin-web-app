@@ -13,7 +13,7 @@ import useDelayLoading from "../../../../../hooks/useDelayLoading";
 import useBackUrl from "../../../../../hooks/useBackUrl";
 import useAllHosts from "../../Account/hooks/useAllHosts";
 import { getHostFromList } from "../../../../../setting/host-setting";
-import DisplayLinkUser from "../../../../General/DisplayLinkUser";
+import UserLinkTag from "../../../../General/Wrapper/UserLinkTag";
 
 export default function FarmstayPreviewTable() {
 
@@ -60,7 +60,7 @@ export default function FarmstayPreviewTable() {
             key: "hostId",
             label: "Chủ sở hữu",
             render: (row) => (
-                <DisplayLinkUser
+                <UserLinkTag
                     user={getHostFromList(allHosts, row?.hostId)}
                 />
             )

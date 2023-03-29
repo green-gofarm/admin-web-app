@@ -1,18 +1,31 @@
 import { STATUS_COLORS } from "./color";
 
-export const WITHDRAWAL_REQUEST_STATUSES = {
-    INCOMPLETE: 1,
-    PENDING: 2,
-    COMPLETED: 3,
+export enum WITHDRAWAL_REQUEST_STATUSES {
+    PENDING = 1,
+    COMPLETED = 2,
+}
+
+export enum WITHDRAWAL_REQUEST_TYPE {
+    DISBURSE = 1,
+    REIMBURSEMENT = 2
+}
+
+export const WITHDRAWAL_REQUEST_TYPE_OPTIONS = [
+    {
+        label: "Thanh toán đơn kết thúc.",
+        value: WITHDRAWAL_REQUEST_TYPE.DISBURSE,
+    },
+    {
+        label: "Đền bù đơn bị hủy",
+        value: WITHDRAWAL_REQUEST_TYPE.REIMBURSEMENT,
+    }
+]
+
+export const getWithdrawalRequestTypeLabel = (value: any) => {
+    return WITHDRAWAL_REQUEST_TYPE_OPTIONS.find(item => item.value === value)?.label ?? null;
 }
 
 export const LIST_WITHDRAWAL_REQUEST_STATUS = [
-    {
-        label: "Chưa giải ngân",
-        value: WITHDRAWAL_REQUEST_STATUSES.INCOMPLETE,
-        textColor: STATUS_COLORS.AVAILABLE.textColor,
-        bgColor: STATUS_COLORS.AVAILABLE.bgColor
-    },
     {
         label: "Đang xử lý",
         value: WITHDRAWAL_REQUEST_STATUSES.PENDING,
@@ -22,8 +35,8 @@ export const LIST_WITHDRAWAL_REQUEST_STATUS = [
     {
         label: "Đã giải ngân",
         value: WITHDRAWAL_REQUEST_STATUSES.COMPLETED,
-        textColor: STATUS_COLORS.ACTIVE.textColor,
-        bgColor: STATUS_COLORS.ACTIVE.bgColor
+        textColor: STATUS_COLORS.AVAILABLE.textColor,
+        bgColor: STATUS_COLORS.AVAILABLE.bgColor
     },
 ]
 

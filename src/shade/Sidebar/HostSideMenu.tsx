@@ -70,7 +70,7 @@ const MENUITEMS = [
             },
             {
                 title: "Khoản thanh toán",
-                path: "/management/withdrawal-request/",
+                path: "/management/withdrawal-request",
                 type: "link",
                 active: false,
                 selected: false,

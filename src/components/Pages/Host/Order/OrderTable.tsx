@@ -20,6 +20,7 @@ import useAllCustomers from "../../Management/Account/hooks/useAllCustomers";
 import DisplayLinkFarmstay from "../../../General/Link/DisplayLinkFarmstay";
 import useAllFarmstays from "../../Management/Farmstay/hooks/useAllFarmstay";
 import { getFarmstayFromList } from "../../../../setting/farmstay-setting";
+import UserLinkTag from "../../../General/Wrapper/UserLinkTag";
 
 interface FilterProps {
     status: any
@@ -104,7 +105,7 @@ export default function OrderTable() {
             key: "customerId",
             label: "Khách hàng",
             render: (row: any) => (
-                <DisplayLinkUser
+                <UserLinkTag
                     user={getCustomerFromList(allCustomers, row.customerId)}
                 />
             )

@@ -37,7 +37,7 @@ function CustomizedCard({
                 </Box>
             </Box>
             <Box
-                padding="20px"
+                padding="16px 20px"
                 className="main-contact-info-body"
                 overflow="visible !important"
             >

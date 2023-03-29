@@ -9,7 +9,8 @@ import useUserDetail from '../../hooks/useUserDetail';
 import { ROLES } from '../../../../../../setting/setting';
 import { ChevronLeft } from '@mui/icons-material';
 import { createCodeString } from '../../../../../../helpers/stringUtils';
-import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import useBackUrl from '../../../../../../hooks/useBackUrl';
 
 
 const breadcrumb: Array<IBreadcrumbItem> = [
@@ -46,7 +47,7 @@ function CustomerDetail() {
 
     const navigate = useNavigate();
     const { id } = useParams();
-    const [searchParams] = useSearchParams();
+    const { getBackUrl } = useBackUrl();
 
     const { detail: user } = useUserDetail(id, ROLES.CUSTOMER)
     const { handleChangeTab, tab } = useProfileTabs();
@@ -62,7 +63,7 @@ function CustomerDetail() {
                     >
                         <Tooltip title="Quay lại">
                             <IconButton
-                                onClick={() => navigate(searchParams.get("backUrl") ?? "/management/account/customer")}
+                                onClick={() => navigate(getBackUrl() ?? "/management/account/customer")}
                                 style={{ padding: 4, marginLeft: -8 }}
                             >
                                 <ChevronLeft style={{ width: 26, height: 26 }} />
@@ -75,7 +76,7 @@ function CustomerDetail() {
                             gap="4px"
                         >
                             {`Chi tiết tài khoản `}
-                            <span className="tag tag-rounded tag-primary">
+                            <span className="tag tag-rounded">
                                 {createCodeString("CU", id)}
                             </span>
                         </Box>
@@ -86,7 +87,7 @@ function CustomerDetail() {
 
             <Grid container spacing={2}>
                 <Grid item xs={12}>
-                    <ProfileHeader />
+                    <ProfileHeader user={user} />
 
                     <div className="profile-tab tab-menu-heading">
                         <Tab.Container

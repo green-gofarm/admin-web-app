@@ -2,11 +2,15 @@ import { Box, Grid } from '@mui/material'
 import { Card } from 'react-bootstrap'
 import RoundAvatar from '../../../../../../General/RoundAvatar';
 import IconLabelDetail from '../../../../../../General/Item/IconLabelDetail';
-import useCurrentUser from '../../../../../../../hooks/useCurrentUser';
+import StringWrapper from '../../../../../../General/Wrapper/StringWrapper';
 
-function ProfileHeader() {
+interface ProfileHeaderProps {
+    user?: any
+}
 
-    const user = useCurrentUser();
+function ProfileHeader({
+    user
+}: ProfileHeaderProps) {
 
     return (
         <>
@@ -28,14 +32,14 @@ function ProfileHeader() {
                                 <IconLabelDetail
                                     icon={<i className="fa fa-phone me-2"></i>}
                                     label="Sđt:"
-                                    value={user?.phoneNumber}
+                                    value={<StringWrapper text={user?.phoneNumber} />}
                                 />
                             </Grid>
                             <Grid item xs={12}>
                                 <IconLabelDetail
                                     icon={<i className="fa fa-envelope me-2"></i>}
                                     label="Email:"
-                                    value={user?.email}
+                                    value={<StringWrapper text={user?.email} />}
                                 />
                             </Grid>
                         </Grid>

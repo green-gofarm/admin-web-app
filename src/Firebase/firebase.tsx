@@ -4,8 +4,9 @@ import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 import "firebase/compat/firestore";
 import 'firebase/compat/messaging';
+import { CURRENT_ROLE, ROLES } from "../setting/setting";
 
-const firebaseConfig = {
+const adminFirebaseConfig = {
 	apiKey: "AIzaSyDj4Epm6rG_yiDm0vjjPk7Djsxli3_ufpE",
 	authDomain: "go-gofarm.firebaseapp.com",
 	projectId: "go-gofarm",
@@ -14,6 +15,18 @@ const firebaseConfig = {
 	appId: "1:238098794310:web:b9dbae80dde5f9363a8747",
 	measurementId: "G-7D46LPZG85"
 };
+
+const hostFirebaseConfig = {
+	apiKey: "AIzaSyDj4Epm6rG_yiDm0vjjPk7Djsxli3_ufpE",
+	authDomain: "go-gofarm.firebaseapp.com",
+	projectId: "go-gofarm",
+	storageBucket: "go-gofarm.appspot.com",
+	messagingSenderId: "238098794310",
+	appId: "1:238098794310:web:8c11d5f2ff6755b93a8747",
+	measurementId: "G-BLBJXHS3SN"
+};
+
+const firebaseConfig = CURRENT_ROLE === ROLES.ADMIN ? adminFirebaseConfig : hostFirebaseConfig;
 
 const firebaseApp = firebase.initializeApp(firebaseConfig);
 

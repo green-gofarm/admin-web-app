@@ -23,7 +23,7 @@ import ConditionWrapper from "../../../General/Wrapper/ConditionWrapper";
 
 import GradingIcon from "@mui/icons-material/Grading";
 import TooltipIconAction from "../../../General/Icon/TooltipIconAction";
-import DisplayLinkUser from "../../../General/DisplayLinkUser";
+import UserLinkTag from "../../../General/Wrapper/UserLinkTag";
 
 interface FilterProps {
     status: any,
@@ -115,9 +115,7 @@ export default function FarmstayTable() {
             key: "hostId",
             label: "Chủ sở hữu",
             render: (row) => (
-                <DisplayLinkUser
-                    user={getHostFromList(allHosts, row?.hostId)}
-                />
+                <UserLinkTag user={getHostFromList(allHosts, row?.hostId)} />
             )
         },
         {

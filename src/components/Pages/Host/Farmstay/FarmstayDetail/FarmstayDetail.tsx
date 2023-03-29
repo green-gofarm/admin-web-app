@@ -1,5 +1,5 @@
 import { Box, Grid } from '@mui/material';
-import { useParams, useSearchParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { Tab } from 'react-bootstrap';
 
 import PageHeader, { IBreadcrumbItem } from '../../../../General/PageHeader';
@@ -18,6 +18,7 @@ import useFarmstayDetailTab, { TAB_KEYS } from '../../../Management/Farmstay/Far
 import useFarmstayDetail from '../../../Management/Farmstay/FarmstayDetail/hooks/useFarmstayDetail';
 import FeedbackTab from '../../../Management/Farmstay/FarmstayDetail/tab/FeedbackTab';
 import OrderHistoryTab from '../../../Management/Farmstay/FarmstayDetail/tab/OrderHistoryTab';
+import useBackUrl from '../../../../../hooks/useBackUrl';
 
 const breadcrumb: Array<IBreadcrumbItem> = [
     {
@@ -76,7 +77,7 @@ function FarmstayDetail() {
 
     const { id } = useParams();
     const { tab, handleChangeTab } = useFarmstayDetailTab();
-    const [searchParams] = useSearchParams();
+    const { getBackUrl } = useBackUrl();
 
     const { farmstayDetail, loading, refresh } = useFarmstayDetail(id);
 
@@ -91,7 +92,7 @@ function FarmstayDetail() {
                         gap="8px"
                     >
                         <DetailPageHeaderTitle
-                            backUrl={searchParams.get("backUrl") ?? "/management/farmstay"}
+                            backUrl={getBackUrl() ?? "/management/farmstay"}
                             title="Chi tiết farmstay"
                             code={createCodeString("FR", id)}
                         />

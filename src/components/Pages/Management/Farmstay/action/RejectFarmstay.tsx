@@ -45,7 +45,7 @@ function RejectFarmstay({
             {
                 loading: setLoadingCreate,
                 onSuccess: () => {
-                    toast.success("Cập nhật thành công thành công.");
+                    toast.success("Cập nhật thành công.");
                     onClose && onClose();
                     onSuccessCallback && onSuccessCallback();
                 },

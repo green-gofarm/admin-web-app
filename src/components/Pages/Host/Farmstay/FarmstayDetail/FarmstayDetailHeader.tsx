@@ -1,6 +1,5 @@
-import { Box, Grid, IconButton, Tooltip } from '@mui/material'
+import { Box, Grid } from '@mui/material'
 import { Card } from 'react-bootstrap'
-import AvatarWrapper from '../../../../General/Wrapper/AvatarWrapper'
 import IconLabelDetail from '../../../../General/Item/IconLabelDetail'
 import { getFeedbackRatingNumber } from './ui-segment/FeedbackItem'
 import StringWrapper from '../../../../General/Wrapper/StringWrapper'
@@ -13,27 +12,9 @@ import useFarmstayAddress from '../../../Management/Farmstay/FarmstayDetail/hook
 import UpdateFarmstayAvatar from './action/UpdateFarmstayAvatar'
 import { useState } from 'react'
 import SendApproveRequest from './action/SendApproveRequest'
-import makeStyles from '@mui/styles/makeStyles/makeStyles'
 import ConditionWrapper from '../../../../General/Wrapper/ConditionWrapper'
-
-const useStyles = makeStyles((theme) => ({
-    cameraIcon: {
-        alignItems: 'center',
-        backgroundColor: '#7987a1',
-        borderRadius: '100%',
-        boxShadow: '0 0 0 2px #fff',
-        color: '#fff',
-        display: 'flex',
-        fontSize: 18,
-        height: 32,
-        justifyContent: 'center',
-        lineHeight: 0.9,
-        position: 'absolute',
-        right: -8,
-        bottom: -8,
-        width: 32,
-    },
-}));
+import GeneralAvatar from '../../../../General/GeneralAvatar'
+import UserTag from '../../../../General/Wrapper/UserTag'
 
 interface IFarmstayDetailHeader {
     detail?: any,
@@ -47,7 +28,6 @@ function FarmstayDetailHeader({
     refresh
 }: IFarmstayDetailHeader) {
 
-    const classes = useStyles();
     const contactInfo = useContactInfo(detail);
     const images = useFarmstayImages(detail);
     const address = useFarmstayAddress(detail);
@@ -59,40 +39,10 @@ function FarmstayDetailHeader({
         <>
             <Card className="custom-card customs-cards">
                 <Card.Body className="d-flex bg-white">
-                    <div className="">
-                        <Box
-                            position="relative"
-                            minWidth="120px"
-                            minHeight="120px"
-                        >
-                            <Box
-                                component="img"
-                                src={images?.avatar ?? require("../../../../../assets/img/photos/1.jpg")}
-                                alt="Farmstay logo"
-                                boxShadow="0 1px 2px #ececec"
-                                className="br-5"
-                                sx={{
-                                    position: "relative",
-                                    width: "120px",
-                                    height: "120px",
-                                    backgroundPosition: "center",
-                                    backgroundSize: "cover",
-                                    backgroundRepeat: "no-repeat"
-                                }}
-                            />
-                            <Box
-                                className={classes.cameraIcon}
-                            >
-                                <Tooltip
-                                    title="Thay ảnh đại diện"
-                                >
-                                    <IconButton onClick={() => setOpenUpdateAvatar(true)}>
-                                        <i className="fe fe-camera text-white"></i>
-                                    </IconButton>
-                                </Tooltip>
-                            </Box>
-                        </Box>
-                    </div>
+                    <GeneralAvatar
+                        avatar={images?.avatar}
+                        onClickCamera={() => setOpenUpdateAvatar(true)}
+                    />
                     <Box
                         className="prof-details"
                         margin="0 0 4px 24px"
@@ -139,24 +89,7 @@ function FarmstayDetailHeader({
                                 <IconLabelDetail
                                     icon={<i className="fa fa-user me-2"></i>}
                                     label="Chủ sở hữu:"
-                                    value={
-                                        <Box
-                                            display="flex"
-                                            alignItems="center"
-                                            gap="8px"
-                                            className="tag tag-rounded"
-                                        >
-                                            <AvatarWrapper
-                                                name={detail?.host.name}
-                                                avatarProps={{
-                                                    width: "22px !important",
-                                                    height: "22px !important",
-                                                    fontSize: "12px !important"
-                                                }}
-                                            />
-                                            {detail?.host.name}
-                                        </Box>
-                                    }
+                                    value={<UserTag user={detail?.host} />}
                                 />
                                 <IconLabelDetail
                                     icon={<i className="fa fa-star me-2"></i>}

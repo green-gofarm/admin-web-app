@@ -12,7 +12,6 @@ import ApproveBookingRequest from "./action/ApproveBookingRequest";
 import RejectBookingRequest from "./action/RejectBookingRequest";
 import useBookingRequests from "./hooks/useBookingRequests";
 import useDelayLoading from "../../../../hooks/useDelayLoading";
-import DisplayLinkUser from "../../../General/DisplayLinkUser";
 import useAllCustomers from "../../Management/Account/hooks/useAllCustomers";
 import { getCustomerFromList } from "../../../../setting/customer-setting";
 import useBackUrl from "../../../../hooks/useBackUrl";
@@ -21,6 +20,7 @@ import RefreshIcon from "@mui/icons-material/Refresh";
 import DisplayLinkFarmstay from "../../../General/Link/DisplayLinkFarmstay";
 import { getFarmstayFromList } from "../../../../setting/farmstay-setting";
 import useAllFarmstays from "../../Management/Farmstay/hooks/useAllFarmstay";
+import UserLinkTag from "../../../General/Wrapper/UserLinkTag";
 
 export default function BookingRequestTable() {
     const navigate = useNavigate();
@@ -54,7 +54,7 @@ export default function BookingRequestTable() {
             key: "customerId",
             label: "Khách hàng",
             render: (row: any) => (
-                <DisplayLinkUser
+                <UserLinkTag
                     user={getCustomerFromList(allCustomers, row.customerId)}
                 />
             )
@@ -92,7 +92,7 @@ export default function BookingRequestTable() {
                     fontSize="13px"
                 >
                     <ViewIconAction
-                        onClick={() => navigate(`/management/booking-request/${row.id}?backUrl=${createBackUrl}`)}
+                        onClick={() => navigate(`/management/booking-request/${row.id}?backUrl=${createBackUrl()}`)}
                     />
                     {isExpire(row.approveExpiredTime)
                         ? null
@@ -171,19 +171,26 @@ export default function BookingRequestTable() {
                 </Grid>
             </Grid>
 
-            <ApproveBookingRequest
-                open={openApprove}
-                onClose={handleCloseApprove}
-                request={selectedBookingRequest}
-                refresh={refresh}
-            />
+            {openApprove
+                ? <ApproveBookingRequest
+                    open={openApprove}
+                    onClose={handleCloseApprove}
+                    booking={selectedBookingRequest}
+                    onSuccessCallback={refresh}
+                />
+                : null
+            }
 
-            <RejectBookingRequest
-                open={openReject}
-                onClose={handleCloseReject}
-                request={selectedBookingRequest}
-                refresh={refresh}
-            />
+            {openReject
+                ? <RejectBookingRequest
+                    open={openReject}
+                    onClose={handleCloseReject}
+                    booking={selectedBookingRequest}
+                    onSuccessCallback={refresh}
+                />
+                : null
+            }
+
         </>
     );
 };

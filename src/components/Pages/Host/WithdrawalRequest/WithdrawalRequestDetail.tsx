@@ -9,10 +9,10 @@ import IconLabelDetail from "../../../General/Item/IconLabelDetail";
 import { Status } from "../../../../setting/Status";
 import useBackUrl from "../../../../hooks/useBackUrl";
 import { findWithdrawalRequestStatus, getWithdrawalRequestTypeLabel } from "../../../../setting/withdrawl-request-setting";
-import useDisbursementDetail from "./hooks/useDisbursementDetail";
-import UserTag from "../../../General/Wrapper/UserTag";
 import { useMemo } from "react";
 import { isAvailableArray } from "../../../../helpers/arrayUtils";
+import useDisbursementDetail from "../../Management/WithdrawalRequest/hooks/useDisbursementDetail";
+import UserTag from "../../../General/Wrapper/UserTag";
 
 const breadcrumb: Array<IBreadcrumbItem> = [
     {

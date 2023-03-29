@@ -1,13 +1,15 @@
 import { useSelector } from "react-redux";
-import { Navigate, Outlet, useSearchParams } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 import { RootState } from "../../redux/redux-setting";
+import useBackUrl from "../../hooks/useBackUrl";
 
 const NoAuth = () => {
-    const [searchParams] = useSearchParams();
+    const { getBackUrl } = useBackUrl();
+
     const user = useSelector((state: RootState) => state.auth.user);
 
     if (user) {
-        return <Navigate to={searchParams.get("backUrl") ?? "/"} replace />
+        return <Navigate to={getBackUrl() ?? "/"} replace />
     }
 
     return (

@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { Box, CircularProgress, FormGroup, Grid } from "@mui/material";
 import { Status } from "../../../../setting/Status";
 import MuiTables from "../../../Mui-Table/MuiTable";
-import { LIST_WITHDRAWAL_REQUEST_STATUS, WITHDRAWAL_REQUEST_SORT_BY_OPTIONS, findWithdrawalRequestStatus } from "../../../../setting/withdrawl-request-setting";
+import { LIST_WITHDRAWAL_REQUEST_STATUS, WITHDRAWAL_REQUEST_SORT_BY_OPTIONS, findWithdrawalRequestStatus, getWithdrawalRequestTypeLabel } from "../../../../setting/withdrawl-request-setting";
 import { convertToMoney, createCodeString } from "../../../../helpers/stringUtils";
 
 //Mui icon
@@ -112,6 +112,11 @@ export default function WithdrawalRequestTable() {
             render: (row: any) => convertToMoney(row.amount) ?? "-"
         },
         {
+            key: "status",
+            label: "Phân loại",
+            render: (row) => getWithdrawalRequestTypeLabel(row.type) ?? "-"
+        },
+        {
             key: "createdDate",
             label: "Ngày khởi tạo",
             render: (row: any) => row.createdDate
@@ -155,7 +160,7 @@ export default function WithdrawalRequestTable() {
                                     type="text"
                                     className="form-control"
                                     autoFocus
-                                    placeholder="Tìm kiếm theo tên mã tài khoản chủ farmstay"
+                                    placeholder="Tìm kiếm theo tên mã đơn hàng"
                                     onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
                                 />
                                 <span className="input-group-append">

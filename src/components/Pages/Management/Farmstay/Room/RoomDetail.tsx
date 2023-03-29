@@ -1,5 +1,5 @@
 import React from 'react'
-import { useParams, useSearchParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import PageHeader, { IBreadcrumbItem } from '../../../../General/PageHeader';
 import { Box, Grid } from '@mui/material';
 import DetailPageHeaderTitle from '../../../../General/DetailPageHeaderTitle';
@@ -11,6 +11,7 @@ import RoomDetailHeader from './RoomDetailHeader';
 import RoomImage from './RoomImage';
 import useAllRoomCategories from '../../RoomCategory/hooks/useAllRoomCategories';
 import RoomDescription from './RoomDescription';
+import useBackUrl from '../../../../../hooks/useBackUrl';
 
 const breadcrumb: Array<IBreadcrumbItem> = [
     {
@@ -32,7 +33,7 @@ const breadcrumb: Array<IBreadcrumbItem> = [
 
 function RoomDetail() {
     const { id, roomId } = useParams();
-    const [searchParams] = useSearchParams();
+    const { getBackUrl } = useBackUrl();
 
     const { detail, loading } = useRoomDetail(id, roomId);
     const images = useRoomImages(detail);
@@ -49,7 +50,7 @@ function RoomDetail() {
                         gap="8px"
                     >
                         <DetailPageHeaderTitle
-                            backUrl={searchParams.get("backUrl") ?? "/management/farmstay"}
+                            backUrl={getBackUrl() ?? "/management/farmstay"}
                             title="Chi tiết phòng"
                         />
                     </Box>

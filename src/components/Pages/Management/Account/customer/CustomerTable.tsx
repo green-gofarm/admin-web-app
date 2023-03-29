@@ -2,7 +2,6 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import MuiTables from "../../../../Mui-Table/MuiTable";
 import { Box, CircularProgress, Grid } from "@mui/material";
 import { Status } from "../../../../../setting/Status";
-import AvatarWrapper from "../../../../General/Wrapper/AvatarWrapper";
 import { CUSTOMER_SORT_BY_OPTIONS, LIST_CUSTOMER_STATUS, findCustomerStatus } from "../../../../../setting/customer-setting";
 import ViewIconAction from "../../../../General/Action/IconAction/ViewIconAction";
 import LockIconAction from "../../../../General/Action/IconAction/LockIconAction";
@@ -22,6 +21,7 @@ import useBackUrl from "../../../../../hooks/useBackUrl";
 import StringWrapper from "../../../../General/Wrapper/StringWrapper";
 import ConditionWrapper from "../../../../General/Wrapper/ConditionWrapper";
 import { isActiveUser, isBannedUser } from "../../../../../setting/user-setting";
+import UserTag from "../../../../General/Wrapper/UserTag";
 
 interface FilterProps {
     status: any,
@@ -109,17 +109,7 @@ export default function CustomerTable() {
             key: "name",
             label: "Họ và tên",
             render: (row: any) => (
-                <Box
-                    display="flex"
-                    alignItems="center"
-                    gap="8px"
-                >
-                    <AvatarWrapper
-                        src={row.avatarURL}
-                        name={row.name}
-                    />
-                    {row.name}
-                </Box>
+                <UserTag user={row} />
             )
         },
         {
@@ -149,7 +139,7 @@ export default function CustomerTable() {
                     columnGap="8px"
                 >
                     <ViewIconAction
-                        onClick={() => navigate(`/management/account/customer/${row.id}?backUrl={${createBackUrl()}}`)}
+                        onClick={() => navigate(`/management/account/customer/${row.id}?backUrl=${createBackUrl()}`)}
                     />
 
                     <ConditionWrapper isRender={isActiveUser(row.status)}>

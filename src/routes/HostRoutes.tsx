@@ -22,12 +22,12 @@ const FarmstayManagement = React.lazy(() => import("../components/Pages/Host/Far
 const WithdrawalRequestManagement = React.lazy(() => import("../components/Pages/Host/WithdrawalRequest//WithdrawalRequestManagement"));
 const OrderManagement = React.lazy(() => import("../components/Pages/Host/Order/OrderManagement"));
 const OrderDetail = React.lazy(() =>
-    import("../components/Pages/Management/Order/OrderDetail")
+    import("../components/Pages/Host/Order/OrderDetail")
 );
 
 // Detail
 const BookingRequestDetail = React.lazy(() => import("../components/Pages/Host/BookingRequest/BookingRequestDetail"));
-const WithdrawalRequestDetail = React.lazy(() => import("../components/Pages/Management/WithdrawalRequest/WithdrawalRequestDetail"));
+const WithdrawalRequestDetail = React.lazy(() => import("../components/Pages/Host/WithdrawalRequest/WithdrawalRequestDetail"));
 const FarmstayDetail = React.lazy(() => import("../components/Pages/Host/Farmstay/FarmstayDetail/FarmstayDetail"));
 const ActivityDetail = React.lazy(() =>
     import("../components/Pages/Host/Farmstay/Activity/ActivityDetail")
