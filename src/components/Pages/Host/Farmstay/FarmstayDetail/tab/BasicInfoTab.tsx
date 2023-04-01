@@ -11,6 +11,7 @@ import UpdateFarmstayContactInfo from '../action/UpdateFarmstayContactInfo';
 import ImageView from '../../../../../General/ImageView';
 import LeafletViewMap from '../../../../../General/Map/LeafletViewMap';
 import UpdateFarmstayLocation from '../action/UpdateFarmstayLocation';
+import StringWrapper from '../../../../../General/Wrapper/StringWrapper';
 
 interface IBasicInfo {
     detail: any,
@@ -148,13 +149,19 @@ function BasicInfoTab({
                                     <div className="media-body">
                                         <div>
                                             <label>{contact.method}:</label>{" "}
-                                            <span className="tx-medium">{contact.value}</span>
+                                            <span className="tx-medium">
+                                                <StringWrapper
+                                                    text={contact.value}
+                                                />
+                                            </span>
                                         </div>
                                         {contactInfo.length > index + 1 && (
                                             <div>
                                                 <label>{contactInfo[index + 1].method}:</label>{" "}
                                                 <span className="tx-medium">
-                                                    {contactInfo[index + 1].value}
+                                                    <StringWrapper
+                                                        text={contactInfo[index + 1].value}
+                                                    />
                                                 </span>
                                             </div>
                                         )}

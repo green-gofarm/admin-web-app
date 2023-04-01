@@ -95,7 +95,7 @@ function CreateRoom({
         const tempErrors: Errors = {
             name: VALIDATOR.isRequired(room.name),
             description: VALIDATOR.isRequired(room.description),
-            price: VALIDATOR.isRequired(room.price) || VALIDATOR.isNumberString(room.price),
+            price: VALIDATOR.isValidPrice(room.price),
             roomCategory: VALIDATOR.isRequired(room.roomCategory?.value) || VALIDATOR.isNumberString(room.roomCategory?.value),
             file: file != null ? VALIDATOR.NO_ERROR : VALIDATOR.REQUIRED_MESSAGE,
         }
@@ -275,7 +275,7 @@ function CreateRoom({
                                 </InputGroup.Text>
                             </InputGroup>
                             {errors.price
-                                ? <InvalidFeedback />
+                                ? <InvalidFeedback message={errors.price} />
                                 : null
                             }
                         </FormGroup>

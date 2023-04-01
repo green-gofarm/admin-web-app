@@ -1,4 +1,4 @@
-import { memo, useState } from 'react'
+import { memo, useMemo, useState } from 'react'
 import { Button } from 'react-bootstrap';
 import { Box, CircularProgress, Dialog, DialogContent } from '@mui/material';
 import { useDispatch } from 'react-redux';
@@ -10,9 +10,10 @@ import { updateFarmstay, uploadImage } from '../../../../../../redux/farmstay/ac
 import useFarmstayImages from '../../../../Management/Farmstay/FarmstayDetail/hooks/useFarmstayImages';
 import { cloneDeep } from 'lodash';
 import CustomizedDialogActions from '../../../../../General/Dialog/CustomizedDialogActions';
-import SingleImageDropzone from '../ui-segment/SingleImageDropzone';
 import { isAvailableArray } from '../../../../../../helpers/arrayUtils';
 import CustomizedDialogTitle from '../../../../../General/Dialog/CustomizedDialogTitle';
+import SingleImageUpdate from '../ui-segment/SingleImageUpdate';
+import InvalidFeedback from '../../../../../General/InvalidFeedback';
 
 interface UpdateFarmstayAvatarProps {
     open?: boolean,
@@ -36,7 +37,15 @@ function UpdateFarmstayAvatar({
 
     const images = useFarmstayImages(farmstay);
 
-    const [file, setFile] = useState<File | null>(null);
+    const [file, setFile] = useState<File | null | any>(null);
+    const [avatar, setAvatar] = useState<string | null>(images?.avatar ?? null);
+
+    const isDisableSubmit = useMemo(() => {
+        if (delay) return true;
+        if (avatar) return true;
+        if (!file || file.error) return true;
+        return false;
+    }, [avatar, delay, file]);
 
     const preparedImages = (link: any) => {
         const newData = images ? cloneDeep(images) : {
@@ -98,10 +107,18 @@ function UpdateFarmstayAvatar({
     }
 
     const renderContent = () => (
-        <SingleImageDropzone
-            file={file}
-            setFile={setFile}
-        />
+        <>
+            <SingleImageUpdate
+                file={file}
+                setFile={setFile}
+                link={avatar}
+                clear={() => setAvatar(null)}
+            />
+            {file?.error
+                ? <InvalidFeedback message={file.error} />
+                : null
+            }
+        </>
     )
 
     return (
@@ -130,7 +147,7 @@ function UpdateFarmstayAvatar({
                 <Button
                     variant="primary"
                     onClick={handleUpdate}
-                    disabled={delay || !file}
+                    disabled={isDisableSubmit}
                 >
                     <Box
                         display="flex"

@@ -4,7 +4,7 @@ import { Status } from '../../../../../setting/Status';
 import { findActivityStatus } from '../../../../../setting/activity-status-setting';
 import { convertToMoney } from '../../../../../helpers/stringUtils';
 import GeneralAvatar from '../../../../General/GeneralAvatar';
-import { formatTimeString } from '../../../../../helpers/dateUtils';
+import { formatTimeString, getTimeAgoString } from '../../../../../helpers/dateUtils';
 
 interface IActivityDetailHeader {
     detail?: any,
@@ -39,27 +39,32 @@ function ActivityDetailHeader({
             <Grid item xs={12} md={6}>
                 <IconLabelDetail
                     icon={<i className="fa fa-ticket-alt"></i>}
-                    label="Sức chứa:"
-                    value={detail?.slot}
-                />
-                <IconLabelDetail
-                    icon={<i className="fa fa-credit-card"></i>}
-                    label="Giá vé:"
-                    value={convertToMoney(detail?.price)}
+                    label="Sức chứa"
+                    value={detail?.slot ?? 0}
                 />
             </Grid>
 
             <Grid item xs={12} md={6}>
                 <IconLabelDetail
-                    icon={<i className="fa fa-ticket-alt"></i>}
+                    icon={<i className="fa fa-clock"></i>}
                     label="Ngày tạo:"
                     value={formatTimeString(detail?.createdDate) ?? "-"}
                 />
+            </Grid>
 
+            <Grid item xs={12} md={6}>
                 <IconLabelDetail
                     icon={<i className="fa fa-credit-card"></i>}
+                    label="Giá vé:"
+                    value={`${convertToMoney(detail?.price)} / ngày`}
+                />
+            </Grid>
+
+            <Grid item xs={12} md={6}>
+                <IconLabelDetail
+                    icon={<i className="fa fa-clock"></i>}
                     label="Lần cập nhật cuối:"
-                    value={formatTimeString(detail?.updatedDate) ?? "-"}
+                    value={`${formatTimeString(detail?.updatedDate)} (${getTimeAgoString(detail?.updatedDate)})` ?? "-"}
                 />
             </Grid>
         </Grid>

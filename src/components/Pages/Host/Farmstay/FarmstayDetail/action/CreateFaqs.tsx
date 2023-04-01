@@ -127,7 +127,12 @@ function CreateFaqs({
                                     placeholder="Câu hỏi"
                                 />
                             </Box>
-                            <Box className="btn btn-secondary shadow" onClick={() => handleRemove(index)}>
+                            <Box
+                                component="button"
+                                className="btn btn-secondary shadow"
+                                onClick={() => handleRemove(index)}
+                                disabled={faqs.length <= 1}
+                            >
                                 <DeleteForever />
                             </Box>
                         </Box>

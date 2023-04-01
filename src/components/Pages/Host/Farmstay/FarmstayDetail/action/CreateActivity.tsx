@@ -1,4 +1,4 @@
-import { memo, useCallback, useState } from 'react'
+import { memo, useCallback, useMemo, useState } from 'react'
 import { Button, Form, FormGroup, InputGroup } from 'react-bootstrap';
 import { Box, CircularProgress, Dialog, DialogContent, Grid } from '@mui/material';
 import CustomizedDialogActions from '../../../../../General/Dialog/CustomizedDialogActions';
@@ -13,7 +13,8 @@ import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
 import CustomizedDialogTitle from '../../../../../General/Dialog/CustomizedDialogTitle';
 import InvalidFeedback from '../../../../../General/InvalidFeedback';
-
+import Select from "react-select";
+import useAllTagCategories from '../../../../Management/Tag/hooks/useAllTagCategories';
 interface CreateActivityProps {
     open?: boolean,
     onSuccessCallback?: any,
@@ -25,7 +26,8 @@ type Activity = {
     name: string | null,
     price: string | null,
     description: string | null,
-    slot: string | null
+    slot: string | null,
+    tags: any[],
 }
 
 interface Errors {
@@ -33,7 +35,8 @@ interface Errors {
     price: string,
     slot: string | null,
     description: string,
-    file: string
+    file: string,
+    tags: string,
 }
 
 const initialErrors: Errors = {
@@ -41,7 +44,8 @@ const initialErrors: Errors = {
     price: '',
     slot: '',
     description: '',
-    file: ''
+    file: '',
+    tags: '',
 };
 
 function CreateActivity({
@@ -64,14 +68,22 @@ function CreateActivity({
         price: "",
         slot: "",
         description: "",
+        tags: [],
     })
+
+    const categories = useAllTagCategories();
+
+    const categoryOptions = useMemo(() => {
+        if (!isAvailableArray(categories)) return [];
+        return categories.map((item: any) => ({ label: item.name, value: item.id }));
+    }, [categories]);
 
     const [errors, setErrors] = useState<Errors>(initialErrors);
 
     const [loading, setLoading] = useState<boolean>(false);
     const delay = useDelayLoading(loading);
 
-    const handleOnChangeAddress = useCallback((key: keyof Activity, value: any) => {
+    const handleOnChange = useCallback((key: keyof Activity, value: any) => {
         setActivity(prev => ({
             ...prev,
             [key]: value,
@@ -87,9 +99,10 @@ function CreateActivity({
         const tempActivityError: Errors = {
             name: VALIDATOR.isRequired(activity.name),
             description: VALIDATOR.isRequired(activity.description),
-            price: VALIDATOR.isRequired(activity.price) || VALIDATOR.isNumberString(activity.price),
-            slot: VALIDATOR.isRequired(activity.price) || VALIDATOR.isNumberString(activity.price),
+            price: VALIDATOR.isValidPrice(activity.price),
+            slot: VALIDATOR.isValidActivitySlotNumber(activity.slot),
             file: file != null ? VALIDATOR.NO_ERROR : VALIDATOR.REQUIRED_MESSAGE,
+            tags: '',
         }
 
         setErrors(tempActivityError);
@@ -151,7 +164,7 @@ function CreateActivity({
                 price: parseFloat(price),
                 slot: parseInt(slot),
                 description: activity.description,
-                tags: []
+                tags: activity.tags.map(item => item.value),
             }
 
             dispatch(createFarmstayActivities(
@@ -217,11 +230,11 @@ function CreateActivity({
                             </Form.Label>
                             <Form.Control
                                 aria-label="Activity name"
-                                className={`form-control ${errors.name ? "is-invalid" : ""}`}
+                                className="form-control"
                                 type="text"
                                 autoFocus
                                 value={activity.name ?? ""}
-                                onChange={(e) => handleOnChangeAddress("name", e.target.value ?? "")}
+                                onChange={(e) => handleOnChange("name", e.target.value ?? "")}
                             />
                             {errors.name
                                 ? <InvalidFeedback />
@@ -238,14 +251,14 @@ function CreateActivity({
                             <InputGroup className="input-group mb-3">
                                 <Form.Control
                                     aria-label=""
-                                    className={`form-control ${errors.slot ? "is-invalid" : ""}`}
+                                    className="form-control"
                                     type="number"
                                     value={activity.slot ?? ""}
-                                    onChange={(e) => handleOnChangeAddress("slot", e.target.value ?? "")}
+                                    onChange={(e) => handleOnChange("slot", e.target.value ?? "")}
                                 />
                             </InputGroup>
                             {errors.slot
-                                ? <InvalidFeedback />
+                                ? <InvalidFeedback message={errors.slot} />
                                 : null
                             }
                         </FormGroup>
@@ -259,17 +272,17 @@ function CreateActivity({
                             <InputGroup className="input-group mb-3">
                                 <Form.Control
                                     aria-label=""
-                                    className={`form-control ${errors.price ? "is-invalid" : ""}`}
+                                    className="form-control"
                                     type="number"
                                     value={activity.price ?? ""}
-                                    onChange={(e) => handleOnChangeAddress("price", e.target.value ?? "")}
+                                    onChange={(e) => handleOnChange("price", e.target.value ?? "")}
                                 />
                                 <InputGroup.Text className="input-group-text">
                                     đ
                                 </InputGroup.Text>
                             </InputGroup>
                             {errors.price
-                                ? <InvalidFeedback />
+                                ? <InvalidFeedback message={errors.price} />
                                 : null
                             }
                         </FormGroup>
@@ -285,13 +298,32 @@ function CreateActivity({
                                 required
                                 placeholder='Mô tả'
                                 value={activity.description ?? ""}
-                                className={`form-control ${errors.description ? "is-invalid" : ""}`}
-                                onChange={(e) => handleOnChangeAddress("description", e.target.value ?? "")}
+                                className="form-control"
+                                onChange={(e) => handleOnChange("description", e.target.value ?? "")}
                             />
                             {errors.description
                                 ? <InvalidFeedback />
                                 : null
                             }
+                        </FormGroup>
+                    </Grid>
+
+                    <Grid item xs={12}>
+                        <FormGroup className="has-danger">
+                            <Form.Label>
+                                Thẻ mô tả
+                            </Form.Label>
+                            <Select
+                                value={activity.tags}
+                                onChange={(options) => handleOnChange("tags", options)}
+                                options={categoryOptions}
+                                placeholder=""
+                                isSearchable
+                                isClearable
+                                isMulti
+                                menuPosition="fixed"
+                                className="formselect"
+                            />
                         </FormGroup>
                     </Grid>
                 </Grid>

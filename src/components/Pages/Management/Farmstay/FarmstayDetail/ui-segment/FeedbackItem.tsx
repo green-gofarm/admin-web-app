@@ -1,12 +1,8 @@
 import { formatTimeString } from "../../../../../../helpers/dateUtils"
-import { isNumber } from "../../../../../../helpers/numberUtils";
+import Rating from "../../../../../General/Rating";
 
 interface IFeedbackItem {
     item: any
-}
-
-export const getFeedbackRatingNumber = (item: any) => {
-    return isNumber(item?.rating) ? item.rating : 0;
 }
 
 function FeedbackItem({
@@ -28,14 +24,7 @@ function FeedbackItem({
                     {item?.user?.name}
                 </h5>
                 <span className="text-muted tx-13">{formatTimeString(item?.createdDate)}</span>
-                <div className="text-warning mt-1">
-                    {new Array(getFeedbackRatingNumber(item)).fill("").map((_, index) => (
-                        <i className="bx bxs-star active" key={index}></i>
-                    ))}
-                    {new Array(getFeedbackRatingNumber(item) < 5 ? (5 - getFeedbackRatingNumber(item)) : 0).fill("").map((_, index) => (
-                        <i className="bx bxs-star text-light" key={index}></i>
-                    ))}
-                </div>
+                <Rating rating={item?.rating} />
                 <p className="font-13  mb-2 mt-2">
                     {item?.comment}
                 </p>

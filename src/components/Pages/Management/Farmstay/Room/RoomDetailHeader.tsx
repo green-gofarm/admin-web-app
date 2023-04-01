@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../redux/redux-setting';
 import { getRoomCategoryLabel } from '../../../../../setting/room-category-setting';
 import { convertToMoney } from '../../../../../helpers/stringUtils';
+import { formatTimeString, getTimeAgoString } from '../../../../../helpers/dateUtils';
 
 interface RoomDetailHeaderProps {
     detail?: any,
@@ -39,7 +40,7 @@ function RoomDetailHeader({
                 </Box>
             </Grid>
 
-            <Grid item xs={12}>
+            <Grid item xs={12} md={6}>
                 <IconLabelDetail
                     icon={<i className="fa fa-ticket-alt"></i>}
                     label="Phân loại:"
@@ -47,11 +48,27 @@ function RoomDetailHeader({
                 />
             </Grid>
 
-            <Grid item xs={12}>
+            <Grid item xs={12} md={6}>
+                <IconLabelDetail
+                    icon={<i className="fa fa-clock"></i>}
+                    label="Ngày tạo:"
+                    value={formatTimeString(detail?.createdDate) ?? "-"}
+                />
+            </Grid>
+
+            <Grid item xs={12} md={6}>
                 <IconLabelDetail
                     icon={<i className="fa fa-credit-card"></i>}
                     label="Giá phòng:"
                     value={`${convertToMoney(detail?.price)} / ngày`}
+                />
+            </Grid>
+
+            <Grid item xs={12} md={6}>
+                <IconLabelDetail
+                    icon={<i className="fa fa-clock"></i>}
+                    label="Lần cập nhật cuối:"
+                    value={`${formatTimeString(detail?.updatedDate)} (${getTimeAgoString(detail?.updatedDate)})` ?? "-"}
                 />
             </Grid>
         </Grid>

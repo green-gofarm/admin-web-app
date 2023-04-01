@@ -1,4 +1,4 @@
-import { memo, useState } from 'react'
+import { memo, useMemo, useState } from 'react'
 import { Button } from 'react-bootstrap';
 import { Box, CircularProgress, Dialog, DialogContent } from '@mui/material';
 import { useDispatch } from 'react-redux';
@@ -6,13 +6,14 @@ import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../../redux/redux-setting';
 import useDelayLoading from '../../../../../../hooks/useDelayLoading';
-import useFarmstayImages from '../../../../Management/Farmstay/FarmstayDetail/hooks/useFarmstayImages';
+import { updateFarmstayActivities, uploadImage } from '../../../../../../redux/farmstay/action';
 import { cloneDeep } from 'lodash';
 import CustomizedDialogActions from '../../../../../General/Dialog/CustomizedDialogActions';
 import { isAvailableArray } from '../../../../../../helpers/arrayUtils';
-import SingleImageDropzone from '../../FarmstayDetail/ui-segment/SingleImageDropzone';
-import { updateFarmstayActivities, uploadImage } from '../../../../../../redux/farmstay/action';
 import CustomizedDialogTitle from '../../../../../General/Dialog/CustomizedDialogTitle';
+import useActivityImages from '../../../../Management/Farmstay/FarmstayDetail/hooks/useActivityImages';
+import SingleImageUpdate from '../../FarmstayDetail/ui-segment/SingleImageUpdate';
+import InvalidFeedback from '../../../../../General/InvalidFeedback';
 
 interface UpdateActivityAvatarProps {
     open?: boolean,
@@ -34,9 +35,17 @@ function UpdateActivityAvatar({
     const [loading, setLoading] = useState<boolean>(false);
     const delay = useDelayLoading(loading);
 
-    const images = useFarmstayImages(activity);
+    const images = useActivityImages(activity);
 
-    const [file, setFile] = useState<File | null>(null);
+    const [file, setFile] = useState<File | null | any>(null);
+    const [avatar, setAvatar] = useState<string | null>(images?.avatar ?? null);
+
+    const isDisableSubmit = useMemo(() => {
+        if (delay) return true;
+        if (avatar) return true;
+        if (!file || file.error) return true;
+        return false;
+    }, [avatar, delay, file]);
 
     const preparedImages = (link: any) => {
         const newData = images ? cloneDeep(images) : {
@@ -74,7 +83,6 @@ function UpdateActivityAvatar({
         if (!file) return;
         if (!user?.id) return;
         if (!activity?.id) return;
-        if (!activity?.farmstayId) return;
 
         const formData = new FormData();
         formData.set("files", file);
@@ -100,10 +108,18 @@ function UpdateActivityAvatar({
     }
 
     const renderContent = () => (
-        <SingleImageDropzone
-            file={file}
-            setFile={setFile}
-        />
+        <>
+            <SingleImageUpdate
+                file={file}
+                setFile={setFile}
+                link={avatar}
+                clear={() => setAvatar(null)}
+            />
+            {file?.error
+                ? <InvalidFeedback message={file.error} />
+                : null
+            }
+        </>
     )
 
     return (
@@ -132,7 +148,7 @@ function UpdateActivityAvatar({
                 <Button
                     variant="primary"
                     onClick={handleUpdate}
-                    disabled={delay || !file}
+                    disabled={isDisableSubmit}
                 >
                     <Box
                         display="flex"

@@ -4,7 +4,6 @@ import { Box, CircularProgress, Dialog, DialogContent, Grid } from '@mui/materia
 import CustomizedDialogActions from '../../../../../General/Dialog/CustomizedDialogActions';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../../redux/redux-setting';
-import VALIDATOR from './validator';
 import useDelayLoading from '../../../../../../hooks/useDelayLoading';
 import { updateFarmstayRooms } from '../../../../../../redux/farmstay/action';
 import { isAvailableArray } from '../../../../../../helpers/arrayUtils';
@@ -14,6 +13,7 @@ import useAllRoomCategories from '../../../../Management/RoomCategory/hooks/useA
 import Select from "react-select";
 import CustomizedDialogTitle from '../../../../../General/Dialog/CustomizedDialogTitle';
 import InvalidFeedback from '../../../../../General/InvalidFeedback';
+import VALIDATOR from '../../FarmstayDetail/action/validator';
 
 interface CreateRoomProps {
     open?: boolean,
@@ -89,7 +89,7 @@ function UpdateRoomBasic({
         const tempErrors: Errors = {
             name: VALIDATOR.isRequired(data.name),
             description: VALIDATOR.isRequired(data.description),
-            price: VALIDATOR.isRequired(data.price) || VALIDATOR.isNumberString(data.price),
+            price: VALIDATOR.isValidPrice(data.price),
             roomCategory: VALIDATOR.isRequired(data.roomCategory?.value) || VALIDATOR.isNumberString(data.roomCategory?.value),
         }
 
@@ -216,7 +216,7 @@ function UpdateRoomBasic({
                                 </InputGroup.Text>
                             </InputGroup>
                             {errors.price
-                                ? <InvalidFeedback />
+                                ? <InvalidFeedback message={errors.price} />
                                 : null
                             }
                         </FormGroup>

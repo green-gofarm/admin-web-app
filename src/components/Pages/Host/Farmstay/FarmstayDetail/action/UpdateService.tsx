@@ -63,7 +63,7 @@ function UpdateService({
 
     // State
     const [avatar, setAvatar] = useState<string | null>(service?.image ?? null);
-    const [file, setFile] = useState<File | null>(null);
+    const [file, setFile] = useState<File | null | any>(null);
 
     // Redux
     const user = useSelector((state: RootState) => state.auth.user);
@@ -96,7 +96,7 @@ function UpdateService({
         const tempErrors: Errors = {
             name: VALIDATOR.isRequired(data.name),
             description: VALIDATOR.isRequired(data.description),
-            price: VALIDATOR.isRequired(data.price) || VALIDATOR.isNumberString(data.price),
+            price: VALIDATOR.isValidPrice(data.price),
             serviceCategory: VALIDATOR.isRequired(data.serviceCategory?.value) || VALIDATOR.isNumberString(data.serviceCategory?.value),
             file: (() => {
                 if (avatar) return VALIDATOR.NO_ERROR;
@@ -215,8 +215,8 @@ function UpdateService({
                                 link={avatar}
                                 clear={() => setAvatar(null)}
                             />
-                            {errors.file
-                                ? <InvalidFeedback />
+                            {errors.file || file?.error
+                                ? <InvalidFeedback message={file?.error || errors.file} />
                                 : null
                             }
                         </FormGroup>
@@ -282,7 +282,7 @@ function UpdateService({
                                 </InputGroup.Text>
                             </InputGroup>
                             {errors.price
-                                ? <InvalidFeedback />
+                                ? <InvalidFeedback message={errors.price} />
                                 : null
                             }
                         </FormGroup>
@@ -321,7 +321,7 @@ function UpdateService({
                 <Button
                     variant="primary"
                     onClick={handleSubmit}
-                    disabled={delay}
+                    disabled={delay || file?.error}
                 >
                     <Box
                         display="flex"

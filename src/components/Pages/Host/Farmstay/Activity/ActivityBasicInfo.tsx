@@ -1,8 +1,11 @@
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { Box } from '@mui/material';
 import { convertISOToNaturalFormat } from '../../../../../helpers/dateUtils';
 import { convertToMoney, createCodeString } from '../../../../../helpers/stringUtils';
 import UpdateActivityBasicInfo from './action/UpdateActivityBasicInfo';
+import { isAvailableArray } from '../../../../../helpers/arrayUtils';
+import { getTagCategoryLabel } from '../../../../../setting/tag-category-setting';
+import useAllTagCategories from '../../../Management/Tag/hooks/useAllTagCategories';
 
 interface ActivityBasicInfoProps {
     detail: any,
@@ -17,6 +20,12 @@ function ActivityBasicInfo({
 }: ActivityBasicInfoProps) {
 
     const [openUpdate, setOpenUpdate] = useState<boolean>(false);
+    const categories = useAllTagCategories();
+
+    const tags: any[] = useMemo(() => {
+        if (!isAvailableArray(detail?.tags)) return [];
+        return detail.tags;
+    }, [detail?.tags]);
 
     return (
         <>
@@ -79,6 +88,22 @@ function ActivityBasicInfo({
                                     <span className="tx-medium">
                                         {detail?.description ?? <i>Chưa có mô tả</i>}
                                     </span>
+
+                                    {tags.length > 0
+                                        ? <Box
+                                            marginTop="8px"
+                                            display="flex"
+                                            alignItems="center"
+                                            gap="8px"
+                                        >
+                                            {tags.map((item) =>
+                                                <span className='tag tag-rounded'>
+                                                    {getTagCategoryLabel(categories, item)}
+                                                </span>
+                                            )}
+                                        </Box>
+                                        : null
+                                    }
                                 </div>
                             </div>
                         </div>

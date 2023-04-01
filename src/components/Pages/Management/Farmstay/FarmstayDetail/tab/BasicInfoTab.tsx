@@ -4,6 +4,7 @@ import useFarmstayImages from '../hooks/useFarmstayImages';
 import CustomizedCard from '../../../../../General/Card/CustomizedCard';
 import ImageView from '../../../../../General/ImageView';
 import LeafletViewMap from '../../../../../General/Map/LeafletViewMap';
+import StringWrapper from '../../../../../General/Wrapper/StringWrapper';
 interface IBasicInfo {
     detail: any,
     loading: boolean,
@@ -23,9 +24,11 @@ function BasicInfoTab({
                 <CustomizedCard
                     title="Mô tả"
                     content={
-                        <p className="tx-13">
-                            {detail?.description}
-                        </p>
+                        detail?.description
+                            ? <p className="tx-13">
+                                {detail?.description}
+                            </p>
+                            : <i>Chưa có mô tả</i>
                     }
                 />
             </Grid>
@@ -35,6 +38,10 @@ function BasicInfoTab({
                     title="Phương thức liên hệ"
                     content={
                         <div className="media-list p-0">
+                            {contactInfo.length < 1
+                                ? <i>Chưa có phương thức liên hệ.</i>
+                                : null
+                            }
                             {contactInfo.map((contact, index) => {
                                 if (index % 2 === 0) {
                                     // create a new media-body every two items
@@ -42,14 +49,20 @@ function BasicInfoTab({
                                         <div key={index} className="media">
                                             <div className="media-body">
                                                 <div>
-                                                    <label>{contact.method}:</label>{" "}
-                                                    <span className="tx-medium">{contact.value}</span>
+                                                    <label>{contact.method} :</label>{" "}
+                                                    <span className="tx-medium">
+                                                        <StringWrapper
+                                                            text={contact.value}
+                                                        />
+                                                    </span>
                                                 </div>
                                                 {contactInfo.length > index + 1 && (
                                                     <div>
-                                                        <label>{contactInfo[index + 1].method}:</label>{" "}
+                                                        <label>{contactInfo[index + 1].method} :</label>{" "}
                                                         <span className="tx-medium">
-                                                            {contactInfo[index + 1].value}
+                                                            <StringWrapper
+                                                                text={contactInfo[index + 1].value}
+                                                            />
                                                         </span>
                                                     </div>
                                                 )}

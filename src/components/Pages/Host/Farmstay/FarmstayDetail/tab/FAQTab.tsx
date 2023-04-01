@@ -8,6 +8,7 @@ import AddAction from '../../../../../General/Action/ButtonAction/AddAction';
 import { Add } from '@mui/icons-material';
 import CreateFaqs from '../action/CreateFaqs';
 
+
 interface FAQTabProps {
     detail?: any,
     loading?: boolean,
@@ -68,18 +69,25 @@ function FAQTab({
                         </Box>
                     </Grid>
                 }
-                <Grid item xs={12}>
-                    <Accordion defaultActiveKey="0" style={{ overflow: "visible" }}>
-                        {faqs.map((item, index) =>
-                            <FaqItem
-                                key={index}
-                                item={item}
-                                eventKey={index + ""}
-                                refresh={refresh}
-                            />
-                        )}
-                    </Accordion>
-                </Grid>
+                {isAvailableArray(faqs)
+                    ? <Grid item xs={12}>
+                        <Accordion
+                            defaultActiveKey={faqs.map((_, i) => i + "")}
+                            style={{ overflow: "visible" }}
+                            alwaysOpen
+                        >
+                            {faqs.map((item, index) =>
+                                <FaqItem
+                                    key={index}
+                                    item={item}
+                                    eventKey={index + ""}
+                                    refresh={refresh}
+                                />
+                            )}
+                        </Accordion>
+                    </Grid>
+                    : null
+                }
             </Grid>
 
             {openAddNew

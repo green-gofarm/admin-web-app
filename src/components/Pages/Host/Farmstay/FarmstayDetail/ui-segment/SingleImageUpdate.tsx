@@ -4,6 +4,7 @@ import Dropzone from "react-dropzone";
 import { DeleteForever } from "@mui/icons-material";
 import { imageAcceptType } from "../../../../../../setting/setting";
 import makeStyles from "@mui/styles/makeStyles/makeStyles";
+import { FILE_MAX_SIZE, OVER_FILE_SIZE_ERROR } from "../../../../../../setting/file-setting";
 
 const useStyles = makeStyles({
     container: {
@@ -16,14 +17,15 @@ const useStyles = makeStyles({
         left: "0",
         width: "100%",
         height: "50px",
-        bgcolor: "rgba(0,0,0,0.3)",
+        background: "rgba(0,0,0,0.3)",
+        zIndex: 1,
 
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
         padding: "0 1rem",
         "&:hover": {
-            bgcolor: "rgba(0,0,0,0.4)"
+            background: "rgba(0,0,0,0.4)"
         }
     }
 });
@@ -59,6 +61,7 @@ const SingleImageUpdate = ({
             Object.assign(file, {
                 preview: URL.createObjectURL(file),
                 formattedSize: formatBytes(file.size),
+                error: file.size > FILE_MAX_SIZE ? OVER_FILE_SIZE_ERROR : "",
             })
         );
         setFile(files[0]);
@@ -71,6 +74,9 @@ const SingleImageUpdate = ({
                     <i className="mdi mdi-apple-mobileme"></i>
                 </div>
                 <p style={{ color: "#9393b5" }}>Thả ảnh hoặc ấn vào đây để chọn file.</p>
+                <p style={{ color: "#9393b5" }}>
+                    {`Chấp nhận ảnh có kích thước nhỏ hơn ${formatBytes(FILE_MAX_SIZE)}`}
+                </p>
             </div>
         </div>
     )
@@ -129,7 +135,7 @@ const SingleImageUpdate = ({
             >
                 {({ getRootProps }) => (
                     <>
-                        {link ?? file ? renderImage() : renderDropzone(getRootProps)}
+                        {(link ?? file) ? renderImage() : renderDropzone(getRootProps)}
                     </>
                 )}
             </Dropzone>

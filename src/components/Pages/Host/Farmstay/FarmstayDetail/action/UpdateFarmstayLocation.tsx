@@ -12,6 +12,7 @@ import { Location } from '../../create-farmstay/CreateFarmstay';
 import IconLabelDetail from '../../../../../General/Item/IconLabelDetail';
 import CustomizedMap from '../../create-farmstay/ui-segment/CustomizedMap';
 import CustomizedDialogTitle from '../../../../../General/Dialog/CustomizedDialogTitle';
+import { isString } from 'lodash';
 
 interface UpdateFarmstayLocationProps {
     open?: boolean,
@@ -48,13 +49,15 @@ function UpdateFarmstayLocation({
             user.id,
             farmstay.id,
             {
-                latitude: location.lat,
-                longitude: location.lng
+                latitude: isString(location.lat) ? parseFloat(location.lat) : location.lat,
+                longitude: isString(location.lng) ? parseFloat(location.lng) : location.lng,
             },
             {
                 loading: setLoading,
                 onSuccess: (response: any) => {
-                    toast.error("Cập nhật vị trí thành công.");
+                    toast.success("Cập nhật vị trí thành công.");
+                    onSuccessCallback && onSuccessCallback();
+                    onClose && onClose();
                 },
                 onFailure: () => {
                     toast.error("Cập nhật vị trí thất bại");

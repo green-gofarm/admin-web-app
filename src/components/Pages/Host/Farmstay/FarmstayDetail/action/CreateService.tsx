@@ -95,7 +95,7 @@ function CreateService({
         const tempErrors: Errors = {
             name: VALIDATOR.isRequired(service.name),
             description: VALIDATOR.isRequired(service.description),
-            price: VALIDATOR.isRequired(service.price) || VALIDATOR.isNumberString(service.price),
+            price: VALIDATOR.isValidPrice(service.price),
             serviceCategory: VALIDATOR.isRequired(service.serviceCategory?.value) || VALIDATOR.isNumberString(service.serviceCategory?.value),
             file: file != null ? VALIDATOR.NO_ERROR : VALIDATOR.REQUIRED_MESSAGE,
         }
@@ -265,7 +265,7 @@ function CreateService({
                                 </InputGroup.Text>
                             </InputGroup>
                             {errors.price
-                                ? <InvalidFeedback />
+                                ? <InvalidFeedback message={errors.price} />
                                 : null
                             }
                         </FormGroup>

@@ -8,7 +8,7 @@ interface Props {
 
 const emailRegex = /^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$/;
 const phoneRegex = /^\d{10,}$/;
-const linkRegex = /^(?:(?:https?|ftp):\/\/|www\.)?[^\s/$.?#].[^\s]*$/;
+const linkRegex = /^(?:(?:https?|ftp):\/\/|www\.)[^\s/$.?#]+\.[^\s]*$/
 
 const isEmail = (text?: string) => {
     return !!text && emailRegex.test(text);

@@ -24,6 +24,7 @@ import ConditionWrapper from "../../../General/Wrapper/ConditionWrapper";
 import GradingIcon from "@mui/icons-material/Grading";
 import TooltipIconAction from "../../../General/Icon/TooltipIconAction";
 import UserLinkTag from "../../../General/Wrapper/UserLinkTag";
+import Rating from "../../../General/Rating";
 
 interface FilterProps {
     status: any,
@@ -121,16 +122,7 @@ export default function FarmstayTable() {
         {
             key: "rating",
             label: "Đánh giá",
-            render: (row) => new Array(row.rating).fill("").map((_, index) => (
-                <Box
-                    key={index}
-                    component="span"
-                    className="text-warning"
-                    fontSize="20px"
-                >
-                    &#8902;
-                </Box>
-            ))
+            render: (row) => <Rating rating={row.rating} />
         },
         {
             key: "status",

@@ -1,21 +1,24 @@
-import { memo, useCallback, useState } from 'react'
+import { memo, useCallback, useMemo, useState } from 'react'
 import { Button } from 'react-bootstrap';
 import { Box, CircularProgress, Dialog, DialogContent, Grid, IconButton, Tooltip } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../../redux/redux-setting';
 import useDelayLoading from '../../../../../../hooks/useDelayLoading';
-import useFarmstayImages from '../../../../Management/Farmstay/FarmstayDetail/hooks/useFarmstayImages';
 import CustomizedDialogActions from '../../../../../General/Dialog/CustomizedDialogActions';
 import { isAvailableArray } from '../../../../../../helpers/arrayUtils';
 import { DeleteForever } from '@mui/icons-material';
 import makeStyles from '@mui/styles/makeStyles/makeStyles';
 import Dropzone from 'react-dropzone';
 import { imageAcceptType } from '../../../../../../setting/setting';
+import { updateFarmstayRooms, uploadImage } from '../../../../../../redux/farmstay/action';
 import { toast } from 'react-toastify';
 import { cloneDeep } from 'lodash';
-import { updateFarmstayRooms, uploadImage } from '../../../../../../redux/farmstay/action';
 import CustomizedDialogTitle from '../../../../../General/Dialog/CustomizedDialogTitle';
+import { formatBytes } from '../../../../../../helpers/fileUtils';
+import { FILE_MAX_SIZE, OVER_FILE_SIZE_ERROR } from '../../../../../../setting/file-setting';
+import InvalidFeedback from '../../../../../General/InvalidFeedback';
+import useRoomImages from '../../../../Management/Farmstay/FarmstayDetail/hooks/useRoomImages';
 
 const useStyles = makeStyles({
     panel: {
@@ -28,7 +31,7 @@ const useStyles = makeStyles({
 
         display: "flex",
         alignItems: "center",
-        justifyContent: "flex-end",
+        justifyContent: "space-between",
         padding: "0 1rem",
         "&hover": {
             background: "rgba(0,0,0,0.4)"
@@ -59,7 +62,7 @@ function UpdateRoomImages({
     const [loading, setLoading] = useState<boolean>(false);
     const delay = useDelayLoading(loading);
 
-    const images = useFarmstayImages(room);
+    const images = useRoomImages(room);
 
     const [links, setLinks] = useState<any[]>(() => {
         const temp = images.others;
@@ -67,6 +70,16 @@ function UpdateRoomImages({
     });
 
     const [files, setFiles] = useState<any[]>([]);
+
+    const isDisableUpload = useMemo(() => {
+        if (delay) return true;
+        if (links.length === images.others?.length) {
+            if (files.length < 1 || files.some(file => !!file.error)) {
+                return true;
+            }
+        }
+        return false;
+    }, [delay, files, images.others?.length, links.length]);
 
     const handleRemoveLink = useCallback((index: number) => {
         setLinks(prev => {
@@ -158,21 +171,97 @@ function UpdateRoomImages({
         onClose && onClose();
     }
 
-    function handleAcceptedFiles(files: any) {
+    function handleAcceptedFiles(files: any[]) {
         files.map((file: any) =>
             Object.assign(file, {
                 preview: URL.createObjectURL(file),
+                formattedSize: formatBytes(file.size),
+                error: file.size > FILE_MAX_SIZE ? OVER_FILE_SIZE_ERROR : "",
             })
         );
 
-        setFiles(prev => [...prev, files[0]])
+        setFiles(prev => [...prev, ...files])
     }
+
+    const renderUsingImages = () => (
+        <Grid item xs={12}>
+            <h6>Ảnh đang sử dụng</h6>
+            <Grid container spacing={2}>
+                {links.map((link, index) =>
+                    <Grid item xs={12} sm={6} md={4} key={index}>
+                        <Box
+                            className="dropzone bg-gray-200"
+                            sx={{ cursor: "auto !important" }}
+                            position="relative"
+                        >
+                            <img
+                                height="100%"
+                                alt="Ảnh"
+                                src={link}
+                            />
+
+                            <Box className={classes.panel}>
+                                <Box>
+                                    <p className="mb-0 text-white">
+                                    </p>
+                                </Box>
+                                <Tooltip title="Xóa">
+                                    <IconButton onClick={() => handleRemoveLink(index)}>
+                                        <DeleteForever sx={{ color: "#fff" }} />
+                                    </IconButton>
+                                </Tooltip>
+                            </Box>
+                        </Box>
+                    </Grid>
+                )}
+            </Grid>
+        </Grid>
+    )
+
+    const renderNewImages = () => (
+        <Grid item xs={12}>
+            <h6>Ảnh mới</h6>
+            <Grid container spacing={2}>
+                {files.map((file, index) =>
+                    <Grid item xs={12} sm={6} md={4} key={index}>
+                        <Box
+                            className="dropzone bg-gray-200"
+                            sx={{ cursor: "auto !important" }}
+                            position="relative"
+                        >
+                            <img
+                                height="100%"
+                                alt="Ảnh"
+                                src={file.preview}
+                            />
+
+                            <Box className={classes.panel}>
+                                <Box>
+                                    <p className="mb-0 text-white">
+                                        {file.formattedSize}
+                                    </p>
+                                </Box>
+                                <Tooltip title="Xóa">
+                                    <IconButton onClick={() => handleRemoveFile(index)}>
+                                        <DeleteForever sx={{ color: "#fff" }} />
+                                    </IconButton>
+                                </Tooltip>
+                            </Box>
+                        </Box>
+                        {file.error
+                            ? <InvalidFeedback message={file.error} />
+                            : null
+                        }
+                    </Grid>
+                )}
+            </Grid>
+        </Grid>
+    )
 
     const renderContent = () => (
         <Grid container spacing={2}>
             <Grid item xs={12}>
                 <Dropzone
-                    multiple={false}
                     onDrop={(acceptedFiles) => {
                         handleAcceptedFiles(acceptedFiles);
                     }}
@@ -185,59 +274,17 @@ function UpdateRoomImages({
                                     <i className="mdi mdi-apple-mobileme"></i>
                                 </div>
                                 <p style={{ color: "#9393b5" }}>Thả ảnh hoặc ấn vào đây để chọn file.</p>
+                                <p style={{ color: "#9393b5" }}>
+                                    {`Chấp nhận ảnh có kích thước nhỏ hơn ${formatBytes(FILE_MAX_SIZE)}`}
+                                </p>
                             </div>
                         </div>
                     )}
                 </Dropzone>
             </Grid>
 
-            {links.map((link, index) =>
-                <Grid item xs={12} sm={6} md={4} key={index}>
-                    <Box
-                        className="dropzone bg-gray-200"
-                        sx={{ cursor: "auto !important" }}
-                        position="relative"
-                    >
-                        <img
-                            height="100%"
-                            alt="Ảnh"
-                            src={link}
-                        />
-
-                        <Box className={classes.panel}>
-                            <Tooltip title="Xóa">
-                                <IconButton onClick={() => handleRemoveLink(index)}>
-                                    <DeleteForever sx={{ color: "#fff" }} />
-                                </IconButton>
-                            </Tooltip>
-                        </Box>
-                    </Box>
-                </Grid>
-            )}
-            {files.map((file, index) =>
-                <Grid item xs={12} sm={6} md={4} key={index}>
-                    <Box
-                        className="dropzone bg-gray-200"
-                        sx={{ cursor: "auto !important" }}
-                        position="relative"
-                    >
-                        <img
-                            height="100%"
-                            alt="Ảnh"
-                            src={file.preview}
-                        />
-
-                        <Box className={classes.panel}>
-                            <Tooltip title="Xóa">
-                                <IconButton onClick={() => handleRemoveFile(index)}>
-                                    <DeleteForever sx={{ color: "#fff" }} />
-                                </IconButton>
-                            </Tooltip>
-                        </Box>
-                    </Box>
-                </Grid>
-            )}
-
+            {files.length > 0 ? renderNewImages() : null}
+            {links.length > 0 ? renderUsingImages() : null}
         </Grid>
     )
 
@@ -267,7 +314,7 @@ function UpdateRoomImages({
                 <Button
                     variant="primary"
                     onClick={handleUpdate}
-                    disabled={delay}
+                    disabled={isDisableUpload}
                 >
                     <Box
                         display="flex"

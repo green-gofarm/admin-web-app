@@ -4,13 +4,15 @@ import React from 'react'
 interface CustomizedCardProps {
     title?: any,
     panel?: any,
-    content?: any
+    content?: any,
+    isCustomContent?: any
 }
 
 function CustomizedCard({
     title,
     panel,
     content,
+    isCustomContent
 }: CustomizedCardProps) {
     return (
         <Box
@@ -22,7 +24,7 @@ function CustomizedCard({
                 alignItems="center"
                 justifyContent="space-between"
                 className="main-contact-info-header"
-                padding="16px 20px 20px 20px !important"
+                padding="12px 20px 12px 20px !important"
                 width="100%"
             >
                 <Box
@@ -36,13 +38,16 @@ function CustomizedCard({
                     {panel}
                 </Box>
             </Box>
-            <Box
-                padding="16px 20px"
-                className="main-contact-info-body"
-                overflow="visible !important"
-            >
-                {content}
-            </Box>
+            {isCustomContent
+                ? content
+                : <Box
+                    padding="16px 20px"
+                    className="main-contact-info-body"
+                    overflow="visible !important"
+                >
+                    {content}
+                </Box>
+            }
         </Box>
     )
 }

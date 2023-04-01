@@ -1,16 +1,37 @@
 import { Box } from '@mui/material'
-import { memo, useState } from 'react'
-import { Accordion, Dropdown, useAccordionButton } from 'react-bootstrap'
+import { memo, useContext, useState } from 'react'
+import { Accordion, AccordionContext, Dropdown, useAccordionButton } from 'react-bootstrap'
 import ConditionWrapper from '../../../../../General/Wrapper/ConditionWrapper'
 import { FAQ_STATUSES, findFaqStatus } from '../../../../../../setting/faqs-status-setting'
 import LockFaq from '../action/LockFaq'
 import UnlockFaq from '../action/UnlockFaq'
 import DeleteFaq from '../action/DeleteFaq'
-import { DeleteForever, Edit, ExpandMore, Lock, LockOpen } from '@mui/icons-material'
+import { DeleteForever, Edit, ExpandLess, ExpandMore, Lock, LockOpen } from '@mui/icons-material'
 import UpdateFaq from '../action/UpdateFaq'
 import { Status } from '../../../../../../setting/Status'
 import CustomizedCard from '../../../../../General/Card/CustomizedCard'
+import { isAvailableArray } from '../../../../../../helpers/arrayUtils'
 
+
+interface ContextAwareToggleProps {
+    eventKey: any,
+}
+
+function ContextAwareToggle({ eventKey }: ContextAwareToggleProps) {
+    const { activeEventKey } = useContext(AccordionContext);
+
+    const isCurrentEventKey = isAvailableArray(activeEventKey) && activeEventKey.includes(eventKey);
+    const decoratedOnClick = useAccordionButton(eventKey);
+
+    return (
+        <Box className="ms-2 br-5 p-2 border" sx={{ cursor: "pointer" }} onClick={decoratedOnClick}>
+            {isCurrentEventKey
+                ? <ExpandLess />
+                : <ExpandMore />
+            }
+        </Box>
+    );
+}
 interface IFaqItem {
     item: any,
     eventKey: string,
@@ -23,8 +44,6 @@ function FaqItem({
     refresh
 }: IFaqItem) {
 
-    const decoratedOnClick = useAccordionButton(eventKey);
-
     const [openUpdate, setOpenUpdate] = useState<boolean>(false);
     const [openLock, setOpenLock] = useState<boolean>(false);
     const [openUnlock, setOpenUnlock] = useState<boolean>(false);
@@ -33,7 +52,8 @@ function FaqItem({
     return (
         <>
             <CustomizedCard
-                title={item?.question}
+                title={`${parseInt(eventKey) + 1}. ${item?.question}`}
+                isCustomContent
                 panel={
                     <Box
                         flexGrow="1"
@@ -45,7 +65,7 @@ function FaqItem({
                         <Dropdown as="span">
                             <Dropdown.Toggle
                                 variant=''
-                                className="ms-2 br-5 p-2 border "
+                                className="ms-2 br-5 p-2 border"
                                 data-bs-toggle="dropdown"
                             >
                                 <i className="fe fe-more-vertical align-middle"></i>
@@ -114,17 +134,19 @@ function FaqItem({
                             </Dropdown.Menu>
                         </Dropdown>
 
-                        <ExpandMore
-                            onClick={decoratedOnClick}
+                        <ContextAwareToggle
+                            eventKey={eventKey}
                         />
                     </Box>
                 }
 
                 content={
-                    <Accordion.Collapse eventKey={eventKey}>
-                        <p className="tx-14">
-                            {item?.answer ?? "-"}
-                        </p>
+                    <Accordion.Collapse eventKey={eventKey} >
+                        <Box padding="16px 20px">
+                            <p className="tx-14">
+                                {item?.answer ?? "-"}
+                            </p>
+                        </Box>
                     </Accordion.Collapse>
                 }
             />
@@ -133,7 +155,8 @@ function FaqItem({
                 ? <UpdateFaq
                     faq={item}
                     open={openUpdate}
-                    onClose={() => setOpenUpdate(true)}
+                    onClose={() => setOpenUpdate(false)}
+                    onSuccessCallback={refresh}
                 />
                 : null
             }

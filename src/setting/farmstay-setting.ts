@@ -70,16 +70,15 @@ export const renderAddress = (address: any) => {
     if (!address) return "";
 
     return Object.keys(address).reverse().reduce((prev, cur) => {
-        if (address[cur]) {
-            if (!prev) return address[cur];
-            if (isString(address[cur])) {
-                return prev + ", " + address[cur];
-            }
+        const currentString = (() => {
+            if (!address[cur]) return "";
+            if (isString(address[cur])) return address[cur];
+            if (isString(address[cur].name)) return address[cur].name;
+            return "";
+        })();
 
-            if (isString(address[cur].name)) {
-                return prev + ", " + address[cur].name;
-            }
-        }
-        return prev;
+        if (!prev) return currentString ?? "";
+        if (!currentString) return prev;
+        return prev + "," + currentString;
     }, "");
 }

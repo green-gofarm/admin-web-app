@@ -128,7 +128,12 @@ function CreatePolicies({
                                     placeholder="Tiêu chí"
                                 />
                             </Box>
-                            <Box className="btn btn-secondary shadow" onClick={() => handleRemove(index)}>
+                            <Box
+                                component="button"
+                                className="btn btn-secondary shadow"
+                                onClick={() => handleRemove(index)}
+                                disabled={policies.length <= 1}
+                            >
                                 <DeleteForever />
                             </Box>
                         </Box>

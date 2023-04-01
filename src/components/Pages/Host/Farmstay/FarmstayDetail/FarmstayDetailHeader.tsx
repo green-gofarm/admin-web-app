@@ -1,7 +1,6 @@
 import { Box, Grid } from '@mui/material'
 import { Card } from 'react-bootstrap'
 import IconLabelDetail from '../../../../General/Item/IconLabelDetail'
-import { getFeedbackRatingNumber } from './ui-segment/FeedbackItem'
 import StringWrapper from '../../../../General/Wrapper/StringWrapper'
 import { Status } from '../../../../../setting/Status'
 import SendIcon from "@mui/icons-material/Send";
@@ -15,6 +14,7 @@ import SendApproveRequest from './action/SendApproveRequest'
 import ConditionWrapper from '../../../../General/Wrapper/ConditionWrapper'
 import GeneralAvatar from '../../../../General/GeneralAvatar'
 import UserTag from '../../../../General/Wrapper/UserTag'
+import Rating from '../../../../General/Rating'
 
 interface IFarmstayDetailHeader {
     detail?: any,
@@ -94,17 +94,7 @@ function FarmstayDetailHeader({
                                 <IconLabelDetail
                                     icon={<i className="fa fa-star me-2"></i>}
                                     label="Đánh giá:"
-                                    value={
-                                        <div className="text-warning">
-                                            {new Array(getFeedbackRatingNumber(detail)).fill("").map((_, index) => (
-                                                <i className="bx bxs-star active" key={index}></i>
-                                            ))}
-                                            {new Array(getFeedbackRatingNumber(detail) < 5 ? (5 - getFeedbackRatingNumber(detail)) : 0).fill("").map((_, index) => (
-                                                <i className="bx bxs-star text-light" key={index}></i>
-                                            ))}
-                                            {` (${getFeedbackRatingNumber(detail)} sao)`}
-                                        </div>
-                                    }
+                                    value={<Rating rating={detail?.rating} />}
                                 />
                             </Grid>
                             <Grid item xs={12} lg={6}>

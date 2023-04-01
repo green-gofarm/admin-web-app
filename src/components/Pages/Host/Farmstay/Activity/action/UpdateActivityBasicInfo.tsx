@@ -4,13 +4,13 @@ import { Box, CircularProgress, Dialog, DialogContent, Grid } from '@mui/materia
 import CustomizedDialogActions from '../../../../../General/Dialog/CustomizedDialogActions';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../../redux/redux-setting';
-import VALIDATOR from './validator';
 import useDelayLoading from '../../../../../../hooks/useDelayLoading';
 import { updateFarmstayActivities } from '../../../../../../redux/farmstay/action';
 import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
 import CustomizedDialogTitle from '../../../../../General/Dialog/CustomizedDialogTitle';
 import InvalidFeedback from '../../../../../General/InvalidFeedback';
+import VALIDATOR from '../../FarmstayDetail/action/validator';
 
 interface UpdateActivityBasicInfoProps {
     open?: boolean,
@@ -53,10 +53,10 @@ function UpdateActivityBasicInfo({
     const user = useSelector((state: RootState) => state.auth.user);
 
     const [data, setData] = useState<Activity>({
-        name: "",
-        price: "",
-        slot: "",
-        description: "",
+        name: activity?.name ?? "",
+        price: (activity?.price ?? "") + "",
+        slot: (activity?.slot ?? "") + "",
+        description: activity?.description ?? "",
     })
 
     const [errors, setErrors] = useState<Errors>(initialErrors);
@@ -80,8 +80,8 @@ function UpdateActivityBasicInfo({
         const tempActivityError: Errors = {
             name: VALIDATOR.isRequired(data.name),
             description: VALIDATOR.isRequired(data.description),
-            price: VALIDATOR.isRequired(data.price) || VALIDATOR.isNumberString(data.price),
-            slot: VALIDATOR.isRequired(data.price) || VALIDATOR.isNumberString(data.price),
+            price: VALIDATOR.isValidPrice(data.price),
+            slot: VALIDATOR.isValidActivitySlotNumber(data.slot),
         }
 
         setErrors(tempActivityError);
@@ -117,18 +117,18 @@ function UpdateActivityBasicInfo({
                 {
                     loading: setLoading,
                     onSuccess: () => {
-                        toast.success("Thêm mới thành công.");
+                        toast.success("Cập nhật thành công.");
                         onClose && onClose();
                         onSuccessCallback && onSuccessCallback();
                     },
                     onFailure: () => {
-                        toast.error("Thêm mới thất bại");
+                        toast.error("Cập nhật thất bại");
                     }
                 })
             )
         } catch (error) {
             console.log(error);
-            toast.error("Thêm mới thất bại");
+            toast.error("Cập nhật thất bại");
         }
     }
 
@@ -156,7 +156,7 @@ function UpdateActivityBasicInfo({
                             </Form.Label>
                             <Form.Control
                                 aria-label="Activity name"
-                                className={`form-control ${errors.name ? "is-invalid" : ""}`}
+                                className="form-control"
                                 type="text"
                                 autoFocus
                                 value={data.name ?? ""}
@@ -172,19 +172,19 @@ function UpdateActivityBasicInfo({
                     <Grid item xs={12} md={6}>
                         <FormGroup className="has-danger">
                             <Form.Label>
-                                Số người trên 1 lượt *
+                                Số người tham gia 1 lượt *
                             </Form.Label>
                             <InputGroup className="input-group mb-3">
                                 <Form.Control
                                     aria-label=""
-                                    className={`form-control ${errors.slot ? "is-invalid" : ""}`}
+                                    className="form-control"
                                     type="number"
                                     value={data.slot ?? ""}
                                     onChange={(e) => handleOnChangeAddress("slot", e.target.value ?? "")}
                                 />
                             </InputGroup>
                             {errors.slot
-                                ? <InvalidFeedback />
+                                ? <InvalidFeedback message={errors.slot} />
                                 : null
                             }
                         </FormGroup>
@@ -198,7 +198,7 @@ function UpdateActivityBasicInfo({
                             <InputGroup className="input-group mb-3">
                                 <Form.Control
                                     aria-label=""
-                                    className={`form-control ${errors.price ? "is-invalid" : ""}`}
+                                    className="form-control"
                                     type="number"
                                     value={data.price ?? ""}
                                     onChange={(e) => handleOnChangeAddress("price", e.target.value ?? "")}
@@ -208,7 +208,7 @@ function UpdateActivityBasicInfo({
                                 </InputGroup.Text>
                             </InputGroup>
                             {errors.price
-                                ? <InvalidFeedback />
+                                ? <InvalidFeedback message={errors.price} />
                                 : null
                             }
                         </FormGroup>
@@ -224,7 +224,7 @@ function UpdateActivityBasicInfo({
                                 required
                                 placeholder='Mô tả'
                                 value={data.description ?? ""}
-                                className={`form-control ${errors.description ? "is-invalid" : ""}`}
+                                className="form-control"
                                 onChange={(e) => handleOnChangeAddress("description", e.target.value ?? "")}
                             />
                             {errors.description

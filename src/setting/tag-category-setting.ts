@@ -1,3 +1,4 @@
+import { isAvailableArray } from "../helpers/arrayUtils";
 import { STATUS_COLORS } from "./color";
 
 export enum TAG_CATEGORY_STATUSES {
@@ -22,4 +23,9 @@ export const LIST_ACTIVITY_TAG_STATUS = [
 
 export const findActivityTagStatus = (value: number) => {
     return value != null && LIST_ACTIVITY_TAG_STATUS.find(item => item.value === value);
+}
+
+export const getTagCategoryLabel = (categories: any, id: any): string | null => {
+    if (!isAvailableArray(categories)) return null;
+    return categories.find(item => item.id + "" === id + "")?.name ?? null;
 }
