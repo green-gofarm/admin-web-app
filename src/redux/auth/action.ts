@@ -34,3 +34,27 @@ export const signInSuccess = (data: any): IReduxAction => ({
 export const signOutUser = (): IReduxAction => ({
     type: type.SIGN_OUT_USER,
 })
+
+export const subscribeMessageToken = (token: any, option?: IReduxActionOption): IReduxAction => ({
+    type: type.SUBSCRIBE_TOKEN,
+    payload: { token, option: option ?? getEmptyOption() }
+})
+
+export const searchNotification = (data: any, option?: IReduxActionOption): IReduxAction => ({
+    type: type.SEARCH_NOTIFICATION,
+    payload: { data, option: option ?? getEmptyOption() }
+})
+
+export const searchNotificationSuccess = (data: any): IReduxAction => ({
+    type: type.SEARCH_NOTIFICATION_SUCCESS,
+    payload: data
+})
+
+export const searchNotificationFailed = (): IReduxAction => ({
+    type: type.SEARCH_NOTIFICATION_FAILED
+})
+
+export const markAsRedNotification = (id: any, option?: IReduxActionOption): IReduxAction => ({
+    type: type.MARK_AS_READ_NOTIFICATION,
+    payload: { id, option: option ?? getEmptyOption() }
+})

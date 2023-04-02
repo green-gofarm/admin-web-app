@@ -3,13 +3,14 @@ import { Col, Row } from 'react-bootstrap';
 import { Link, useNavigate } from "react-router-dom";
 // import { auth } from '../Firebase/firebase';
 import { Box } from '@mui/material';
-import { GoogleAuthProvider, auth, getFirebaseToken } from '../../Firebase/firebase';
+import { auth, getFirebaseToken } from '../../Firebase/firebase';
 import GoogleButton from '../google-button/GoogleButton';
 import { useDispatch } from 'react-redux';
 import { signInAdmin } from '../../redux/auth/action';
 import { toast } from 'react-toastify';
 import WithAuthBackDropLoader from '../../components/General/WithAuthBackDropLoader';
 import useBackUrl from '../../hooks/useBackUrl';
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
 const SignIn = () => {
 
@@ -25,7 +26,7 @@ const SignIn = () => {
     const handleSignIn = async () => {
         try {
             const provider = new GoogleAuthProvider();
-            await auth.signInWithPopup(provider);
+            await signInWithPopup(auth, provider);
             const token = await getFirebaseToken();
 
             if (token) {

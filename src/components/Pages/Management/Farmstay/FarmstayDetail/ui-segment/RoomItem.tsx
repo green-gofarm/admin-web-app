@@ -41,6 +41,7 @@ function RoomItem({ item }: RoomItemProps) {
                     <Box
                         height="120px"
                         width="120px"
+                        minWidth="120px"
                     >
                         <Box
                             component="img"
@@ -49,8 +50,8 @@ function RoomItem({ item }: RoomItemProps) {
                             alt="Activity img"
                             sx={{
                                 position: "relative",
-                                height: "120px",
-                                width: "120px",
+                                height: "120px !important",
+                                width: "120px !important",
                                 backgroundPosition: "center",
                                 backgroundSize: "cover",
                                 backgroundRepeat: "no-repeat"

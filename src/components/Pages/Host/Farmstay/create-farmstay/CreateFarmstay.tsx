@@ -9,10 +9,11 @@ import GuideStep from "./step/GuideStep";
 import GetContactInfo from "./step/GetContactInfo";
 import GetLocation from "./step/GetLocation";
 import { useDispatch } from "react-redux";
-import { createFarmstay } from "../../../../../redux/farmstay/action";
+import { createFarmstay, uploadImage } from "../../../../../redux/farmstay/action";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../../../redux/redux-setting";
 import { toast } from "react-toastify";
+import { isAvailableArray } from "../../../../../helpers/arrayUtils";
 
 interface CreateFarmstayProps {
     open?: boolean,
@@ -55,7 +56,8 @@ export type Address = {
     };
     detail: string | null;
 }
-interface Farmstay {
+export interface Farmstay {
+    fileAvatar: any,
     name: string | null;
     address: Address;
     location: Location;
@@ -74,6 +76,7 @@ const CreateFarmstay: FC<CreateFarmstayProps> = ({
     const [loading, setLoading] = useState<boolean>(false);
 
     const [farmstay, setFarmstay] = useState<Farmstay>({
+        fileAvatar: "",
         name: null,
         address: {
             country: "Việt Nam",
@@ -100,16 +103,43 @@ const CreateFarmstay: FC<CreateFarmstayProps> = ({
 
     const [currentStep, setCurrentStep] = useState<STEPS>(STEPS.GET_NAME);
 
-    const handleOnChange = useCallback((key: string, value: any) => {
+    const handleOnChange = useCallback((key: keyof Farmstay, value: any) => {
         setFarmstay(prev => ({
             ...prev,
             [key]: value
         }));
     }, []);
 
-    const handleCreate = () => {
+    const getNewFileLink = async (file: File) => {
+        return new Promise<any[]>((resolve, rj) => {
+            const formData = new FormData();
+            formData.append("files", file);
+
+            dispatch(uploadImage(
+                formData,
+                {
+                    loading: setLoading,
+                    onSuccess: (response: any) => {
+                        if (isAvailableArray(response?.data)) {
+                            const link = response.data[0];
+                            resolve(link);
+                            return;
+                        }
+                    },
+                    onFailure: (error: any) => {
+                        rj("Có lỗi xảy ra: Upload failed");
+                    }
+                }
+            ));
+        })
+    }
+
+    const handleCreate = async () => {
+        const linkAvatar = await getNewFileLink(farmstay.fileAvatar);
+
         const data = {
             name: farmstay.name,
+            images: JSON.stringify({ avatar: linkAvatar, others: [] }),
             address: JSON.stringify(farmstay.address),
             latitude: farmstay.location.lat,
             longitude: farmstay.location.lng,
@@ -138,9 +168,11 @@ const CreateFarmstay: FC<CreateFarmstayProps> = ({
         if (currentStep === STEPS.GET_NAME) {
             return (
                 <GetNameStep
+                    defaultFileAvatar={farmstay.fileAvatar}
                     defaultName={farmstay.name}
-                    onContinue={(name: string) => {
+                    onContinue={(name: string, fileAvatar: any) => {
                         handleOnChange("name", name);
+                        handleOnChange("fileAvatar", fileAvatar);
                         setCurrentStep(STEPS.GET_ADDRESS)
                     }}
                 />

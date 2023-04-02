@@ -4,12 +4,8 @@ import { Container } from 'react-bootstrap';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { useState } from 'react';
 import bigLogo from '../../../../../../assets/img/brand/big-logo.png';
-
-interface GetNameStepProps {
-    defaultName: string | null,
-    onContinue: (name: string) => void;
-
-}
+import SingleImageUpdate from '../../FarmstayDetail/ui-segment/SingleImageUpdate';
+import InvalidFeedback from '../../../../../General/InvalidFeedback';
 
 const useStyles = makeStyles({
     root: {
@@ -17,7 +13,6 @@ const useStyles = makeStyles({
         alignItems: 'flex-start',
         flexDirection: 'column',
         width: "100%",
-        maxWidth: "600px"
     },
     header: {
         width: "100%",
@@ -37,26 +32,24 @@ const useStyles = makeStyles({
         lineHeight: '54px',
         fontWeight: 500,
         marginBottom: '24px',
-        maxWidth: '480px',
     },
     input: {
         fontSize: '24px',
         lineHeight: '54px',
         fontWeight: '500',
         background: 'rgba(0,0,0,0)',
-        border: 'none',
-        borderBottom: '1px solid rgba(0,0,0,0.38)',
+        borderRadius: "4px",
+        border: '2px solid rgba(0,0,0,0.18)',
         caretColor: 'rgba(26,115,232,0.2)',
         color: "#139c7f",
         transition: 'border 0.15s cubic-bezier(0, 0, 0.2, 1)',
         width: '100%',
-        padding: '1px 2px',
-        borderRadius: '0px',
         maxHeight: 'none',
         boxShadow: 'none',
         outline: 'none',
+        padding: "0 1rem",
         "&:hover, &:focus, &focus-within": {
-            borderBottom: '2px solid #139c7f',
+            border: '2px solid #139c7f',
         }
     },
     footer: {
@@ -80,7 +73,14 @@ const useStyles = makeStyles({
     },
 });
 
+interface GetNameStepProps {
+    defaultFileAvatar: any,
+    defaultName: string | null,
+    onContinue: (name: string, avatar: any) => void;
+}
+
 function GetNameStep({
+    defaultFileAvatar,
     defaultName,
     onContinue
 }: GetNameStepProps) {
@@ -88,9 +88,10 @@ function GetNameStep({
     const classes = useStyles();
 
     const [name, setName] = useState<string>(defaultName ?? "");
+    const [file, setFile] = useState<any>(defaultFileAvatar ?? null);
 
     const handleContinue = () => {
-        onContinue(name);
+        onContinue(name, file);
     }
 
     return (
@@ -101,15 +102,20 @@ function GetNameStep({
                 </Box>
             </Box>
             <Grid container spacing={1}>
-                <Grid item xs={12} lg={6}>
+                <Grid item xs={12}>
                     <Box className={classes.root}>
                         <h2 className={classes.headline}>
-                            Cung cấp tên farmstay của bạn
+                            Cung cấp tên và ảnh đại diện farmstay
                         </h2>
+
+                        <h4 className='mt-4'>
+                            Nhập tên/thương hiệu farmstay
+                        </h4>
                         <Box height="60px" width="100%">
                             <input
                                 type="text"
                                 className={classes.input}
+                                autoFocus
                                 defaultValue={defaultName ?? ""}
                                 onChange={(e) => setName(e.target.value)}
                                 onKeyDown={(e) => {
@@ -117,15 +123,26 @@ function GetNameStep({
                                         handleContinue();
                                     }
                                 }}
-                                placeholder='Nhập tên/thương hiệu farmstay của bạn'
                             />
                         </Box>
+
+                        <h4 className='mt-4'>
+                            Ảnh đại diện
+                        </h4>
+                        <Box width="100%" className='mt-1'>
+                            <SingleImageUpdate
+                                file={file}
+                                setFile={setFile}
+                            />
+                        </Box>
+                        {file?.error ? <InvalidFeedback message={file.error} /> : null}
+
                         <footer className={classes.footer}>
                             <Button
                                 color="primary"
                                 variant="contained"
                                 size="large"
-                                disabled={!name}
+                                disabled={Boolean(!name || !file || file.error)}
                                 onClick={handleContinue}
                                 endIcon={<ArrowForwardIcon />}
                             >
@@ -133,10 +150,6 @@ function GetNameStep({
                             </Button>
                         </footer>
                     </Box>
-                </Grid>
-
-                <Grid item xs={0} lg={6} overflow="hidden" alignItems="center">
-                    <Box className={classes.side_branch} />
                 </Grid>
             </Grid>
         </Container>

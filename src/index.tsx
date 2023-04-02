@@ -10,6 +10,7 @@ import "./index.scss";
 import { CURRENT_ROLE, ROLES } from './setting/setting';
 import HostRoutes from './routes/HostRoutes';
 import Toastify from './components/General/Toastify';
+import { registerFcm } from './service-worker';
 
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement
@@ -39,3 +40,5 @@ root.render(
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
+
+registerFcm();

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from "react-router-dom";
 // import { auth } from '../Firebase/firebase';
 import { Box, Grid } from '@mui/material';
-import { GoogleAuthProvider, auth, getFirebaseToken } from '../../Firebase/firebase';
+import { auth, getFirebaseToken } from '../../Firebase/firebase';
 import GoogleButton from '../google-button/GoogleButton';
 import { useDispatch } from 'react-redux';
 import { signInHost } from '../../redux/auth/action';
@@ -11,6 +11,7 @@ import WithAuthBackDropLoader from '../../components/General/WithAuthBackDropLoa
 import { AxiosError } from 'axios';
 import { Alert } from "react-bootstrap";
 import useBackUrl from '../../hooks/useBackUrl';
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
 const SignIn = () => {
 
@@ -26,7 +27,7 @@ const SignIn = () => {
     const handleSignIn = async () => {
         try {
             const provider = new GoogleAuthProvider();
-            await auth.signInWithPopup(provider);
+            await signInWithPopup(auth, provider);
             const token = await getFirebaseToken();
 
             if (token) {

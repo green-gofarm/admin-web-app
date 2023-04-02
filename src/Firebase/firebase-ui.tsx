@@ -1,4 +1,4 @@
-import { GoogleAuthProvider } from "./firebase";
+import { GoogleAuthProvider } from "firebase/auth";
 
 const signInUiConfig = {
     signInFlow: "redirect",

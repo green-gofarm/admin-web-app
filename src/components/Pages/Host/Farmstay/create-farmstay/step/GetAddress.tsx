@@ -181,7 +181,7 @@ function GetAddress({
 
                 <Grid item xs={12}>
                     <Grid container spacing={2}>
-                        <Grid item xs={12} md={6}>
+                        <Grid item xs={12}>
                             <InputGroup className="input-group mb-1">
                                 <InputGroup.Text
                                     className={`input-group-text ${classes.label}`}
@@ -198,7 +198,7 @@ function GetAddress({
                                 />
                             </InputGroup>
                         </Grid>
-                        <Grid item xs={12} md={6}>
+                        <Grid item xs={12}>
                             <InputGroup className="input-group mb-1 is-loading">
                                 <InputGroup.Text
                                     className={`input-group-text ${classes.label}`}
@@ -239,7 +239,7 @@ function GetAddress({
                                 : null
                             }
                         </Grid>
-                        <Grid item xs={12} md={6}>
+                        <Grid item xs={12}>
                             <InputGroup className="input-group mb-1 is-loading">
                                 <InputGroup.Text
                                     className={`input-group-text ${classes.label}`}
@@ -278,7 +278,7 @@ function GetAddress({
                                 : null
                             }
                         </Grid>
-                        <Grid item xs={12} md={6}>
+                        <Grid item xs={12}>
                             <InputGroup className="input-group mb-1 is-loading">
                                 <InputGroup.Text
                                     className={`input-group-text ${classes.label}`}

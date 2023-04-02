@@ -6,13 +6,8 @@ import { isAvailableArray } from '../../../../../../helpers/arrayUtils';
 import React, { Fragment } from 'react';
 import IconLabelDetail from '../../../../../General/Item/IconLabelDetail';
 import useDelayLoading from '../../../../../../hooks/useDelayLoading';
-
-interface GetNameStepProps {
-    farmstay: any,
-    onBack: () => void,
-    onConfirm: () => void;
-    loading: boolean;
-}
+import UserTag from '../../../../../General/Wrapper/UserTag';
+import { Farmstay } from '../CreateFarmstay';
 
 const useStyles = makeStyles({
     header: {
@@ -63,6 +58,14 @@ const Item = ({ label, value }: ItemProps) => (
     </>
 );
 
+
+interface GetNameStepProps {
+    farmstay: Farmstay,
+    onBack: () => void,
+    onConfirm: () => void;
+    loading: boolean;
+}
+
 function ConfirmStep({
     farmstay,
     onConfirm,
@@ -95,11 +98,14 @@ function ConfirmStep({
 
                         <Box>
                             <Box className="font-weight-bold text-dark fs-16 mb-1">
-                                Tên
+                                Farmstay
                             </Box>
-                            <p className="text-muted mt-0 tx-12">
-                                {farmstay?.name}
-                            </p>
+                            <UserTag
+                                user={{
+                                    avatar: farmstay.fileAvatar?.preview,
+                                    name: farmstay.name
+                                }}
+                            />
                         </Box>
                     </Grid>
                     <Grid item xs={12}>

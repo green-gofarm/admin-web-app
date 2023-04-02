@@ -46,6 +46,7 @@ function ActivityItem({ item, refresh }: IActivityItem) {
                     <Box
                         height="120px"
                         width="120px"
+                        minWidth="120px"
                     >
                         <Box
                             component="img"

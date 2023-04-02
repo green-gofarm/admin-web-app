@@ -34,7 +34,7 @@ interface SingleImageUpdateProps {
     file: any,
     setFile: any,
     link?: any,
-    clear: () => void
+    clear?: () => void
 }
 
 const SingleImageUpdate = ({

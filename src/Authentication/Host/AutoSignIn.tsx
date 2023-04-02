@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
-import { auth, authObject, getFirebaseToken } from '../../Firebase/firebase';
+import { auth, getFirebaseToken } from '../../Firebase/firebase';
 import { useDispatch } from 'react-redux';
 import { signInHost, signOutUser } from '../../redux/auth/action';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
@@ -32,7 +32,7 @@ function AutoSignIn() {
     }, [dispatch, location.pathname, location.search, navigate]);
 
     useEffect(() => {
-        const unregisterAuthObserver = authObject().onAuthStateChanged(async (currentUser) => {
+        const unregisterAuthObserver = auth.onAuthStateChanged(async (currentUser) => {
             if (!currentUser) {
                 setLoading(false);
                 signOut();

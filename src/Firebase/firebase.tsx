@@ -1,10 +1,6 @@
-import firebase from "firebase/compat/app";
-
-// Add the Firebase products that you want to use
-import "firebase/compat/auth";
-import "firebase/compat/firestore";
-import 'firebase/compat/messaging';
-import { CURRENT_ROLE, ROLES } from "../setting/setting";
+import { initializeApp } from "firebase/app";
+import { getMessaging, getToken } from "firebase/messaging";
+import { getAuth } from "firebase/auth";
 
 const adminFirebaseConfig = {
 	apiKey: "AIzaSyDj4Epm6rG_yiDm0vjjPk7Djsxli3_ufpE",
@@ -26,16 +22,18 @@ const hostFirebaseConfig = {
 	measurementId: "G-BLBJXHS3SN"
 };
 
-const firebaseConfig = CURRENT_ROLE === ROLES.ADMIN ? adminFirebaseConfig : hostFirebaseConfig;
+const firebaseConfig = {
+	apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+	authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+	projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+	storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+	messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+	appId: process.env.REACT_APP_FIREBASE_APP_ID,
+};
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 
-const firebaseApp = firebase.initializeApp(firebaseConfig);
-
-const db = firebaseApp.firestore();
-const auth = firebase.auth();
-const authObject = firebase.auth;
-const GoogleAuthProvider = firebase.auth.GoogleAuthProvider;
-const messaging = firebase.messaging();
-
+// Firebase token
 const TIME_OUT = 5000;
 const getFirebaseToken = async (): Promise<string | null> => {
 	const currentUser = auth.currentUser;
@@ -71,11 +69,27 @@ const getFirebaseToken = async (): Promise<string | null> => {
 	}
 };
 
+// MESSAGING
+const messaging = getMessaging(app);
+const vapidKey = process.env.REACT_APP_FIREBASE_MESSAGING_VAPID_KEY;
+// const vapidKey = "BMeU_NOghJUw01vS30kMH3peU2BoNcRvKFbY0CKoDUaza-hkDDtTmMpL1pWFLLaRTHKUzO_kk4LhdeECiijfM6M";
+
+const getMessagingToken = async () => {
+	try {
+		const token = await getToken(messaging, { vapidKey })
+		return token;
+	} catch (error) {
+		console.log(error);
+		return null;
+	}
+}
+
 export {
-	db,
+	firebaseConfig,
+
 	auth,
-	authObject,
-	messaging,
 	getFirebaseToken,
-	GoogleAuthProvider
+
+	messaging,
+	getMessagingToken
 };

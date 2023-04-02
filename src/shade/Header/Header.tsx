@@ -1,12 +1,12 @@
 import React, { useCallback } from "react";
 import { Navbar, Dropdown } from "react-bootstrap";
-import { Scrollbars } from 'react-custom-scrollbars';
 import { Link, useNavigate } from "react-router-dom";
 import { auth } from "../../Firebase/firebase";
 import { Box } from "@mui/material";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/redux-setting";
 import EllipsisWrapper from "../../components/General/Wrapper/EllipsisWrapper";
+import NotificationDropDown from "./NotificationDropDown";
 
 export default function Header() {
   const navigate = useNavigate();
@@ -101,6 +101,7 @@ export default function Header() {
             />
           </div>
         </div>
+
         <div className="main-header-right">
           <Navbar.Toggle
             className="navresponsive-toggler d-lg-none ms-auto"
@@ -128,99 +129,7 @@ export default function Header() {
                   </Link>
                 </li>
 
-
-                <Dropdown className=" nav-item main-header-notification d-flex">
-                  <Dropdown.Toggle className="new nav-link" variant="">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="header-icon-svgs"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                    >
-                      <path d="M19 13.586V10c0-3.217-2.185-5.927-5.145-6.742C13.562 2.52 12.846 2 12 2s-1.562.52-1.855 1.258C7.185 4.074 5 6.783 5 10v3.586l-1.707 1.707A.996.996 0 0 0 3 16v2a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1v-2a.996.996 0 0 0-.293-.707L19 13.586zM19 17H5v-.586l1.707-1.707A.996.996 0 0 0 7 14v-4c0-2.757 2.243-5 5-5s5 2.243 5 5v4c0 .266.105.52.293.707L19 16.414V17zm-7 5a2.98 2.98 0 0 0 2.818-2H9.182A2.98 2.98 0 0 0 12 22z" />
-                    </svg>
-                    <span className=" pulse"></span>
-                  </Dropdown.Toggle>
-                  <Dropdown.Menu className="slid1">
-                    <div className="menu-header-content text-start border-bottom">
-                      <div className="d-flex">
-                        <h6 className="dropdown-title mb-0 tx-15 font-weight-semibold">
-                          Thông báo
-                        </h6>
-                      </div>
-                    </div>
-                    <Scrollbars style={{ height: 280 }}>
-                      <div className="main-notification-list Notification-scroll">
-                        <Dropdown.Item
-                          className="d-flex p-3 border-bottom"
-                          href="/notification?key=1"
-                        >
-                          <div className="notifyimg bg-pink">
-                            <i className="far fa-folder-open text-white"></i>
-                          </div>
-                          <div className="ms-3">
-                            <h5 className="notification-label mb-1">
-                              Yêu cầu rút tiền
-                            </h5>
-                            <div className="notification-subtext">
-                              10 giờ trước
-                            </div>
-                          </div>
-                          <div className="ms-auto">
-                            <i className="las la-angle-right text-end text-muted"></i>
-                          </div>
-                        </Dropdown.Item>
-                        <Dropdown.Item
-                          className="d-flex p-3 border-bottom"
-                          href="/notification?key=2"
-                        >
-                          <div className="notifyimg bg-success">
-                            <i className="fa fa-cart-plus text-white"></i>
-                          </div>
-                          <div className="ms-3">
-                            <h5 className="notification-label mb-1">
-                              Yêu cầu đặt phòng mới
-                            </h5>
-                            <div className="notification-subtext">
-                              1 giờ trước
-                            </div>
-                          </div>
-                          <div className="ms-auto">
-                            <i className="las la-angle-right text-end text-muted"></i>
-                          </div>
-                        </Dropdown.Item>
-                        <Dropdown.Item
-                          className="d-flex p-3 border-bottom"
-                          href="/notification?key=3"
-                        >
-                          <div className="notifyimg bg-warning">
-                            <i className="far fa-envelope-open text-white"></i>
-                          </div>
-                          <div className="ms-3">
-                            <h5 className="notification-label mb-1">
-                              12 Tin nhắn mới
-                            </h5>
-                            <div className="notification-subtext">
-                              1 ngày trước
-                            </div>
-                          </div>
-                          <div className="ms-auto">
-                            <i className="las la-angle-right text-end text-muted"></i>
-                          </div>
-                        </Dropdown.Item>
-                      </div>
-                    </Scrollbars>
-                    <div className="dropdown-footer">
-                      <Link
-                        className="btn btn-primary btn-sm btn-block"
-                        to="/notification"
-                      >
-                        Xem tất cả
-                      </Link>
-                    </div>
-                  </Dropdown.Menu>
-                </Dropdown>
+                <NotificationDropDown />
 
                 <Dropdown className=" main-profile-menu nav nav-item nav-link ps-lg-2">
                   <Dropdown.Toggle

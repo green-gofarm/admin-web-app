@@ -49,7 +49,11 @@ function RoomItem({ item, refresh }: RoomItemProps) {
         <>
             <Card className="custom-card customs-cards">
                 <Card.Body className="d-flex bg-white">
-                    <Box                    >
+                    <Box
+                        height="120px"
+                        width="120px"
+                        minWidth="120px"
+                    >
                         <Box
                             component="img"
                             className="br-5 "

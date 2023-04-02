@@ -34,8 +34,9 @@ function GeneralAvatar({ avatar, onClickCamera, noCamera }: GeneralAvatarProps) 
     return (
         <Box
             position="relative"
+            width="120px"
             minWidth="120px"
-            minHeight="120px"
+            height="120px"
         >
             <Box
                 component="img"

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from "react-router-dom";
-import { GoogleAuthProvider, auth, getFirebaseToken } from "../../Firebase/firebase"
+import { auth, getFirebaseToken } from "../../Firebase/firebase"
 import { Box, Grid } from '@mui/material';
 import GoogleButton from '../google-button/GoogleButton';
 import { signUpHost } from '../../redux/auth/action';
@@ -9,7 +9,7 @@ import { useDispatch } from 'react-redux';
 import { AxiosError } from 'axios';
 import { Alert } from "react-bootstrap";
 import useBackUrl from '../../hooks/useBackUrl';
-
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
 const SignUp = () => {
 
@@ -24,7 +24,7 @@ const SignUp = () => {
     const handleSignUp = async () => {
         try {
             const provider = new GoogleAuthProvider();
-            await auth.signInWithPopup(provider);
+            await signInWithPopup(auth, provider);
             const token = await getFirebaseToken();
 
             if (token) {

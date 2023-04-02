@@ -1,7 +1,7 @@
-import React, { useCallback, useEffect, useState } from 'react'
-import { auth, authObject, getFirebaseToken } from '../../Firebase/firebase';
+import { useCallback, useEffect, useState } from 'react'
+import { auth, getFirebaseToken, getMessagingToken } from '../../Firebase/firebase';
 import { useDispatch } from 'react-redux';
-import { signInAdmin, signOutUser } from '../../redux/auth/action';
+import { signInAdmin, signOutUser, subscribeMessageToken } from '../../redux/auth/action';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
@@ -32,7 +32,7 @@ function AutoSignIn() {
     }, [dispatch, location.pathname, location.search, navigate]);
 
     useEffect(() => {
-        const unregisterAuthObserver = authObject().onAuthStateChanged(async (currentUser) => {
+        const unregisterAuthObserver = auth.onAuthStateChanged(async (currentUser) => {
             if (!currentUser) {
                 setLoading(false);
                 signOut();
@@ -55,9 +55,17 @@ function AutoSignIn() {
         async function signIn() {
             const token = await getFirebaseToken();
 
+            const subscribe = async () => {
+                const messageToken = await getMessagingToken();
+                if (messageToken) {
+                    dispatch(subscribeMessageToken(messageToken));
+                }
+            }
+
             if (token) {
                 dispatch(signInAdmin({
                     loading: setLoading,
+                    onSuccess: () => subscribe(),
                     onFailure: (error: any) => {
                         toast.error("Không thể lấy thông tin tài khoản. Vui lòng đăng nhập lại");
                     }

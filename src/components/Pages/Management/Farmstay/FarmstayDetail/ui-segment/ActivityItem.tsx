@@ -34,6 +34,7 @@ function ActivityItem({ item }: IActivityItem) {
                 <Box
                     height="120px"
                     width="120px"
+                    minWidth="120px"
                 >
                     <Box
                         component="img"
@@ -42,8 +43,8 @@ function ActivityItem({ item }: IActivityItem) {
                         alt="Activity img"
                         sx={{
                             position: "relative",
-                            height: "120px",
-                            width: "120px",
+                            height: "120px !important",
+                            width: "120px !important",
                             backgroundPosition: "center",
                             backgroundSize: "cover",
                             backgroundRepeat: "no-repeat"
