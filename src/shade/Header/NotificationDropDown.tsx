@@ -53,7 +53,7 @@ function NotificationDropDown() {
         setNotificationOnlyUnreadState(isOnlyUnRead);
 
         if (isOnlyUnRead) {
-            refresh(undefined, { status: NOTIFICATION_STATUSES.UNREAD });
+            refresh(undefined, { Status: NOTIFICATION_STATUSES.UNREAD });
             return;
         }
 
@@ -65,10 +65,6 @@ function NotificationDropDown() {
             refresh(defaultPagination);
             toast.dark("Có thông báo mới");
         });
-
-        navigator.serviceWorker.addEventListener("message", (event) => {
-            console.log(event.data);
-        })
 
         return () => unSubscribe();
         // eslint-disable-next-line react-hooks/exhaustive-deps

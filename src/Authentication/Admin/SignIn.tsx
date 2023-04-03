@@ -8,7 +8,6 @@ import GoogleButton from '../google-button/GoogleButton';
 import { useDispatch } from 'react-redux';
 import { signInAdmin, subscribeMessageToken } from '../../redux/auth/action';
 import { toast } from 'react-toastify';
-import WithAuthBackDropLoader from '../../components/General/WithAuthBackDropLoader';
 import useBackUrl from '../../hooks/useBackUrl';
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import useDelayLoading from '../../hooks/useDelayLoading';
@@ -74,9 +73,6 @@ const SignIn = () => {
 
     return (
         <React.Fragment>
-            <WithAuthBackDropLoader
-                open={loadingSignIn}
-            />
             <div className="square-box"> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> </div>
             <div className="page bg-primary">
                 <div className="page-single">
