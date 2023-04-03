@@ -68,7 +68,7 @@ export const echart1 = {
         type: "bar",
         barMaxWidth: 20,
         data: [10, 15, 9, 18, 10, 15],
-        color: "#38cab3",
+        color: "#139c7f",
       },
       {
         name: "growth",
@@ -126,14 +126,14 @@ export const echart2 = {
         color: "#5f6d7a",
       },
     },
-    color: ["#38cab3", "#f74f75"],
+    color: ["#139c7f", "#f74f75"],
     series: [
       {
         name: "sales",
         type: "line",
         smooth: true,
         data: [10, 15, 9, 18, 10, 15],
-        color: ["#38cab3"],
+        color: ["#139c7f"],
       },
       {
         name: "Profit",
@@ -177,7 +177,7 @@ export const echart3 = {
         type: "value",
       },
     ],
-    color: ["#38cab3", "#f74f75"],
+    color: ["#139c7f", "#f74f75"],
     series: [
       {
         name: "sales",
@@ -213,14 +213,14 @@ export const echart4 = {
         data: ["2014", "2015", "2016", "2017", "2018", "2019"],
       },
     ],
-    color: ["#38cab3", "#f74f75"],
+    color: ["#139c7f", "#f74f75"],
     series: [
       {
         name: "sales",
         type: "line",
         smooth: true,
         data: [10, 15, 9, 18, 10, 15],
-        color: ["#38cab3"],
+        color: ["#139c7f"],
       },
       {
         name: "Profit",
@@ -274,7 +274,7 @@ export const echart5 = {
         color: "#5f6d7a",
       },
     },
-    color: ["#f74f75", "#38cab3"],
+    color: ["#f74f75", "#139c7f"],
     series: [
       {
         name: "sales",
@@ -352,7 +352,7 @@ export const echart6 = {
         type: "bar",
         stack: "total",
         data: [25, 32, 35, 64, 52, 45, 35, 34, 54],
-        color: "#38cab3",
+        color: "#139c7f",
       },
     ],
   },
@@ -455,14 +455,14 @@ export const echart8 = {
         type: "line",
         smooth: true,
         data: [5, 15, 9, 18, 10, 15],
-        color: "#38cab3",
+        color: "#139c7f",
       },
     ],
   },
 };
 
 export const echart9 = {
-  
+
   option: {
     tooltip: {
       trigger: "axis",
@@ -555,7 +555,7 @@ export const echart9 = {
         },
       },
     ],
-    color: ["#38cab3", "#f74f75"],
+    color: ["#139c7f", "#f74f75"],
     series: [
       {
         name: "View Price",

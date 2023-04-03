@@ -6,8 +6,7 @@ import Switcher from "../Switcher/Switcher";
 import RightSidebar from "../RightSidebar/RightSidebar";
 import TabToTop from "../TabToTop/TabToTop";
 import Switcher1 from "../../components/Pages/Switcher/Switcher-1/Switcher-1";
-import { Provider } from "react-redux";
-import Store from "../../redux/store/store"
+
 export default function Switcherapp() {
   document
     .querySelector("body")
@@ -15,18 +14,18 @@ export default function Switcherapp() {
   document.querySelector("body")?.classList.remove("error-page1", "bg-primary");
   const responsiveSidebarclose = () => {
     //leftsidemenu
-    if (window.innerWidth < 992){
-    document.querySelector(".app")?.classList.remove("sidenav-toggled");
+    if (window.innerWidth < 992) {
+      document.querySelector(".app")?.classList.remove("sidenav-toggled");
     }
     //rightsidebar
     document.querySelector(".sidebar-right")?.classList.remove("sidebar-open");
     //swichermainright
     document.querySelector(".demo_changer")?.classList.remove("active");
-    let switcherMainright:any = document.querySelector(".demo_changer")
+    let switcherMainright: any = document.querySelector(".demo_changer")
     switcherMainright.style.right = "-270px";
   };
- 
-  function Sidebargone(gone:any) {
+
+  function Sidebargone(gone: any) {
     if (gone.matches) { // If media query matches
       document.querySelector("body")?.classList.add("sidebar-gone");
     } else {
@@ -40,33 +39,31 @@ export default function Switcherapp() {
   gone.addListener(Sidebargone)
   return (
     <React.Fragment>
-        <Provider store={Store}>
-          <div className="horizontalMenucontainer">
-            <TabToTop />
-            <div className="page">
-              <div className="open">
-                <Switcherheader />
-                <Sidebar />
+      <div className="horizontalMenucontainer">
+        <TabToTop />
+        <div className="page">
+          <div className="open">
+            <Switcherheader />
+            <Sidebar />
+          </div>
+          <div className="main-content app-content">
+            <div className="side-app">
+              <div
+                className="main-container container-fluid"
+                onClick={() => {
+                  responsiveSidebarclose();
+                  //   Switcherdata.Horizontalmenudefultclose();
+                }}
+              >
+                <Switcher1 />
               </div>
-              <div className="main-content app-content">
-                <div className="side-app">
-                  <div
-                    className="main-container container-fluid"
-                    onClick={() => {
-                      responsiveSidebarclose();
-                      //   Switcherdata.Horizontalmenudefultclose();
-                    }}
-                  >
-                    <Switcher1 />
-                  </div>
-                </div>
-              </div>
-              <RightSidebar />
-              <Switcher />
-              <Footer />
             </div>
           </div>
-        </Provider> 
+          <RightSidebar />
+          <Switcher />
+          <Footer />
+        </div>
+      </div>
     </React.Fragment>
   );
 }

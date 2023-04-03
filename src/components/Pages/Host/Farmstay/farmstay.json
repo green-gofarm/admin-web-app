@@ -1,0 +1,100 @@
+{
+    "data": [
+        {
+            "id": 1,
+            "rating": 5,
+            "name": "Nông trại vui vẻ",
+            "description": "Trải nghiệm cuộc sống vùng quê sông nước",
+            "contactInformation": "Email: wifildt@gmail.com, Phone: 0901234567",
+            "address": "160 Pasteur, phường 6, quận 3, thành phố Hồ Chí Minh",
+            "country": "Việt Nam",
+            "city": "Thành phố Hồ Chí Minh",
+            "status": 1,
+            "hostId": 1,
+            "images": "image1.jpg,image2.jpg,image3.jpg",
+            "createdDate": "2022-01-01 10:00:00",
+            "updatedDate": "2022-01-02 12:00:00",
+            "host": {
+                "userId": 45,
+                "name": "Lê Danh Trọng",
+                "contract": "https://cozyfarmhouse.com/contract.pdf",
+                "bankAccountName": "LE DANH TRONG",
+                "bankAccountNumber": "1234567890",
+                "createdDate": "2022-01-01 10:00:00",
+                "updatedDate": "2022-01-02 12:00:00"
+            }
+        },
+        {
+            "id": 2,
+            "rating": 4,
+            "name": "Nông trại vui vẻ",
+            "description": "Trải nghiệm cuộc sống vùng quê sông nước",
+            "contactInformation": "Email: wifildt@gmail.com, Phone: 0901234567",
+            "address": "Xã Đức Tân, huyện Tánh Linh, tỉnh Bình Thuận",
+            "country": "Việt Nam",
+            "city": "Bình thuận",
+            "status": 2,
+            "hostId": 1,
+            "images": "image1.jpg,image2.jpg,image3.jpg",
+            "createdDate": "2022-01-01 10:00:00",
+            "updatedDate": "2022-01-02 12:00:00",
+            "host": {
+                "userId": 45,
+                "name": "Lê Danh Trọng",
+                "contract": "https://cozyfarmhouse.com/contract.pdf",
+                "bankAccountName": "LE DANH TRONG",
+                "bankAccountNumber": "1234567890",
+                "createdDate": "2022-01-01 10:00:00",
+                "updatedDate": "2022-01-02 12:00:00"
+            }
+        },
+        {
+            "id": 3,
+            "rating": 4,
+            "name": "Nông trại vui vẻ",
+            "description": "Trải nghiệm cuộc sống vùng quê sông nước",
+            "contactInformation": "Email: wifildt@gmail.com, Phone: 0901234567",
+            "address": "36 Phố Huế, phường Ngô Thì Nhậm, quận Hai Bà Trưng, Hà Nội",
+            "country": "Việt Nam",
+            "city": "Hà nội",
+            "status": 3,
+            "hostId": 1,
+            "images": "image1.jpg,image2.jpg,image3.jpg",
+            "createdDate": "2022-01-01 10:00:00",
+            "updatedDate": "2022-01-02 12:00:00",
+            "host": {
+                "userId": 45,
+                "name": "Lê Danh Trọng",
+                "contract": "https://cozyfarmhouse.com/contract.pdf",
+                "bankAccountName": "LE DANH TRONG",
+                "bankAccountNumber": "1234567890",
+                "createdDate": "2022-01-01 10:00:00",
+                "updatedDate": "2022-01-02 12:00:00"
+            }
+        },
+        {
+            "id": 4,
+            "rating": 3,
+            "name": "Nông trại vui vẻ",
+            "description": "Trải nghiệm cuộc sống vùng quê sông nước",
+            "contactInformation": "Email: wifildt@gmail.com, Phone: 0901234567",
+            "address": "Khu du lịch Bà Nà Hills, phường Hòa Vang, thành phố Đà Nẵng",
+            "country": "Việt Nam",
+            "city": "Đà nẵng",
+            "status": 4,
+            "hostId": 1,
+            "images": "image1.jpg,image2.jpg,image3.jpg",
+            "createdDate": "2022-01-01 10:00:00",
+            "updatedDate": "2022-01-02 12:00:00",
+            "host": {
+                "userId": 45,
+                "name": "Lê Danh Trọng",
+                "contract": "https://cozyfarmhouse.com/contract.pdf",
+                "bankAccountName": "LE DANH TRONG",
+                "bankAccountNumber": "1234567890",
+                "createdDate": "2022-01-01 10:00:00",
+                "updatedDate": "2022-01-02 12:00:00"
+            }
+        }
+    ]
+}

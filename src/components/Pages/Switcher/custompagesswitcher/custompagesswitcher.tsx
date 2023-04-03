@@ -6,7 +6,7 @@ export default function Custompagesswitcher() {
     Switcherdatacustam.localStorageBackUp();
   });
 
-  function changePrimaryColor(userColor:any) {
+  function changePrimaryColor(userColor: any) {
     // var userColor:any = document.getElementById("colorID")
     // userColor.value;
     localStorage.setItem("nowaPrimaryColor", userColor);
@@ -27,12 +27,12 @@ export default function Custompagesswitcher() {
     // Adding
     document.querySelector("body")?.classList.add("light-theme");
 
- 
+
 
     Switcherdatacustam.name();
     console.log(userColor)
   }
-  function darkPrimaryColor(userColor:any ) {
+  function darkPrimaryColor(userColor: any) {
     // var userColor:any = document.getElementById("darkPrimaryColorID")
     // userColor.value;
 
@@ -44,8 +44,8 @@ export default function Custompagesswitcher() {
 
     Switcherdatacustam.dynamicDarkPrimaryColor(dynamicPrimaryDark, userColor);
 
-   let myonoffswitch2:any = document.getElementById("myonoffswitch2") as HTMLInputElement
-   myonoffswitch2.checked = true;
+    let myonoffswitch2: any = document.getElementById("myonoffswitch2") as HTMLInputElement
+    myonoffswitch2.checked = true;
 
     // Adding
     document.querySelector("body")?.classList.add("dark-theme");
@@ -174,7 +174,7 @@ export default function Custompagesswitcher() {
                       <div className="">
                         <input
                           className="wd-25 ht-25 input-color-picker color-primary-light"
-                          defaultValue="#38cab3"
+                          defaultValue="#139c7f"
                           id="colorID"
                           onChange={(e) => changePrimaryColor(e.target.value)}
                           type="color"
@@ -191,9 +191,9 @@ export default function Custompagesswitcher() {
                       <div className="">
                         <input
                           className="wd-25 ht-25 input-dark-color-picker color-primary-dark"
-                          defaultValue="#38cab3"
+                          defaultValue="#139c7f"
                           id="darkPrimaryColorID"
-                          onChange={(e) =>  darkPrimaryColor(e.target.value)}
+                          onChange={(e) => darkPrimaryColor(e.target.value)}
                           type="color"
                           data-id="bg-color"
                           data-id1="bg-hover"
@@ -216,8 +216,8 @@ export default function Custompagesswitcher() {
                       className="btn btn-danger btn-block"
                       onClick={() => {
                         localStorage.clear();
-                       let html:any = document.querySelector("html")
-                       html.style = "";
+                        let html: any = document.querySelector("html")
+                        html.style = "";
                         Switcherdatacustam.name();
                         Switcherdatacustam.resetData();
                       }}

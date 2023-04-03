@@ -1,106 +1,106 @@
 import React from "react";
-import {  OverlayTrigger, Tooltip } from "react-bootstrap";
+import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import ReactApexChart from "react-apexcharts";
 //Sales Activity
 export class Statistics2 extends React.Component<{}, { options: any, series: any, }>{
-  constructor(props:any) {
+  constructor(props: any) {
     super(props);
     this.state = {
       series: [
-         {
-           name: "Sales",
-           data: [32, 15, 63, 51, 136, 62, 99, 42, 178, 76, 32, 180],
-         },
-       ],
+        {
+          name: "Sales",
+          data: [32, 15, 63, 51, 136, 62, 99, 42, 178, 76, 32, 180],
+        },
+      ],
       options: {
         chart: {
-         height: 280,
-         type: "line",
-         zoom: {
-           enabled: false,
-         },
-         dropShadow: {
-           enabled: true,
-           enabledOnSeries: undefined,
-           top: 5,
-           left: 0,
-           blur: 3,
-           color: "#000",
-           opacity: 0.1,
-         },
-       },
+          height: 280,
+          type: "line",
+          zoom: {
+            enabled: false,
+          },
+          dropShadow: {
+            enabled: true,
+            enabledOnSeries: undefined,
+            top: 5,
+            left: 0,
+            blur: 3,
+            color: "#000",
+            opacity: 0.1,
+          },
+        },
         dataLabels: {
-         enabled: false,
-       },
+          enabled: false,
+        },
         legend: {
-         position: "top",
-         horizontalAlign: "left",
-         offsetX: -15,
-         fontWeight: "bold",
-       },
-       stroke: {
-         curve: "smooth",
-         width: "3",
-       },
-       grid: {
-         borderColor: "#f2f6f7",
-       },
-       colors: ['var(--primary-bg-color)' || "#1fc5db"],
-      
-      yaxis: {
-         title: {
-           text: "Growth",
-           style: {
-             color: "#adb5be",
-             fontSize: "14px",
-             fontFamily: "poppins, sans-serif",
-             fontWeight: 600,
-             cssClass: "apexcharts-yaxis-label",
-           },
-         },
-         labels: {
-           formatter: function (y:any) {
-             return y.toFixed(0) + "";
-           },
-         },
-       },
-       xaxis: {
-         type: "number",
-         categories: [
-           "1",
-           "2",
-           "3",
-           "4",
-           "5",
-           "6",
-           "7",
-           "8",
-           "9",
-           "10",
-           "11",
-           "12",
-         ],
-         axisBorder: {
-           show: true,
-           color: "rgba(119, 119, 142, 0.05)",
-           offsetX: 0,
-           offsetY: 0,
-         },
-         axisTicks: {
-           show: true,
-           borderType: "solid",
-           color: "rgba(119, 119, 142, 0.05)",
-           width: 6,
-           offsetX: 0,
-           offsetY: 0,
-         },
-         labels: {
-           rotate: -90,
-         },
-       },
+          position: "top",
+          horizontalAlign: "left",
+          offsetX: -15,
+          fontWeight: "bold",
+        },
+        stroke: {
+          curve: "smooth",
+          width: "3",
+        },
+        grid: {
+          borderColor: "#f2f6f7",
+        },
+        colors: ['var(--primary-bg-color)' || "#1fc5db"],
+
+        yaxis: {
+          title: {
+            text: "Growth",
+            style: {
+              color: "#adb5be",
+              fontSize: "14px",
+              fontFamily: "Inter, sans-serif",
+              fontWeight: 600,
+              cssClass: "apexcharts-yaxis-label",
+            },
+          },
+          labels: {
+            formatter: function (y: any) {
+              return y.toFixed(0) + "";
+            },
+          },
+        },
+        xaxis: {
+          type: "number",
+          categories: [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "10",
+            "11",
+            "12",
+          ],
+          axisBorder: {
+            show: true,
+            color: "rgba(119, 119, 142, 0.05)",
+            offsetX: 0,
+            offsetY: 0,
+          },
+          axisTicks: {
+            show: true,
+            borderType: "solid",
+            color: "rgba(119, 119, 142, 0.05)",
+            width: 6,
+            offsetX: 0,
+            offsetY: 0,
+          },
+          labels: {
+            rotate: -90,
+          },
+        },
+      }
     }
-  }
   }
 
   render() {
@@ -112,105 +112,105 @@ export class Statistics2 extends React.Component<{}, { options: any, series: any
   }
 }
 export class Budget extends React.Component<{}, { options: any, series: any }>{
-  constructor(props:any) {
+  constructor(props: any) {
     super(props);
 
     this.state = {
 
       series: [
-         {
-           name: "This Week",
-           data: [44, 42, 57, 86, 58, 55, 70],
-         },
-         {
-           name: "Last Week",
-           data: [-34, -22, -37, -56, -21, -35, -60],
-         },
-       ],
+        {
+          name: "This Week",
+          data: [44, 42, 57, 86, 58, 55, 70],
+        },
+        {
+          name: "Last Week",
+          data: [-34, -22, -37, -56, -21, -35, -60],
+        },
+      ],
       options: {
         chart: {
-         stacked: true,
-         type: "bar",
-         height: 250,
+          stacked: true,
+          type: "bar",
+          height: 250,
           borderRadius: 5,
           toolbar: {
             show: false,
           },
-       },
-       grid: {
-         borderColor: "#f2f6f7",
-       },
-       colors: ['var(--primary-bg-color)' || 'var(--primary-bg-color)', "#e4e7ed"],
+        },
+        grid: {
+          borderColor: "#f2f6f7",
+        },
+        colors: ['var(--primary-bg-color)' || 'var(--primary-bg-color)', "#e4e7ed"],
         plotOptions: {
-         bar: {
-          
-           colors: {
-             ranges: [
-               {
-                 from: -100,
-                 borderRadius: 5,
-                 to: -46,
-                 color: "#ebeff5",
-               },
-               {
-                 from: -45,
-                 borderRadius: 5,
-                 to: 0,
-                 color: "#ebeff5",
-               },
-             ],
-           },
-           columnWidth: "25%",
-         },
-       },
+          bar: {
+
+            colors: {
+              ranges: [
+                {
+                  from: -100,
+                  borderRadius: 5,
+                  to: -46,
+                  color: "#ebeff5",
+                },
+                {
+                  from: -45,
+                  borderRadius: 5,
+                  to: 0,
+                  color: "#ebeff5",
+                },
+              ],
+            },
+            columnWidth: "25%",
+          },
+        },
         dataLabels: {
           enabled: false,
         },
         legend: {
-         show: true,
-         position: "top",
-       },
-     
-      yaxis: {
-         title: {
-           style: {
-             color: "#adb5be",
-             fontSize: "14px",
-             fontFamily: "poppins, sans-serif",
-             fontWeight: 600,
-             cssClass: "apexcharts-yaxis-label",
-           },
-         },
-         labels: {
-           formatter: function (y:any) {
-             return y.toFixed(0) + "";
-           },
-         },
-       },
-       xaxis: {
-         type: "day",
-         categories: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "sat"],
-         axisBorder: {
-           show: true,
-           color: "rgba(119, 119, 142, 0.05)",
-           offsetX: 0,
-           offsetY: 0,
-         },
-         axisTicks: {
-           show: true,
-           borderType: "solid",
-           color: "rgba(119, 119, 142, 0.05)",
-           width: 6,
-           offsetX: 0,
-           offsetY: 0,
-         },
-        
-         labels: {
-           rotate: -90,
-         },
-       },
+          show: true,
+          position: "top",
+        },
+
+        yaxis: {
+          title: {
+            style: {
+              color: "#adb5be",
+              fontSize: "14px",
+              fontFamily: "Inter, sans-serif",
+              fontWeight: 600,
+              cssClass: "apexcharts-yaxis-label",
+            },
+          },
+          labels: {
+            formatter: function (y: any) {
+              return y.toFixed(0) + "";
+            },
+          },
+        },
+        xaxis: {
+          type: "day",
+          categories: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "sat"],
+          axisBorder: {
+            show: true,
+            color: "rgba(119, 119, 142, 0.05)",
+            offsetX: 0,
+            offsetY: 0,
+          },
+          axisTicks: {
+            show: true,
+            borderType: "solid",
+            color: "rgba(119, 119, 142, 0.05)",
+            width: 6,
+            offsetX: 0,
+            offsetY: 0,
+          },
+
+          labels: {
+            rotate: -90,
+          },
+        },
+      }
     }
-  }
   }
 
   render() {
@@ -223,35 +223,35 @@ export class Budget extends React.Component<{}, { options: any, series: any }>{
 }
 
 export class Viewers1 extends React.Component<{}, { options: any, series: any, }>{
-  constructor(props:any) {
+  constructor(props: any) {
     super(props);
 
     this.state = {
       series: [
-         {
-           name: "Male",
-           data: [51, 44, 55, 42, 58, 50, 62],
-         },
-         {
-           name: "Female",
-           data: [56, 58, 38, 50, 64, 45, 55],
-         },
-       ],
+        {
+          name: "Male",
+          data: [51, 44, 55, 42, 58, 50, 62],
+        },
+        {
+          name: "Female",
+          data: [56, 58, 38, 50, 64, 45, 55],
+        },
+      ],
       options: {
         chart: {
-        height: 270,
-        type: "line",
-        toolbar: {
-          show: false,
+          height: 270,
+          type: "line",
+          toolbar: {
+            show: false,
+          },
+          background: "none",
+          fill: "#fff",
         },
-        background: "none",
-        fill: "#fff",
-      },
         grid: {
           borderColor: "#f2f6f7",
         },
         colors: ['var(--primary-bg-color)' || 'var(--primary-bg-color)', "#e4e7ed"],
-        
+
         background: "transparent",
         dataLabels: {
           enabled: false,
@@ -266,43 +266,43 @@ export class Viewers1 extends React.Component<{}, { options: any, series: any, }
           show: true,
           position: "top",
         },
-      
-      xaxis: {
-        show: false,
-        axisBorder: {
+
+        xaxis: {
           show: false,
-          color: "rgba(119, 119, 142, 0.05)",
-          offsetX: 0,
-          offsetY: 0,
+          axisBorder: {
+            show: false,
+            color: "rgba(119, 119, 142, 0.05)",
+            offsetX: 0,
+            offsetY: 0,
+          },
+          axisTicks: {
+            show: false,
+            borderType: "solid",
+            color: "rgba(119, 119, 142, 0.05)",
+            width: 6,
+            offsetX: 0,
+            offsetY: 0,
+          },
+          labels: {
+            rotate: -90,
+          },
         },
-        axisTicks: {
+        yaxis: {
           show: false,
-          borderType: "solid",
-          color: "rgba(119, 119, 142, 0.05)",
-          width: 6,
-          offsetX: 0,
-          offsetY: 0,
+          axisBorder: {
+            show: false,
+          },
+          axisTicks: {
+            show: false,
+          },
         },
-        labels: {
-          rotate: -90,
+        tooltip: {
+          x: {
+            format: "dd/MM/yy HH:mm",
+          },
         },
-      },
-      yaxis: {
-        show: false,
-        axisBorder: {
-          show: false,
-        },
-        axisTicks: {
-          show: false,
-        },
-      },
-      tooltip: {
-        x: {
-          format: "dd/MM/yy HH:mm",
-        },
-      },
+      }
     }
-  }
   }
 
   render() {
@@ -314,7 +314,7 @@ export class Viewers1 extends React.Component<{}, { options: any, series: any, }
   }
 }
 
-export const COLUMNS:any = [
+export const COLUMNS: any = [
   {
     Header: "Purchase Date",
     accessor: "PurchaseDate",
@@ -809,7 +809,7 @@ export const DATATABLE = [
   },
 ];
 
-export const GlobalFilter = ({ filter, setFilter }:any) => {
+export const GlobalFilter = ({ filter, setFilter }: any) => {
   return (
     <span className="d-flex ms-auto">
       <input

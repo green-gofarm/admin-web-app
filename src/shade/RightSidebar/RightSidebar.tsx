@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import {Tab, Nav } from "react-bootstrap";
+import { Tab, Nav } from "react-bootstrap";
 import Scrollbars from "react-custom-scrollbars";
 export default function RightSidebar() {
   function Remove() {
@@ -59,7 +59,7 @@ export default function RightSidebar() {
                       Notifications
                     </Nav.Link>
                   </Nav.Item>
-                  <Nav.Item>
+                  {/* <Nav.Item>
                     <Nav.Link eventKey="side3">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -75,292 +75,292 @@ export default function RightSidebar() {
                       {"  "}
                       Friends
                     </Nav.Link>
-                  </Nav.Item>
+                  </Nav.Item> */}
                 </Nav>
 
                 <Tab.Content>
-                 
+
                   <Tab.Pane eventKey="side1" className="side1">
-                    <Scrollbars style={{ height:"800px" }}>
-                    <div className="tab-pane" id="side1">
-                      <div className="list d-flex align-items-center border-bottom p-3">
-                        <div className="">
-                          <span className="avatar bg-primary brround avatar-md">
-                            CH
-                          </span>
-                        </div>
-                        <Link className="wrapper w-100 ms-3" to="#">
-                          <p className="mb-0 d-flex ">
-                            <b>New Websites is Created</b>
-                          </p>
-                          <div className="d-flex justify-content-between align-items-center">
-                            <div className="d-flex align-items-center">
-                              <i className="mdi mdi-clock text-muted me-1 tx-11"></i>
-                              <small className="text-muted ms-auto">
-                                30 mins ago
-                              </small>
-                              <p className="mb-0"></p>
+                    <Scrollbars style={{ height: "800px" }}>
+                      <div className="tab-pane" id="side1">
+                        <div className="list d-flex align-items-center border-bottom p-3">
+                          <div className="">
+                            <span className="avatar bg-primary brround avatar-md">
+                              CH
+                            </span>
+                          </div>
+                          <Link className="wrapper w-100 ms-3" to="#">
+                            <p className="mb-0 d-flex ">
+                              <b>New Websites is Created</b>
+                            </p>
+                            <div className="d-flex justify-content-between align-items-center">
+                              <div className="d-flex align-items-center">
+                                <i className="mdi mdi-clock text-muted me-1 tx-11"></i>
+                                <small className="text-muted ms-auto">
+                                  30 mins ago
+                                </small>
+                                <p className="mb-0"></p>
+                              </div>
                             </div>
-                          </div>
-                        </Link>
-                      </div>
-                      <div className="list d-flex align-items-center border-bottom p-3">
-                        <div className="">
-                          <span className="avatar bg-danger brround avatar-md">
-                            N
-                          </span>
+                          </Link>
                         </div>
-                        <Link className="wrapper w-100 ms-3" to="#">
-                          <p className="mb-0 d-flex ">
-                            <b>Prepare For the Next Project</b>
-                          </p>
-                          <div className="d-flex justify-content-between align-items-center">
-                            <div className="d-flex align-items-center">
-                              <i className="mdi mdi-clock text-muted me-1 tx-11"></i>
-                              <small className="text-muted ms-auto">
-                                2 hours ago
-                              </small>
-                              <p className="mb-0"></p>
+                        <div className="list d-flex align-items-center border-bottom p-3">
+                          <div className="">
+                            <span className="avatar bg-danger brround avatar-md">
+                              N
+                            </span>
+                          </div>
+                          <Link className="wrapper w-100 ms-3" to="#">
+                            <p className="mb-0 d-flex ">
+                              <b>Prepare For the Next Project</b>
+                            </p>
+                            <div className="d-flex justify-content-between align-items-center">
+                              <div className="d-flex align-items-center">
+                                <i className="mdi mdi-clock text-muted me-1 tx-11"></i>
+                                <small className="text-muted ms-auto">
+                                  2 hours ago
+                                </small>
+                                <p className="mb-0"></p>
+                              </div>
                             </div>
-                          </div>
-                        </Link>
-                      </div>
-                      <div className="list d-flex align-items-center border-bottom p-3">
-                        <div className="">
-                          <span className="avatar bg-info brround avatar-md">
-                            S
-                          </span>
+                          </Link>
                         </div>
-                        <Link className="wrapper w-100 ms-3" to="#">
-                          <p className="mb-0 d-flex ">
-                            <b>Decide the live Discussion</b>
-                          </p>
-                          <div className="d-flex justify-content-between align-items-center">
-                            <div className="d-flex align-items-center">
-                              <i className="mdi mdi-clock text-muted me-1 tx-11"></i>
-                              <small className="text-muted ms-auto">
-                                3 hours ago
-                              </small>
-                              <p className="mb-0"></p>
+                        <div className="list d-flex align-items-center border-bottom p-3">
+                          <div className="">
+                            <span className="avatar bg-info brround avatar-md">
+                              S
+                            </span>
+                          </div>
+                          <Link className="wrapper w-100 ms-3" to="#">
+                            <p className="mb-0 d-flex ">
+                              <b>Decide the live Discussion</b>
+                            </p>
+                            <div className="d-flex justify-content-between align-items-center">
+                              <div className="d-flex align-items-center">
+                                <i className="mdi mdi-clock text-muted me-1 tx-11"></i>
+                                <small className="text-muted ms-auto">
+                                  3 hours ago
+                                </small>
+                                <p className="mb-0"></p>
+                              </div>
                             </div>
-                          </div>
-                        </Link>
-                      </div>
-                      <div className="list d-flex align-items-center border-bottom p-3">
-                        <div className="">
-                          <span className="avatar bg-warning brround avatar-md">
-                            K
-                          </span>
+                          </Link>
                         </div>
-                        <Link className="wrapper w-100 ms-3" to="#">
-                          <p className="mb-0 d-flex ">
-                            <b>Meeting at 3:00 pm</b>
-                          </p>
-                          <div className="d-flex justify-content-between align-items-center">
-                            <div className="d-flex align-items-center">
-                              <i className="mdi mdi-clock text-muted me-1 tx-11"></i>
-                              <small className="text-muted ms-auto">
-                                4 hours ago
-                              </small>
-                              <p className="mb-0"></p>
+                        <div className="list d-flex align-items-center border-bottom p-3">
+                          <div className="">
+                            <span className="avatar bg-warning brround avatar-md">
+                              K
+                            </span>
+                          </div>
+                          <Link className="wrapper w-100 ms-3" to="#">
+                            <p className="mb-0 d-flex ">
+                              <b>Meeting at 3:00 pm</b>
+                            </p>
+                            <div className="d-flex justify-content-between align-items-center">
+                              <div className="d-flex align-items-center">
+                                <i className="mdi mdi-clock text-muted me-1 tx-11"></i>
+                                <small className="text-muted ms-auto">
+                                  4 hours ago
+                                </small>
+                                <p className="mb-0"></p>
+                              </div>
                             </div>
-                          </div>
-                        </Link>
-                      </div>
-                      <div className="list d-flex align-items-center border-bottom p-3">
-                        <div className="">
-                          <span className="avatar bg-success brround avatar-md">
-                            R
-                          </span>
+                          </Link>
                         </div>
-                        <Link className="wrapper w-100 ms-3" to="#">
-                          <p className="mb-0 d-flex ">
-                            <b>Prepare for Presentation</b>
-                          </p>
-                          <div className="d-flex justify-content-between align-items-center">
-                            <div className="d-flex align-items-center">
-                              <i className="mdi mdi-clock text-muted me-1 tx-11"></i>
-                              <small className="text-muted ms-auto">
-                                1 days ago
-                              </small>
-                              <p className="mb-0"></p>
+                        <div className="list d-flex align-items-center border-bottom p-3">
+                          <div className="">
+                            <span className="avatar bg-success brround avatar-md">
+                              R
+                            </span>
+                          </div>
+                          <Link className="wrapper w-100 ms-3" to="#">
+                            <p className="mb-0 d-flex ">
+                              <b>Prepare for Presentation</b>
+                            </p>
+                            <div className="d-flex justify-content-between align-items-center">
+                              <div className="d-flex align-items-center">
+                                <i className="mdi mdi-clock text-muted me-1 tx-11"></i>
+                                <small className="text-muted ms-auto">
+                                  1 days ago
+                                </small>
+                                <p className="mb-0"></p>
+                              </div>
                             </div>
-                          </div>
-                        </Link>
-                      </div>
-                      <div className="list d-flex align-items-center border-bottom p-3">
-                        <div className="">
-                          <span className="avatar bg-pink brround avatar-md">
-                            MS
-                          </span>
+                          </Link>
                         </div>
-                        <Link className="wrapper w-100 ms-3" to="#">
-                          <p className="mb-0 d-flex ">
-                            <b>Prepare for Presentation</b>
-                          </p>
-                          <div className="d-flex justify-content-between align-items-center">
-                            <div className="d-flex align-items-center">
-                              <i className="mdi mdi-clock text-muted me-1 tx-11"></i>
-                              <small className="text-muted ms-auto">
-                                1 days ago
-                              </small>
-                              <p className="mb-0"></p>
+                        <div className="list d-flex align-items-center border-bottom p-3">
+                          <div className="">
+                            <span className="avatar bg-pink brround avatar-md">
+                              MS
+                            </span>
+                          </div>
+                          <Link className="wrapper w-100 ms-3" to="#">
+                            <p className="mb-0 d-flex ">
+                              <b>Prepare for Presentation</b>
+                            </p>
+                            <div className="d-flex justify-content-between align-items-center">
+                              <div className="d-flex align-items-center">
+                                <i className="mdi mdi-clock text-muted me-1 tx-11"></i>
+                                <small className="text-muted ms-auto">
+                                  1 days ago
+                                </small>
+                                <p className="mb-0"></p>
+                              </div>
                             </div>
-                          </div>
-                        </Link>
-                      </div>
-                      <div className="list d-flex align-items-center border-bottom p-3">
-                        <div className="">
-                          <span className="avatar bg-purple brround avatar-md">
-                            L
-                          </span>
+                          </Link>
                         </div>
-                        <Link className="wrapper w-100 ms-3" to="#">
-                          <p className="mb-0 d-flex ">
-                            <b>Prepare for Presentation</b>
-                          </p>
-                          <div className="d-flex justify-content-between align-items-center">
-                            <div className="d-flex align-items-center">
-                              <i className="mdi mdi-clock text-muted me-1 tx-11"></i>
-                              <small className="text-muted ms-auto">
-                                45 mintues ago
-                              </small>
-                              <p className="mb-0"></p>
+                        <div className="list d-flex align-items-center border-bottom p-3">
+                          <div className="">
+                            <span className="avatar bg-purple brround avatar-md">
+                              L
+                            </span>
+                          </div>
+                          <Link className="wrapper w-100 ms-3" to="#">
+                            <p className="mb-0 d-flex ">
+                              <b>Prepare for Presentation</b>
+                            </p>
+                            <div className="d-flex justify-content-between align-items-center">
+                              <div className="d-flex align-items-center">
+                                <i className="mdi mdi-clock text-muted me-1 tx-11"></i>
+                                <small className="text-muted ms-auto">
+                                  45 mintues ago
+                                </small>
+                                <p className="mb-0"></p>
+                              </div>
                             </div>
-                          </div>
-                        </Link>
-                      </div>
-                      <div className="list d-flex align-items-center p-3">
-                        <div className="">
-                          <span className="avatar bg-secondary brround avatar-md">
-                            U
-                          </span>
+                          </Link>
                         </div>
-                        <Link className="wrapper w-100 ms-3" to="#">
-                          <p className="mb-0 d-flex ">
-                            <b>Prepare for Presentation</b>
-                          </p>
-                          <div className="d-flex justify-content-between align-items-center">
-                            <div className="d-flex align-items-center">
-                              <i className="mdi mdi-clock text-muted me-1 tx-11"></i>
-                              <small className="text-muted ms-auto">
-                                2 days ago
-                              </small>
-                              <p className="mb-0"></p>
+                        <div className="list d-flex align-items-center p-3">
+                          <div className="">
+                            <span className="avatar bg-secondary brround avatar-md">
+                              U
+                            </span>
+                          </div>
+                          <Link className="wrapper w-100 ms-3" to="#">
+                            <p className="mb-0 d-flex ">
+                              <b>Prepare for Presentation</b>
+                            </p>
+                            <div className="d-flex justify-content-between align-items-center">
+                              <div className="d-flex align-items-center">
+                                <i className="mdi mdi-clock text-muted me-1 tx-11"></i>
+                                <small className="text-muted ms-auto">
+                                  2 days ago
+                                </small>
+                                <p className="mb-0"></p>
+                              </div>
                             </div>
-                          </div>
-                        </Link>
-                      </div>
-                    </div>
-                    </Scrollbars>
-                  </Tab.Pane>         
-                  <Tab.Pane eventKey="side2" className="side1">
-                  <Scrollbars style={{height:"800px"}}>
-                    <div className="tab-pane " id="side2">
-                      <div className="list-group list-group-flush ">
-                        <div className="list-group-item d-flex  align-items-center">
-                          <div className="me-3">
-                            <img alt=""
-                              className="avatar avatar-lg brround cover-image"
-                              src={require("../../assets/img/faces/12.jpg")}
-                            />
-                            <span className="avatar-status bg-success"></span>
-                          </div>
-                          <div>
-                            <strong>Madeleine</strong> Hey! there I' am
-                            available....
-                            <div className="small text-muted">3 hours ago</div>
-                          </div>
-                        </div>
-                        <div className="list-group-item d-flex  align-items-center">
-                          <div className="me-3">
-                            <img alt=""
-                              className="avatar avatar-lg brround cover-image"
-                              src={require("../../assets/img/faces/1.jpg")}
-                            />
-                          </div>
-                          <div>
-                            <strong>Anthony</strong> New product Launching...
-                            <div className="small text-muted">5 hour ago</div>
-                          </div>
-                        </div>
-                        <div className="list-group-item d-flex  align-items-center">
-                          <div className="me-3">
-                            <img alt=""
-                              className="avatar avatar-lg brround cover-image"
-                              src={require("../../assets/img/faces/2.jpg")}
-                            />
-                            <span className="avatar-status bg-success"></span>
-                          </div>
-                          <div>
-                            <strong>Olivia</strong> New Schedule Realease......
-                            <div className="small text-muted">
-                              45 mintues ago
-                            </div>
-                          </div>
-                        </div>
-                        <div className="list-group-item d-flex  align-items-center">
-                          <div className="me-3">
-                            <img alt=""
-                              className="avatar avatar-lg brround cover-image"
-                              src={require("../../assets/img/faces/8.jpg")}
-                            />
-                            <span className="avatar-status bg-success"></span>
-                          </div>
-                          <div>
-                            <strong>Madeleine</strong> Hey! there I' am
-                            available....
-                            <div className="small text-muted">3 hours ago</div>
-                          </div>
-                        </div>
-                        <div className="list-group-item d-flex  align-items-center">
-                          <div className="me-3">
-                            <img alt=""
-                              className="avatar avatar-lg brround cover-image"
-                              src={require("../../assets/img/faces/11.jpg")}
-                            />
-                          </div>
-                          <div>
-                            <strong>Anthony</strong> New product Launching...
-                            <div className="small text-muted">5 hour ago</div>
-                          </div>
-                        </div>
-                        <div className="list-group-item d-flex  align-items-center">
-                          <div className="me-3">
-                            <img alt=""
-                              className="avatar avatar-lg brround cover-image"
-                              src={require("../../assets/img/faces/6.jpg")}
-                            />
-                            <span className="avatar-status bg-success"></span>
-                          </div>
-                          <div>
-                            <strong>Olivia</strong> New Schedule Realease......
-                            <div className="small text-muted">
-                              45 mintues ago
-                            </div>
-                          </div>
-                        </div>
-                        <div className="list-group-item d-flex  align-items-center">
-                          <div className="me-3">
-                            <img alt=""
-                              className="avatar avatar-lg brround cover-image"
-                              src={require("../../assets/img/faces/9.jpg")}
-                            />
-                            <span className="avatar-status bg-success"></span>
-                          </div>
-                          <div>
-                            <strong>Olivia</strong> Hey! there I' am
-                            available....
-                            <div className="small text-muted">
-                              12 mintues ago
-                            </div>
-                          </div>
+                          </Link>
                         </div>
                       </div>
-                    </div>
                     </Scrollbars>
                   </Tab.Pane>
-                  <Tab.Pane eventKey="side3"className="side1">
+                  <Tab.Pane eventKey="side2" className="side1">
+                    <Scrollbars style={{ height: "800px" }}>
+                      <div className="tab-pane " id="side2">
+                        <div className="list-group list-group-flush ">
+                          <div className="list-group-item d-flex  align-items-center">
+                            <div className="me-3">
+                              <img alt=""
+                                className="avatar avatar-lg brround cover-image"
+                                src={require("../../assets/img/faces/12.jpg")}
+                              />
+                              <span className="avatar-status bg-success"></span>
+                            </div>
+                            <div>
+                              <strong>Madeleine</strong> Hey! there I' am
+                              available....
+                              <div className="small text-muted">3 hours ago</div>
+                            </div>
+                          </div>
+                          <div className="list-group-item d-flex  align-items-center">
+                            <div className="me-3">
+                              <img alt=""
+                                className="avatar avatar-lg brround cover-image"
+                                src={require("../../assets/img/faces/1.jpg")}
+                              />
+                            </div>
+                            <div>
+                              <strong>Anthony</strong> New product Launching...
+                              <div className="small text-muted">5 hour ago</div>
+                            </div>
+                          </div>
+                          <div className="list-group-item d-flex  align-items-center">
+                            <div className="me-3">
+                              <img alt=""
+                                className="avatar avatar-lg brround cover-image"
+                                src={require("../../assets/img/faces/2.jpg")}
+                              />
+                              <span className="avatar-status bg-success"></span>
+                            </div>
+                            <div>
+                              <strong>Olivia</strong> New Schedule Realease......
+                              <div className="small text-muted">
+                                45 mintues ago
+                              </div>
+                            </div>
+                          </div>
+                          <div className="list-group-item d-flex  align-items-center">
+                            <div className="me-3">
+                              <img alt=""
+                                className="avatar avatar-lg brround cover-image"
+                                src={require("../../assets/img/faces/8.jpg")}
+                              />
+                              <span className="avatar-status bg-success"></span>
+                            </div>
+                            <div>
+                              <strong>Madeleine</strong> Hey! there I' am
+                              available....
+                              <div className="small text-muted">3 hours ago</div>
+                            </div>
+                          </div>
+                          <div className="list-group-item d-flex  align-items-center">
+                            <div className="me-3">
+                              <img alt=""
+                                className="avatar avatar-lg brround cover-image"
+                                src={require("../../assets/img/faces/11.jpg")}
+                              />
+                            </div>
+                            <div>
+                              <strong>Anthony</strong> New product Launching...
+                              <div className="small text-muted">5 hour ago</div>
+                            </div>
+                          </div>
+                          <div className="list-group-item d-flex  align-items-center">
+                            <div className="me-3">
+                              <img alt=""
+                                className="avatar avatar-lg brround cover-image"
+                                src={require("../../assets/img/faces/6.jpg")}
+                              />
+                              <span className="avatar-status bg-success"></span>
+                            </div>
+                            <div>
+                              <strong>Olivia</strong> New Schedule Realease......
+                              <div className="small text-muted">
+                                45 mintues ago
+                              </div>
+                            </div>
+                          </div>
+                          <div className="list-group-item d-flex  align-items-center">
+                            <div className="me-3">
+                              <img alt=""
+                                className="avatar avatar-lg brround cover-image"
+                                src={require("../../assets/img/faces/9.jpg")}
+                              />
+                              <span className="avatar-status bg-success"></span>
+                            </div>
+                            <div>
+                              <strong>Olivia</strong> Hey! there I' am
+                              available....
+                              <div className="small text-muted">
+                                12 mintues ago
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </Scrollbars>
+                  </Tab.Pane>
+                  {/* <Tab.Pane eventKey="side3"className="side1">
                   <Scrollbars style={{height:"800px"}}>
                     <div className="tab-pane " id="side3">
                       <div className="list-group list-group-flush ">
@@ -747,7 +747,7 @@ export default function RightSidebar() {
                       </div>
                     </div>
                     </Scrollbars>
-                  </Tab.Pane>
+                  </Tab.Pane> */}
                 </Tab.Content>
               </Tab.Container>
             </div>

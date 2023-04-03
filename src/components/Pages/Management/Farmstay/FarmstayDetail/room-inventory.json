@@ -1,0 +1,70 @@
+{
+    "data": [
+        {
+            "id": "",
+            "description": "",
+            "defaultPrice": 1000000,
+            "name": "Phòng 1",
+            "images": "",
+            "status": 1,
+            "updatedDate": "2022-04-10 11:45:00",
+            "createdDate": "2022-04-10 11:45:00",
+            "roomCategoryId": 1
+        },
+        {
+            "id": "",
+            "description": "",
+            "name": "Phòng 2",
+            "defaultPrice": 1000000,
+            "images": "",
+            "status": 2,
+            "updatedDate": "2022-04-10 11:45:00",
+            "createdDate": "2022-04-10 11:45:00",
+            "roomCategoryId": 2
+        },
+        {
+            "id": "",
+            "description": "",
+            "defaultPrice": 1000000,
+            "name": "Phòng 3",
+            "images": "",
+            "status": 1,
+            "updatedDate": "2022-04-10 11:45:00",
+            "createdDate": "2022-04-10 11:45:00",
+            "roomCategoryId": 1
+        },
+        {
+            "id": "",
+            "description": "",
+            "name": "Phòng 4",
+            "defaultPrice": 1000000,
+            "images": "",
+            "status": 1,
+            "updatedDate": "2022-04-10 11:45:00",
+            "createdDate": "2022-04-10 11:45:00",
+            "roomCategoryId": 1
+        },
+        {
+            "id": "",
+            "description": "",
+            "name": "Phòng 5",
+            "defaultPrice": 1000000,
+            "images": "",
+            "status": 1,
+            "updatedDate": "2022-04-10 11:45:00",
+            "createdDate": "2022-04-10 11:45:00",
+            "roomCategoryId": 2
+        },
+        {
+            "id": "",
+            "description": "",
+            "name": "Phòng 6",
+            "defaultPrice": 1000000,
+            "images": "",
+            "status": 2,
+            "updatedDate": "2022-04-10 11:45:00",
+            "createdDate": "2022-04-10 11:45:00",
+            "roomCategoryId": 2
+        }
+    ]
+}

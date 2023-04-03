@@ -15,7 +15,7 @@
   display: flex;
   flex-wrap: wrap;
   background: #fff;
-  font-family: sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 14px;
   line-height: 20px;
   color: #556270;
@@ -60,7 +60,6 @@
   }
 
   .badge {
-
     position: relative;
     background: #556270;
     display: block;

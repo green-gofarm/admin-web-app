@@ -46,7 +46,7 @@ const Lockscreen = () => (
                     <div className="wd-100p">
                       <div className="d-flex mx-auto">
                         {" "}
-                        <Link to={`${process.env.PUBLIC_URL}/dashboard/dashboard-1`} className="mx-auto d-flex">
+                        <Link to="/" className="mx-auto d-flex">
                           <img
                             src={require("../../../../assets/img/brand/favicon.png")}
                             className="sign-favicon ht-40 mx-auto"

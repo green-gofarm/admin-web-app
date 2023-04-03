@@ -89,7 +89,7 @@ License        :   Licensed under ThemeForest License
 /*navigation*/
 /*dark colors*/
 /* ######## FONT ######## */
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap");
 
 /* ######## BOOTSTRAP ######## */
 .accordion>.card:not(:first-of-type) .card-header:first-child {
@@ -3287,7 +3287,6 @@ input[type=button].btn-block {
     background-clip: border-box;
     border-radius: 5px;
     border: 0px solid transparent;
-    margin-bottom: 1.3rem;
     box-shadow: 1px 1px 7px rgba(154, 154, 204, 0.1);
 }
 
@@ -3844,7 +3843,7 @@ dd {
     position: absolute;
     left: 11px;
     display: block;
-    top: 21px;
+    top: 20px;
 }
 
 .card-title2:before {
@@ -4351,7 +4350,8 @@ dd {
 }
 
 html {
-    font-family: "Poppins", sans-serif;
+    font-family: "Inter",
+        sans-serif;
     line-height: 1.15;
     -webkit-text-size-adjust: 100%;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
@@ -4372,7 +4372,8 @@ section {
 
 body {
     margin: 0;
-    font-family: "Poppins", sans-serif;
+    font-family: "Inter",
+        sans-serif;
     font-size: 0.81568rem;
     font-weight: 400;
     line-height: 1.5;
@@ -7557,7 +7558,7 @@ pre code {
 .form-control {
     display: block;
     width: 100%;
-    height: 40px;
+    height: 38px;
     padding: 0.375rem 0.75rem;
     font-size: 0.875rem;
     font-weight: 400;
@@ -16453,14 +16454,14 @@ a.tag-addon:hover {
 }
 
 :root {
-    --primary-bg-color: #38cab3;
-    --primary-bg-hover: #5cd3b9;
-    --primary-bg-border: #38cab3;
+    --primary-bg-color: #139c7f;
+    --primary-bg-hover: #094e3f;
+    --primary-bg-border: #139c7f;
     --primary02: rgba(28, 213, 174, 0.2);
     --primary05: rgba(28, 213, 174, 0.5);
     --primary-transparentcolor: rgba(28, 213, 174, 0.2);
     --transparentprimary-transparentcolor: rgba(255, 255, 255, 0.05);
-    --transparent-body: #38cab3;
+    --transparent-body: #139c7f;
     --transparent-theme: rgba(0, 0, 0, 0.1);
     --blue: var(--primary-bg-color);
     --indigo: var(--primary-bg-color);
@@ -16844,7 +16845,8 @@ a.close.disabled {
 /* ############### PAGE LAYOUT STYLES ############### */
 /* ###### 6.3 Global  ###### */
 body {
-    font-family: "Poppins", sans-serif;
+    font-family: "Inter",
+        sans-serif;
 }
 
 .main-body {
@@ -18610,7 +18612,7 @@ pre {
 }
 
 .main-logo1 {
-    font-family: poppins;
+    font-family: Inter;
     font-weight: 600;
 }
 
@@ -19885,13 +19887,13 @@ hr {
 #morrisDonut1.morris-donut-wrapper-demo svg text {
     font-size: 12px !important;
     font-weight: 500 !important;
-    font-family: "Poppins", sans-serif !important;
+    font-family: "Inter", sans-serif !important;
 }
 
 #morrisDonut2.morris-donut-wrapper-demo svg text {
     font-size: 12px !important;
     font-weight: 500 !important;
-    font-family: "Poppins", sans-serif !important;
+    font-family: "Inter", sans-serif !important;
 }
 
 .form-label {
@@ -20257,7 +20259,7 @@ a.custom-blog-content:hover {
 
 .tags .tag-files span {
     position: absolute;
-    top: 21px;
+    top: 20px;
     margin-right: 104px;
     left: 51px;
     font-size: 12px;
@@ -23527,7 +23529,7 @@ html.fullscreen-button .app-content {
     width: 100%;
     position: fixed;
     border-radius: 0;
-    width: 300px;
+    width: 500px;
     position: absolute;
     top: 52px;
     left: auto;
@@ -23677,7 +23679,7 @@ html.fullscreen-button .app-content {
     left: auto;
     right: 0px;
     bottom: auto;
-    width: 230px;
+    width: 260px;
 }
 
 .main-profile-menu .dropdown-item {
@@ -29555,22 +29557,22 @@ a.option-dots {
 
 .rtl .popover-primary.bs-popover-start .popover-arrow::after,
 .rtl .popover-primary.bs-popover-auto[data-popper-placement^=start] .popover-arrow::after {
-    border-left-color: #38cab3;
+    border-left-color: #139c7f;
 }
 
 .rtl .popover-primary.bs-popover-end .popover-arrow::after,
 .rtl .popover-primary.bs-popover-auto[data-popper-placement^=end] .popover-arrow::after {
-    border-right-color: #38cab3;
+    border-right-color: #139c7f;
 }
 
 .rtl .popover-secondary.bs-popover-start .popover-arrow::after,
 .rtl .popover-secondary.bs-popover-auto[data-popper-placement^=start] .popover-arrow::after {
-    border-left-color: #38cab3;
+    border-left-color: #139c7f;
 }
 
 .rtl .popover-secondary.bs-popover-end .popover-arrow::after,
 .rtl .popover-secondary.bs-popover-auto[data-popper-placement^=end] .popover-arrow::after {
-    border-right-color: #38cab3;
+    border-right-color: #139c7f;
 }
 
 .rtl .popover {
@@ -29661,42 +29663,42 @@ a.option-dots {
 
 .rtl .tooltip-primary.bs-tooltip-start .tooltip-arrow::before,
 .rtl .tooltip-primary.bs-tooltip-auto[data-popper-placement^=start] .tooltip-arrow::before {
-    border-left-color: #38cab3;
+    border-left-color: #139c7f;
 }
 
 .rtl .tooltip-primary.bs-tooltip-end .tooltip-arrow::before,
 .rtl .tooltip-primary.bs-tooltip-auto[data-popper-placement^=end] .tooltip-arrow::before {
-    border-right-color: #38cab3;
+    border-right-color: #139c7f;
 }
 
 .rtl .tooltip-primary1.bs-tooltip-start .tooltip-arrow::before,
 .rtl .tooltip-primary1.bs-tooltip-auto[data-popper-placement^=start] .tooltip-arrow::before {
-    border-left-color: #38cab3;
+    border-left-color: #139c7f;
 }
 
 .rtl .tooltip-primary1.bs-tooltip-end .tooltip-arrow::before,
 .rtl .tooltip-primary1.bs-tooltip-auto[data-popper-placement^=end] .tooltip-arrow::before {
-    border-right-color: #38cab3;
+    border-right-color: #139c7f;
 }
 
 .rtl .tooltip-secondary.bs-tooltip-start .tooltip-arrow::before,
 .rtl .tooltip-secondary.bs-tooltip-auto[data-popper-placement^=start] .tooltip-arrow::before {
-    border-left-color: #38cab3;
+    border-left-color: #139c7f;
 }
 
 .rtl .tooltip-secondary.bs-tooltip-end .tooltip-arrow::before,
 .rtl .tooltip-secondary.bs-tooltip-auto[data-popper-placement^=end] .tooltip-arrow::before {
-    border-right-color: #38cab3;
+    border-right-color: #139c7f;
 }
 
 .rtl .tooltip-secondary1.bs-tooltip-start .tooltip-arrow::before,
 .rtl .tooltip-secondary1.bs-tooltip-auto[data-popper-placement^=start] .tooltip-arrow::before {
-    border-left-color: #38cab3;
+    border-left-color: #139c7f;
 }
 
 .rtl .tooltip-secondary1.bs-tooltip-end .tooltip-arrow::before,
 .rtl .tooltip-secondary1.bs-tooltip-auto[data-popper-placement^=end] .tooltip-arrow::before {
-    border-right-color: #38cab3;
+    border-right-color: #139c7f;
 }
 
 .rtl .tooltip {
@@ -33022,7 +33024,7 @@ a.option-dots {
 }
 
 .rtl .main-chat-list .media.selected {
-    border-right: 1px solid #38cab3;
+    border-right: 1px solid #139c7f;
     border-left: inherit;
 }
 
@@ -33172,7 +33174,7 @@ a.option-dots {
 }
 
 .rtl .main-msg-wrapper.left:nth-child(1):before {
-    border-left-color: #38cab3;
+    border-left-color: #139c7f;
 }
 
 .rtl .main-msg-wrapper.left:nth-child(1):after {
@@ -33223,7 +33225,7 @@ a.option-dots {
 }
 
 .rtl .main-contact-item.selected {
-    border-left-color: #38cab3;
+    border-left-color: #139c7f;
 }
 
 .rtl .main-contact-body {
@@ -33372,7 +33374,7 @@ a.option-dots {
 }
 
 .rtl .main-invoice-list .selected {
-    border-left-color: #38cab3;
+    border-left-color: #139c7f;
 }
 
 @media (min-width: 992px) {
@@ -33638,7 +33640,7 @@ a.option-dots {
 }
 
 .rtl .border-start-primary {
-    border-left-color: #38cab3 !important;
+    border-left-color: #139c7f !important;
 }
 
 .rtl .border-start-success {
@@ -41490,7 +41492,7 @@ textarea.parsley-success:focus {
 }
 
 .irs-outline .irs-slider {
-    top: 21px;
+    top: 20px;
     width: 18px;
     background-color: #fff;
     border: 1px solid var(--primary-bg-color);
@@ -43373,7 +43375,7 @@ textarea.parsley-success:focus {
 }
 
 .form-control {
-    color: #c6bcc9;
+    color: #8A838C;
 }
 
 @keyframes dtb-spinner {
@@ -48271,7 +48273,8 @@ body:not(.lg-from-hash) .lg-outer.lg-start-zoom .lg-item.lg-complete .lg-object 
     display: flex;
     flex-wrap: wrap;
     background: #fff;
-    font-family: sans-serif;
+    font-family: "Inter",
+        sans-serif;
     font-size: 14px;
     line-height: 20px;
     color: #556270;
@@ -52068,7 +52071,8 @@ a.ui-button:active {
     color: #666;
     background: rgba(255, 255, 255, 0.8);
     border: solid 2px rgba(230, 230, 230, 0.8);
-    font-family: sans-serif;
+    font-family: "Inter",
+        sans-serif;
     font-size: 12px;
     text-align: center;
 }
@@ -56688,7 +56692,7 @@ div.dtr-bs-modal table.table tr:first-child td {
     padding: 10px;
     background-color: #2a2e3f;
     border: none !important;
-    color: #38cab3;
+    color: #139c7f;
     font-family: Monospace, Calibri, Verdana, Helvetica, sans-serif;
     max-width: 100%;
     min-width: 100%;
@@ -57641,7 +57645,8 @@ div.dtr-bs-modal table.table tr:first-child td {
     overflow: hidden;
     background-color: black;
     opacity: 1;
-    font-family: sans-serif;
+    font-family: "Inter",
+        sans-serif;
     cursor: pointer;
     -webkit-transition: opacity 0.3s ease-out;
     -moz-transition: opacity 0.3s ease-out;
@@ -60866,7 +60871,7 @@ License: MIT
 
 .SumoSelect .select-all.selected>span i,
 .SumoSelect .select-all.partial>span i {
-    background-color: #38cab3;
+    background-color: #139c7f;
     box-shadow: none;
     border-color: transparent;
     background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAGCAYAAAD+Bd/7AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEgAACxIB0t1+/AAAABx0RVh0U29mdHdhcmUAQWRvYmUgRmlyZXdvcmtzIENTNXG14zYAAABMSURBVAiZfc0xDkAAFIPhd2Kr1WRjcAExuIgzGUTIZ/AkImjSofnbNBAfHvzAHjOKNzhiQ42IDFXCDivaaxAJd0xYshT3QqBxqnxeHvhunpu23xnmAAAAAElFTkSuQmCC");
@@ -61013,7 +61018,7 @@ License: MIT
 }
 
 .SumoSelect>.optWrapper.multiple>.options li.opt.selected span i {
-    background-color: #38cab3;
+    background-color: #139c7f;
     box-shadow: none;
     border-color: transparent;
     background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAGCAYAAAD+Bd/7AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEgAACxIB0t1+/AAAABx0RVh0U29mdHdhcmUAQWRvYmUgRmlyZXdvcmtzIENTNXG14zYAAABMSURBVAiZfc0xDkAAFIPhd2Kr1WRjcAExuIgzGUTIZ/AkImjSofnbNBAfHvzAHjOKNzhiQ42IDFXCDivaaxAJd0xYshT3QqBxqnxeHvhunpu23xnmAAAAAElFTkSuQmCC");
@@ -66630,7 +66635,7 @@ License: MIT
 #action_menu_btn {
     position: absolute;
     right: 36px;
-    top: 21px;
+    top: 20px;
     color: white;
     cursor: pointer;
     font-size: 20px;

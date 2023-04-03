@@ -30,7 +30,9 @@
 @import "./assets/switcher/css/switcher.css";
 @import "./assets/switcher/demo.css";
 //Maps
-.slide-item.active, .slide-item:hover, .slide-item:focus {
+.slide-item.active,
+.slide-item:hover,
+.slide-item:focus {
   color: var(--primary-bg-color) !important;
 }
 .app-content {
@@ -93,11 +95,12 @@
   border: 1px solid $border !important;
   margin-right: 5px !important;
   padding: 0;
-  color:#000
+  color: #000;
 }
-.dark-theme, .transparent-theme{
-  .optiondots .btn{
-    color:$white !important;
+.dark-theme,
+.transparent-theme {
+  .optiondots .btn {
+    color: $white !important;
   }
 }
 .apexchart1 {
@@ -590,7 +593,7 @@
 }
 .rti--container {
   .rti--tag {
-    background-color: #38cab3;
+    background-color: #139c7f;
     padding: 7px;
     border-radius: 5px;
     margin-right: 3px;
@@ -951,7 +954,7 @@
 @media (max-width: 991px) {
   .app-content,
   .horizontal-content {
-    padding-top: 60px !important;
+    padding-top: 0 !important;
   }
   .handle-counter .btn {
     padding: 5px 12px !important;
@@ -1387,15 +1390,11 @@
   }
 }
 .rtl .tooltip-secondary1.bs-tooltip-end .tooltip-arrow::before,
-.rtl
-  .tooltip-secondary1.bs-tooltip-auto[data-popper-placement^="end"]
-  .tooltip-arrow::before {
+.rtl .tooltip-secondary1.bs-tooltip-auto[data-popper-placement^="end"] .tooltip-arrow::before {
   border-right-color: $primary;
 }
 .rtl .tooltip-primary1.bs-tooltip-start .tooltip-arrow::before,
-.rtl
-  .tooltip-primary1.bs-tooltip-auto[data-popper-placement^="start"]
-  .tooltip-arrow::before {
+.rtl .tooltip-primary1.bs-tooltip-auto[data-popper-placement^="start"] .tooltip-arrow::before {
   border-left-color: $primary;
 }
 .rtl {
@@ -1618,7 +1617,7 @@
 @media (max-width: 320px) {
   .tree li {
     padding: 1em 0.5em 0.4em 0.5em !important;
-}
+  }
   .progress-nav ul .number {
     width: 25px;
     height: 25px;
@@ -1635,7 +1634,7 @@
 @media (min-width: 321px) and (max-width: 375px) {
   .tree li {
     padding: 1em 0.5em 0.4em 0.5em !important;
-}
+  }
   .progress-nav ul .number {
     width: 25px;
     height: 25px;
@@ -1651,7 +1650,7 @@
 @media (min-width: 376px) and (max-width: 425px) {
   .tree li {
     padding: 1em 0.5em 0.4em 0.5em !important;
-}
+  }
   .progress-nav ul .number {
     width: 25px;
     height: 25px;
@@ -1877,8 +1876,8 @@
 
   .rmsc {
     --rmsc-main: #000;
-    --rmsc-selected: #38cab3;
-    --rmsc-hover: #38cab3;
+    --rmsc-selected: #139c7f;
+    --rmsc-hover: #139c7f;
     --rmsc-bg: #2a2e3f;
     --rmsc-gray: #fff;
   }
@@ -1900,9 +1899,9 @@
   }
   .rmsc {
     --rmsc-main: #000;
-    --rmsc-selected: #38cab3;
-    --rmsc-hover: #38cab3;
-    --rmsc-bg: #38cab3;
+    --rmsc-selected: #139c7f;
+    --rmsc-hover: #139c7f;
+    --rmsc-bg: #139c7f;
     --rmsc-gray: #fff;
   }
 }
@@ -1912,21 +1911,21 @@
       color: $white !important;
     }
   }
-  .MuiTreeItem-label{
-    color:$white
+  .MuiTreeItem-label {
+    color: $white;
   }
 }
 
-.rtl{
+.rtl {
   .MuiTreeItem-iconContainer {
     margin-left: 4px;
   }
 }
 .w-250 {
-  margin-inline: auto!important;
-  width: 250px!important;
+  margin-inline: auto !important;
+  width: 250px !important;
 }
 
 .h-275 {
-  height: 275px!important;
+  height: 275px !important;
 }

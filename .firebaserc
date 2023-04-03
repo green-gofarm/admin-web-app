@@ -1,0 +1,21 @@
+{
+  "projects": {
+    "default": "go-gofarm"
+  },
+  "targets": {
+    "go-gofarm": {
+      "hosting": {
+        "gofarm-center": [
+          "gofarm-center.web.app"
+        ],
+        "host": [
+          "gofarm-center"
+        ],
+        "admin": [
+          "go-gofarm"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}

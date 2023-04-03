@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Col, Form,  Row, Tab, Tabs } from 'react-bootstrap';
+import { Button, Col, Form, Row, Tab, Tabs } from 'react-bootstrap';
 import { Link } from "react-router-dom";
 import * as Switcherdatacustam from "../../../../data/Switcherdata/Switcherdatacustam";
 
@@ -47,7 +47,7 @@ const SignIn = () => {
                   <div className="main-card-signin d-md-flex">
                     <div className="wd-100p">
                       <div className="d-flex mb-4">
-                        <Link to={`${process.env.PUBLIC_URL}/dashboard/dashboard-1`}>
+                        <Link to="/">
                           <img
                             src={require("../../../../assets/img/brand/favicon.png")}
                             className="sign-favicon ht-40"
@@ -95,7 +95,7 @@ const SignIn = () => {
                                         <Button
                                           variant=""
                                           className="btn btn-primary btn-block"
-                                         
+
                                         >
                                           Sign In
                                         </Button>
@@ -240,7 +240,8 @@ const SignIn = () => {
         </div>
       </div>
     </div>
-  );}
+  );
+}
 
 SignIn.propTypes = {};
 
