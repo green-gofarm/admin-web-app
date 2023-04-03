@@ -1,61 +1,143 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from "react-router-dom";
 import { auth, getFirebaseToken } from "../../Firebase/firebase"
-import { Box, Grid } from '@mui/material';
+import { Box, CircularProgress, Grid } from '@mui/material';
 import GoogleButton from '../google-button/GoogleButton';
-import { signUpHost } from '../../redux/auth/action';
+import { checkNewlySignupAccount, signUpHost } from '../../redux/auth/action';
 import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
-import { AxiosError } from 'axios';
 import { Alert } from "react-bootstrap";
 import useBackUrl from '../../hooks/useBackUrl';
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { AxiosError } from 'axios';
+import useDelayLoading from '../../hooks/useDelayLoading';
 
 const SignUp = () => {
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const [errorMessage, setErrorMessage] = useState("");
+    const [errorMessage, setErrorMessage] = useState<string>("");
     const { getBackUrl } = useBackUrl();
 
     // State
-    const [loadingSignIn, setLoadingSignIn] = useState(false);
+    const [loadingMessage, setLoadingMessage] = useState<string>("");
+    const [loadingSignUp, setLoadingSignUp] = useState<boolean>(false);
+    const delay = useDelayLoading(loadingSignUp);
 
-    const handleSignUp = async () => {
+    const signUpWithGoogle = async () => {
         try {
             const provider = new GoogleAuthProvider();
             await signInWithPopup(auth, provider);
-            const token = await getFirebaseToken();
+            return await getFirebaseToken();
+        } catch (error) {
+            console.log(error);
+            return null;
+        }
+    }
 
-            if (token) {
+    const isNewlySignedUpAccount = async (token: string) => {
+        return await new Promise<boolean>((rs, rj) => {
+            dispatch(checkNewlySignupAccount(token, {
+                loading: (state: any) => {
+                    if (state) {
+                        setLoadingSignUp(true);
+                        setLoadingMessage("Đang kiểm tra tài khoản.")
+                        return;
+                    }
+                    setLoadingSignUp(false);
+                },
+                onSuccess: (response: any) => {
+                    const registered = response?.data?.registered;
+                    const isNewly = !Boolean(registered);
+                    rs(isNewly);
+                },
+                onFailure: (error: any) => {
+                    toast.error("Có lỗi xảy ra");
+                    console.log("Error in 'Checking newly account' step: ", error);
+                    rj(error);
+                }
+            }))
+        })
+    }
+
+    const clear = () => {
+        setErrorMessage("");
+        setLoadingMessage("");
+    }
+
+    const handleSignUp = async () => {
+        clear();
+
+        try {
+            const token = await signUpWithGoogle();
+            if (token === null) {
+                return true;
+            }
+
+            const isNewAccount = await isNewlySignedUpAccount(token);
+            if (isNewAccount === false) {
+                auth.signOut();
+                setErrorMessage("Tài khoản đã tồn tại");
+                return;
+            }
+
+            if (isNewAccount === true) {
                 dispatch(signUpHost(token, {
-                    loading: setLoadingSignIn,
+                    loading: (state: any) => {
+                        if (state) {
+                            setLoadingSignUp(true);
+                            setLoadingMessage("Khởi tạo tài khoản Gofarm.")
+                            return;
+                        }
+                        setLoadingSignUp(false);
+                    },
                     onSuccess: (response: any) => {
-                        toast.success("Đăng ký thành công");
-                        // navigate(getBackUrl() ?? "/");
+                        toast.success("Đăng ký thành công.");
+                        navigate(getBackUrl() ?? "/");
                     },
                     onFailure: (error: AxiosError | any) => {
-                        console.log(error);
                         auth.signOut();
                         if (error?.response?.data?.resultCode === 8000) {
-                            setErrorMessage("Email này đã được sử dụng.");
+                            setErrorMessage("Tài khoản đã tồn tại.");
                         } else {
                             setErrorMessage("Đăng ký thất bại.");
                         }
                     }
                 }));
+                return;
             }
         } catch (error) {
-            console.error('Error signing in with Google:', error);
+            auth.signOut();
+            setErrorMessage("Có lỗi xảy ra.");
         }
     };
 
     return (
         <div>
-            <div className="square-box"> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> </div>
+            <div className="square-box">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+
             <div className="page bg-primary">
                 <div className="page-single">
-                    <div className="container" style={{ marginTop: "89px" }} >
+                    <Box
+                        className="container"
+                        marginTop="90px"
+                    >
                         <Grid container justifyContent="center">
                             <Grid
                                 item
@@ -66,8 +148,10 @@ const SignUp = () => {
                                 xs={12}
                                 className="card-sigin-main py-4 justify-content-center mx-auto"
                             >
-
-                                <div className="card-sigin">
+                                <Box
+                                    className="card-sigin"
+                                    position="relative"
+                                >
                                     <div className="main-card-signin d-lg-flex">
                                         <div className="wd-100p">
                                             <div className="d-flex mb-4">
@@ -79,9 +163,9 @@ const SignUp = () => {
                                                     />
                                                 </Link>
                                             </div>
-                                            <div className="">
+                                            <Box>
                                                 <div className="main-signup-header">
-                                                    <h2 className="text-dark">Tham gia với GoFarm</h2>
+                                                    <h2 className="text-dark">Tạo tài khoản Gofarm</h2>
                                                     <h6 className="font-weight-normal mb-4">
                                                         Đăng ký tài khoản miễn phí.
                                                     </h6>
@@ -97,22 +181,54 @@ const SignUp = () => {
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    {delay
+                                                        ? <Box
+                                                            display="flex"
+                                                            alignItems="center"
+                                                            justifyContent="center"
+
+                                                            position="absolute"
+                                                            top="0"
+                                                            left="0"
+                                                            zIndex="1"
+
+                                                            width="100%"
+                                                            height="100%"
+                                                            gap="8px"
+                                                            bgcolor="rgba(255, 255,255,0.8)"
+                                                        >
+                                                            <CircularProgress
+                                                                size="24px"
+                                                                thickness={4}
+                                                                color="primary"
+                                                            />
+                                                            <Box
+                                                                fontSize="1rem"
+                                                                fontWeight="500"
+                                                                textAlign="center"
+                                                                color="#139c7f"
+                                                            >
+                                                                {loadingMessage}
+                                                            </Box>
+                                                        </Box>
+                                                        : null
+                                                    }
                                                     {errorMessage
                                                         ? <Alert variant="danger">{errorMessage}</Alert>
                                                         : null
                                                     }
                                                     <div className="main-signup-footer mt-3 text-center ">
-                                                        <p>Đã có tài khoản?  <Link to={`${process.env.PUBLIC_URL}/authentication/sign-in`} >Đăng nhập</Link></p>
+                                                        <p>Đã có tài khoản? <Link to="/authentication/sign-in">Đăng nhập</Link></p>
                                                     </div>
 
                                                 </div>
-                                            </div>
+                                            </Box>
                                         </div>
                                     </div>
-                                </div>
+                                </Box>
                             </Grid>
                         </Grid>
-                    </div>
+                    </Box>
                 </div>
             </div>
         </div>

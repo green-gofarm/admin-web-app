@@ -1,30 +1,46 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from "react-router-dom";
 // import { auth } from '../Firebase/firebase';
-import { Box, Grid } from '@mui/material';
-import { auth, getFirebaseToken } from '../../Firebase/firebase';
+import { Box, CircularProgress, Grid } from '@mui/material';
+import { auth, getFirebaseToken, getMessagingToken } from '../../Firebase/firebase';
 import GoogleButton from '../google-button/GoogleButton';
 import { useDispatch } from 'react-redux';
-import { signInHost } from '../../redux/auth/action';
+import { signInHost, subscribeMessageToken } from '../../redux/auth/action';
 import { toast } from 'react-toastify';
-import WithAuthBackDropLoader from '../../components/General/WithAuthBackDropLoader';
 import { AxiosError } from 'axios';
 import { Alert } from "react-bootstrap";
 import useBackUrl from '../../hooks/useBackUrl';
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import useDelayLoading from '../../hooks/useDelayLoading';
 
 const SignIn = () => {
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const [errorMessage, setErrorMessage] = useState("");
 
     const { getBackUrl } = useBackUrl();
 
     // State
-    const [loadingSignIn, setLoadingSignIn] = useState(false);
+    const [loadingMessage, setLoadingMessage] = useState<string>("");
+    const [loadingSignIn, setLoadingSignIn] = useState<boolean>(false);
+    const [errorMessage, setErrorMessage] = useState<string>("");
+    const delay = useDelayLoading(loadingSignIn, 1000);
+
+    const subscribe = async () => {
+        const messageToken = await getMessagingToken();
+        if (messageToken) {
+            dispatch(subscribeMessageToken(messageToken));
+        }
+    }
+
+    const clear = () => {
+        setErrorMessage("");
+        setLoadingMessage("");
+    }
 
     const handleSignIn = async () => {
+        clear();
+
         try {
             const provider = new GoogleAuthProvider();
             await signInWithPopup(auth, provider);
@@ -32,8 +48,16 @@ const SignIn = () => {
 
             if (token) {
                 dispatch(signInHost({
-                    loading: setLoadingSignIn,
+                    loading: (state: any) => {
+                        if (state) {
+                            setLoadingSignIn(true);
+                            setLoadingMessage("Đang kiểm tra thông tin tài khoản.")
+                            return;
+                        }
+                        setLoadingSignIn(false);
+                    },
                     onSuccess: (response: any) => {
+                        subscribe();
                         toast.success("Đăng nhập thành công");
                         navigate(getBackUrl() ?? "/");
                     },
@@ -48,15 +72,13 @@ const SignIn = () => {
                 }));
             }
         } catch (error) {
+            setErrorMessage("Có lỗi xảy ra");
             console.error('Error signing in with Google:', error);
         }
     };
 
     return (
         <React.Fragment>
-            <WithAuthBackDropLoader
-                open={loadingSignIn}
-            />
             <div className="square-box"> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> </div>
             <div className="page bg-primary">
                 <div className="page-single">
@@ -71,7 +93,10 @@ const SignIn = () => {
                                 xs={12}
                                 className="card-sigin-main mx-auto my-auto py-4 justify-content-center"
                             >
-                                <div className="card-sigin">
+                                <Box
+                                    className="card-sigin"
+                                    position="relative"
+                                >
                                     <div className="main-card-signin d-md-flex">
                                         <div className="wd-100p">
                                             <div className="d-flex mb-4">
@@ -101,6 +126,38 @@ const SignIn = () => {
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    {delay
+                                                        ? <Box
+                                                            display="flex"
+                                                            alignItems="center"
+                                                            justifyContent="center"
+
+                                                            position="absolute"
+                                                            top="0"
+                                                            left="0"
+                                                            zIndex="1"
+
+                                                            width="100%"
+                                                            height="100%"
+                                                            gap="8px"
+                                                            bgcolor="rgba(255, 255,255,0.8)"
+                                                        >
+                                                            <CircularProgress
+                                                                size="32px"
+                                                                thickness={4}
+                                                                color="primary"
+                                                            />
+                                                            <Box
+                                                                fontSize="1.5rem"
+                                                                fontWeight="500"
+                                                                textAlign="center"
+                                                                color="#139c7f"
+                                                            >
+                                                                {loadingMessage}
+                                                            </Box>
+                                                        </Box>
+                                                        : null
+                                                    }
                                                     {errorMessage
                                                         ? <Alert variant="danger">{errorMessage}</Alert>
                                                         : null
@@ -112,7 +169,7 @@ const SignIn = () => {
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </Box>
                             </Grid>
                         </Grid>
                     </div>

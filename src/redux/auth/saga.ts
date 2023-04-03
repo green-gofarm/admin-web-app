@@ -105,12 +105,28 @@ function* markAsRedNotification(action: IReduxAction): Generator<any, void, any>
     option?.loading && option.loading(false);
 }
 
+function* checkNewlySignupAccount(action: IReduxAction): Generator<any, void, any> {
+    const option: IReduxActionOption = action.payload?.option
+
+    option?.loading && option.loading(true);
+    try {
+        const response = yield call(apis.checkNewlySignupAccount, action.payload.token);
+        option?.onSuccess && option.onSuccess(response);
+    } catch (error) {
+        option?.onFailure && option.onFailure(error);
+        console.log(error);
+    }
+
+    option?.loading && option.loading(false);
+}
+
 function* watchSignIn() {
     yield takeLatest(types.SIGN_IN_ADMIN, signInAdmin);
     yield takeLatest(types.SIGN_IN_HOST, signInHost);
     yield takeLatest(types.SUBSCRIBE_TOKEN, subscribeMessageToken);
     yield takeEvery(types.SEARCH_NOTIFICATION, searchNotification);
     yield takeLatest(types.MARK_AS_READ_NOTIFICATION, markAsRedNotification);
+    yield takeLatest(types.CHECK_NEWLY_SIGNUP_ACCOUNT, checkNewlySignupAccount);
 }
 
 function* watchAuth() {

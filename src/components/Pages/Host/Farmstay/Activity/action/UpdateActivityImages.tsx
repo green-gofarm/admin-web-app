@@ -73,8 +73,9 @@ function UpdateActivityImages({
 
     const isDisableUpload = useMemo(() => {
         if (delay) return true;
+        if (files.some(file => !!file.error)) return true;
         if (links.length === images.others?.length) {
-            if (files.length < 1 || files.some(file => !!file.error)) {
+            if (files.length < 1) {
                 return true;
             }
         }

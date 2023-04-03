@@ -17,7 +17,6 @@ import VALIDATOR from './validator';
 import makeStyles from '@mui/styles/makeStyles/makeStyles';
 import CustomizedDialogTitle from '../../../../../General/Dialog/CustomizedDialogTitle';
 
-
 const useStyles = makeStyles({
     label: {
         minWidth: "140px",

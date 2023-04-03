@@ -58,3 +58,9 @@ export const markAsRedNotification = (id: any, option?: IReduxActionOption): IRe
     type: type.MARK_AS_READ_NOTIFICATION,
     payload: { id, option: option ?? getEmptyOption() }
 })
+
+
+export const checkNewlySignupAccount = (token: any, option?: IReduxActionOption): IReduxAction => ({
+    type: type.CHECK_NEWLY_SIGNUP_ACCOUNT,
+    payload: { token, option: option ?? getEmptyOption() }
+})

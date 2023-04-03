@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect, useMemo } from 'react'
-import { Dropdown } from 'react-bootstrap';
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import { Dropdown, Form } from 'react-bootstrap';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { Link, useNavigate } from 'react-router-dom';
 import useNotification from '../../hooks/useNotification';
@@ -12,9 +12,21 @@ import { Box, Skeleton } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { markAsRedNotification } from '../../redux/auth/action';
 import { NOTIFICATION_STATUSES, getRedirectPathFromNotification, useNotificationStyles } from '../../setting/notification-setting';
-import TooltipIconActionSquare from '../../components/General/Icon/TooltipIconActionSquare';
-import { Refresh } from '@mui/icons-material';
 import { toast } from 'react-toastify';
+
+const KEY = "notification_only_unread_state";
+
+function setNotificationOnlyUnreadState(value: boolean): void {
+    localStorage.setItem(KEY, JSON.stringify(value));
+}
+
+function getNotificationOnlyUnreadState(): boolean {
+    const value = localStorage.getItem(KEY);
+    if (value) {
+        return Boolean(JSON.parse(value));
+    }
+    return false;
+}
 
 function NotificationDropDown() {
 
@@ -33,12 +45,30 @@ function NotificationDropDown() {
 
     const delay = useDelayLoading(loading);
 
+    const [onlyUnread, setOnlyUnread] = useState<boolean>(getNotificationOnlyUnreadState());
+
+    const handleOnChangeOnlyUnread = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+        const isOnlyUnRead = Boolean(event.target.checked);
+        setOnlyUnread(isOnlyUnRead);
+        setNotificationOnlyUnreadState(isOnlyUnRead);
+
+        if (isOnlyUnRead) {
+            refresh(undefined, { status: NOTIFICATION_STATUSES.UNREAD });
+            return;
+        }
+
+        refresh();
+    }, [refresh]);
+
     useEffect(() => {
         const unSubscribe = onMessage(messaging, (payload) => {
-            console.log('Received foreground message:', payload);
             refresh(defaultPagination);
             toast.dark("Có thông báo mới");
         });
+
+        navigator.serviceWorker.addEventListener("message", (event) => {
+            console.log(event.data);
+        })
 
         return () => unSubscribe();
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -72,6 +102,33 @@ function NotificationDropDown() {
         return !!data.find(item => item.status === NOTIFICATION_STATUSES.UNREAD)
     }, [data]);
 
+    const renderPanel = () => (
+        <Box
+            className="d-flex"
+            alignItems="center"
+            gap="8px"
+        >
+            <Form.Label className="custom-switch ps-0">
+                <span className="custom-switch-description me-2 tx-11">
+                    Chỉ hiển thị chưa đọc
+                </span>
+                <Form.Control
+                    type="checkbox"
+                    name="custom-switch-radio"
+                    className="custom-switch-input"
+                    checked={onlyUnread}
+                    onChange={handleOnChangeOnlyUnread}
+                />
+                <span className="custom-switch-indicator"></span>
+            </Form.Label>
+            {/* <TooltipIconActionSquare
+                icon={<Refresh />}
+                title='Tải lại'
+                onClick={() => refresh()}
+            /> */}
+        </Box>
+    )
+
     return (
         <Dropdown className=" nav-item main-header-notification d-flex">
             <Dropdown.Toggle className="new nav-link" variant="">
@@ -90,7 +147,7 @@ function NotificationDropDown() {
                 }
             </Dropdown.Toggle>
             <Dropdown.Menu className="slid1">
-                <div className="menu-header-content text-start border-bottom">
+                <div className="menu-header-content text-start border-bottom pt-2 pb-2">
                     <Box
                         className="d-flex"
                         justifyContent="space-between"
@@ -100,11 +157,7 @@ function NotificationDropDown() {
                             Thông báo
                         </h6>
 
-                        <TooltipIconActionSquare
-                            icon={<Refresh />}
-                            title='Tải lại'
-                            onClick={() => refresh()}
-                        />
+                        {renderPanel()}
                     </Box>
                 </div>
                 <Scrollbars
@@ -112,6 +165,20 @@ function NotificationDropDown() {
                     onScroll={handleScroll}
                 >
                     <div className="main-notification-list Notification-scroll">
+                        {data.length < 1 && !delay
+                            ? <Box
+                                display="flex"
+                                alignItems="center"
+                                justifyContent="center"
+                                width="100%"
+                                height="272px"
+                                fontStyle="italic"
+                                className='text-muted'
+                            >
+                                Không có thông báo nào
+                            </Box>
+                            : null
+                        }
                         {data.map((item) =>
                             <Dropdown.Item
                                 key={item.id}

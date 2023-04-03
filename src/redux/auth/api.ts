@@ -70,3 +70,16 @@ export function markAsRedNotification(id: any) {
     const url = `${ENP.USER}/my-notification/${id}/read`;
     return axiosRequest(url, option);
 }
+
+export function checkNewlySignupAccount(token: any) {
+    const option: AxiosRequestConfig = {
+        method: METHOD.POST,
+        headers: {
+            "Content-Type": "application/json"
+        },
+        data: JSON.stringify({ token })
+    }
+
+    const url = `${ENP.USER}/check-status`;
+    return axiosRequest(url, option);
+}

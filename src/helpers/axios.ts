@@ -14,7 +14,6 @@ axiosClient.interceptors.request.use(async (config) => {
 	const token = await getFirebaseToken();
 	if (!token) {
 		auth.signOut();
-		console.log("aaaa");
 		throw new Error("Token does not exist");
 	}
 

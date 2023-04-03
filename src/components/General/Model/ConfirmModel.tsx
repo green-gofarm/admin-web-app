@@ -12,6 +12,7 @@ interface IConfirmModel {
     title: string | ReactNode,
     description: string | ReactNode,
     loading?: boolean,
+    confirmButtonText?: string
 }
 
 const ConfirmModel = ({
@@ -22,6 +23,7 @@ const ConfirmModel = ({
     description = "Bạn chắc chắn chứ?",
     title = "Xác nhận",
     loading,
+    confirmButtonText,
 }: IConfirmModel) => {
 
     return (
@@ -61,7 +63,7 @@ const ConfirmModel = ({
                             ? <CircularProgress size={16} thickness={4} sx={{ color: "#fff" }} />
                             : null
                         }
-                        Xác nhận
+                        {confirmButtonText ?? "Xác nhận"}
                     </Box>
                 </Button>
             </Modal.Footer>

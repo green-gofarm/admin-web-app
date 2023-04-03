@@ -12,7 +12,7 @@ import { useState } from 'react'
 import ApproveFarmstay from '../action/ApproveFarmstay'
 import RejectFarmstay from '../action/RejectFarmstay'
 import useFarmstayAddress from './hooks/useFarmstayAddress'
-import { renderAddress } from '../../../../../setting/farmstay-setting'
+import { FARMSTAY_STATUSES, renderAddress } from '../../../../../setting/farmstay-setting'
 interface IFarmstayDetailHeader {
     detail?: any,
     loading?: boolean,
@@ -108,30 +108,33 @@ function FarmstayPreviewHeader({
                                     }
                                 />
                             </Grid>
-                            <Grid item xs={12} lg={3}>
-                                <Box
-                                    display="flex"
-                                    flexDirection="column"
-                                    gap="1rem"
-                                >
-                                    <Button
-                                        variant="contained"
-                                        color="primary"
-                                        startIcon={<ThumbUpAlt />}
-                                        onClick={() => setOpenApprove(true)}
+                            {detail?.status === FARMSTAY_STATUSES.PENDING
+                                ? <Grid item xs={12} lg={3}>
+                                    <Box
+                                        display="flex"
+                                        flexDirection="column"
+                                        gap="1rem"
                                     >
-                                        Phê duyệt
-                                    </Button>
-                                    <Button
-                                        variant="contained"
-                                        color="error"
-                                        startIcon={<ThumbDownAlt />}
-                                        onClick={() => setOpenReject(true)}
-                                    >
-                                        Từ chối
-                                    </Button>
-                                </Box>
-                            </Grid>
+                                        <Button
+                                            variant="contained"
+                                            color="primary"
+                                            startIcon={<ThumbUpAlt />}
+                                            onClick={() => setOpenApprove(true)}
+                                        >
+                                            Phê duyệt
+                                        </Button>
+                                        <Button
+                                            variant="contained"
+                                            color="error"
+                                            startIcon={<ThumbDownAlt />}
+                                            onClick={() => setOpenReject(true)}
+                                        >
+                                            Từ chối
+                                        </Button>
+                                    </Box>
+                                </Grid>
+                                : null
+                            }
                         </Grid>
                     </Box>
                 </Card.Body>

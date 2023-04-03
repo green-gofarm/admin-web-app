@@ -1,5 +1,5 @@
 import { Box, Grid } from '@mui/material'
-import { Card } from 'react-bootstrap'
+import { Alert, Card, Dropdown } from 'react-bootstrap'
 import IconLabelDetail from '../../../../General/Item/IconLabelDetail'
 import StringWrapper from '../../../../General/Wrapper/StringWrapper'
 import { Status } from '../../../../../setting/Status'
@@ -15,6 +15,7 @@ import ConditionWrapper from '../../../../General/Wrapper/ConditionWrapper'
 import GeneralAvatar from '../../../../General/GeneralAvatar'
 import UserTag from '../../../../General/Wrapper/UserTag'
 import Rating from '../../../../General/Rating'
+import { Message } from '@mui/icons-material'
 
 interface IFarmstayDetailHeader {
     detail?: any,
@@ -53,6 +54,7 @@ function FarmstayDetailHeader({
                                 <Box
                                     display="flex"
                                     justifyContent="space-between"
+                                    position="relative"
                                 >
                                     <Box
                                         component="h4"
@@ -63,15 +65,49 @@ function FarmstayDetailHeader({
                                         textTransform="capitalize"
                                     >
                                         {detail?.name}
-                                        <Status statusObject={findFarmstayStatus(detail?.status)} />
+                                        <Box height="36px">
+                                            <Status statusObject={findFarmstayStatus(detail?.status)} />
+                                        </Box>
                                     </Box>
 
                                     <ConditionWrapper isRender={detail?.status === FARMSTAY_STATUSES.DRAFT}>
-                                        <Box position="relative">
+                                        <Box
+                                            position="absolute"
+                                            top="-8px"
+                                            right="0"
+                                            display="flex"
+                                            alignItems="center"
+                                            gap="8px"
+                                        >
+                                            {detail?.extras
+                                                ? <Dropdown defaultShow>
+                                                    <Dropdown.Toggle variant="danger">
+                                                        <Message />
+                                                    </Dropdown.Toggle>
+                                                    <Dropdown.Menu
+                                                        style={{
+                                                            width: 500,
+                                                            maxWidth: "100vw",
+                                                            padding: "20px"
+                                                        }}
+                                                    >
+                                                        <h6 className="card-title m-0 mb-3">
+                                                            Yêu cầu bị từ chối
+                                                        </h6>
+                                                        <Alert
+                                                            variant='danger'
+                                                            className='m-0'
+                                                        >
+                                                            <strong>Lý do</strong>
+                                                            <p className="text-mute">
+                                                                {detail.extras}
+                                                            </p>
+                                                        </Alert>
+                                                    </Dropdown.Menu>
+                                                </Dropdown>
+                                                : null
+                                            }
                                             <Box
-                                                position="absolute"
-                                                right="0"
-                                                top="-8px"
                                                 width="200px"
                                                 className="btn btn-info shadow"
                                                 onClick={() => setOpenSendRequest(true)}

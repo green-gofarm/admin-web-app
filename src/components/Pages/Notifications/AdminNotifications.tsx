@@ -1,5 +1,5 @@
 
-import { Badge, Button, Container } from "react-bootstrap";
+import { Badge, Button, Card, Container } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import PageHeader, { IBreadcrumbItem } from "../../General/PageHeader";
 import { Box, Grid, Skeleton } from "@mui/material";
@@ -11,7 +11,7 @@ import MessageIcon from '@mui/icons-material/Message';
 import { useCallback, useMemo } from "react";
 import { markAsRedNotification } from "../../../redux/auth/action";
 import useNotification from "./useNotification";
-
+import NotificationsOffIcon from '@mui/icons-material/NotificationsOff';
 
 const breadcrumb: Array<IBreadcrumbItem> = [];
 
@@ -65,14 +65,39 @@ function AdminNotifications() {
 		<Box
 			marginBottom="1.3rem"
 		>
-			<PageHeader
-				title="Thông báo"
-				breadcrumb={breadcrumb}
-			/>
+			<Container>
+				<PageHeader
+					title="Thông báo"
+					breadcrumb={breadcrumb}
+				/>
 
-			<Grid container spacing={2}>
-				<Grid item xs={12}>
-					<Container>
+
+				<Grid container spacing={2}>
+
+					{preparedData.length < 1 && !delay
+						? <Grid item xs={12}>
+							<Card>
+								<Card.Body>
+									<Box
+										display="flex"
+										alignItems="center"
+										justifyContent="center"
+										width="100%"
+										height="100px"
+										fontStyle="italic"
+										className='text-muted'
+										gap="8px"
+										fontSize="1.125rem"
+									>
+										<NotificationsOffIcon fontSize="large" />
+										Chưa có thông báo
+									</Box>
+								</Card.Body>
+							</Card>
+						</Grid>
+						: null
+					}
+					<Grid item xs={12}>
 						<Box
 							component="ul"
 							className="notification"
@@ -209,9 +234,9 @@ function AdminNotifications() {
 							</div>
 							: null
 						}
-					</Container>
+					</Grid>
 				</Grid>
-			</Grid>
+			</Container>
 		</Box>
 	)
 }

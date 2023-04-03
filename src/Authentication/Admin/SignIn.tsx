@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
-import { Col, Row } from 'react-bootstrap';
+import { Alert, Col, Row } from 'react-bootstrap';
 import { Link, useNavigate } from "react-router-dom";
 // import { auth } from '../Firebase/firebase';
-import { Box } from '@mui/material';
-import { auth, getFirebaseToken } from '../../Firebase/firebase';
+import { Box, CircularProgress } from '@mui/material';
+import { auth, getFirebaseToken, getMessagingToken } from '../../Firebase/firebase';
 import GoogleButton from '../google-button/GoogleButton';
 import { useDispatch } from 'react-redux';
-import { signInAdmin } from '../../redux/auth/action';
+import { signInAdmin, subscribeMessageToken } from '../../redux/auth/action';
 import { toast } from 'react-toastify';
 import WithAuthBackDropLoader from '../../components/General/WithAuthBackDropLoader';
 import useBackUrl from '../../hooks/useBackUrl';
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import useDelayLoading from '../../hooks/useDelayLoading';
 
 const SignIn = () => {
 
@@ -19,11 +20,27 @@ const SignIn = () => {
 
     const { getBackUrl } = useBackUrl();
 
-
     // State
-    const [loadingSignIn, setLoadingSignIn] = useState(false);
+    const [loadingMessage, setLoadingMessage] = useState<string>("");
+    const [loadingSignIn, setLoadingSignIn] = useState<boolean>(false);
+    const [errorMessage, setErrorMessage] = useState<string>("");
+    const delay = useDelayLoading(loadingSignIn, 1000);
+
+    const subscribe = async () => {
+        const messageToken = await getMessagingToken();
+        if (messageToken) {
+            dispatch(subscribeMessageToken(messageToken));
+        }
+    }
+
+    const clear = () => {
+        setErrorMessage("");
+        setLoadingMessage("");
+    }
 
     const handleSignIn = async () => {
+        clear();
+
         try {
             const provider = new GoogleAuthProvider();
             await signInWithPopup(auth, provider);
@@ -31,8 +48,16 @@ const SignIn = () => {
 
             if (token) {
                 dispatch(signInAdmin({
-                    loading: setLoadingSignIn,
+                    loading: (state: any) => {
+                        if (state) {
+                            setLoadingSignIn(true);
+                            setLoadingMessage("Đang kiểm tra thông tin tài khoản.")
+                            return;
+                        }
+                        setLoadingSignIn(false);
+                    },
                     onSuccess: (response: any) => {
+                        subscribe();
                         toast.success("Đăng nhập thành công");
                         navigate(getBackUrl() ?? "/");
                     },
@@ -95,6 +120,42 @@ const SignIn = () => {
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    {delay
+                                                        ? <Box
+                                                            display="flex"
+                                                            alignItems="center"
+                                                            justifyContent="center"
+
+                                                            position="absolute"
+                                                            top="0"
+                                                            left="0"
+                                                            zIndex="1"
+
+                                                            width="100%"
+                                                            height="100%"
+                                                            gap="8px"
+                                                            bgcolor="rgba(255, 255,255,0.8)"
+                                                        >
+                                                            <CircularProgress
+                                                                size="32px"
+                                                                thickness={4}
+                                                                color="primary"
+                                                            />
+                                                            <Box
+                                                                fontSize="1.5rem"
+                                                                fontWeight="500"
+                                                                textAlign="center"
+                                                                color="#139c7f"
+                                                            >
+                                                                {loadingMessage}
+                                                            </Box>
+                                                        </Box>
+                                                        : null
+                                                    }
+                                                    {errorMessage
+                                                        ? <Alert variant="danger">{errorMessage}</Alert>
+                                                        : null
+                                                    }
                                                 </div>
                                             </div>
                                         </div>

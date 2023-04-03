@@ -14,6 +14,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../../../../redux/redux-setting";
 import { toast } from "react-toastify";
 import { isAvailableArray } from "../../../../../helpers/arrayUtils";
+import { useNavigate } from "react-router-dom";
 
 interface CreateFarmstayProps {
     open?: boolean,
@@ -70,9 +71,11 @@ const CreateFarmstay: FC<CreateFarmstayProps> = ({
     refresh,
 }) => {
 
+    const navigate = useNavigate();
     const dispatch = useDispatch();
     const user = useSelector((state: RootState) => state.auth.user);
 
+    const [createdFarmstayId, setCreatedFarmstayId] = useState();
     const [loading, setLoading] = useState<boolean>(false);
 
     const [farmstay, setFarmstay] = useState<Farmstay>({
@@ -109,6 +112,14 @@ const CreateFarmstay: FC<CreateFarmstayProps> = ({
             [key]: value
         }));
     }, []);
+
+    const handleClose = () => {
+        if (createdFarmstayId) {
+            navigate(`/management/farmstay/${createdFarmstayId}`)
+            return;
+        }
+        onClose && onClose();
+    }
 
     const getNewFileLink = async (file: File) => {
         return new Promise<any[]>((resolve, rj) => {
@@ -152,8 +163,9 @@ const CreateFarmstay: FC<CreateFarmstayProps> = ({
             data,
             {
                 loading: setLoading,
-                onSuccess: () => {
+                onSuccess: (response: any) => {
                     setCurrentStep(STEPS.GUIDE);
+                    setCreatedFarmstayId(response?.data?.id ?? null);
                     toast.success("Thêm mới farmstay thành công.");
                 },
                 onFailure: (error: any) => {
@@ -232,10 +244,7 @@ const CreateFarmstay: FC<CreateFarmstayProps> = ({
         if (currentStep === STEPS.GUIDE) {
             return (
                 <GuideStep
-                    onClose={() => {
-                        onClose && onClose();
-                        refresh && refresh();
-                    }}
+                    onClose={() => handleClose()}
                 />
             )
         }
@@ -250,7 +259,13 @@ const CreateFarmstay: FC<CreateFarmstayProps> = ({
         >
             <CustomizedDialogTitle
                 title="THÊM FARMSTAY"
-                onClose={onClose}
+                onClose={() => {
+                    if (currentStep === STEPS.GUIDE) {
+                        handleClose();
+                        return;
+                    }
+                    onClose && onClose();
+                }}
             />
             <DialogContent>
                 <Container>

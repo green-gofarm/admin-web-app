@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
-import { auth, getFirebaseToken } from '../../Firebase/firebase';
+import { auth, getFirebaseToken, getMessagingToken } from '../../Firebase/firebase';
 import { useDispatch } from 'react-redux';
-import { signInHost, signOutUser } from '../../redux/auth/action';
+import { signInHost, signOutUser, subscribeMessageToken } from '../../redux/auth/action';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
@@ -55,9 +55,17 @@ function AutoSignIn() {
         async function signIn() {
             const token = await getFirebaseToken();
 
+            const subscribe = async () => {
+                const messageToken = await getMessagingToken();
+                if (messageToken) {
+                    dispatch(subscribeMessageToken(messageToken));
+                }
+            }
+
             if (token) {
                 dispatch(signInHost({
                     loading: setLoading,
+                    onSuccess: () => subscribe(),
                     onFailure: (error: any) => {
                         auth.signOut();
                         toast.error("Không thể lấy thông tin tài khoản. Vui lòng đăng nhập lại");
@@ -67,8 +75,7 @@ function AutoSignIn() {
         }
 
         signIn();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [dispatch]);
 
     if (loading) {
         return <Loader />
