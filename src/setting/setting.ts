@@ -6,7 +6,16 @@ export enum ROLES {
     CUSTOMER = 3
 }
 
-export const CURRENT_ROLE: ROLES = ROLES.ADMIN;
+export const CURRENT_ROLE: ROLES = (() => {
+    const role = process.env.REACT_APP_CURRENT_ROLE;
+    if (role) {
+        const currentRole = parseInt(role);
+        if (currentRole in ROLES) {
+            return currentRole;
+        }
+    }
+    return ROLES.ADMIN;
+})();
 
 enum GENDERS {
     male = 1,

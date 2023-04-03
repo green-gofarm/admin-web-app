@@ -11,22 +11,8 @@ import useDelayLoading from '../../hooks/useDelayLoading';
 import { Box, Skeleton } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { markAsRedNotification } from '../../redux/auth/action';
-import { NOTIFICATION_STATUSES, getRedirectPathFromNotification, useNotificationStyles } from '../../setting/notification-setting';
+import { NOTIFICATION_STATUSES, getNotificationOnlyUnreadState, getRedirectPathFromNotification, setNotificationOnlyUnreadState, useNotificationStyles } from '../../setting/notification-setting';
 import { toast } from 'react-toastify';
-
-const KEY = "notification_only_unread_state";
-
-function setNotificationOnlyUnreadState(value: boolean): void {
-    localStorage.setItem(KEY, JSON.stringify(value));
-}
-
-function getNotificationOnlyUnreadState(): boolean {
-    const value = localStorage.getItem(KEY);
-    if (value) {
-        return Boolean(JSON.parse(value));
-    }
-    return false;
-}
 
 function NotificationDropDown() {
 
@@ -41,7 +27,7 @@ function NotificationDropDown() {
         rowsPerPage,
         defaultPagination,
         refresh
-    } = useNotification();
+    } = useNotification(true);
 
     const delay = useDelayLoading(loading);
 
@@ -53,12 +39,22 @@ function NotificationDropDown() {
         setNotificationOnlyUnreadState(isOnlyUnRead);
 
         if (isOnlyUnRead) {
-            refresh(undefined, { Status: NOTIFICATION_STATUSES.UNREAD });
+            refresh(defaultPagination, { Status: NOTIFICATION_STATUSES.UNREAD });
             return;
         }
 
-        refresh();
-    }, [refresh]);
+        refresh(defaultPagination, {});
+    }, [defaultPagination, refresh]);
+
+    useEffect(() => {
+        if (onlyUnread) {
+            refresh(defaultPagination, { Status: NOTIFICATION_STATUSES.UNREAD });
+            return;
+        }
+
+        refresh(defaultPagination);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     useEffect(() => {
         const unSubscribe = onMessage(messaging, (payload) => {

@@ -58,3 +58,17 @@ export const getRedirectPathFromNotification = (extras: any) => {
 
     return "#";
 }
+
+const UNREAD_KEY = "notification_only_unread_state";
+
+export function setNotificationOnlyUnreadState(value: boolean): void {
+    localStorage.setItem(UNREAD_KEY, JSON.stringify(value));
+}
+
+export function getNotificationOnlyUnreadState(): boolean {
+    const value = localStorage.getItem(UNREAD_KEY);
+    if (value) {
+        return Boolean(JSON.parse(value));
+    }
+    return false;
+}

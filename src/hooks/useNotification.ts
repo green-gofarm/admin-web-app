@@ -33,6 +33,7 @@ function useNotification(preventFirstCall?: boolean) {
     const [pagination, setPagination] = useState<PaginationProps>({ ...defaultPagination });
 
     const refresh = useCallback((newPagination?: PaginationProps, newParams?: any) => {
+        setData([]);
         const _pagination = newPagination ?? { ...pagination };
         const _params = newParams ?? params ?? {};
 
@@ -105,7 +106,7 @@ function useNotification(preventFirstCall?: boolean) {
         defaultPagination,
         refresh,
         handleChangePage,
-        handleChangeRowsPerPage
+        handleChangeRowsPerPage,
     };
 }
 
