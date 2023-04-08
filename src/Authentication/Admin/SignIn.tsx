@@ -11,6 +11,7 @@ import { toast } from 'react-toastify';
 import useBackUrl from '../../hooks/useBackUrl';
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import useDelayLoading from '../../hooks/useDelayLoading';
+import { AxiosError } from 'axios';
 
 const SignIn = () => {
 
@@ -60,9 +61,16 @@ const SignIn = () => {
                         toast.success("Đăng nhập thành công");
                         navigate(getBackUrl() ?? "/");
                     },
-                    onFailure: (error: any) => {
+                    onFailure: (error: AxiosError) => {
                         auth.signOut();
-                        toast.error("Đăng nhập thất bại");
+
+                        console.log(error);
+                        if (error.code === "ERR_NETWORK") {
+                            setErrorMessage("Đăng nhập thất bại. Nếu đã đăng ký quản trị viên, vui lòng liên hệ admin để kích hoạt.");
+                            return;
+                        }
+
+                        setErrorMessage("Đăng nhập thất bại");
                     }
                 }));
             }

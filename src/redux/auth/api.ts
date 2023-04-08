@@ -18,6 +18,22 @@ export function signUpHost(token: string) {
     return axiosRequest(url, option);
 }
 
+export function signUpAdmin(token: string) {
+
+    const option: AxiosRequestConfig = {
+        method: METHOD.POST,
+        headers: {
+            "Content-Type": "application/json"
+        },
+        data: JSON.stringify({
+            accessToken: `${token}`
+        })
+    }
+
+    const url = `${ENP.SIGN_UP}/admin`;
+    return axiosRequest(url, option);
+}
+
 export function signInAdmin() {
     const url = `${ENP.ADMIN}/my-profile`;
     return axiosRequest(url);
@@ -72,14 +88,14 @@ export function markAsRedNotification(id: any) {
 }
 
 export function checkNewlySignupAccount(token: any) {
-    const option: AxiosRequestConfig = {
+    const option: RequestInit = {
         method: METHOD.POST,
         headers: {
             "Content-Type": "application/json"
         },
-        data: JSON.stringify({ token })
+        body: JSON.stringify({ token })
     }
 
     const url = `${ENP.USER}/check-status`;
-    return axiosRequest(url, option);
+    return fetch(url, option);
 }

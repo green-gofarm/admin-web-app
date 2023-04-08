@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { auth, getFirebaseToken } from "../../Firebase/firebase"
 import { Box, CircularProgress, Grid } from '@mui/material';
 import GoogleButton from '../google-button/GoogleButton';
-import { checkNewlySignupAccount, signUpHost } from '../../redux/auth/action';
+import { checkNewlySignupAccount, signUpAdmin } from '../../redux/auth/action';
 import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
 import { Alert } from "react-bootstrap";
@@ -82,7 +82,7 @@ const SignUp = () => {
             }
 
             if (isNewAccount === true) {
-                dispatch(signUpHost(token, {
+                dispatch(signUpAdmin(token, {
                     loading: (state: any) => {
                         if (state) {
                             setLoadingSignUp(true);
@@ -91,10 +91,11 @@ const SignUp = () => {
                         }
                         setLoadingSignUp(false);
                     },
-                    onSuccess: async (response: any) => {
-                        await getFirebaseToken();
+                    onSuccess: async () => {
+                        auth.signOut();
                         toast.success("Đăng ký thành công.");
-                        navigate(getBackUrl() ?? "/");
+                        toast.info("Vui lòng liên hệ quản trị viên để kích hoạt tài khoản", { autoClose: false });
+                        navigate(getBackUrl() ?? "/authentication/sign-in");
                     },
                     onFailure: (error: AxiosError | any) => {
                         auth.signOut();
@@ -168,7 +169,7 @@ const SignUp = () => {
                                                 <div className="main-signup-header">
                                                     <h2 className="text-dark">Tạo tài khoản Gofarm</h2>
                                                     <h6 className="font-weight-normal mb-4">
-                                                        Đăng ký tài khoản miễn phí.
+                                                        Đăng ký tài khoản quản trị viên.
                                                     </h6>
                                                     <div className="panel panel-primary">
                                                         <div className=" tab-menu-heading mb-2 border-bottom-0">
@@ -219,7 +220,7 @@ const SignUp = () => {
                                                         : null
                                                     }
                                                     <div className="main-signup-footer mt-3 text-center ">
-                                                        <p>Đã có tài khoản? <Link to="/authentication/sign-in">Đăng nhập</Link></p>
+                                                        <p>Quay lại trang  <Link to="/authentication/sign-in">Đăng nhập</Link></p>
                                                     </div>
 
                                                 </div>

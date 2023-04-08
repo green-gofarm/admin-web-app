@@ -21,8 +21,25 @@ function* signUpHost(action: IReduxAction): Generator<any, void, any> {
     option?.loading && option.loading(false);
 }
 
+function* signUpAdmin(action: IReduxAction): Generator<any, void, any> {
+    const token = action.payload?.token;
+    const option: IReduxActionOption = action.payload?.option
+
+    option?.loading && option.loading(true);
+    try {
+        const response = yield call(apis.signUpAdmin, token);
+        option?.onSuccess && option.onSuccess(response);
+    } catch (error) {
+        console.log(error);
+        option?.onFailure && option.onFailure(error);
+    }
+
+    option?.loading && option.loading(false);
+}
+
 function* watchSignUp() {
     yield takeLatest(types.SIGN_UP_HOST, signUpHost);
+    yield takeLatest(types.SIGN_UP_ADMIN, signUpAdmin);
 }
 
 function* signInAdmin(action: IReduxAction): Generator<any, void, any> {

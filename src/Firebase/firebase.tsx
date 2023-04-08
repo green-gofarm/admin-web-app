@@ -15,11 +15,11 @@ const auth = getAuth(app);
 
 // Firebase token
 const TIME_OUT = 5000;
-const getFirebaseToken = async (): Promise<string | null> => {
+const getFirebaseToken = async (forceRefresh?: boolean): Promise<string | null> => {
 	const currentUser = auth.currentUser;
 
 	if (currentUser) {
-		return await currentUser.getIdToken();
+		return await currentUser.getIdToken(forceRefresh);
 	}
 
 	try {
