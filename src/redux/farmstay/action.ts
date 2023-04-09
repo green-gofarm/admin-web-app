@@ -228,3 +228,17 @@ export const uploadImage = (data: any, option?: ReduxActionOption): IReduxAction
     type: type.UPLOAD_IMAGE,
     payload: { data, option: option ?? getEmptyOption() }
 })
+
+export const getBankList = (option?: ReduxActionOption): IReduxAction => ({
+    type: type.GET_BANK_LIST,
+    payload: { option: option ?? getEmptyOption() }
+})
+
+export const getBankListSuccess = (data: any): IReduxAction => ({
+    type: type.GET_BANK_LIST_SUCCESS,
+    payload: data
+})
+
+export const getBankListFailed = (): IReduxAction => ({
+    type: type.GET_BANK_LIST_FAILED
+})

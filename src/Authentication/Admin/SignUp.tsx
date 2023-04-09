@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { auth, getFirebaseToken } from "../../Firebase/firebase"
 import { Box, CircularProgress, Grid } from '@mui/material';
 import GoogleButton from '../google-button/GoogleButton';
-import { checkNewlySignupAccount, signUpAdmin } from '../../redux/auth/action';
+import { checkNewlySignUpAccount, signUpAdmin } from '../../redux/auth/action';
 import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
 import { Alert } from "react-bootstrap";
@@ -38,7 +38,7 @@ const SignUp = () => {
 
     const isNewlySignedUpAccount = async (token: string) => {
         return await new Promise<boolean>((rs, rj) => {
-            dispatch(checkNewlySignupAccount(token, {
+            dispatch(checkNewlySignUpAccount(token, {
                 loading: (state: any) => {
                     if (state) {
                         setLoadingSignUp(true);

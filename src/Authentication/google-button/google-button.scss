@@ -42,6 +42,7 @@ $shadow-right-down: #139c7f;
     &__text {
         display: inline-block;
         width: 180px;
+        min-width: 220px;
         margin-right: auto;
         // color: #525f7f;
 

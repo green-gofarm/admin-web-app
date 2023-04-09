@@ -1,44 +1,50 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Link, useNavigate } from "react-router-dom";
 import { auth, getFirebaseToken } from "../../Firebase/firebase"
-import { Box, CircularProgress, Grid } from '@mui/material';
-import GoogleButton from '../google-button/GoogleButton';
-import { checkNewlySignupAccount, signUpHost } from '../../redux/auth/action';
+import { Box, Grid } from '@mui/material';
+import { checkNewlySignUpAccount, signUpHost } from '../../redux/auth/action';
 import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
 import { Alert } from "react-bootstrap";
 import useBackUrl from '../../hooks/useBackUrl';
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { AxiosError } from 'axios';
 import useDelayLoading from '../../hooks/useDelayLoading';
 import { ResultCode } from '../../setting/response-result-code';
+import ConditionWrapper from '../../components/General/Wrapper/ConditionWrapper';
+import AuthBoxLoader from './ui-segment/AuthBoxLoader';
+import GetCredential from './sign-up-step/GetCredential';
+import GetBankInfo from './sign-up-step/GetBankInfo';
+import CustomizedButton from './ui-segment/CustomizedButton';
+import CancelSignUp from './action/CancelSignUp';
+
+enum HOST_SIGN_UP_STEP {
+    GET_CREDENTIAL = 1,
+    GET_BANK_INFO = 2,
+}
+
+function getClsNavBtn(active: any) {
+    return "btn" + (active ? " active" : "");
+}
 
 const SignUp = () => {
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const [errorMessage, setErrorMessage] = useState<string>("");
     const { getBackUrl } = useBackUrl();
 
     // State
+    const [currentStep, setCurrentStep] = useState<HOST_SIGN_UP_STEP>(HOST_SIGN_UP_STEP.GET_CREDENTIAL);
+
     const [loadingMessage, setLoadingMessage] = useState<string>("");
     const [loadingSignUp, setLoadingSignUp] = useState<boolean>(false);
+    const [errorMessage, setErrorMessage] = useState<string>("");
     const delay = useDelayLoading(loadingSignUp);
 
-    const signUpWithGoogle = async () => {
-        try {
-            const provider = new GoogleAuthProvider();
-            await signInWithPopup(auth, provider);
-            return await getFirebaseToken();
-        } catch (error) {
-            console.log(error);
-            return null;
-        }
-    }
+    const [openCancel, setOpenCancel] = useState<boolean>(false);
 
     const isNewlySignedUpAccount = async (token: string) => {
         return await new Promise<boolean>((rs, rj) => {
-            dispatch(checkNewlySignupAccount(token, {
+            dispatch(checkNewlySignUpAccount(token, {
                 loading: (state: any) => {
                     if (state) {
                         setLoadingSignUp(true);
@@ -66,56 +72,100 @@ const SignUp = () => {
         setLoadingMessage("");
     }
 
-    const handleSignUp = async () => {
+    const handleAfterGetCredential = async (token: string) => {
+        clear();
+        try {
+            const isNewly = await isNewlySignedUpAccount(token);
+            if (isNewly === false) {
+                auth.signOut();
+                setErrorMessage("Tài khoản đã tồn tại.");
+                return;
+            }
+            if (isNewly === true) {
+                setCurrentStep(HOST_SIGN_UP_STEP.GET_BANK_INFO);
+                return;
+            }
+            setErrorMessage("Có lỗi xảy ra.");
+        } catch (error) {
+            auth.signOut();
+            setErrorMessage("Có lỗi xảy ra.");
+            console.log("Checking account: ", error);
+        }
+    }
+
+    const handleSubmit = async (data: any) => {
         clear();
 
         try {
-            const token = await signUpWithGoogle();
-            if (token === null) {
-                return true;
-            }
+            const token = await getFirebaseToken();
+            if (token) {
+                const payload = {
+                    accessToken: token,
+                    ...data
+                }
 
-            const isNewAccount = await isNewlySignedUpAccount(token);
-            if (isNewAccount === false) {
-                auth.signOut();
-                setErrorMessage("Tài khoản đã tồn tại");
-                return;
-            }
-
-            if (isNewAccount === true) {
-                dispatch(signUpHost(token, {
-                    loading: (state: any) => {
-                        if (state) {
-                            setLoadingSignUp(true);
-                            setLoadingMessage("Khởi tạo tài khoản Gofarm.")
-                            return;
-                        }
-                        setLoadingSignUp(false);
-                    },
-                    onSuccess: async (response: any) => {
-                        await getFirebaseToken(true);
-                        toast.success("Đăng ký thành công.");
-                        navigate(getBackUrl() ?? "/");
-                    },
-                    onFailure: (error: AxiosError | any) => {
-                        auth.signOut();
-
-                        const code = error?.response?.data?.resultCode;
-                        if (code === ResultCode.USER_ALREADY_REGISTERED) {
-                            setErrorMessage("Tài khoản đã tồn tại.");
-                            return;
-                        }
-
-                        setErrorMessage("Đăng ký thất bại.");
+                const handleLoading = (state: any) => {
+                    if (state) {
+                        setLoadingSignUp(true);
+                        setLoadingMessage("Khởi tạo tài khoản Gofarm.")
+                        return;
                     }
+                    setLoadingSignUp(false);
+                }
+
+                const onSuccess = async () => {
+                    await getFirebaseToken(true);
+                    toast.success("Đăng ký thành công.");
+                    navigate(getBackUrl() ?? "/");
+                }
+
+                const onFailure = (error: AxiosError | any) => {
+                    auth.signOut();
+                    const code = error?.response?.data?.resultCode;
+                    if (code === ResultCode.USER_ALREADY_REGISTERED) {
+                        setErrorMessage("Tài khoản đã tồn tại.");
+                        return;
+                    }
+                    setErrorMessage("Đăng ký thất bại.");
+                }
+
+                dispatch(signUpHost(payload, {
+                    loading: handleLoading,
+                    onSuccess,
+                    onFailure,
                 }));
-                return;
             }
+
         } catch (error) {
             auth.signOut();
             setErrorMessage("Có lỗi xảy ra.");
         }
-    };
+    }
+
+    const handleCancelSignUpProgress = () => {
+        setOpenCancel(false);
+        clear();
+        setCurrentStep(HOST_SIGN_UP_STEP.GET_CREDENTIAL);
+    }
+
+    const renderStep = () => {
+        if (currentStep === HOST_SIGN_UP_STEP.GET_CREDENTIAL) {
+            return (
+                <GetCredential onContinue={handleAfterGetCredential} />
+            )
+        }
+
+        if (currentStep === HOST_SIGN_UP_STEP.GET_BANK_INFO) {
+            return (
+                <GetBankInfo
+                    onContinue={handleSubmit}
+                    onCancel={() => setOpenCancel(true)}
+                />
+            )
+        }
+
+        return null;
+    }
 
     return (
         <div>
@@ -140,25 +190,22 @@ const SignUp = () => {
             <div className="page bg-primary">
                 <div className="page-single">
                     <Box
-                        className="container"
+                        className="container mb-4"
                         marginTop="90px"
                     >
                         <Grid container justifyContent="center">
                             <Grid
                                 item
-                                xl={5}
-                                lg={6}
-                                md={8}
-                                sm={8}
+                                sm="auto"
                                 xs={12}
-                                className="card-sigin-main py-4 justify-content-center mx-auto"
+                                className="card-sigin-main justify-content-center mx-auto"
                             >
                                 <Box
                                     className="card-sigin"
                                     position="relative"
                                 >
                                     <div className="main-card-signin d-lg-flex">
-                                        <div className="wd-100p">
+                                        <Box width="500px" maxWidth="100%">
                                             <div className="d-flex mb-4">
                                                 <Link to="#">
                                                     <img
@@ -174,50 +221,39 @@ const SignUp = () => {
                                                     <h6 className="font-weight-normal mb-4">
                                                         Đăng ký tài khoản miễn phí.
                                                     </h6>
-                                                    <div className="panel panel-primary">
-                                                        <div className=" tab-menu-heading mb-2 border-bottom-0">
-                                                            <div className="tabs-menu1">
-                                                                <Box>
-                                                                    <GoogleButton
-                                                                        text='Đăng ký với Google'
-                                                                        onClick={handleSignUp}
-                                                                    />
-                                                                </Box>
-                                                            </div>
+
+                                                    <div id="wizard1" className='border br-5 mb-3'>
+                                                        <div>
+                                                            <Box
+                                                                component="nav"
+                                                                className="btn-group basicsteps"
+                                                            >
+                                                                <CustomizedButton
+                                                                    onClick={() => {
+                                                                        if (currentStep !== HOST_SIGN_UP_STEP.GET_CREDENTIAL) {
+                                                                            setOpenCancel(true);
+                                                                        }
+                                                                    }}
+                                                                    className={getClsNavBtn(currentStep === HOST_SIGN_UP_STEP.GET_CREDENTIAL)}
+                                                                >
+                                                                    <span className="number me-2 ">1</span>
+                                                                    <i>Chọn phương thức</i>
+                                                                </CustomizedButton>
+                                                                <CustomizedButton
+                                                                    onClick={() => { }}
+                                                                    className={getClsNavBtn(currentStep === HOST_SIGN_UP_STEP.GET_BANK_INFO)}
+                                                                    disabled={currentStep === HOST_SIGN_UP_STEP.GET_CREDENTIAL}
+                                                                >
+                                                                    <span className="number me-2 ">2</span>
+                                                                    <i>Bổ sung thông tin</i>
+                                                                </CustomizedButton>
+                                                            </Box>
+                                                            {renderStep()}
                                                         </div>
                                                     </div>
-                                                    {delay
-                                                        ? <Box
-                                                            display="flex"
-                                                            alignItems="center"
-                                                            justifyContent="center"
-
-                                                            position="absolute"
-                                                            top="0"
-                                                            left="0"
-                                                            zIndex="1"
-
-                                                            width="100%"
-                                                            height="100%"
-                                                            gap="8px"
-                                                            bgcolor="rgba(255, 255,255,0.8)"
-                                                        >
-                                                            <CircularProgress
-                                                                size="24px"
-                                                                thickness={4}
-                                                                color="primary"
-                                                            />
-                                                            <Box
-                                                                fontSize="1rem"
-                                                                fontWeight="500"
-                                                                textAlign="center"
-                                                                color="#139c7f"
-                                                            >
-                                                                {loadingMessage}
-                                                            </Box>
-                                                        </Box>
-                                                        : null
-                                                    }
+                                                    <ConditionWrapper isRender={delay}>
+                                                        <AuthBoxLoader message={loadingMessage} />
+                                                    </ConditionWrapper>
                                                     {errorMessage
                                                         ? <Alert variant="danger">{errorMessage}</Alert>
                                                         : null
@@ -228,7 +264,7 @@ const SignUp = () => {
 
                                                 </div>
                                             </Box>
-                                        </div>
+                                        </Box>
                                     </div>
                                 </Box>
                             </Grid>
@@ -236,6 +272,15 @@ const SignUp = () => {
                     </Box>
                 </div>
             </div>
+
+            {openCancel
+                ? <CancelSignUp
+                    open={openCancel}
+                    onClose={() => setOpenCancel(false)}
+                    onConfirm={handleCancelSignUpProgress}
+                />
+                : null
+            }
         </div>
     );
 }

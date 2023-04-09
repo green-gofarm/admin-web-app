@@ -1,5 +1,5 @@
 import { AxiosRequestConfig } from "axios";
-import { ENP, ENP_V2, METHOD } from "../../helpers/api";
+import { ENP, METHOD } from "../../helpers/api";
 import { axiosRequest } from "../../helpers/axios";
 
 export function searchFarmstays(params: any) {
@@ -294,4 +294,10 @@ export function uploadImage(formData: any) {
 
     const url = ENP.IMAGES
     return axiosRequest(url, option);
+}
+
+
+export function getBankList() {
+    const url = ENP.BANK
+    return axiosRequest(url);
 }

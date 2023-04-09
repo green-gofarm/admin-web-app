@@ -16,6 +16,8 @@ export interface FarmstayState {
     provinces: any[],
     districts: any[],
     wards: any[],
+
+    banks: any[],
 }
 
 const initialState: FarmstayState = {
@@ -33,6 +35,8 @@ const initialState: FarmstayState = {
     provinces: [],
     districts: [],
     wards: [],
+
+    banks: []
 };
 
 function farmstayReducer(state = initialState, action: IReduxAction) {
@@ -89,6 +93,11 @@ function farmstayReducer(state = initialState, action: IReduxAction) {
             return { ...state, districts: action.payload };
         case type.STORE_WARDS:
             return { ...state, wards: action.payload };
+
+        case type.GET_BANK_LIST_SUCCESS:
+            return { ...state, banks: action.payload.data };
+        case type.GET_BANK_LIST_FAILED:
+            return { ...state, banks: null };
         default:
             return state
     }

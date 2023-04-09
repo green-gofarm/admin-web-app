@@ -1,4 +1,10 @@
 import makeStyles from "@mui/styles/makeStyles/makeStyles";
+import AddHomeWorkIcon from '@mui/icons-material/AddHomeWork';
+import MessageIcon from '@mui/icons-material/Message';
+import ThumbDownIcon from '@mui/icons-material/ThumbDown';
+import ThumbUpIcon from '@mui/icons-material/ThumbUp';
+import PaidIcon from '@mui/icons-material/Paid';
+import CancelIcon from '@mui/icons-material/Cancel';
 
 export const useNotificationStyles = makeStyles({
     read: {
@@ -34,7 +40,15 @@ export enum NOTIFICATION_STATUSES {
 }
 
 export enum NOTIFICATION_TYPE {
-    REVIEW_FARMSTAY = "notification.review-farmstay.admin",
+    // PAYMENT_SUCCESS_CUSTOMER = 'notification.payment-success.customer',
+    PAYMENT_SUCCESS_HOST = 'notification.payment-success.host',
+    // CANCEL_BOOKING_CUSTOMER = 'notification.cancel-booking.customer',
+    CANCEL_BOOKING_HOST = 'notification.cancel-booking.host',
+    REVIEW_FARMSTAY_ADMIN = 'notification.review-farmstay.admin',
+    FARMSTAY_APPROVED_HOST = 'notification.farmstay-approved.host',
+    FARMSTAY_REJECTED_HOST = 'notification.farmstay-rejected.host',
+    // BOOKING_APPROVED_CUSTOMER = 'notification.booking-approved.customer',
+    // BOOKING_REJECTED_CUSTOMER = 'notification.booking-rejected.customer',
 }
 
 export const parseNotificationExtras = (extras: any) => {
@@ -44,15 +58,49 @@ export const parseNotificationExtras = (extras: any) => {
         console.log(error);
         return null;
     }
+}
 
+export const getNotificationIcon = (extras: any) => {
+    const parsedExtras = parseNotificationExtras(extras);
+    if (parsedExtras?.type) {
+        if (parsedExtras.type === NOTIFICATION_TYPE.REVIEW_FARMSTAY_ADMIN) {
+            return AddHomeWorkIcon;
+        }
+        if (parsedExtras.type === NOTIFICATION_TYPE.FARMSTAY_REJECTED_HOST) {
+            return ThumbDownIcon;
+        }
+        if (parsedExtras.type === NOTIFICATION_TYPE.FARMSTAY_APPROVED_HOST) {
+            return ThumbUpIcon;
+        }
+        if (parsedExtras.type === NOTIFICATION_TYPE.PAYMENT_SUCCESS_HOST) {
+            return PaidIcon;
+        }
+        if (parsedExtras.type === NOTIFICATION_TYPE.CANCEL_BOOKING_HOST) {
+            return CancelIcon;
+        }
+    }
+
+    return MessageIcon;
 }
 
 export const getRedirectPathFromNotification = (extras: any) => {
     const parsedExtras = parseNotificationExtras(extras);
 
     if (parsedExtras?.type) {
-        if (parsedExtras.type === NOTIFICATION_TYPE.REVIEW_FARMSTAY) {
+        if (parsedExtras.type === NOTIFICATION_TYPE.REVIEW_FARMSTAY_ADMIN) {
             return `/management/farmstay/preview/${parsedExtras.farmstayId}`;
+        }
+        if (parsedExtras.type === NOTIFICATION_TYPE.FARMSTAY_REJECTED_HOST) {
+            return `/management/farmstay/${parsedExtras.farmstayId}`;
+        }
+        if (parsedExtras.type === NOTIFICATION_TYPE.FARMSTAY_APPROVED_HOST) {
+            return `/management/farmstay/${parsedExtras.farmstayId}`;
+        }
+        if (parsedExtras.type === NOTIFICATION_TYPE.PAYMENT_SUCCESS_HOST) {
+            return `/management/farmstay/booking-request/${parsedExtras.orderId}`;
+        }
+        if (parsedExtras.type === NOTIFICATION_TYPE.CANCEL_BOOKING_HOST) {
+            return `/management/farmstay/order/${parsedExtras.orderId}`;
         }
     }
 

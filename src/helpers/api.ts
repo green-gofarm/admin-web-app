@@ -32,7 +32,8 @@ export const ENP = {
     BOOKING: `${DOMAIN_V1}/bookings`,
     DISBURSEMENT: `${DOMAIN_V1}/disbursements`,
     TAG_CATEGORY: `${DOMAIN_V1}/tag-categories`,
-    IMAGES: `${DOMAIN_V1}/images`
+    IMAGES: `${DOMAIN_V1}/images`,
+    BANK: `${DOMAIN_V1}/banks`
 }
 
 export const ENP_V2 = {

@@ -87,11 +87,33 @@ function* getFarmstaySchedule(action: IReduxAction): Generator<any, void, any> {
     option?.loading && option.loading(false);
 }
 
+
+function* getBankList(action: IReduxAction): Generator<any, void, any> {
+    const option: IReduxActionOption = action.payload?.option
+
+    option?.loading && option.loading(true);
+    try {
+        const response = yield call(apis.getBankList);
+
+        yield put(actions.getBankListSuccess(response));
+        option?.onSuccess && option.onSuccess(response);
+    } catch (error) {
+        console.log(error);
+
+        yield put(actions.getBankListFailed());
+        option?.onFailure && option.onFailure(error);
+    }
+
+    option?.loading && option.loading(false);
+}
+
+
 function* watchSearch() {
     yield takeLatest(types.SEARCH_FARMSTAY, searchFarmstays);
     yield takeLatest(types.SEARCH_ALL_FARMSTAYS, searchAllFarmstays);
     yield takeLatest(types.GET_FARMSTAY_DETAIL, getFarmstayDetail);
     yield takeLatest(types.GET_FARMSTAY_SCHEDULE, getFarmstaySchedule);
+    yield takeLatest(types.GET_BANK_LIST, getBankList);
 }
 
 function* getActivityDetail(action: IReduxAction): Generator<any, void, any> {

@@ -8,7 +8,7 @@ const breadcrumb: Array<IBreadcrumbItem> = [
         href: "/management"
     },
     {
-        text: "Thanh toán",
+        text: "Khoản Thanh toán",
         active: true,
         props: {
             "aria-current": "page"
