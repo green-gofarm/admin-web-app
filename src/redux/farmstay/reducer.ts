@@ -5,6 +5,7 @@ export interface FarmstayState {
     farmstays: any,
     allFarmstays: any[],
     farmstayDetail: any,
+    schedule: any,
 
     activityDetail: any,
     activitySchedule: any,
@@ -21,6 +22,7 @@ const initialState: FarmstayState = {
     farmstays: null,
     allFarmstays: [],
     farmstayDetail: null,
+    schedule: null,
 
     activityDetail: null,
     activitySchedule: null,
@@ -51,6 +53,11 @@ function farmstayReducer(state = initialState, action: IReduxAction) {
             return { ...state, farmstayDetail: null };
         case type.CLEAR_FARMSTAY_DETAIL:
             return { ...state, farmstayDetail: null };
+
+        case type.GET_FARMSTAY_SCHEDULE_SUCCESS:
+            return { ...state, schedule: action.payload.data };
+        case type.GET_FARMSTAY_SCHEDULE_FAILED:
+            return { ...state, schedule: null };
 
         case type.GET_ACTIVITY_DETAIL_SUCCESS:
             return { ...state, activityDetail: action.payload.data };

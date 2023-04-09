@@ -1,5 +1,5 @@
 import { AxiosRequestConfig } from "axios";
-import { ENP, METHOD } from "../../helpers/api";
+import { ENP, ENP_V2, METHOD } from "../../helpers/api";
 import { axiosRequest } from "../../helpers/axios";
 
 export function searchFarmstays(params: any) {
@@ -28,6 +28,22 @@ export function getFarmstayDetail(id: any) {
 
     const url = `${ENP.FARMSTAY}/${id}`;
     return axiosRequest(url, option);
+}
+
+export function getFarmstaySchedule(farmstayId: any, date: any) {
+    const option: AxiosRequestConfig = {
+        method: METHOD.GET,
+        headers: {
+            "Content-Type": "application/json"
+        },
+    }
+
+    const _params: Record<string, string> = {
+        date,
+    }
+
+    const url = `${ENP.FARMSTAY}/${farmstayId}/schedule`;
+    return axiosRequest(url, option, _params);
 }
 
 
