@@ -1,38 +1,48 @@
-import { memo, useState } from 'react'
+import { memo, useMemo, useState } from 'react'
 import { Button } from 'react-bootstrap';
 import { Box, CircularProgress, Dialog, DialogContent } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
+import useCurrentUser from '../../../../../hooks/useCurrentUser';
 import useDelayLoading from '../../../../../hooks/useDelayLoading';
+import { updateAdminMyProfile } from '../../../../../redux/user/action';
+import SingleImageUpdate from '../../../Host/Farmstay/FarmstayDetail/ui-segment/SingleImageUpdate';
 import { uploadImage } from '../../../../../redux/farmstay/action';
 import { isAvailableArray } from '../../../../../helpers/arrayUtils';
-import { updateAdminMyProfile } from '../../../../../redux/user/action';
-import SingleImageDropzone from '../../../Host/Farmstay/FarmstayDetail/ui-segment/SingleImageDropzone';
+import InvalidFeedback from '../../../../General/InvalidFeedback';
 import CustomizedDialogTitle from '../../../../General/Dialog/CustomizedDialogTitle';
 import CustomizedDialogActions from '../../../../General/Dialog/CustomizedDialogActions';
 
 interface UpdateAdminAvatarProps {
     open?: boolean,
-    user?: any,
     onClose: () => void,
     onSuccessCallback?: any,
 }
 
 function UpdateAdminAvatar({
     open,
-    user,
     onClose,
     onSuccessCallback,
 }: UpdateAdminAvatarProps) {
 
     const dispatch = useDispatch();
+    const user = useCurrentUser();
+
     const [loading, setLoading] = useState<boolean>(false);
     const delay = useDelayLoading(loading);
 
-    const [file, setFile] = useState<File | null>(null);
+    const [file, setFile] = useState<File | null | any>(null);
+    const [avatar, setAvatar] = useState<string | null>(user.avatar ?? null);
 
+    const isDisableSubmit = useMemo(() => {
+        if (delay) return true;
+        if (avatar) return true;
+        if (!file || file.error) return true;
+        return false;
+    }, [avatar, delay, file]);
 
     const processUpdate = (link: any) => {
+
         dispatch(updateAdminMyProfile(
             { avatar: link },
             {
@@ -45,8 +55,8 @@ function UpdateAdminAvatar({
                 onFailure: () => {
                     toast.error("Cập nhật thất bại");
                 }
-            })
-        )
+            }
+        ))
     };
 
     const handleUpdate = () => {
@@ -55,22 +65,20 @@ function UpdateAdminAvatar({
         const formData = new FormData();
         formData.set("files", file);
 
-        dispatch(uploadImage(
-            formData,
-            {
-                loading: setLoading,
-                onSuccess: (response: any) => {
-                    if (isAvailableArray(response?.data)) {
-                        const avatar = response.data[0];
-                        processUpdate(avatar);
-                        return;
-                    }
-                    toast.error("Có lỗi xảy ra");
-                },
-                onFailure: () => {
-                    toast.error("Có lỗi xảy ra");
+        dispatch(uploadImage(formData, {
+            loading: setLoading,
+            onSuccess: (response: any) => {
+                if (isAvailableArray(response?.data)) {
+                    const avatar = response.data[0];
+                    processUpdate(avatar);
+                    return;
                 }
-            }))
+                toast.error("Có lỗi xảy ra");
+            },
+            onFailure: () => {
+                toast.error("Có lỗi xảy ra");
+            }
+        }))
     }
 
     const handleClose = () => {
@@ -78,10 +86,18 @@ function UpdateAdminAvatar({
     }
 
     const renderContent = () => (
-        <SingleImageDropzone
-            file={file}
-            setFile={setFile}
-        />
+        <>
+            <SingleImageUpdate
+                file={file}
+                setFile={setFile}
+                link={avatar}
+                clear={() => setAvatar(null)}
+            />
+            {file?.error
+                ? <InvalidFeedback message={file.error} />
+                : null
+            }
+        </>
     )
 
     return (
@@ -110,7 +126,7 @@ function UpdateAdminAvatar({
                 <Button
                     variant="primary"
                     onClick={handleUpdate}
-                    disabled={delay || !file}
+                    disabled={isDisableSubmit}
                 >
                     <Box
                         display="flex"
@@ -123,7 +139,6 @@ function UpdateAdminAvatar({
                         }
                         Lưu lại
                     </Box>
-
                 </Button>
             </CustomizedDialogActions>
         </Dialog>

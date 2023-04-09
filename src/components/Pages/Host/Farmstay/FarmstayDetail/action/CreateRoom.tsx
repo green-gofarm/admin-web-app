@@ -15,6 +15,7 @@ import useAllRoomCategories from '../../../../Management/RoomCategory/hooks/useA
 import Select from "react-select";
 import CustomizedDialogTitle from '../../../../../General/Dialog/CustomizedDialogTitle';
 import InvalidFeedback from '../../../../../General/InvalidFeedback';
+import { ROOM_STATUSES } from '../../../../../../setting/room-setting';
 
 interface CreateRoomProps {
     open?: boolean,
@@ -56,9 +57,11 @@ function CreateRoom({
     const dispatch = useDispatch();
     const categories = useAllRoomCategories();
 
-    const categoryOptions = useMemo(() => {
+    const categoryOptions: any[] = useMemo(() => {
         if (!isAvailableArray(categories)) return [];
-        return categories.map((item: any) => ({ label: item.name, value: item.id }));
+        return categories
+            .filter(item => item.status === ROOM_STATUSES.ACTIVE)
+            .map((item: any) => ({ label: item.name, value: item.id }));
     }, [categories]);
 
     // State

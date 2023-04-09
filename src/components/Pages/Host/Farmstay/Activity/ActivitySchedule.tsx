@@ -7,51 +7,14 @@ import viLocale from '@fullcalendar/core/locales/vi';
 import { Card } from "react-bootstrap";
 import useActivitySchedule from "./hooks/useActivitySchedule";
 import { useCallback, useMemo, useState } from "react";
-import { formatDate, isThePast } from "../../../../../helpers/dateUtils";
+import { formatDate } from "../../../../../helpers/dateUtils";
 import ActivityEvent from "./activity-event/ActivityEvent";
-import { STATUS_COLORS } from "../../../../../setting/color";
+import { getColorProps, getStatusString } from "./setting";
 
-// let todayStr = new Date().toISOString().replace(/T.*$/, ""); // YYYY-MM-DD of today
-// let nextDateStr = (function getDateStr(): string {
-//     let today = new Date();
-//     let nextDate = new Date(today.setDate(today.getDate() + 1));
-//     return nextDate.toISOString().replace(/T.*$/, ""); // YYYY-MM-DD of today
-// })();
-
-// const INITIAL_EVENTS = [
-//     {
-//         id: "1",
-//         title: "Hết vé",
-//         start: todayStr,
-//         backgroundColor: '#f34343', // background color of the event
-//         borderColor: '#f34343', // border color of the event
-//         textColor: '#FFFFFF', // 
-//     },
-//     {
-//         id: "2",
-//         title: "Còn vé",
-//         start: nextDateStr,
-//     },
-// ]
-
-const getColorProps = (date: string | null) => {
-    if (!date) return null;
-    if (isThePast(new Date(date))) {
-        return {
-            textColor: STATUS_COLORS.DISABLED.textColor,
-            backgroundColor: STATUS_COLORS.DISABLED.bgColor,
-            borderColor: STATUS_COLORS.DISABLED.bgColor,
-        }
-    }
-
-    return {
-        textColor: STATUS_COLORS.ACTIVE.textColor,
-        backgroundColor: STATUS_COLORS.ACTIVE.bgColor,
-        borderColor: STATUS_COLORS.ACTIVE.bgColor,
-    }
+const generateTitle = (item: any, dateStr: any): string => {
+    const status = getStatusString(dateStr, item.available);
+    return status ?? "un_known";
 }
-
-
 interface ActivityScheduleProps {
     detail?: any,
     loading?: boolean,
@@ -75,9 +38,9 @@ function ActivitySchedule({
                 ...value ?? {},
                 id: dateStr,
                 start: dateStr,
-                end: dateStr,
-                title: value?.available ? "Còn vé" : "Hết vé",
-                ...getColorProps(dateStr) ?? {}
+                dateStr,
+                title: generateTitle(value, dateStr),
+                ...getColorProps(dateStr, value.available) ?? {}
             }
         })
     }, [activitySchedule]);

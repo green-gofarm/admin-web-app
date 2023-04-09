@@ -6,28 +6,10 @@ import { Box } from "@mui/material";
 import viLocale from '@fullcalendar/core/locales/vi';
 import { Card } from "react-bootstrap";
 import { useCallback, useMemo, useState } from "react";
-import { formatDate, isThePast } from "../../../../../helpers/dateUtils";
+import { formatDate } from "../../../../../helpers/dateUtils";
 import ActivityEvent from "./event/RoomEvent";
-import { STATUS_COLORS } from "../../../../../setting/color";
 import useRoomSchedule from "../../../Management/Farmstay/Room/hooks/useRoomSchedule";
-
-const getColorProps = (date: string | null) => {
-    if (!date) return null;
-    if (isThePast(new Date(date))) {
-        return {
-            textColor: STATUS_COLORS.DISABLED.textColor,
-            backgroundColor: STATUS_COLORS.DISABLED.bgColor,
-            borderColor: STATUS_COLORS.DISABLED.bgColor,
-        }
-    }
-
-    return {
-        textColor: STATUS_COLORS.ACTIVE.textColor,
-        backgroundColor: STATUS_COLORS.ACTIVE.bgColor,
-        borderColor: STATUS_COLORS.ACTIVE.bgColor,
-    }
-}
-
+import { getColorProps, getStatusString } from "./setting";
 
 interface RoomScheduleProps {
     detail?: any,
@@ -52,9 +34,9 @@ function RoomSchedule({
                 ...value ?? {},
                 id: dateStr,
                 start: dateStr,
-                end: dateStr,
-                title: value?.available ? "Còn trống" : "Đã đặt",
-                ...getColorProps(dateStr) ?? {}
+                dateStr,
+                title: getStatusString(dateStr, value.available),
+                ...getColorProps(dateStr, value.available) ?? {}
             }
         })
     }, [roomSchedule]);

@@ -1,10 +1,4 @@
 import makeStyles from "@mui/styles/makeStyles/makeStyles";
-import AddHomeWorkIcon from '@mui/icons-material/AddHomeWork';
-import MessageIcon from '@mui/icons-material/Message';
-import ThumbDownIcon from '@mui/icons-material/ThumbDown';
-import ThumbUpIcon from '@mui/icons-material/ThumbUp';
-import PaidIcon from '@mui/icons-material/Paid';
-import CancelIcon from '@mui/icons-material/Cancel';
 
 export const useNotificationStyles = makeStyles({
     read: {
@@ -58,29 +52,6 @@ export const parseNotificationExtras = (extras: any) => {
         console.log(error);
         return null;
     }
-}
-
-export const getNotificationIcon = (extras: any) => {
-    const parsedExtras = parseNotificationExtras(extras);
-    if (parsedExtras?.type) {
-        if (parsedExtras.type === NOTIFICATION_TYPE.REVIEW_FARMSTAY_ADMIN) {
-            return AddHomeWorkIcon;
-        }
-        if (parsedExtras.type === NOTIFICATION_TYPE.FARMSTAY_REJECTED_HOST) {
-            return ThumbDownIcon;
-        }
-        if (parsedExtras.type === NOTIFICATION_TYPE.FARMSTAY_APPROVED_HOST) {
-            return ThumbUpIcon;
-        }
-        if (parsedExtras.type === NOTIFICATION_TYPE.PAYMENT_SUCCESS_HOST) {
-            return PaidIcon;
-        }
-        if (parsedExtras.type === NOTIFICATION_TYPE.CANCEL_BOOKING_HOST) {
-            return CancelIcon;
-        }
-    }
-
-    return MessageIcon;
 }
 
 export const getRedirectPathFromNotification = (extras: any) => {

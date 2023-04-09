@@ -11,9 +11,9 @@ import useDelayLoading from '../../hooks/useDelayLoading';
 import { Box, Skeleton } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { markAsRedNotification } from '../../redux/auth/action';
-import { NOTIFICATION_STATUSES, getNotificationIcon, getNotificationOnlyUnreadState, getRedirectPathFromNotification, setNotificationOnlyUnreadState, useNotificationStyles } from '../../setting/notification-setting';
+import { NOTIFICATION_STATUSES, getNotificationOnlyUnreadState, getRedirectPathFromNotification, setNotificationOnlyUnreadState, useNotificationStyles } from '../../setting/notification-setting';
 import { toast } from 'react-toastify';
-import MuiIcon from '../../components/General/Icon/MuiIcon';
+import { getNotificationIcon } from '../../setting/notification-icon';
 
 function NotificationDropDown() {
 
@@ -179,9 +179,7 @@ function NotificationDropDown() {
                                 onClick={() => handleOnClickItem(item)}
                             >
                                 <div className="notifyimg bg-pink">
-                                    <MuiIcon
-                                        Icon={getNotificationIcon(item)}
-                                    />
+                                    {getNotificationIcon(item.extras)}
                                 </div>
                                 <div className="ms-3">
                                     <h5 className="notification-label mb-1">

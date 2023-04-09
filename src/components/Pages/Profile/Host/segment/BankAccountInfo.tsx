@@ -53,10 +53,12 @@ const getHostBankInfo = (user: any, bankOptions: any[]): HostBankInfo => {
 
 interface BankAccountInfoProps {
     user: any,
+    refresh: () => void
 }
 
 function BankAccountInfo({
     user,
+    refresh,
 }: BankAccountInfoProps) {
 
     const dispatch = useDispatch();
@@ -127,6 +129,7 @@ function BankAccountInfo({
                 onSuccess: () => {
                     setOpenEdit(false);
                     toast.success("Cập nhật thành công");
+                    refresh();
                 },
                 onFailure: () => {
                     toast.success("Cập nhật thất bại");

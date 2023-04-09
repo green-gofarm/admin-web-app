@@ -3,8 +3,6 @@ import { Button, Form, FormGroup, InputGroup } from 'react-bootstrap';
 import { Box, CircularProgress, Dialog, DialogContent, Grid } from '@mui/material';
 import CustomizedDialogActions from '../../../../../General/Dialog/CustomizedDialogActions';
 import SingleImageDropzone from '../ui-segment/SingleImageDropzone';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../../../../../redux/redux-setting';
 import VALIDATOR from './validator';
 import useDelayLoading from '../../../../../../hooks/useDelayLoading';
 import { createFarmstayActivities, uploadImage } from '../../../../../../redux/farmstay/action';
@@ -15,6 +13,8 @@ import CustomizedDialogTitle from '../../../../../General/Dialog/CustomizedDialo
 import InvalidFeedback from '../../../../../General/InvalidFeedback';
 import Select from "react-select";
 import useAllTagCategories from '../../../../Management/Tag/hooks/useAllTagCategories';
+import useCurrentUser from '../../../../../../hooks/useCurrentUser';
+import { TAG_CATEGORY_STATUSES } from '../../../../../../setting/tag-category-setting';
 interface CreateActivityProps {
     open?: boolean,
     onSuccessCallback?: any,
@@ -61,7 +61,7 @@ function CreateActivity({
     const [file, setFile] = useState<File | null>(null);
 
     // Redux
-    const user = useSelector((state: RootState) => state.auth.user);
+    const user = useCurrentUser();
 
     const [activity, setActivity] = useState<Activity>({
         name: "",
@@ -75,7 +75,9 @@ function CreateActivity({
 
     const categoryOptions = useMemo(() => {
         if (!isAvailableArray(categories)) return [];
-        return categories.map((item: any) => ({ label: item.name, value: item.id }));
+        return categories
+            .filter(item => item.status === TAG_CATEGORY_STATUSES.ACTIVE)
+            .map((item: any) => ({ label: item.name, value: item.id }));
     }, [categories]);
 
     const [errors, setErrors] = useState<Errors>(initialErrors);

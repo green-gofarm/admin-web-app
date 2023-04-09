@@ -7,6 +7,9 @@ import BankAccountInfo from './segment/BankAccountInfo';
 import Navigation, { NavigationItem } from '../../../General/Tab/Navigation';
 import { Tab } from 'react-bootstrap';
 import useHostProfileTabs, { TAB_KEYS } from './hooks/useHostProfileTabs';
+import { useCallback } from 'react';
+import { useDispatch } from 'react-redux';
+import { signInHost } from '../../../../redux/auth/action';
 
 const breadcrumb: Array<IBreadcrumbItem> = [];
 
@@ -24,8 +27,13 @@ const tabOptions: NavigationItem[] = [
 
 function Profile() {
 
+    const dispatch = useDispatch();
     const user = useCurrentUser();
     const { tab, handleChangeTab } = useHostProfileTabs();
+
+    const refresh = useCallback(() => {
+        dispatch(signInHost());
+    }, [dispatch]);
 
     return (
         <Box marginBottom="1.3rem">
@@ -36,7 +44,7 @@ function Profile() {
 
             <Grid container spacing={2}>
                 <Grid item xs={12}>
-                    <ProfileHeader />
+                    <ProfileHeader refresh={refresh} />
 
                     <div className="profile-tab tab-menu-heading">
                         <Tab.Container
@@ -58,11 +66,12 @@ function Profile() {
                                         <Tab.Pane eventKey={TAB_KEYS.ABOUT}>
                                             <BasicInfo
                                                 user={user}
+                                                refresh={refresh}
                                             />
                                         </Tab.Pane>
 
                                         <Tab.Pane eventKey={TAB_KEYS.BANK_ACCOUNT}>
-                                            <BankAccountInfo user={user} />
+                                            <BankAccountInfo user={user} refresh={refresh} />
                                         </Tab.Pane>
                                     </Tab.Content>
                                 </Grid>

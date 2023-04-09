@@ -12,6 +12,7 @@ import { createCodeString } from '../../../../../../helpers/stringUtils';
 import { useNavigate, useParams } from 'react-router-dom';
 import BankAccountInfo from './segment/BankAccountInfo';
 import useBackUrl from '../../../../../../hooks/useBackUrl';
+import FarmstayList from './segment/FarmstayList';
 
 
 const breadcrumb: Array<IBreadcrumbItem> = [
@@ -24,7 +25,7 @@ const breadcrumb: Array<IBreadcrumbItem> = [
         href: "/management/account"
     },
     {
-        text: "Danh sách chủ farmstay",
+        text: "Danh sách",
         href: "/management/account/host"
     },
     {
@@ -45,6 +46,10 @@ const tabOptions: NavigationItem[] = [
         label: "Tài khoản ngân hàng",
         eventKey: TAB_KEYS.BANK_ACCOUNT
     },
+    {
+        label: "Danh sách farmstay",
+        eventKey: TAB_KEYS.FARMSTAYS
+    }
 ]
 
 function HostDetail() {
@@ -119,6 +124,12 @@ function HostDetail() {
 
                                         <Tab.Pane eventKey={TAB_KEYS.BANK_ACCOUNT}>
                                             <BankAccountInfo
+                                                user={user}
+                                            />
+                                        </Tab.Pane>
+
+                                        <Tab.Pane eventKey={TAB_KEYS.FARMSTAYS}>
+                                            <FarmstayList
                                                 user={user}
                                             />
                                         </Tab.Pane>

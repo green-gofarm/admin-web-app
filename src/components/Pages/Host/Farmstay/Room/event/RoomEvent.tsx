@@ -5,25 +5,7 @@ import { EventDef } from "@fullcalendar/react";
 import IconLabelDetail from "../../../../../General/Item/IconLabelDetail";
 import { STATUS_COLORS } from "../../../../../../setting/color";
 import { Status } from "../../../../../../setting/Status";
-import { isThePast } from "../../../../../../helpers/dateUtils";
-
-const getStatus = (event: EventDef | null) => {
-    if (!event) return null;
-    if (isThePast(new Date(event.publicId))) {
-        return {
-            label: "Đã ngưng bán",
-            textColor: STATUS_COLORS.DISABLED.textColor,
-            bgColor: STATUS_COLORS.DISABLED.bgColor,
-        }
-    }
-
-    return {
-        label: "Đang bán",
-        textColor: STATUS_COLORS.ACTIVE.textColor,
-        bgColor: STATUS_COLORS.ACTIVE.bgColor,
-    }
-}
-
+import { getStatus } from "../setting";
 interface ActivityEventDialogProps {
     open: boolean,
     onClose: () => void,
@@ -56,7 +38,7 @@ const RoomEvent = ({
                             fontSize="1.125rem"
                             marginRight="8px"
                         >
-                            {`Xuất hoạt động ngày ${event?.publicId}`}
+                            {`Xuất sử dụng ngày ${event?.extendedProps?.dateStr}`}
                         </Box>
                     }
                     action={

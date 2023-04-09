@@ -3,7 +3,8 @@ import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 
 export enum TAB_KEYS {
     ABOUT = "ABOUT",
-    BANK_ACCOUNT = "BANK_ACCOUNT"
+    BANK_ACCOUNT = "BANK_ACCOUNT",
+    FARMSTAYS = "FARMSTAYS"
 }
 
 const useProfileTabs = () => {

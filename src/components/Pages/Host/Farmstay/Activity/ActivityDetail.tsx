@@ -18,12 +18,8 @@ const breadcrumb: Array<IBreadcrumbItem> = [
         href: "/management"
     },
     {
-        text: "Farmstay",
-        href: "/management/farmstay"
-    },
-    {
         text: "Danh sách",
-        href: "/management/farmstay/all"
+        href: "/management/farmstay"
     },
     {
         text: "Chi tiết farmstay",

@@ -15,6 +15,7 @@ import Select from "react-select";
 import useAllServiceCategories from '../../../../Management/ServiceCategory/hooks/useAllServiceCategories';
 import CustomizedDialogTitle from '../../../../../General/Dialog/CustomizedDialogTitle';
 import InvalidFeedback from '../../../../../General/InvalidFeedback';
+import { SERVICE_CATEGORY_STATUSES } from '../../../../../../setting/service-category-setting';
 
 interface CreateServiceProps {
     open?: boolean,
@@ -58,7 +59,9 @@ function CreateService({
 
     const categoryOptions = useMemo(() => {
         if (!isAvailableArray(categories)) return [];
-        return categories.map((item: any) => ({ label: item.name, value: item.id }));
+        return categories
+            .filter(item => item.status === SERVICE_CATEGORY_STATUSES.ACTIVE)
+            .map((item: any) => ({ label: item.name, value: item.id }));
     }, [categories]);
 
     // State

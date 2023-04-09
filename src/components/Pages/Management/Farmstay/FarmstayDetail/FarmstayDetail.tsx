@@ -101,7 +101,7 @@ function FarmstayDetail() {
                         gap="8px"
                     >
                         <DetailPageHeaderTitle
-                            backUrl={getBackUrl() ?? "/management/farmstay"}
+                            backUrl={getBackUrl() ?? "/management/farmstay/all"}
                             title="Chi tiết farmstay"
                             code={createCodeString("FR", id)}
                         />

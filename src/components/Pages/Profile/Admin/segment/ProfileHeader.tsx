@@ -6,7 +6,13 @@ import { Card } from 'react-bootstrap'
 import UpdateAdminAvatar from '../action/UpdateAdminAvatar'
 import { useState } from 'react'
 
-function ProfileHeader() {
+interface ProfileHeaderProps {
+    refresh: () => void,
+}
+
+function ProfileHeader({
+    refresh
+}: ProfileHeaderProps) {
 
     const user = useCurrentUser();
 
@@ -50,9 +56,8 @@ function ProfileHeader() {
             {openUpdateAvatar
                 ? <UpdateAdminAvatar
                     open={openUpdateAvatar}
-                    user={user}
                     onClose={() => setOpenUpdateAvatar(false)}
-                    onSuccessCallback={() => { }}
+                    onSuccessCallback={refresh}
                 />
                 : null
             }

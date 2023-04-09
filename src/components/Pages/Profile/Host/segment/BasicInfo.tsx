@@ -43,11 +43,13 @@ const getValuesFromUser = (user: any): User => ({
 
 interface BasicInfoProps {
     user: any,
+    refresh: () => void
 }
 
 
 function BasicInfo({
     user,
+    refresh
 }: BasicInfoProps) {
 
     const classes = useStyle();
@@ -74,6 +76,7 @@ function BasicInfo({
                 onSuccess: () => {
                     toast.success("Cập nhật thành công")
                     setOpenEdit(false);
+                    refresh();
                 },
                 onFailure: () => toast.error("Cập nhật thất bại"),
             }

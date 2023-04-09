@@ -13,7 +13,7 @@ const breadcrumb: Array<IBreadcrumbItem> = [
         href: "/management/account"
     },
     {
-        text: "Danh sách chủ farmstay",
+        text: "Danh sách",
         active: true,
         props: {
             "aria-current": "page"
