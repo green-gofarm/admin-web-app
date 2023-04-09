@@ -92,7 +92,7 @@ const SignUp = () => {
                         setLoadingSignUp(false);
                     },
                     onSuccess: async (response: any) => {
-                        await getFirebaseToken();
+                        await getFirebaseToken(true);
                         toast.success("Đăng ký thành công.");
                         navigate(getBackUrl() ?? "/");
                     },

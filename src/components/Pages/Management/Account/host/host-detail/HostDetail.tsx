@@ -24,7 +24,7 @@ const breadcrumb: Array<IBreadcrumbItem> = [
         href: "/management/account"
     },
     {
-        text: "Khách du lịch",
+        text: "Danh sách chủ farmstay",
         href: "/management/account/host"
     },
     {

@@ -1,8 +1,13 @@
 import { memo, useState } from 'react'
 import ConfirmModel from '../../../../../General/Model/ConfirmModel';
 import { Box } from '@mui/material';
+import { useDispatch } from 'react-redux';
+import useDelayLoading from '../../../../../../hooks/useDelayLoading';
+import { updateHostStatus } from '../../../../../../redux/user/action';
+import { HOST_STATUSES } from '../../../../../../setting/host-setting';
+import { toast } from 'react-toastify';
 
-interface _IUnbanHost {
+interface UnbanHostProps {
     open?: boolean,
     host?: any,
     refresh?: any,
@@ -14,13 +19,29 @@ function UnbanHost({
     host,
     refresh,
     onClose,
-}: _IUnbanHost) {
-    const [loading] = useState(false);
+}: UnbanHostProps) {
+
+    const dispatch = useDispatch();
+    const [loading, setLoading] = useState<boolean>(false);
+    const delay = useDelayLoading(loading);
 
     const handleSubmit = () => {
         if (!host?.id) return;
-        onClose && onClose();
-        refresh && refresh();
+        dispatch(updateHostStatus(
+            host.id,
+            { status: HOST_STATUSES.ACTIVE },
+            {
+                loading: setLoading,
+                onSuccess: () => {
+                    toast.success("Cập nhật thành công");
+                    onClose && onClose();
+                    refresh && refresh();
+                },
+                onFailure: () => {
+                    toast.error("Cập nhật thất bại");
+                }
+            }
+        ))
     }
 
     return (
@@ -29,11 +50,11 @@ function UnbanHost({
             title="Mở khóa tài khoản"
             description={(
                 <Box display="inline-block">
-                    Bạn có chắc chắn muốn mở khóa tài khoản
+                    Xác nhận mở khóa tài khoản
                     <b>{` ${host?.email ?? ""}`}</b> ?
                 </Box>
             )}
-            loading={loading}
+            loading={delay}
             onCancel={onClose}
             onConfirm={handleSubmit}
         />

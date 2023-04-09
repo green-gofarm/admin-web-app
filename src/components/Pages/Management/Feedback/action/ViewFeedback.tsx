@@ -33,7 +33,7 @@ function ViewFeedback({
             fullWidth
         >
             <CustomizedDialogTitle
-                title="Chi tiết phần hồi"
+                title="Chi tiết phản hồi"
                 onClose={handleClose}
             />
             <DialogContent>

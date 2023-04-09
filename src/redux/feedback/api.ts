@@ -28,6 +28,6 @@ export function updateFeedbackStatus(feedbackId: any, data: any) {
         data: JSON.stringify(data ?? {})
     }
 
-    const url = `${ENP.ADMIN}/feedbacks/${feedbackId}/search`;
+    const url = `${ENP.ADMIN}/feedbacks/${feedbackId}/status`;
     return axiosRequest(url, option);
 }

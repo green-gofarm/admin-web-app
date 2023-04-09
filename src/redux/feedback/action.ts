@@ -21,6 +21,6 @@ export const searchFeedbacksFailed = (): IReduxAction => ({
 })
 
 export const updateFeedbackStatus = (id: any, data: any, option?: IReduxActionOption): IReduxAction => ({
-    type: type.SEARCH_FEEDBACKS,
+    type: type.UPDATE_FEEDBACK_STATUS,
     payload: { id, data, option: option ?? getEmptyOption() }
 })

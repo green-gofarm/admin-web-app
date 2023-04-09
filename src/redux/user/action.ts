@@ -163,3 +163,14 @@ export const updateAdminMyProfileSuccess = (data: any): IReduxAction => ({
     type: type.UPDATE_ADMIN_MY_PROFILE_SUCCESS,
     payload: data,
 })
+
+
+export const updateHostStatus = (id: any, data: any, option?: IReduxActionOption): IReduxAction => ({
+    type: type.UPDATE_HOST_STATUS,
+    payload: { id, data, option: option ?? getEmptyOption() }
+});
+
+export const updateCustomerStatus = (id: any, data: any, option?: IReduxActionOption): IReduxAction => ({
+    type: type.UPDATE_CUSTOMER_STATUS,
+    payload: { id, data, option: option ?? getEmptyOption() }
+});
