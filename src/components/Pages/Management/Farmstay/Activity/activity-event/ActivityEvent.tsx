@@ -5,24 +5,7 @@ import { EventDef } from "@fullcalendar/react";
 import IconLabelDetail from "../../../../../General/Item/IconLabelDetail";
 import { STATUS_COLORS } from "../../../../../../setting/color";
 import { Status } from "../../../../../../setting/Status";
-import { isThePast } from "../../../../../../helpers/dateUtils";
-
-const getStatus = (event: EventDef | null) => {
-    if (!event) return null;
-    if (isThePast(new Date(event.publicId))) {
-        return {
-            label: "Đã ngưng bán",
-            textColor: STATUS_COLORS.DISABLED.textColor,
-            bgColor: STATUS_COLORS.DISABLED.bgColor,
-        }
-    }
-
-    return {
-        label: "Đang bán",
-        textColor: STATUS_COLORS.ACTIVE.textColor,
-        bgColor: STATUS_COLORS.ACTIVE.bgColor,
-    }
-}
+import { getStatus } from "../setting";
 
 interface ActivityEventDialogProps {
     open: boolean,
@@ -54,7 +37,7 @@ const ActivityEvent = ({
                             fontSize="1.125rem"
                             marginRight="8px"
                         >
-                            {`Xuất hoạt động ngày ${event?.publicId}`}
+                            {`Xuất hoạt động ngày ${event?.extendedProps?.dateStr}`}
                         </Box>
                     }
                     action={
@@ -70,7 +53,7 @@ const ActivityEvent = ({
                         <Grid item xs={12}>
                             <IconLabelDetail
                                 icon={<i className="fa fa-ticket-alt"></i>}
-                                label="Số vé:"
+                                label="Số vé còn trống:"
                                 value={`${event?.extendedProps.availableItem} / ${event?.extendedProps.totalItem}`}
                             />
                         </Grid>

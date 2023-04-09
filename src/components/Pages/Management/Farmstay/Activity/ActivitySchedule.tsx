@@ -4,31 +4,17 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import { Box } from "@mui/material";
 import viLocale from '@fullcalendar/core/locales/vi';
+import { Card } from "react-bootstrap";
 import useActivitySchedule from "./hooks/useActivitySchedule";
 import { useCallback, useMemo, useState } from "react";
-import { formatDate, isThePast } from "../../../../../helpers/dateUtils";
+import { formatDate } from "../../../../../helpers/dateUtils";
 import ActivityEvent from "./activity-event/ActivityEvent";
-import { STATUS_COLORS } from "../../../../../setting/color";
-import CustomizedCard from "../../../../General/Card/CustomizedCard";
+import { getColorProps, getStatusString } from "./setting";
 
-const getColorProps = (date: string | null) => {
-    if (!date) return null;
-    if (isThePast(new Date(date))) {
-        return {
-            textColor: STATUS_COLORS.DISABLED.textColor,
-            backgroundColor: STATUS_COLORS.DISABLED.bgColor,
-            borderColor: STATUS_COLORS.DISABLED.bgColor,
-        }
-    }
-
-    return {
-        textColor: STATUS_COLORS.ACTIVE.textColor,
-        backgroundColor: STATUS_COLORS.ACTIVE.bgColor,
-        borderColor: STATUS_COLORS.ACTIVE.bgColor,
-    }
+const generateTitle = (item: any, dateStr: any): string => {
+    const status = getStatusString(dateStr, item.available);
+    return status ?? "un_known";
 }
-
-
 interface ActivityScheduleProps {
     detail?: any,
     loading?: boolean,
@@ -52,9 +38,9 @@ function ActivitySchedule({
                 ...value ?? {},
                 id: dateStr,
                 start: dateStr,
-                end: dateStr,
-                title: value?.available ? "Còn vé" : "Hết vé",
-                ...getColorProps(dateStr) ?? {}
+                dateStr,
+                title: generateTitle(value, dateStr),
+                ...getColorProps(dateStr, value.available) ?? {}
             }
         })
     }, [activitySchedule]);
@@ -76,9 +62,10 @@ function ActivitySchedule({
 
     return (
         <>
-            <CustomizedCard
-                title="Lịch hoạt động"
-                content={
+            <Card>
+                <Card.Body className="border-0">
+                    <h5 className="mb-2 mt-1 fw-semibold">Lịch hoạt động</h5>
+
                     <Box
                         textTransform="capitalize"
                         id="calendar2"
@@ -106,8 +93,8 @@ function ActivitySchedule({
                             datesSet={handleChangeDate}
                         />
                     </Box>
-                }
-            />
+                </Card.Body>
+            </Card>
 
             <ActivityEvent
                 open={!!anchorEl && !!selectedEvent}
