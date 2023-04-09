@@ -11,6 +11,7 @@ import useBackUrl from '../../hooks/useBackUrl';
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { AxiosError } from 'axios';
 import useDelayLoading from '../../hooks/useDelayLoading';
+import { ResultCode } from '../../setting/response-result-code';
 
 const SignUp = () => {
 
@@ -99,11 +100,14 @@ const SignUp = () => {
                     },
                     onFailure: (error: AxiosError | any) => {
                         auth.signOut();
-                        if (error?.response?.data?.resultCode === 8000) {
+
+                        const code = error?.response?.data?.resultCode;
+                        if (code === ResultCode.USER_ALREADY_REGISTERED) {
                             setErrorMessage("Tài khoản đã tồn tại.");
-                        } else {
-                            setErrorMessage("Đăng ký thất bại.");
+                            return;
                         }
+
+                        setErrorMessage("Đăng ký thất bại.");
                     }
                 }));
                 return;
