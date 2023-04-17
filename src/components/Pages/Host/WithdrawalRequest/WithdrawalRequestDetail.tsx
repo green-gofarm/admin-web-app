@@ -13,6 +13,10 @@ import { useMemo } from "react";
 import { isAvailableArray } from "../../../../helpers/arrayUtils";
 import useDisbursementDetail from "../../Management/WithdrawalRequest/hooks/useDisbursementDetail";
 import UserTag from "../../../General/Wrapper/UserTag";
+import useUserDetail from "../../Management/Account/hooks/useUserDetail";
+import { ROLES } from "../../../../setting/setting";
+import useBanks from "../../../../hooks/useBanks";
+import { formatBankLabel } from "../../../../Authentication/Host/sign-up-step/GetBankInfo";
 
 const breadcrumb: Array<IBreadcrumbItem> = [
     {
@@ -37,6 +41,15 @@ function WithdrawalRequestDetail() {
     const { id } = useParams();
     const { detail } = useDisbursementDetail(id);
     const { getBackUrl, createBackUrl } = useBackUrl();
+
+    const { detail: hostDetail } = useUserDetail(detail?.hostId, ROLES.HOST);
+    const { banks } = useBanks();
+
+    const bank = useMemo(() => {
+        if (!hostDetail?.bankName) return null;
+        if (!isAvailableArray(banks)) return null;
+        return banks.find(item => item.bankCode === hostDetail.bankName);
+    }, [banks, hostDetail?.bankName]);
 
     const feeExtras = useMemo(() => {
         if (!detail?.feeExtras) return [];
@@ -131,19 +144,22 @@ function WithdrawalRequestDetail() {
                                             <tr>
                                                 <td className="tx-right">Tên ngân hàng</td>
                                                 <td className="tx-right" colSpan={2}>
-
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td className="tx-right">Tài khoản</td>
-                                                <td className="tx-right" colSpan={2}>
-
+                                                    {bank
+                                                        ? formatBankLabel(bank)
+                                                        : "-"
+                                                    }
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td className="tx-right">Chủ tài khoản</td>
                                                 <td className="tx-right" colSpan={2}>
-
+                                                    {hostDetail?.bankAccountName ?? "-"}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td className="tx-right">Số tài khoản</td>
+                                                <td className="tx-right" colSpan={2}>
+                                                    {hostDetail?.bankAccountNumber ?? "-"}
                                                 </td>
                                             </tr>
                                             <tr>

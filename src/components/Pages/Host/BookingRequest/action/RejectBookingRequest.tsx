@@ -44,7 +44,7 @@ function RejectBooking({
             booking?.id,
             {
                 extras: data.extras,
-                bookingStatus: ORDER_STATUSES.REJECTED
+                status: ORDER_STATUSES.REJECTED
             },
             {
                 loading: setLoadingCreate,

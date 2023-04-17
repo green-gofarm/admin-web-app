@@ -112,7 +112,7 @@ export default function WithdrawalRequestTable() {
             render: (row: any) => convertToMoney(row.amount) ?? "-"
         },
         {
-            key: "status",
+            key: "type",
             label: "Phân loại",
             render: (row) => getWithdrawalRequestTypeLabel(row.type) ?? "-"
         },
