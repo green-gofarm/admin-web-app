@@ -1,5 +1,5 @@
 import { Box, Grid } from '@mui/material'
-import { Alert, Card, Dropdown } from 'react-bootstrap'
+import { Card, Dropdown } from 'react-bootstrap'
 import IconLabelDetail from '../../../../General/Item/IconLabelDetail'
 import StringWrapper from '../../../../General/Wrapper/StringWrapper'
 import { Status } from '../../../../../setting/Status'
@@ -9,13 +9,15 @@ import useContactInfo from '../../../Management/Farmstay/FarmstayDetail/hooks/us
 import useFarmstayImages from '../../../Management/Farmstay/FarmstayDetail/hooks/useFarmstayImages'
 import useFarmstayAddress from '../../../Management/Farmstay/FarmstayDetail/hooks/useFarmstayAddress'
 import UpdateFarmstayAvatar from './action/UpdateFarmstayAvatar'
-import { useState } from 'react'
-import SendApproveRequest from './action/SendApproveRequest'
+import { useEffect, useRef, useState } from 'react'
+// import SendApproveRequest from './action/SendApproveRequest'
 import ConditionWrapper from '../../../../General/Wrapper/ConditionWrapper'
 import GeneralAvatar from '../../../../General/GeneralAvatar'
 import UserTag from '../../../../General/Wrapper/UserTag'
 import Rating from '../../../../General/Rating'
 import { Message } from '@mui/icons-material'
+import SendApproveRequest from './SendApproveRequest'
+import ViewNotArchiveRule from './ViewNotArchiveRule'
 
 interface IFarmstayDetailHeader {
     detail?: any,
@@ -35,6 +37,21 @@ function FarmstayDetailHeader({
 
     const [openUpdateAvatar, setOpenUpdateAvatar] = useState<boolean>(false);
     const [openSendRequest, setOpenSendRequest] = useState<boolean>(false);
+    const [openViewReason, setOpenViewReason] = useState<boolean>(false);
+
+    const initialized = useRef<boolean>(false);
+
+    useEffect(() => {
+        if (initialized.current) {
+            return;
+        }
+        if (detail) {
+            if (detail.status === FARMSTAY_STATUSES.DRAFT && detail.extras) {
+                setOpenViewReason(true);
+                initialized.current = true;
+            }
+        }
+    }, [detail]);
 
     return (
         <>
@@ -79,32 +96,13 @@ function FarmstayDetailHeader({
                                             alignItems="center"
                                             gap="8px"
                                         >
-                                            {detail?.extras
-                                                ? <Dropdown defaultShow>
-                                                    <Dropdown.Toggle variant="danger">
-                                                        <Message />
-                                                    </Dropdown.Toggle>
-                                                    <Dropdown.Menu
-                                                        style={{
-                                                            width: 500,
-                                                            maxWidth: "100vw",
-                                                            padding: "20px"
-                                                        }}
-                                                    >
-                                                        <h6 className="card-title m-0 mb-3">
-                                                            Yêu cầu bị từ chối
-                                                        </h6>
-                                                        <Alert
-                                                            variant='danger'
-                                                            className='m-0'
-                                                        >
-                                                            <strong>Lý do</strong>
-                                                            <p className="text-mute">
-                                                                {detail.extras}
-                                                            </p>
-                                                        </Alert>
-                                                    </Dropdown.Menu>
-                                                </Dropdown>
+                                            {!!detail?.extras
+                                                ? <Dropdown.Toggle
+                                                    variant="danger"
+                                                    onClick={() => setOpenViewReason(prev => !prev)}
+                                                >
+                                                    <Message />
+                                                </Dropdown.Toggle>
                                                 : null
                                             }
                                             <Box
@@ -164,12 +162,24 @@ function FarmstayDetailHeader({
                 : null
             }
 
-            <SendApproveRequest
-                open={openSendRequest}
-                onClose={() => setOpenSendRequest(false)}
-                onSuccessCallback={refresh}
-                farmstay={detail}
-            />
+            {openSendRequest
+                ? <SendApproveRequest
+                    open={openSendRequest}
+                    onClose={() => setOpenSendRequest(false)}
+                    onSuccessCallback={refresh}
+                    farmstay={detail}
+                />
+                : null
+            }
+
+            {openViewReason
+                ? <ViewNotArchiveRule
+                    open={openViewReason}
+                    farmstay={detail}
+                    onClose={() => setOpenViewReason(false)}
+                />
+                : null
+            }
         </>
     )
 }

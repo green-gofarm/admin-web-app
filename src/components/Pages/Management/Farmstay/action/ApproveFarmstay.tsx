@@ -81,7 +81,7 @@ const renderCriteriaCheckboxes = (
     ));
 };
 
-const mergeExtrasWithObjects = (data: object | null, defaultObjects: object) => {
+export const mergeExtrasWithObjects = (data: object | null, defaultObjects: object) => {
     const mergedObjects: { [key: string]: boolean } = { ...defaultObjects };
     console.log(data);
     if (data) {
