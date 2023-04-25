@@ -7,12 +7,12 @@ import useBackUrl from '../../../../../hooks/useBackUrl'
 import useContactInfo from './hooks/useContactInfo'
 import StringWrapper from '../../../../General/Wrapper/StringWrapper'
 import useFarmstayImages from './hooks/useFarmstayImages'
-import { ThumbDownAlt, ThumbUpAlt } from '@mui/icons-material'
 import { useState } from 'react'
 import ApproveFarmstay from '../action/ApproveFarmstay'
-import RejectFarmstay from '../action/RejectFarmstay'
 import useFarmstayAddress from './hooks/useFarmstayAddress'
 import { FARMSTAY_STATUSES, renderAddress } from '../../../../../setting/farmstay-setting'
+import GradingIcon from '@mui/icons-material/Grading';
+
 interface IFarmstayDetailHeader {
     detail?: any,
     loading?: boolean,
@@ -32,7 +32,6 @@ function FarmstayPreviewHeader({
 
     // State
     const [openApprove, setOpenApprove] = useState<boolean>(false);
-    const [openReject, setOpenReject] = useState<boolean>(false);
 
     return (
         <>
@@ -118,18 +117,16 @@ function FarmstayPreviewHeader({
                                         <Button
                                             variant="contained"
                                             color="primary"
-                                            startIcon={<ThumbUpAlt />}
+                                            startIcon={<GradingIcon sx={{ color: "#fff" }} />}
                                             onClick={() => setOpenApprove(true)}
                                         >
-                                            Phê duyệt
-                                        </Button>
-                                        <Button
-                                            variant="contained"
-                                            color="error"
-                                            startIcon={<ThumbDownAlt />}
-                                            onClick={() => setOpenReject(true)}
-                                        >
-                                            Từ chối
+                                            <Box
+                                                color="#fff"
+                                                textTransform="uppercase"
+                                                fontWeight="600"
+                                            >
+                                                Thực hiện phê duyệt
+                                            </Box>
                                         </Button>
                                     </Box>
                                 </Grid>
@@ -139,20 +136,15 @@ function FarmstayPreviewHeader({
                     </Box>
                 </Card.Body>
             </Card>
-
-            <ApproveFarmstay
-                open={openApprove && !!detail}
-                farmstay={detail}
-                onClose={() => setOpenApprove(false)}
-                onSuccessCallback={() => navigate(getBackUrl() ?? "/management/farmstay/preview")}
-            />
-
-            <RejectFarmstay
-                open={openReject && !!detail}
-                farmstay={detail}
-                onClose={() => setOpenReject(false)}
-                onSuccessCallback={() => navigate(getBackUrl() ?? "/management/farmstay/preview")}
-            />
+            {openApprove
+                ? <ApproveFarmstay
+                    open={openApprove && !!detail}
+                    farmstay={detail}
+                    onClose={() => setOpenApprove(false)}
+                    onSuccessCallback={() => navigate(getBackUrl() ?? "/management/farmstay/preview")}
+                />
+                : null
+            }
         </>
     )
 }
