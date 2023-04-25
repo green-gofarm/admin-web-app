@@ -16,7 +16,6 @@ import UserTag from "../../../General/Wrapper/UserTag";
 import useUserDetail from "../../Management/Account/hooks/useUserDetail";
 import { ROLES } from "../../../../setting/setting";
 import useBanks from "../../../../hooks/useBanks";
-import { formatBankLabel } from "../../../../Authentication/Host/sign-up-step/GetBankInfo";
 
 const breadcrumb: Array<IBreadcrumbItem> = [
     {
@@ -35,6 +34,34 @@ const breadcrumb: Array<IBreadcrumbItem> = [
         }
     }
 ]
+
+const customFormatBankLabel = (option: any) => (
+    <Box
+        display="flex"
+        alignItems="center"
+        gap="8px"
+        width="fit-content"
+        marginLeft="auto"
+    >
+        <Box
+            width="100px"
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+        >
+            <Box
+                component="img"
+                src={option?.logo}
+                height="24px"
+            />
+        </Box>
+        <Box
+            className="text-muted"
+        >
+            {`${option?.bankName} (${option?.bankCode})`}
+        </Box>
+    </Box>
+)
 
 function WithdrawalRequestDetail() {
 
@@ -145,7 +172,7 @@ function WithdrawalRequestDetail() {
                                                 <td className="tx-right">Tên ngân hàng</td>
                                                 <td className="tx-right" colSpan={2}>
                                                     {bank
-                                                        ? formatBankLabel(bank)
+                                                        ? customFormatBankLabel(bank)
                                                         : "-"
                                                     }
                                                 </td>
@@ -171,7 +198,7 @@ function WithdrawalRequestDetail() {
                                                     <td className="tx-right">{item.type}</td>
                                                     <td className="tx-right">{`${item.percent * 100}%`}</td>
                                                     <td className="tx-right">
-                                                        - {convertToMoney(item.amount)}
+                                                        {convertToMoney(item.amount)}
                                                     </td>
                                                 </tr>
                                             )}

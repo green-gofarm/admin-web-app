@@ -98,7 +98,7 @@ function CreateService({
         const tempErrors: Errors = {
             name: VALIDATOR.isRequired(service.name),
             description: VALIDATOR.isRequired(service.description),
-            price: VALIDATOR.isValidPrice(service.price),
+            price: VALIDATOR.isValidServicePrice(service.price),
             serviceCategory: VALIDATOR.isRequired(service.serviceCategory?.value) || VALIDATOR.isNumberString(service.serviceCategory?.value),
             file: file != null ? VALIDATOR.NO_ERROR : VALIDATOR.REQUIRED_MESSAGE,
         }

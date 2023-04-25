@@ -80,7 +80,7 @@ function UpdateActivityBasicInfo({
         const tempActivityError: Errors = {
             name: VALIDATOR.isRequired(data.name),
             description: VALIDATOR.isRequired(data.description),
-            price: VALIDATOR.isValidPrice(data.price),
+            price: VALIDATOR.isValidActivityPrice(data.price),
             slot: VALIDATOR.isValidActivitySlotNumber(data.slot),
         }
 

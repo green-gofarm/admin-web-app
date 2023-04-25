@@ -98,7 +98,7 @@ function CreateRoom({
         const tempErrors: Errors = {
             name: VALIDATOR.isRequired(room.name),
             description: VALIDATOR.isRequired(room.description),
-            price: VALIDATOR.isValidPrice(room.price),
+            price: VALIDATOR.isValidRoomPrice(room.price),
             roomCategory: VALIDATOR.isRequired(room.roomCategory?.value) || VALIDATOR.isNumberString(room.roomCategory?.value),
             file: file != null ? VALIDATOR.NO_ERROR : VALIDATOR.REQUIRED_MESSAGE,
         }

@@ -96,7 +96,7 @@ function UpdateService({
         const tempErrors: Errors = {
             name: VALIDATOR.isRequired(data.name),
             description: VALIDATOR.isRequired(data.description),
-            price: VALIDATOR.isValidPrice(data.price),
+            price: VALIDATOR.isValidServicePrice(data.price),
             serviceCategory: VALIDATOR.isRequired(data.serviceCategory?.value) || VALIDATOR.isNumberString(data.serviceCategory?.value),
             file: (() => {
                 if (avatar) return VALIDATOR.NO_ERROR;

@@ -74,7 +74,7 @@ function ScheduleTab({
                         <FullCalendar
                             locale={viLocale}
                             plugins={[dayGridPlugin]}
-                            initialView="dayGridDay"
+                            initialView="dayGridWeek"
                             headerToolbar={{
                                 left: "prev,next today",
                                 center: "title",

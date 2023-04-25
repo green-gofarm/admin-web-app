@@ -21,7 +21,7 @@ const OrderManagement = () => {
     return (
         <Box marginBottom="1.3rem">
             <PageHeader
-                title="Lịch sử đơn hàng"
+                title="Danh sách đơn hàng"
                 breadcrumb={breadcrumb}
             />
 

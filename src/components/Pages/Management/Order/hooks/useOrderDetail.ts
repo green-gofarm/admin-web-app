@@ -1,6 +1,6 @@
 import { getOrderDetail } from './../../../../../redux/order/action';
 import { RootState } from './../../../../../redux/redux-setting';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux'
 
@@ -11,13 +11,18 @@ function useOrderDetail(id: any) {
 
     const [loading, setLoading] = useState<boolean>(false);
 
-    useEffect(() => {
+    const refresh = useCallback(() => {
         if (id) {
             dispatch(getOrderDetail(id, { loading: setLoading }));
         }
-    }, [dispatch, id])
+    }, [dispatch, id]);
 
-    return { detail, loading };
+    useEffect(() => {
+        refresh();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [id]);
+
+    return { detail, loading, refresh };
 }
 
 export default useOrderDetail

@@ -101,7 +101,7 @@ function CreateActivity({
         const tempActivityError: Errors = {
             name: VALIDATOR.isRequired(activity.name),
             description: VALIDATOR.isRequired(activity.description),
-            price: VALIDATOR.isValidPrice(activity.price),
+            price: VALIDATOR.isValidActivityPrice(activity.price),
             slot: VALIDATOR.isValidActivitySlotNumber(activity.slot),
             file: file != null ? VALIDATOR.NO_ERROR : VALIDATOR.REQUIRED_MESSAGE,
             tags: '',

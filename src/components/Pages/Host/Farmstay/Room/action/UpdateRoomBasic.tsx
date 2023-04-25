@@ -89,7 +89,7 @@ function UpdateRoomBasic({
         const tempErrors: Errors = {
             name: VALIDATOR.isRequired(data.name),
             description: VALIDATOR.isRequired(data.description),
-            price: VALIDATOR.isValidPrice(data.price),
+            price: VALIDATOR.isValidRoomPrice(data.price),
             roomCategory: VALIDATOR.isRequired(data.roomCategory?.value) || VALIDATOR.isNumberString(data.roomCategory?.value),
         }
 

@@ -12,8 +12,8 @@ import HomeIcon from '@mui/icons-material/Home';
 import useBackUrl from "../../../../hooks/useBackUrl";
 import StringWrapper from "../../../General/Wrapper/StringWrapper";
 import ConditionWrapper from "../../../General/Wrapper/ConditionWrapper";
-import { useMemo } from "react";
-import { getFarmstayFromList } from "../../../../setting/farmstay-setting";
+import { useCallback, useMemo, useState } from "react";
+import { getFarmstayFromList, renderAddress } from "../../../../setting/farmstay-setting";
 import { isAvailableArray } from "../../../../helpers/arrayUtils";
 import useContactInfo from "../../Management/Farmstay/FarmstayDetail/hooks/useContactInfo";
 import { ROLES } from "../../../../setting/setting";
@@ -22,6 +22,9 @@ import useAllFarmstays from "../../Management/Farmstay/hooks/useAllFarmstay";
 import UserTag from "../../../General/Wrapper/UserTag";
 import useOrderDetail from "../../Management/Order/hooks/useOrderDetail";
 import FeedbackItem from "../Farmstay/FarmstayDetail/ui-segment/FeedbackItem";
+import ApproveBookingRequest from "./action/ApproveBookingRequest";
+import RejectBookingRequest from "./action/RejectBookingRequest";
+import useFarmstayAddress from "../../Management/Farmstay/FarmstayDetail/hooks/useFarmstayAddress";
 
 const breadcrumb: Array<IBreadcrumbItem> = [
     {
@@ -29,7 +32,7 @@ const breadcrumb: Array<IBreadcrumbItem> = [
         href: "/management"
     },
     {
-        text: "Đơn hàng",
+        text: "Đơn cần duyệt",
         href: "/management/order"
     },
     {
@@ -44,11 +47,14 @@ const breadcrumb: Array<IBreadcrumbItem> = [
 function BookingRequestDetail() {
 
     const { getBackUrl } = useBackUrl();
-    const { createBackUrl } = useBackUrl();
 
     const { id } = useParams();
-    const { detail } = useOrderDetail(id);
+    const { detail, refresh } = useOrderDetail(id);
     const { detail: customer } = useUserDetail(detail?.customerId, ROLES.CUSTOMER);
+
+    const [openApprove, setOpenApprove] = useState<boolean>(false);
+    const [openReject, setOpenReject] = useState<boolean>(false);
+
 
     const feeExtras = useMemo(() => {
         if (!detail?.payment?.feeExtras) return [];
@@ -64,6 +70,7 @@ function BookingRequestDetail() {
         [allFarmstays, detail?.farmstayId]
     );
     const contactInfo = useContactInfo(farmstay);
+    const address = useFarmstayAddress(farmstay);
 
     const activities: any[] = useMemo(() => {
         if (!isAvailableArray(detail?.activities)) return [];
@@ -84,6 +91,45 @@ function BookingRequestDetail() {
         return isExpire(detail?.approveExpiredTime)
     }, [detail?.approveExpiredTime]);
 
+    const handleCloseApprove = useCallback(() => setOpenApprove(false), []);
+    const handleCloseReject = useCallback(() => setOpenReject(false), []);
+
+    const renderHeader = () => (
+        detail?.status === ORDER_STATUSES.PENDING_APPROVE
+            ? <Card.Header className="border-bottom">
+                {isExpired
+                    ? <Alert variant="info">
+                        {`Đơn đã quá hạn vào ngày ${convertISOToNaturalFormat(detail?.approveExpiredTime, "Do MMMM YYYY")}`}
+                    </Alert>
+                    : <Alert variant="danger">
+                        {`Đơn sẽ quá hạn vào ${convertISOToNaturalFormat(detail?.approveExpiredTime, "HH:mm [ngày] Do MMMM YYYY")}`}
+                    </Alert>
+                }
+                {!isExpired
+                    ? <>
+                        <Button
+                            variant=''
+                            type="button"
+                            className="btn ripple btn-primary mb-1 me-2"
+                            onClick={() => setOpenApprove(true)}
+                        >
+                            <i className="fe fe-thumbs-up me-1"></i> Nhận đơn
+                        </Button>
+                        <Button
+                            variant=''
+                            type="button"
+                            className="btn ripple btn-secondary mb-1 me-2"
+                            onClick={() => setOpenReject(true)}
+                        >
+                            <i className="fe fe-thumbs-down me-1"></i> Từ chối
+                        </Button>
+                    </>
+                    : null
+                }
+            </Card.Header>
+            : null
+    )
+
     return (
         <Box marginBottom="1.3rem">
             <PageHeader
@@ -94,7 +140,7 @@ function BookingRequestDetail() {
                         gap="8px"
                     >
                         <DetailPageHeaderTitle
-                            backUrl={getBackUrl() ?? "/management/order"}
+                            backUrl={getBackUrl() ?? "/management/booking-request"}
                             title="Chi tiết đơn hàng"
                         />
                     </Box>
@@ -110,36 +156,7 @@ function BookingRequestDetail() {
             >
                 <Grid item xs={12}>
                     <Card className=" custom-card">
-                        <Card.Header className="border-bottom">
-                            {isExpired
-                                ? <Alert variant="info">
-                                    {`Đơn đã quá hạn vào ngày ${convertISOToNaturalFormat(detail?.approveExpiredTime, "Do MMMM YYYY")}`}
-                                </Alert>
-                                : <Alert variant="error">
-                                    {`Đơn sẽ quá hạn vào ${convertISOToNaturalFormat(detail?.approveExpiredTime, "HH:mm [ngày] Do MMMM YYYY")}`}
-                                </Alert>
-                            }
-                            {!isExpired
-                                ? <>
-                                    <Button
-                                        variant=''
-                                        type="button"
-                                        className="btn ripple btn-primary mb-1 me-2"
-                                    >
-                                        <i className="fe fe-thumbs-up me-1"></i> Nhận đơn
-                                    </Button>
-                                    <Button
-                                        variant=''
-                                        type="button"
-                                        className="btn ripple btn-secondary mb-1 me-2"
-                                    >
-                                        <i className="fe fe-thumbs-down me-1"></i> Từ chối
-                                    </Button>
-                                </>
-                                : null
-                            }
-
-                        </Card.Header>
+                        {renderHeader()}
                         <Card.Body>
                             <div className="d-lg-flex">
                                 <h6 className="main-content-label mb-1">
@@ -214,18 +231,13 @@ function BookingRequestDetail() {
                                             label="Farmstay: "
                                             value={
                                                 <Box
-                                                    component={Link}
-                                                    className="tag tag-rounded btn"
-                                                    to={`/management/farmstay/all/${detail?.farmstayId}?backUrl=${createBackUrl()}`}
+                                                    className="tag tag-rounded"
+                                                    display="flex"
+                                                    alignItems="center"
+                                                    gap="8px"
                                                 >
-                                                    <Box
-                                                        display="flex"
-                                                        alignItems="center"
-                                                        gap="8px"
-                                                    >
-                                                        <HomeIcon />
-                                                        {detail?.farmstayName}
-                                                    </Box>
+                                                    <HomeIcon />
+                                                    {detail?.farmstayName}
                                                 </Box>
                                             }
                                             className="mb-2"
@@ -268,7 +280,17 @@ function BookingRequestDetail() {
                                         </Grid>
 
                                         <Grid item xs={3}>
-                                            <Box className="h6" margin="2px 0 !important">Ngày hoàn thành (dự kiến)</Box>
+                                            <Box className="h6" margin="2px 0 !important">Ngày check-out</Box>
+                                        </Grid>
+                                        <Grid item xs={9}>
+                                            {convertISOToNaturalFormat(detail?.checkoutDate)}
+                                        </Grid>
+                                        <Grid item xs={12}>
+                                            <Divider />
+                                        </Grid>
+
+                                        <Grid item xs={3}>
+                                            <Box className="h6" margin="2px 0 !important">Ngày kết thúc (dự kiến)</Box>
                                         </Grid>
                                         <Grid item xs={9}>
                                             {convertISOToNaturalFormat(detail?.completedDate)}
@@ -304,7 +326,7 @@ function BookingRequestDetail() {
                                             <Box className="h6" margin="2px 0 !important">Địa chỉ</Box>
                                         </Grid>
                                         <Grid item xs={9}>
-                                            {detail?.farmstay?.address}
+                                            {renderAddress(address)}
                                         </Grid>
                                         <Grid item xs={12}>
                                             <Divider />
@@ -330,7 +352,7 @@ function BookingRequestDetail() {
                                         <tr key={item.roomId}>
                                             <td>{createCodeString("R", item.roomId)}</td>
                                             <td>Phòng</td>
-                                            <td className="tx-12">{item.roomName ?? "UN_KNOWN"}</td>
+                                            <td className="tx-12">{item.room?.name ?? "UN_KNOWN"}</td>
                                             <td className="tx-center">{formatDate(item.date)}</td>
                                             <td className="tx-right">{convertToMoney(item.price)}</td>
                                         </tr>
@@ -339,7 +361,7 @@ function BookingRequestDetail() {
                                         <tr key={item.activityId}>
                                             <td>{createCodeString("AC", item.activityId)}</td>
                                             <td>Hoạt động</td>
-                                            <td className="tx-12">{item.activityName ?? "UN_KNOWN"}</td>
+                                            <td className="tx-12">{item.activity?.name ?? "UN_KNOWN"}</td>
                                             <td className="tx-center">{formatDate(item.date)}</td>
                                             <td className="tx-right">{convertToMoney(item.price)}</td>
                                         </tr>
@@ -401,6 +423,26 @@ function BookingRequestDetail() {
                     </Card>
                 </Grid>
             </Grid>
+
+            {openApprove
+                ? <ApproveBookingRequest
+                    open={openApprove}
+                    onClose={handleCloseApprove}
+                    booking={detail}
+                    onSuccessCallback={refresh}
+                />
+                : null
+            }
+
+            {openReject
+                ? <RejectBookingRequest
+                    open={openReject}
+                    onClose={handleCloseReject}
+                    booking={detail}
+                    onSuccessCallback={refresh}
+                />
+                : null
+            }
         </Box >
     )
 }

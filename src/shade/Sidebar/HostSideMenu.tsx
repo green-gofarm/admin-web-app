@@ -21,7 +21,7 @@ const MENUITEMS = [
                 ),
             },
             {
-                title: "Duyệt đơn",
+                title: "Đơn cần duyệt",
                 path: "/management/booking-request",
                 type: "link",
                 active: false,

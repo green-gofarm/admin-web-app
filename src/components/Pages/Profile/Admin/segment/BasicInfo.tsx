@@ -25,7 +25,6 @@ type User = {
     lastName: string | null
     phoneNumber: string | null
     email: string | null
-    address: string | null
     dateOfBirth: Date | null
     gender: string | null
 }
@@ -36,7 +35,6 @@ const getValuesFromUser = (user: any): User => ({
     lastName: user?.lastName ?? "",
     phoneNumber: user?.phoneNumber ?? "",
     email: user?.email ?? "",
-    address: user?.address ?? "",
     dateOfBirth: isValidDate(user?.dateOfBirth) ? new Date(user?.dateOfBirth) : null,
     gender: user?.gender ?? "",
 })
@@ -297,25 +295,6 @@ function BasicInfo({
                                 </Grid>
                             </Grid>
 
-                        </FormGroup>
-
-                        <FormGroup className="form-group ">
-                            <Grid container>
-                                <Grid item xs={12} md={3}>
-                                    <Form.Label className="form-label">
-                                        Địa chỉ
-                                    </Form.Label>
-                                </Grid>
-
-                                <Grid item xs={12} md={9}>
-                                    <textarea
-                                        className="form-control"
-                                        {...register("address")}
-                                        rows={2}
-                                        disabled={!openEdit}
-                                    />
-                                </Grid>
-                            </Grid>
                         </FormGroup>
                     </Form>
                 }
