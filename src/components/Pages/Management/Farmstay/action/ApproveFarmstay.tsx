@@ -101,14 +101,16 @@ const isAllChecked = (criteriaObjects: object) => {
 interface ApproveFarmstayProps {
     open?: boolean,
     farmstay?: any,
-    onSuccessCallback?: any,
-    onClose: () => void
+    onSuccessCallback: () => void,
+    onClose: () => void,
+    refresh: () => void
 }
 
 function ApproveFarmstay({
     open,
     farmstay,
     onSuccessCallback,
+    refresh,
     onClose,
 }: ApproveFarmstayProps) {
 
@@ -154,6 +156,7 @@ function ApproveFarmstay({
                 loading: setLoadingSave,
                 onSuccess: () => {
                     toast.success("Lưu thành công.");
+                    refresh();
                 },
                 onFailure: () => {
                     toast.error("Lưu thất bại");

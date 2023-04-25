@@ -16,10 +16,12 @@ import GradingIcon from '@mui/icons-material/Grading';
 interface IFarmstayDetailHeader {
     detail?: any,
     loading?: boolean,
+    refresh: () => void
 }
 
 function FarmstayPreviewHeader({
     detail,
+    refresh,
     loading
 }: IFarmstayDetailHeader) {
 
@@ -140,6 +142,7 @@ function FarmstayPreviewHeader({
                 ? <ApproveFarmstay
                     open={openApprove && !!detail}
                     farmstay={detail}
+                    refresh={refresh}
                     onClose={() => setOpenApprove(false)}
                     onSuccessCallback={() => navigate(getBackUrl() ?? "/management/farmstay/preview")}
                 />
