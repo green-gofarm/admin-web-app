@@ -136,7 +136,7 @@ function SendApproveRequest({
                     onClick={handleClose}
                     disabled={delay}
                 >
-                    Bổ sung thêm
+                    Hủy
                 </Button>
                 <Button
                     variant="primary"
