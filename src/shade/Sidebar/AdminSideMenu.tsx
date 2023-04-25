@@ -175,7 +175,7 @@ const MENUITEMS = [
             type: "link",
             active: false,
             selected: false,
-            title: "Danh sách phản hồi",
+            title: "Danh sách feedback",
           },
         ],
       },

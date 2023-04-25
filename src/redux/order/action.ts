@@ -78,3 +78,8 @@ export const reviewBooking = (hostId: any, orderId: any, data: any, option?: Red
     type: type.REVIEW_BOOKING,
     payload: { hostId, orderId, data, option: option ?? getEmptyOption() }
 })
+
+export const reviewDisbursement = (id: any, data: any, option?: ReduxActionOption): IReduxAction => ({
+    type: type.REVIEW_DISBURSEMENT,
+    payload: { id, data, option: option ?? getEmptyOption() }
+})

@@ -107,6 +107,25 @@ function* reviewBooking(action: IReduxAction): Generator<any, void, any> {
     option?.loading && option.loading(false);
 }
 
+function* reviewDisbursement(action: IReduxAction): Generator<any, void, any> {
+    const option: IReduxActionOption = action.payload.option
+
+    option?.loading && option.loading(true);
+    try {
+        const response = yield call(
+            apis.reviewDisbursement,
+            action.payload.id,
+            action.payload.data
+        );
+        option?.onSuccess && option.onSuccess(response);
+    } catch (error) {
+        option?.onFailure && option.onFailure(error);
+        console.log(error);
+    }
+
+    option?.loading && option.loading(false);
+}
+
 function* watchSearch() {
     yield takeLatest(types.SEARCH_ORDERS, searchOrders);
     yield takeLatest(types.SEARCH_DISBURSEMENTS, searchDisbursements);
@@ -114,8 +133,8 @@ function* watchSearch() {
     yield takeLatest(types.GET_ORDER_DETAIL, getOrderDetail);
 
     yield takeLatest(types.GET_DISBURSEMENT_DETAIL, getDisbursementDetail);
-
     yield takeLatest(types.REVIEW_BOOKING, reviewBooking);
+    yield takeLatest(types.REVIEW_DISBURSEMENT, reviewDisbursement);
 }
 
 function* watchOrder() {

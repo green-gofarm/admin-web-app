@@ -21,7 +21,7 @@ function FeedbackTab({
             <Card>
                 <Card.Header className='border-bottom'>
                     <Card.Title>
-                        Danh sách phản hồi
+                        Danh sách feedback
                     </Card.Title>
                 </Card.Header>
                 {isAvailableArray(data)

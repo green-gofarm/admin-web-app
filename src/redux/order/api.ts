@@ -72,3 +72,17 @@ export function reviewBooking(hostId: any, orderId: any, data: any) {
     const url = `${ENP.HOST}/${hostId}/bookings/${orderId}/review`;
     return axiosRequest(url, option);
 }
+
+export function reviewDisbursement(id: any, data: any) {
+    const option: AxiosRequestConfig = {
+        method: METHOD.PATCH,
+        headers: {
+            "Content-Type": "application/json"
+        },
+        data: JSON.stringify(data ?? {})
+    }
+
+    const url = `${ENP.ADMIN}/disbursements/${id}/status`;
+    console.log(url);
+    return axiosRequest(url, option);
+}

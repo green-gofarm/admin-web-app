@@ -9,14 +9,13 @@ import IconLabelDetail from "../../../General/Item/IconLabelDetail";
 import { Status } from "../../../../setting/Status";
 import useBackUrl from "../../../../hooks/useBackUrl";
 import { findWithdrawalRequestStatus, getWithdrawalRequestTypeLabel } from "../../../../setting/withdrawl-request-setting";
-import useDisbursementDetail from "./hooks/useDisbursementDetail";
 import { useMemo } from "react";
 import { isAvailableArray } from "../../../../helpers/arrayUtils";
-import useUserDetail from "../Account/hooks/useUserDetail";
+import useDisbursementDetail from "../../Management/WithdrawalRequest/hooks/useDisbursementDetail";
+import useUserDetail from "../../Management/Account/hooks/useUserDetail";
 import { ROLES } from "../../../../setting/setting";
 import useBanks from "../../../../hooks/useBanks";
 import UserLinkTag from "../../../General/Wrapper/UserLinkTag";
-import { formatBankLabel } from "../../../../Authentication/Host/sign-up-step/GetBankInfo";
 
 const breadcrumb: Array<IBreadcrumbItem> = [
     {
@@ -36,6 +35,34 @@ const breadcrumb: Array<IBreadcrumbItem> = [
     }
 ]
 
+const customFormatBankLabel = (option: any) => (
+    <Box
+        display="flex"
+        alignItems="center"
+        gap="8px"
+        width="fit-content"
+        marginLeft="auto"
+    >
+        <Box
+            width="100px"
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+        >
+            <Box
+                component="img"
+                src={option?.logo}
+                height="24px"
+            />
+        </Box>
+        <Box
+            className="text-muted"
+        >
+            {`${option?.bankName} (${option?.bankCode})`}
+        </Box>
+    </Box>
+)
+
 function WithdrawalRequestDetail() {
 
     const { id } = useParams();
@@ -50,7 +77,6 @@ function WithdrawalRequestDetail() {
         if (!isAvailableArray(banks)) return null;
         return banks.find(item => item.bankCode === hostDetail.bankName);
     }, [banks, hostDetail?.bankName]);
-
 
     const feeExtras = useMemo(() => {
         if (!detail?.feeExtras) return [];
@@ -146,7 +172,7 @@ function WithdrawalRequestDetail() {
                                                 <td className="tx-right">Tên ngân hàng</td>
                                                 <td className="tx-right" colSpan={2}>
                                                     {bank
-                                                        ? formatBankLabel(bank)
+                                                        ? customFormatBankLabel(bank)
                                                         : "-"
                                                     }
                                                 </td>
@@ -172,7 +198,7 @@ function WithdrawalRequestDetail() {
                                                     <td className="tx-right">{item.type}</td>
                                                     <td className="tx-right">{`${item.percent * 100}%`}</td>
                                                     <td className="tx-right">
-                                                        - {convertToMoney(item.amount)}
+                                                        {convertToMoney(item.amount)}
                                                     </td>
                                                 </tr>
                                             )}

@@ -8,7 +8,7 @@ const breadcrumb: Array<IBreadcrumbItem> = [
         href: "/management"
     },
     {
-        text: "Danh sách phản hồi",
+        text: "Danh sách feedback",
         active: true,
         props: {
             "aria-current": "page"
@@ -21,7 +21,7 @@ const FeedbackCategoryManagement = () => {
     return (
         <Box marginBottom="1.3rem">
             <PageHeader
-                title="Danh sách phản hồi"
+                title="Danh sách feedback"
                 breadcrumb={breadcrumb}
             />
 

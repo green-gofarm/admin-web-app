@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { Box, CircularProgress, FormGroup, Grid } from "@mui/material";
 import { Status } from "../../../../setting/Status";
 import MuiTables from "../../../Mui-Table/MuiTable";
-import { LIST_WITHDRAWAL_REQUEST_STATUS, WITHDRAWAL_REQUEST_SORT_BY_OPTIONS, findWithdrawalRequestStatus, getWithdrawalRequestTypeLabel } from "../../../../setting/withdrawl-request-setting";
+import { LIST_WITHDRAWAL_REQUEST_STATUS, WITHDRAWAL_REQUEST_SORT_BY_OPTIONS, WITHDRAWAL_REQUEST_STATUSES, findWithdrawalRequestStatus, getWithdrawalRequestTypeLabel } from "../../../../setting/withdrawl-request-setting";
 import { convertToMoney, createCodeString } from "../../../../helpers/stringUtils";
 
 //Mui icon
@@ -16,8 +16,14 @@ import useDelayLoading from "../../../../hooks/useDelayLoading";
 import { removeNullProps } from "../../../../setting/general-props";
 import { Link, useNavigate } from "react-router-dom";
 import useBackUrl from "../../../../hooks/useBackUrl";
+import ConditionWrapper from "../../../General/Wrapper/ConditionWrapper";
+import ApproveIconAction from "../../../General/Action/IconAction/ApproveIconAction";
+import ConfirmDisbursement from "./action/ConfirmDisbursement";
 
 export default function WithdrawalRequestTable() {
+
+    const [openConfirm, setOpenConfirm] = useState<boolean>(false);
+    const [selectedDisbursement, setSelectedDisbursement] = useState<any>(null);
 
     const [filters, setFilters] = useState<{ status: any }>({
         status: null,
@@ -142,6 +148,15 @@ export default function WithdrawalRequestTable() {
                     <ViewIconAction
                         onClick={() => navigate(`/management/withdrawal-request/${row.id}?backUrl=${createBackUrl()}`)}
                     />
+                    <ConditionWrapper isRender={row.status === WITHDRAWAL_REQUEST_STATUSES.PENDING}>
+                        <ApproveIconAction
+                            title="Xác nhận"
+                            onClick={() => {
+                                setOpenConfirm(true);
+                                setSelectedDisbursement(row);
+                            }}
+                        />
+                    </ConditionWrapper>
                 </Box>
             )
         },
@@ -236,9 +251,21 @@ export default function WithdrawalRequestTable() {
                             rowsPerPage: pagination.pageSize,
                         }}
                     />
-
                 </Grid>
             </Grid>
+
+            {openConfirm
+                ? <ConfirmDisbursement
+                    onClose={() => {
+                        setOpenConfirm(false);
+                        setSelectedDisbursement(null);
+                    }}
+                    disbursement={selectedDisbursement}
+                    open={openConfirm}
+                    refresh={refresh}
+                />
+                : null
+            }
         </>
     );
 };
