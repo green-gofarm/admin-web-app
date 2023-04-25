@@ -132,7 +132,7 @@ function CreateRoomCategory({
                             ? <CircularProgress size={16} thickness={4} sx={{ color: "#fff" }} />
                             : null
                         }
-                        Xác nhận
+                        Thêm mới
                     </Box>
 
                 </Button>

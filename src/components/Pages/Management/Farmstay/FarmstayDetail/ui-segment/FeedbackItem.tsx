@@ -14,14 +14,15 @@ function FeedbackItem({
                 <img
                     className="media-image avatar avatar-md rounded-circle"
                     alt="64x64"
-                    src={"https://ui-avatars.com/api/?name=Le+Danh+Trong"}
+                    src={item.customerAvatar ?? `https://ui-avatars.com/api/?name=${item.customerName ? encodeURIComponent(item.customerName) : "Le+Danh+Trong"
+                        }`}
                     width="128px"
                     height="128px"
                 />
             </div>
             <div className="media-body">
                 <h5 className="mt-0 mb-1 font-weight-semibold tx-16">
-                    {item?.user?.name}
+                    {item?.user?.name ?? item.customerName}
                 </h5>
                 <span className="text-muted tx-13">{formatTimeString(item?.createdDate)}</span>
                 <Rating rating={item?.rating} />
