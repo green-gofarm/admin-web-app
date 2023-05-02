@@ -14,7 +14,8 @@ import { updateFarmstay } from '../../../../../redux/farmstay/action';
 const renderRule = (criteria: { [key: string]: boolean }) => {
     return Object.entries(criteria).map(([criterion]) => (
         <Box
-            component="p"
+            component="div"
+            marginTop="4px"
             color="#7987a1"
         >
             {`- ${criterion}`}
