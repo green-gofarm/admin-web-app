@@ -301,3 +301,13 @@ export function getBankList() {
     const url = ENP.BANK
     return axiosRequest(url);
 }
+
+export function getMonthlyReport() {
+    const url = `${ENP.ADMIN}/system-monthly-report`
+    return axiosRequest(url);
+}
+
+export function getYearlyReport() {
+    const url = `${ENP.ADMIN}/system-yearly-report`
+    return axiosRequest(url);
+}

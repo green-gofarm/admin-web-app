@@ -242,3 +242,13 @@ export const getBankListSuccess = (data: any): IReduxAction => ({
 export const getBankListFailed = (): IReduxAction => ({
     type: type.GET_BANK_LIST_FAILED
 })
+
+export const getMonthlyReport = (option?: ReduxActionOption): IReduxAction => ({
+    type: type.GET_MONTHLY_REPORT,
+    payload: { option: option ?? getEmptyOption() }
+})
+
+export const getYearlyReport = (option?: ReduxActionOption): IReduxAction => ({
+    type: type.GET_YEARLY_REPORT,
+    payload: { option: option ?? getEmptyOption() }
+})

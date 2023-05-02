@@ -66,3 +66,7 @@ export const UPLOAD_IMAGE = "farmstay/UPLOAD_IMAGE";
 export const GET_BANK_LIST = "farmstay/GET_BANK_LIST";
 export const GET_BANK_LIST_SUCCESS = "farmstay/GET_BANK_LIST_SUCCESS";
 export const GET_BANK_LIST_FAILED = "farmstay/GET_BANK_LIST_FAILED";
+
+
+export const GET_MONTHLY_REPORT = "farmstay/GET_MONTHLY_REPORT";
+export const GET_YEARLY_REPORT = "farmstay/GET_YEARLY_REPORT";

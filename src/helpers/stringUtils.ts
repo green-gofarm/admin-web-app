@@ -16,7 +16,7 @@ export function reverseString(str: string) {
 
 export function convertToMoney(amount?: number): string | null {
     if (!amount) {
-        return null;
+        return "0 đ";
     }
 
     const moneyString = amount.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
