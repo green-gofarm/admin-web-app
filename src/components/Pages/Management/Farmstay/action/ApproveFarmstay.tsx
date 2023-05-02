@@ -12,47 +12,44 @@ import { toast } from 'react-toastify';
 import { FARMSTAY_STATUSES } from '../../../../../setting/farmstay-setting';
 
 export const farmstayCriteriaObj = {
-    "Không đặt tên vi phạm truyền thống lịch sử, thuần phong mỹ tục, phản cảm.": false,
-    "Mô tả: có phần mô tả chung về farmstay": false,
-    "Có tối thiểu 2 hương thức liên hệ: trong phải có liên hệ qua hotline ( số điện thoại)": false,
-    "Có ảnh đại diện": false,
-    "Có tối thiểu 5 hình ảnh về farmstay, hình ảnh cần rõ nét": false,
-    "Có cung cấp địa chỉ rõ ràng, vị trí trên bản đồ cần khớp với địa chỉ bằng chữ": false,
-    "Có tối thiểu 2 hoạt động": false,
-    "Có tối thiểu 1 phòng": false,
-    "Có tối thiểu 3 dịch vụ ( ăn trưa, ăn tối, nước uống, giặt ủi..)": false,
-    "Có tối thiểu 1 quy định.": false,
+    "Tên thích hợp, không vi phạm giá trị truyền thống, lịch sử và thuần phong mỹ tục": false,
+    "Có mô tả tổng quan về farmstay.": false,
+    "Có ít nhất 2 hương thức liên hệ, bao gồm hotline (số điện thoại).": false,
+    "Có ảnh đại diện.": false,
+    "Có ít nhất 5 hình ảnh rõ nét về farmstay.": false,
+    "Có địa chỉ rõ ràng, vị trí trên bản đồ khớp với địa chỉ bằng chữ.": false,
+    "Có ít nhất 1 hoạt động": false,
+    "Có ít nhất 1 phòng": false,
+    "Có ít nhất 1 dịch vụ": false,
+    "Có ít nhất 1 quy định.": false,
 }
 
 export const activityCriteriaObj = {
-    "Không đặt tên vi phạm truyền thống lịch sử, thuần phong mỹ tục, phản cảm.": false,
-    "Có Ảnh đại diện": false,
-    "Có ít nhất 2 hình ảnh mô tả hoạt động": false,
-    "Hình ảnh cần rõ nét ": false,
+    "Tên thích hợp, không vi phạm giá trị truyền thống, lịch sử và thuần phong mỹ tục": false,
+    "Có ảnh đại diện.": false,
+    "Có ít nhất 2 hình ảnh rõ nét về hoạt động.": false,
     "Phần mô tả cần có thêm khung giờ tham gia.": false,
-    "Giá vé phải lớn hơn 10.000vnd": false,
+    "Giá vé thấp nhất 10.000đ": false,
 }
 
 export const roomCriteriaObj = {
-    "Không đặt tên vi phạm truyền thống lịch sử, thuần phong mỹ tục, phản cảm.": false,
-    "Có ảnh đại diện": false,
-    "Có ít nhất 2 hình ảnh mô tả phòng": false,
-    "Hình ảnh cần rõ nét ": false,
-    "Cần có phần mô tả chung về phòng.": false,
-    "Giá tiền phòng phải lớn hơn 100.000vnd/ngày": false,
+    "Tên thích hợp, không vi phạm giá trị truyền thống, lịch sử và thuần phong mỹ tục": false,
+    "Có ảnh đại diện.": false,
+    "Có ít nhất 2 hình ảnh rõ nét mô tả phòng ở.": false,
+    "Có mô tả tổng quan về phòng": false,
+    "Giá tiền phòng phải lớn hơn 100.000đ/ngày": false,
 }
 
 export const serviceCriteriaObj = {
-    "Không đặt tên vi phạm truyền thống lịch sử, thuần phong mỹ tục, phản cảm.": false,
-    "Cần có ảnh đại diện": false,
+    "Tên thích hợp, không vi phạm giá trị truyền thống, lịch sử và thuần phong mỹ tục": false,
+    "Có ảnh đại diện.": false,
     "Cần có mô tả rõ ràng.": false,
 }
 
 export const policyCriteriaObj = {
-    "Tiêu chí cần phù hợp, có nội dụng mô tả rõ ràng": false,
-    "Cần có tối thiểu 1 quy định về Thời gian nhận/ trả phòng": false,
+    "Tên chí cần phù hợp, có nội dụng mô tả rõ ràng": false,
+    "Có tối thiểu 1 quy định về thời gian nhận/trả phòng": false,
 }
-
 
 const renderCriteriaCheckboxes = (
     criteria: object,

@@ -71,7 +71,7 @@ export const getRedirectPathFromNotification = (extras: any) => {
             return `/management/booking-request/${parsedExtras.orderId}`;
         }
         if (parsedExtras.type === NOTIFICATION_TYPE.CANCEL_BOOKING_HOST) {
-            return `/management/farmstay/order/${parsedExtras.orderId}`;
+            return `/management/order/${parsedExtras.orderId}`;
         }
     }
 

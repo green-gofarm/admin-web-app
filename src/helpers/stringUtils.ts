@@ -24,12 +24,13 @@ export function convertToMoney(amount?: number): string | null {
 }
 
 export function createCodeString(prefix?: string, code?: number | string, minCodeLength: number = 6) {
-    const _code = code ?? "";
-    const paddedCode = String(_code).padStart(minCodeLength, '0');
-    if (prefix) {
-        return `${prefix}-${paddedCode}`;
-    }
+    const _code = `${code ?? "0"}`;
+    return _code;
+    // const paddedCode = String(_code).padStart(minCodeLength, '0');
+    // if (prefix) {
+    //     return `${prefix}-${paddedCode}`;
+    // }
 
-    return paddedCode;
+    // return paddedCode;
 }
 
