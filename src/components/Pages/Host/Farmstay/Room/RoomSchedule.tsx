@@ -24,7 +24,13 @@ function RoomSchedule({
 }: RoomScheduleProps) {
 
     const [date, setDate] = useState(formatDate(new Date(), dateFormat));
-    const { roomSchedule } = useRoomSchedule(detail?.id, detail?.farmstayId, date);
+    const [limit, setLimit] = useState<number>(20);
+    const { roomSchedule } = useRoomSchedule({
+        roomId: detail?.id,
+        farmstayId: detail?.farmstayId,
+        date,
+        limit,
+    });
 
     const scheduleItems: any[] = useMemo(() => {
         if (!roomSchedule?.schedule) return [];
@@ -42,10 +48,15 @@ function RoomSchedule({
     }, [roomSchedule]);
 
     const handleChangeDate = useCallback((dateSet: DatesSetArg) => {
-        const centerDate = new Date((dateSet.start.getTime() + dateSet.end.getTime()) / 2);
+        const start = dateSet.start;
+        const end = dateSet.end;
+        const centerDate = new Date((start.getTime() + end.getTime()) / 2);
         setDate(formatDate(centerDate, dateFormat));
-    }, []);
 
+        const diffTime = Math.abs(end.getTime() - start.getTime());
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24 * 2));
+        setLimit(diffDays);
+    }, []);
 
     // State
     const [anchorEl, setAnchorEl] = useState<EventTarget | null>(null);

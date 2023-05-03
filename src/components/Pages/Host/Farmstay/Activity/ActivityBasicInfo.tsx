@@ -96,8 +96,8 @@ function ActivityBasicInfo({
                                             alignItems="center"
                                             gap="8px"
                                         >
-                                            {tags.map((item) =>
-                                                <span className='tag tag-rounded'>
+                                            {tags.map((item, index) =>
+                                                <span className='tag tag-rounded' key={index}>
                                                     {getTagCategoryLabel(categories, item)}
                                                 </span>
                                             )}

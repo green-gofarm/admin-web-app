@@ -20,8 +20,6 @@ const RoomEvent = ({
     anchorEl,
 }: ActivityEventDialogProps) => {
 
-    console.log(event);
-
     return (
         <Popover
             elevation={5}

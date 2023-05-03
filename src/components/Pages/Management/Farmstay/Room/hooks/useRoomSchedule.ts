@@ -4,7 +4,15 @@ import { RootState } from '../../../../../../redux/redux-setting';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux'
 
-function useRoomSchedule(roomId?: any, farmstayId?: any, date?: any) {
+interface RoomScheduleHookProps {
+    roomId?: any,
+    farmstayId?: any,
+    date?: any,
+    limit?: number
+}
+
+
+function useRoomSchedule(options: RoomScheduleHookProps) {
 
     const dispatch = useDispatch();
     const roomSchedule = useSelector((state: RootState) => state.farmstay.roomSchedule);
@@ -12,17 +20,18 @@ function useRoomSchedule(roomId?: any, farmstayId?: any, date?: any) {
     const [loading, setLoading] = useState<boolean>(false);
 
     useEffect(() => {
-        if (farmstayId && roomId && date) {
+        if (options.roomId && options.farmstayId && options.date && options.limit) {
             dispatch(getRoomSchedule(
                 {
-                    farmstayId,
-                    roomId,
-                    date
+                    farmstayId: options.farmstayId,
+                    roomId: options.roomId,
+                    date: options.date,
+                    limit: options.limit,
                 },
                 { loading: setLoading }
             ));
         }
-    }, [roomId, date, dispatch, farmstayId])
+    }, [dispatch, options.roomId, options.farmstayId, options.date, options.limit])
 
     return { roomSchedule, loading };
 }

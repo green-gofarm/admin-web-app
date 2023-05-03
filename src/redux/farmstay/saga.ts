@@ -72,7 +72,7 @@ function* getFarmstaySchedule(action: IReduxAction): Generator<any, void, any> {
 
     option?.loading && option.loading(true);
     try {
-        const response = yield call(apis.getFarmstaySchedule, data.farmstayId, data.date);
+        const response = yield call(apis.getFarmstaySchedule, data.farmstayId, data.date, data.limit);
 
         yield put(actions.getFarmstayScheduleSuccess(response));
         option?.onSuccess && option.onSuccess(response);
@@ -176,7 +176,7 @@ function* getActivitySchedule(action: IReduxAction): Generator<any, void, any> {
 
     option?.loading && option.loading(true);
     try {
-        const response = yield call(apis.getActivitySchedule, data.farmstayId, data.activityId, data.date);
+        const response = yield call(apis.getActivitySchedule, data.farmstayId, data.activityId, data.date, data.limit);
 
         yield put(actions.getActivityScheduleSuccess(response));
         option?.onSuccess && option.onSuccess(response);
@@ -223,7 +223,7 @@ function* getRoomSchedule(action: IReduxAction): Generator<any, void, any> {
 
     option?.loading && option.loading(true);
     try {
-        const response = yield call(apis.getRoomSchedule, data.farmstayId, data.roomId, data.date);
+        const response = yield call(apis.getRoomSchedule, data.farmstayId, data.roomId, data.date, data.limit);
 
         yield put(actions.getRoomScheduleSuccess(response));
         option?.onSuccess && option.onSuccess(response);

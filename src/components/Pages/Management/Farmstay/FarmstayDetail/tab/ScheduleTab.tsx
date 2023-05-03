@@ -21,7 +21,12 @@ function ScheduleTab({
 }: ScheduleTabProps) {
 
     const [date, setDate] = useState(formatDate(new Date(), dateFormat));
-    const { schedule } = useFarmstaySchedule(detail?.id, date);
+    const [limit, setLimit] = useState<number>(20);
+    const { schedule } = useFarmstaySchedule({
+        farmstayId: detail?.id,
+        date,
+        limit
+    });
 
     const scheduleItems: any[] = useMemo(() => {
         if (!schedule?.schedule) return [];
@@ -48,8 +53,14 @@ function ScheduleTab({
     }, [schedule]);
 
     const handleChangeDate = useCallback((dateSet: DatesSetArg) => {
-        const centerDate = new Date((dateSet.start.getTime() + dateSet.end.getTime()) / 2);
+        const start = dateSet.start;
+        const end = dateSet.end;
+        const centerDate = new Date((start.getTime() + end.getTime()) / 2);
         setDate(formatDate(centerDate, dateFormat));
+
+        const diffTime = Math.abs(end.getTime() - start.getTime());
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24 * 2));
+        setLimit(diffDays);
     }, []);
 
 

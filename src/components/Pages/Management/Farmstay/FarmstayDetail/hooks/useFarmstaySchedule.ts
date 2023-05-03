@@ -4,7 +4,13 @@ import { RootState } from './../../../../../../redux/redux-setting';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux'
 
-function useFarmstaySchedule(farmstayId?: any, date?: any) {
+interface FarmstayScheduleHookProps {
+    farmstayId?: any,
+    date?: any,
+    limit?: number
+}
+
+function useFarmstaySchedule(options: FarmstayScheduleHookProps) {
 
     const dispatch = useDispatch();
     const schedule = useSelector((state: RootState) => state.farmstay.schedule);
@@ -12,16 +18,17 @@ function useFarmstaySchedule(farmstayId?: any, date?: any) {
     const [loading, setLoading] = useState<boolean>(false);
 
     useEffect(() => {
-        if (farmstayId && date) {
+        if (options.farmstayId && options.date && options.limit) {
             dispatch(getFarmstaySchedule(
                 {
-                    farmstayId,
-                    date
+                    farmstayId: options.farmstayId,
+                    date: options.date,
+                    limit: options.limit,
                 },
                 { loading: setLoading }
             ));
         }
-    }, [date, dispatch, farmstayId])
+    }, [dispatch, options.date, options.farmstayId, options.limit])
 
     return { schedule, loading };
 }
