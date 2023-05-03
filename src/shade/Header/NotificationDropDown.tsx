@@ -123,7 +123,14 @@ function NotificationDropDown() {
     )
 
     return (
-        <Dropdown className=" nav-item main-header-notification d-flex">
+        <Dropdown
+            className=" nav-item main-header-notification d-flex"
+            onToggle={(show) => {
+                if (show) {
+                    refresh();
+                }
+            }}
+        >
             <Dropdown.Toggle className="new nav-link" variant="">
                 <svg
                     xmlns="http://www.w3.org/2000/svg"

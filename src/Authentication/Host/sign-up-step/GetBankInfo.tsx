@@ -192,7 +192,6 @@ function GetBankInfo({
                                 type="number"
                                 className="form-control"
                                 id="name12"
-                                placeholder="First Name"
                                 onChange={(e) => handleOnChange("contactInformation", e.target.value)}
                             />
                         </FormGroup>

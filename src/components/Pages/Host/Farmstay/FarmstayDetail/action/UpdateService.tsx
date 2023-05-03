@@ -95,7 +95,7 @@ function UpdateService({
     const validate = (data: Service, file: File | null) => {
         const tempErrors: Errors = {
             name: VALIDATOR.isRequired(data.name),
-            description: VALIDATOR.isRequired(data.description),
+            description: VALIDATOR.isRequired(data.description) || VALIDATOR.isValidContentLength(data.description),
             price: VALIDATOR.isValidServicePrice(data.price),
             serviceCategory: VALIDATOR.isRequired(data.serviceCategory?.value) || VALIDATOR.isNumberString(data.serviceCategory?.value),
             file: (() => {
@@ -235,7 +235,7 @@ function UpdateService({
                                 onChange={(e) => handleOnChange("name", e.target.value ?? "")}
                             />
                             {errors.name
-                                ? <InvalidFeedback />
+                                ? <InvalidFeedback message={errors.name} />
                                 : null
                             }
                         </FormGroup>
@@ -302,7 +302,7 @@ function UpdateService({
                                 onChange={(e) => handleOnChange("description", e.target.value ?? "")}
                             />
                             {errors.description
-                                ? <InvalidFeedback />
+                                ? <InvalidFeedback message={errors.description} />
                                 : null
                             }
                         </FormGroup>

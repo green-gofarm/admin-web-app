@@ -96,8 +96,8 @@ function CreateRoom({
 
     const validate = (room: Room, file: File | null) => {
         const tempErrors: Errors = {
-            name: VALIDATOR.isRequired(room.name),
-            description: VALIDATOR.isRequired(room.description),
+            name: VALIDATOR.isRequired(room.name) || VALIDATOR.isValidNameLength(room.name),
+            description: VALIDATOR.isRequired(room.description) || VALIDATOR.isValidContentLength(room.description),
             price: VALIDATOR.isValidRoomPrice(room.price),
             roomCategory: VALIDATOR.isRequired(room.roomCategory?.value) || VALIDATOR.isNumberString(room.roomCategory?.value),
             file: file != null ? VALIDATOR.NO_ERROR : VALIDATOR.REQUIRED_MESSAGE,
@@ -231,7 +231,7 @@ function CreateRoom({
                                 onChange={(e) => handleOnChange("name", e.target.value ?? "")}
                             />
                             {errors.name
-                                ? <InvalidFeedback />
+                                ? <InvalidFeedback message={errors.name} />
                                 : null
                             }
                         </FormGroup>
@@ -298,7 +298,7 @@ function CreateRoom({
                                 onChange={(e) => handleOnChange("description", e.target.value ?? "")}
                             />
                             {errors.description
-                                ? <InvalidFeedback />
+                                ? <InvalidFeedback message={errors.description} />
                                 : null
                             }
                         </FormGroup>

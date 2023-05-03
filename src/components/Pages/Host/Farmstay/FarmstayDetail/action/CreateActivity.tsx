@@ -99,8 +99,8 @@ function CreateActivity({
 
     const validate = (activity: Activity, file: File | null) => {
         const tempActivityError: Errors = {
-            name: VALIDATOR.isRequired(activity.name),
-            description: VALIDATOR.isRequired(activity.description),
+            name: VALIDATOR.isRequired(activity.name) || VALIDATOR.isValidNameLength(activity.name),
+            description: VALIDATOR.isRequired(activity.description) || VALIDATOR.isValidContentLength(activity.description),
             price: VALIDATOR.isValidActivityPrice(activity.price),
             slot: VALIDATOR.isValidActivitySlotNumber(activity.slot),
             file: file != null ? VALIDATOR.NO_ERROR : VALIDATOR.REQUIRED_MESSAGE,
@@ -239,7 +239,7 @@ function CreateActivity({
                                 onChange={(e) => handleOnChange("name", e.target.value ?? "")}
                             />
                             {errors.name
-                                ? <InvalidFeedback />
+                                ? <InvalidFeedback message={errors.name} />
                                 : null
                             }
                         </FormGroup>
@@ -304,7 +304,7 @@ function CreateActivity({
                                 onChange={(e) => handleOnChange("description", e.target.value ?? "")}
                             />
                             {errors.description
-                                ? <InvalidFeedback />
+                                ? <InvalidFeedback message={errors.description} />
                                 : null
                             }
                         </FormGroup>

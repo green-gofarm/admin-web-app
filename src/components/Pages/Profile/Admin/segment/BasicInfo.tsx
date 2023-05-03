@@ -12,6 +12,7 @@ import { useDispatch } from 'react-redux';
 import { updateAdminMyProfile } from '../../../../../redux/user/action';
 import { toast } from 'react-toastify';
 import useDelayLoading from '../../../../../hooks/useDelayLoading';
+import VALIDATOR from '../../../Host/Farmstay/FarmstayDetail/action/validator';
 
 const useStyle = makeStyles({
     input: {
@@ -146,11 +147,19 @@ function BasicInfo({
                                     <Form.Control
                                         type="text"
                                         className="form-control"
-                                        {...register("name", { required: true })}
+                                        {...register("name", {
+                                            validate: {
+                                                length: (value) => {
+                                                    const message = VALIDATOR.isRequired(value) || VALIDATOR.isValidNameLength(value);
+
+                                                    return message === VALIDATOR.NO_ERROR ? true : message;
+                                                }
+                                            }
+                                        })}
                                         disabled={!openEdit}
                                     />
                                     {errors.name
-                                        ? <InvalidFeedback />
+                                        ? <InvalidFeedback message={errors.name.message} />
                                         : null
                                     }
                                 </Grid>
@@ -170,10 +179,20 @@ function BasicInfo({
                                     <Form.Control
                                         type="text"
                                         className="form-control"
-                                        {...register("lastName")}
+                                        {...register("lastName", {
+                                            validate: {
+                                                length: (value) => {
+                                                    const message = VALIDATOR.isValidNameLength(value);
+                                                    return message === VALIDATOR.NO_ERROR ? true : message;
+                                                }
+                                            }
+                                        })}
                                         disabled={!openEdit}
                                     />
-
+                                    {errors.lastName
+                                        ? <InvalidFeedback message={errors.lastName.message} />
+                                        : null
+                                    }
                                 </Grid>
                             </Grid>
                         </FormGroup>
@@ -191,10 +210,20 @@ function BasicInfo({
                                     <Form.Control
                                         type="text"
                                         className="form-control"
-                                        {...register("firstName")}
+                                        {...register("firstName", {
+                                            validate: {
+                                                length: (value) => {
+                                                    const message = VALIDATOR.isValidNameLength(value);
+                                                    return message === VALIDATOR.NO_ERROR ? true : message;
+                                                }
+                                            }
+                                        })}
                                         disabled={!openEdit}
                                     />
-
+                                    {errors.firstName
+                                        ? <InvalidFeedback message={errors.firstName.message} />
+                                        : null
+                                    }
                                 </Grid>
                             </Grid>
                         </FormGroup>

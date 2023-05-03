@@ -297,7 +297,6 @@ function BankAccountInfo({
                                             type="number"
                                             className="form-control"
                                             id="name12"
-                                            placeholder="First Name"
                                             disabled={isDisabled}
                                             onChange={(e) => handleOnChange("contactInformation", e.target.value)}
                                         />

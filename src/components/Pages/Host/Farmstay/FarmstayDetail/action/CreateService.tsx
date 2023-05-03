@@ -96,8 +96,8 @@ function CreateService({
 
     const validate = (service: Service, file: File | null) => {
         const tempErrors: Errors = {
-            name: VALIDATOR.isRequired(service.name),
-            description: VALIDATOR.isRequired(service.description),
+            name: VALIDATOR.isRequired(service.name) || VALIDATOR.isValidNameLength(service.name),
+            description: VALIDATOR.isRequired(service.description) || VALIDATOR.isValidContentLength(service.description),
             price: VALIDATOR.isValidServicePrice(service.price),
             serviceCategory: VALIDATOR.isRequired(service.serviceCategory?.value) || VALIDATOR.isNumberString(service.serviceCategory?.value),
             file: file != null ? VALIDATOR.NO_ERROR : VALIDATOR.REQUIRED_MESSAGE,
@@ -221,7 +221,7 @@ function CreateService({
                                 onChange={(e) => handleOnChange("name", e.target.value ?? "")}
                             />
                             {errors.name
-                                ? <InvalidFeedback />
+                                ? <InvalidFeedback message={errors.name} />
                                 : null
                             }
                         </FormGroup>
@@ -288,7 +288,7 @@ function CreateService({
                                 onChange={(e) => handleOnChange("description", e.target.value ?? "")}
                             />
                             {errors.description
-                                ? <InvalidFeedback />
+                                ? <InvalidFeedback message={errors.description} />
                                 : null
                             }
                         </FormGroup>

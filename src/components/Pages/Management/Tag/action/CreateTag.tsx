@@ -9,6 +9,7 @@ import { useForm } from "react-hook-form";
 import { toast } from 'react-toastify';
 import { createTag } from '../../../../../redux/tag/action';
 import InvalidFeedback from '../../../../General/InvalidFeedback';
+import VALIDATOR from '../../../Host/Farmstay/FarmstayDetail/action/validator';
 interface CreateTagProps {
     open?: boolean,
     refresh?: any,
@@ -60,7 +61,7 @@ function CreateTag({
     }
 
     const renderContent = () => (
-        <Form className="">
+        <Form onSubmit={handleSubmit(handleUpdate)}>
             <FormGroup
                 className={`form-group ${errors.name ? "has-danger" : ""}`}
             >
@@ -72,25 +73,47 @@ function CreateTag({
                     autoFocus
                     type="text"
                     className={`form-control ${errors.name ? "is-invalid" : ""}`}
-                    {...register("name", { required: true })}
+                    {...register("name", {
+                        validate: {
+                            length: (value) => {
+                                const message = VALIDATOR.isRequired(value) || VALIDATOR.isValidNameLength(value);
+
+                                return message === VALIDATOR.NO_ERROR ? true : message;
+                            }
+                        }
+                    })}
                 />
                 {errors.name
-                    ? <InvalidFeedback />
+                    ? <InvalidFeedback message={errors.name.message} />
                     : null
                 }
             </FormGroup>
 
-            <FormGroup className="form-group ">
+            <FormGroup
+                className={`form-group ${errors.description ? "has-danger" : ""}`}
+            >
                 <Form.Label className="form-label">
                     Mô tả
                 </Form.Label>
 
 
                 <textarea
-                    className="form-control"
                     rows={4}
-                    {...register("description")}
+                    className={`form-control ${errors.description ? "is-invalid" : ""}`}
+                    {...register("description", {
+                        validate: {
+                            length: (value) => {
+                                const message = VALIDATOR.isValidContentLength(value);
+
+                                return message === VALIDATOR.NO_ERROR ? true : message;
+                            }
+                        }
+                    })}
                 />
+                {errors.description
+                    ? <InvalidFeedback message={errors.description.message} />
+                    : null
+                }
             </FormGroup>
         </Form>
     )
