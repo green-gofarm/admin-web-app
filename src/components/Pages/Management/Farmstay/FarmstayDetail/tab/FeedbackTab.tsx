@@ -6,12 +6,16 @@ import useFarmstayFeedbacks from "../hooks/useFarmstayFeedbacks";
 interface FeedbackTabProps {
     detail?: any,
     loading?: boolean,
+    refresh?: () => void,
+    hasReport?: boolean,
 }
 
 
 function FeedbackTab({
     detail,
     loading,
+    refresh,
+    hasReport
 }: FeedbackTabProps) {
 
     const { data } = useFarmstayFeedbacks(detail?.id);
@@ -30,6 +34,8 @@ function FeedbackTab({
                             <FeedbackItem
                                 key={index}
                                 item={item}
+                                hasReport={hasReport}
+                                refresh={refresh}
                             />
                         )}
                     </Card.Body>

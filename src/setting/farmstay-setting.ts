@@ -52,8 +52,8 @@ interface SortByProps {
 export const FARMSTAY_SORT_BY_OPTIONS: SortByProps[] = [
     { label: "Ngày tạo gần nhất", value: 1, sortValue: { orderBy: "createdDate", orderDirection: "desc" } },
     { label: "Ngày tạo xa nhất", value: 2, sortValue: { orderBy: "createdDate", orderDirection: "asc" } },
-    { label: "Đánh giá cao nhất", value: 3, sortValue: { orderBy: "rating", orderDirection: "desc" } },
-    { label: "Đánh giá thấp nhất tới cao", value: 4, sortValue: { orderBy: "rating", orderDirection: "asc" } },
+    // { label: "Đánh giá cao nhất", value: 3, sortValue: { orderBy: "rating", orderDirection: "desc" } },
+    // { label: "Đánh giá thấp nhất tới cao", value: 4, sortValue: { orderBy: "rating", orderDirection: "asc" } },
 ]
 
 export const isDraftFarmstay = (status: any) => status === FARMSTAY_STATUSES.DRAFT;

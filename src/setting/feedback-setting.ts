@@ -14,7 +14,7 @@ export const LIST_FEEDBACK_STATUS = [
         bgColor: STATUS_COLORS.ACTIVE.bgColor
     },
     {
-        label: "Chờ xử lý",
+        label: "Đang xử lý báo cáo",
         value: FEEDBACK_STATUSES.REPORTED,
         textColor: STATUS_COLORS.PENDING.textColor,
         bgColor: STATUS_COLORS.PENDING.bgColor

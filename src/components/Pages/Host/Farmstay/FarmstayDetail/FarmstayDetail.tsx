@@ -178,6 +178,8 @@ function FarmstayDetail() {
                                             <FeedbackTab
                                                 detail={farmstayDetail}
                                                 loading={loading}
+                                                refresh={refresh}
+                                                hasReport
                                             />
 
                                         </Tab.Pane>
