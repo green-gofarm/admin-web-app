@@ -1,6 +1,6 @@
 import { getDisbursementDetail } from './../../../../../redux/order/action';
 import { RootState } from './../../../../../redux/redux-setting';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux'
 
@@ -11,13 +11,17 @@ function useDisbursementDetail(id: any) {
 
     const [loading, setLoading] = useState<boolean>(false);
 
-    useEffect(() => {
+    const refresh = useCallback(() => {
         if (id) {
             dispatch(getDisbursementDetail(id, { loading: setLoading }));
         }
-    }, [dispatch, id])
+    }, [dispatch, id]);
 
-    return { detail, loading };
+    useEffect(() => {
+        refresh();
+    }, [id, refresh])
+
+    return { detail, loading, refresh };
 }
 
 export default useDisbursementDetail;

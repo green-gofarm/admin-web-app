@@ -2,20 +2,22 @@ import { Link, useParams } from "react-router-dom";
 import PageHeader, { IBreadcrumbItem } from "../../../General/PageHeader";
 import { Box, Grid } from "@mui/material";
 import DetailPageHeaderTitle from "../../../General/DetailPageHeaderTitle";
-import { Card, Table } from "react-bootstrap";
+import { Button, Card, Table } from "react-bootstrap";
 import { convertToMoney, createCodeString } from "../../../../helpers/stringUtils";
 import { convertISOToNaturalFormat } from "../../../../helpers/dateUtils";
 import IconLabelDetail from "../../../General/Item/IconLabelDetail";
 import { Status } from "../../../../setting/Status";
 import useBackUrl from "../../../../hooks/useBackUrl";
-import { findWithdrawalRequestStatus, getWithdrawalRequestTypeLabel } from "../../../../setting/withdrawl-request-setting";
-import { useMemo } from "react";
+import { WITHDRAWAL_REQUEST_STATUSES, findWithdrawalRequestStatus, getWithdrawalRequestTypeLabel } from "../../../../setting/withdrawl-request-setting";
+import { useMemo, useState } from "react";
 import { isAvailableArray } from "../../../../helpers/arrayUtils";
 import useDisbursementDetail from "../../Management/WithdrawalRequest/hooks/useDisbursementDetail";
 import useUserDetail from "../../Management/Account/hooks/useUserDetail";
 import { ROLES } from "../../../../setting/setting";
 import useBanks from "../../../../hooks/useBanks";
 import UserLinkTag from "../../../General/Wrapper/UserLinkTag";
+import ConditionWrapper from "../../../General/Wrapper/ConditionWrapper";
+import ConfirmDisbursement from "./action/ConfirmDisbursement";
 
 const breadcrumb: Array<IBreadcrumbItem> = [
     {
@@ -65,8 +67,10 @@ const customFormatBankLabel = (option: any) => (
 
 function WithdrawalRequestDetail() {
 
+    const [openConfirm, setOpenConfirm] = useState<boolean>(false);
+
     const { id } = useParams();
-    const { detail } = useDisbursementDetail(id);
+    const { detail, refresh } = useDisbursementDetail(id);
     const { getBackUrl, createBackUrl } = useBackUrl();
 
     const { detail: hostDetail } = useUserDetail(detail?.hostId, ROLES.HOST);
@@ -216,9 +220,39 @@ function WithdrawalRequestDetail() {
                                 </Grid>
                             </Grid>
                         </Card.Body>
+                        <ConditionWrapper isRender={detail?.status === WITHDRAWAL_REQUEST_STATUSES.PENDING}>
+                            <Card.Footer>
+                                <Box
+                                    display="flex"
+                                    width="100%"
+                                    justifyContent="flex-end"
+                                >
+                                    <Button
+                                        variant=''
+                                        type="button"
+                                        className="btn ripple btn-primary mb-1 me-2"
+                                        onClick={() => setOpenConfirm(true)}
+                                    >
+                                        <i className="fe fe-thumbs-up me-1"></i> Xác nhận đã giải ngân
+                                    </Button>
+                                </Box>
+                            </Card.Footer>
+                        </ConditionWrapper>
                     </Card>
                 </Grid>
             </Grid>
+
+            {openConfirm
+                ? <ConfirmDisbursement
+                    onClose={() => {
+                        setOpenConfirm(false);
+                    }}
+                    disbursement={detail}
+                    open={openConfirm}
+                    refresh={refresh}
+                />
+                : null
+            }
         </Box >
     )
 }
