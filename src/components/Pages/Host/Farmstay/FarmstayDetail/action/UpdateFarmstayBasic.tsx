@@ -130,8 +130,8 @@ function UpdateFarmstayBasic({
         };
 
         const tempBasic: { [key in keyof BasicInfo]: string } = {
-            name: VALIDATOR.isRequired(info.name),
-            description: '',
+            name: VALIDATOR.isRequired(info.name) || VALIDATOR.isValidNameLength(info.name),
+            description: VALIDATOR.isValidContentLength(info.description),
         };
 
 

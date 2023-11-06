@@ -4,30 +4,12 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import { Box } from "@mui/material";
 import viLocale from '@fullcalendar/core/locales/vi';
-import useRoomSchedule from "./hooks/useRoomSchedule";
+import { Card } from "react-bootstrap";
 import { useCallback, useMemo, useState } from "react";
-import { formatDate, isThePast } from "../../../../../helpers/dateUtils";
+import { formatDate } from "../../../../../helpers/dateUtils";
 import ActivityEvent from "./event/RoomEvent";
-import { STATUS_COLORS } from "../../../../../setting/color";
-import CustomizedCard from "../../../../General/Card/CustomizedCard";
-
-const getColorProps = (date: string | null) => {
-    if (!date) return null;
-    if (isThePast(new Date(date))) {
-        return {
-            textColor: STATUS_COLORS.DISABLED.textColor,
-            backgroundColor: STATUS_COLORS.DISABLED.bgColor,
-            borderColor: STATUS_COLORS.DISABLED.bgColor,
-        }
-    }
-
-    return {
-        textColor: STATUS_COLORS.ACTIVE.textColor,
-        backgroundColor: STATUS_COLORS.ACTIVE.bgColor,
-        borderColor: STATUS_COLORS.ACTIVE.bgColor,
-    }
-}
-
+import useRoomSchedule from "../../../Management/Farmstay/Room/hooks/useRoomSchedule";
+import { getColorProps, getStatusString } from "./setting";
 
 interface RoomScheduleProps {
     detail?: any,
@@ -42,7 +24,13 @@ function RoomSchedule({
 }: RoomScheduleProps) {
 
     const [date, setDate] = useState(formatDate(new Date(), dateFormat));
-    const { roomSchedule } = useRoomSchedule(detail?.id, detail?.farmstayId, date);
+    const [limit, setLimit] = useState<number>(20);
+    const { roomSchedule } = useRoomSchedule({
+        roomId: detail?.id,
+        farmstayId: detail?.farmstayId,
+        date,
+        limit,
+    });
 
     const scheduleItems: any[] = useMemo(() => {
         if (!roomSchedule?.schedule) return [];
@@ -52,18 +40,23 @@ function RoomSchedule({
                 ...value ?? {},
                 id: dateStr,
                 start: dateStr,
-                end: dateStr,
-                title: value?.available ? "Còn trống" : "Đã đặt",
-                ...getColorProps(dateStr) ?? {}
+                dateStr,
+                title: getStatusString(dateStr, value.available),
+                ...getColorProps(dateStr, value.available) ?? {}
             }
         })
     }, [roomSchedule]);
 
     const handleChangeDate = useCallback((dateSet: DatesSetArg) => {
-        const centerDate = new Date((dateSet.start.getTime() + dateSet.end.getTime()) / 2);
+        const start = dateSet.start;
+        const end = dateSet.end;
+        const centerDate = new Date((start.getTime() + end.getTime()) / 2);
         setDate(formatDate(centerDate, dateFormat));
-    }, []);
 
+        const diffTime = Math.abs(end.getTime() - start.getTime());
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24 * 2));
+        setLimit(diffDays);
+    }, []);
 
     // State
     const [anchorEl, setAnchorEl] = useState<EventTarget | null>(null);
@@ -76,9 +69,10 @@ function RoomSchedule({
 
     return (
         <>
-            <CustomizedCard
-                title="Lịch"
-                content={
+            <Card>
+                <Card.Body className="border-0">
+                    <h5 className="mb-2 mt-1 fw-semibold">Lịch hoạt động</h5>
+
                     <Box
                         textTransform="capitalize"
                         id="calendar2"
@@ -106,8 +100,8 @@ function RoomSchedule({
                             datesSet={handleChangeDate}
                         />
                     </Box>
-                }
-            />
+                </Card.Body>
+            </Card>
 
             <ActivityEvent
                 open={!!anchorEl && !!selectedEvent}

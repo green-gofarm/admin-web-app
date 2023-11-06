@@ -18,10 +18,11 @@ import StringWrapper from "../../../General/Wrapper/StringWrapper";
 import ConditionWrapper from "../../../General/Wrapper/ConditionWrapper";
 import useAllFarmstays from "../Farmstay/hooks/useAllFarmstay";
 import { useMemo } from "react";
-import { getFarmstayFromList } from "../../../../setting/farmstay-setting";
+import { getFarmstayFromList, renderAddress } from "../../../../setting/farmstay-setting";
 import useContactInfo from "../Farmstay/FarmstayDetail/hooks/useContactInfo";
 import { isAvailableArray } from "../../../../helpers/arrayUtils";
 import FeedbackItem from "../Farmstay/FarmstayDetail/ui-segment/FeedbackItem";
+import useFarmstayAddress from "../Farmstay/FarmstayDetail/hooks/useFarmstayAddress";
 
 const breadcrumb: Array<IBreadcrumbItem> = [
     {
@@ -64,6 +65,7 @@ function OrderDetail() {
         [allFarmstays, detail?.farmstayId]
     );
     const contactInfo = useContactInfo(farmstay);
+    const address = useFarmstayAddress(farmstay);
 
     const activities: any[] = useMemo(() => {
         if (!isAvailableArray(detail?.activities)) return [];
@@ -236,7 +238,17 @@ function OrderDetail() {
                                         </Grid>
 
                                         <Grid item xs={3}>
-                                            <Box className="h6" margin="2px 0 !important">Ngày hoàn thành (dự kiến)</Box>
+                                            <Box className="h6" margin="2px 0 !important">Ngày check-out</Box>
+                                        </Grid>
+                                        <Grid item xs={9}>
+                                            {convertISOToNaturalFormat(detail?.checkoutDate)}
+                                        </Grid>
+                                        <Grid item xs={12}>
+                                            <Divider />
+                                        </Grid>
+
+                                        <Grid item xs={3}>
+                                            <Box className="h6" margin="2px 0 !important">Ngày kết thúc (dự kiến)</Box>
                                         </Grid>
                                         <Grid item xs={9}>
                                             {convertISOToNaturalFormat(detail?.completedDate)}
@@ -272,7 +284,7 @@ function OrderDetail() {
                                             <Box className="h6" margin="2px 0 !important">Địa chỉ</Box>
                                         </Grid>
                                         <Grid item xs={9}>
-                                            {detail?.farmstay?.address}
+                                            {renderAddress(address)}
                                         </Grid>
                                         <Grid item xs={12}>
                                             <Divider />
@@ -294,20 +306,20 @@ function OrderDetail() {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {rooms.map(item =>
-                                        <tr key={item.roomId}>
+                                    {rooms.map((item, index) =>
+                                        <tr key={`room${index}`}>
                                             <td>{createCodeString("R", item.roomId)}</td>
                                             <td>Phòng</td>
-                                            <td className="tx-12">{item.roomName ?? "UN_KNOWN"}</td>
+                                            <td className="tx-12">{item.room?.name ?? "UN_KNOWN"}</td>
                                             <td className="tx-center">{formatDate(item.date)}</td>
                                             <td className="tx-right">{convertToMoney(item.price)}</td>
                                         </tr>
                                     )}
-                                    {activities.map(item =>
-                                        <tr key={item.activityId}>
+                                    {activities.map((item, index) =>
+                                        <tr key={`activity${index}`}>
                                             <td>{createCodeString("AC", item.activityId)}</td>
                                             <td>Hoạt động</td>
-                                            <td className="tx-12">{item.activityName ?? "UN_KNOWN"}</td>
+                                            <td className="tx-12">{item.activity?.name ?? "UN_KNOWN"}</td>
                                             <td className="tx-center">{formatDate(item.date)}</td>
                                             <td className="tx-right">{convertToMoney(item.price)}</td>
                                         </tr>
@@ -324,7 +336,7 @@ function OrderDetail() {
                                         </td>
                                     </tr>
                                     {feeExtras.map((item, index) =>
-                                        <tr key={index}>
+                                        <tr key={`fee${index}`}>
                                             <td className="tx-right">{item.type}</td>
                                             <td className="tx-right">{`${item.percent * 100}%`}</td>
                                             <td className="tx-right">
@@ -333,7 +345,7 @@ function OrderDetail() {
                                         </tr>
                                     )}
                                     {feeExtras.length < 1
-                                        ? <tr >
+                                        ? <tr>
                                             <td className="tx-right">Phí</td>
                                             <td className="tx-right" colSpan={2}>
                                                 {convertToMoney(detail?.payment?.fee)}

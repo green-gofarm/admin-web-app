@@ -21,6 +21,7 @@ const BookingRequestManagement = React.lazy(() => import("../components/Pages/Ho
 const FarmstayManagement = React.lazy(() => import("../components/Pages/Host/Farmstay/FarmstayManagement"));
 const WithdrawalRequestManagement = React.lazy(() => import("../components/Pages/Host/WithdrawalRequest//WithdrawalRequestManagement"));
 const OrderManagement = React.lazy(() => import("../components/Pages/Host/Order/OrderManagement"));
+const Support = React.lazy(() => import("../components/Pages/Host/suppport/Support"));
 const OrderDetail = React.lazy(() =>
     import("../components/Pages/Host/Order/OrderDetail")
 );
@@ -127,6 +128,7 @@ function HostRoutes() {
                                     <Route path="/profile" element={<HostProfile />} />
 
                                     <Route path="/notification" element={<AdminNotifications />} />
+                                    <Route path="/support" element={<Support />} />
                                 </Route>
                             </Route>
 

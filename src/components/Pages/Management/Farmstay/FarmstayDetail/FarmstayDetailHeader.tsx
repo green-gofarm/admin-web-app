@@ -1,9 +1,6 @@
 import { Box, Grid } from '@mui/material'
 import { Card } from 'react-bootstrap'
-import AvatarWrapper from '../../../../General/Wrapper/AvatarWrapper';
 import IconLabelDetail from '../../../../General/Item/IconLabelDetail';
-import { Link } from 'react-router-dom';
-import useBackUrl from '../../../../../hooks/useBackUrl'
 import useContactInfo from './hooks/useContactInfo'
 import StringWrapper from '../../../../General/Wrapper/StringWrapper'
 import useFarmstayImages from './hooks/useFarmstayImages'
@@ -12,8 +9,9 @@ import { findFarmstayStatus, renderAddress } from '../../../../../setting/farmst
 import { Status } from '../../../../../setting/Status'
 import Rating from '../../../../General/Rating'
 import GeneralAvatar from '../../../../General/GeneralAvatar';
+import UserLinkTag from '../../../../General/Wrapper/UserLinkTag';
 
-interface IFarmstayDetailHeader {
+interface FarmstayDetailHeaderProps {
     detail?: any,
     loading?: boolean,
 }
@@ -21,9 +19,7 @@ interface IFarmstayDetailHeader {
 function FarmstayDetailHeader({
     detail,
     loading,
-}: IFarmstayDetailHeader) {
-
-    const { createBackUrl } = useBackUrl();
+}: FarmstayDetailHeaderProps) {
 
     const contactInfo = useContactInfo(detail);
     const images = useFarmstayImages(detail);
@@ -63,25 +59,9 @@ function FarmstayDetailHeader({
                                 icon={<i className="fa fa-user me-2"></i>}
                                 label="Chủ sở hữu:"
                                 value={
-                                    <Box
-                                        component={Link}
-                                        to={`/management/account/host/${detail?.host?.userId}?backUrl=${createBackUrl()}`}
-                                        display="flex"
-                                        alignItems="center"
-                                        gap="8px"
-                                        className="tag tag-rounded"
-                                    >
-                                        <AvatarWrapper
-                                            name={detail?.host.name}
-                                            avatarProps={{
-                                                width: "22px !important",
-                                                height: "22px !important",
-                                                fontSize: "12px !important"
-                                            }}
-                                        />
-
-                                        {detail?.host.name}
-                                    </Box>
+                                    <UserLinkTag
+                                        user={detail?.host}
+                                    />
                                 }
                             />
                         </Grid>

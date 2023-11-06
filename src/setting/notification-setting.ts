@@ -34,7 +34,15 @@ export enum NOTIFICATION_STATUSES {
 }
 
 export enum NOTIFICATION_TYPE {
-    REVIEW_FARMSTAY = "notification.review-farmstay.admin",
+    // PAYMENT_SUCCESS_CUSTOMER = 'notification.payment-success.customer',
+    PAYMENT_SUCCESS_HOST = 'notification.payment-success.host',
+    // CANCEL_BOOKING_CUSTOMER = 'notification.cancel-booking.customer',
+    CANCEL_BOOKING_HOST = 'notification.cancel-booking.host',
+    REVIEW_FARMSTAY_ADMIN = 'notification.review-farmstay.admin',
+    FARMSTAY_APPROVED_HOST = 'notification.farmstay-approved.host',
+    FARMSTAY_REJECTED_HOST = 'notification.farmstay-rejected.host',
+    // BOOKING_APPROVED_CUSTOMER = 'notification.booking-approved.customer',
+    // BOOKING_REJECTED_CUSTOMER = 'notification.booking-rejected.customer',
 }
 
 export const parseNotificationExtras = (extras: any) => {
@@ -44,15 +52,26 @@ export const parseNotificationExtras = (extras: any) => {
         console.log(error);
         return null;
     }
-
 }
 
 export const getRedirectPathFromNotification = (extras: any) => {
     const parsedExtras = parseNotificationExtras(extras);
 
     if (parsedExtras?.type) {
-        if (parsedExtras.type === NOTIFICATION_TYPE.REVIEW_FARMSTAY) {
+        if (parsedExtras.type === NOTIFICATION_TYPE.REVIEW_FARMSTAY_ADMIN) {
             return `/management/farmstay/preview/${parsedExtras.farmstayId}`;
+        }
+        if (parsedExtras.type === NOTIFICATION_TYPE.FARMSTAY_REJECTED_HOST) {
+            return `/management/farmstay/${parsedExtras.farmstayId}`;
+        }
+        if (parsedExtras.type === NOTIFICATION_TYPE.FARMSTAY_APPROVED_HOST) {
+            return `/management/farmstay/${parsedExtras.farmstayId}`;
+        }
+        if (parsedExtras.type === NOTIFICATION_TYPE.PAYMENT_SUCCESS_HOST) {
+            return `/management/booking-request/${parsedExtras.orderId}`;
+        }
+        if (parsedExtras.type === NOTIFICATION_TYPE.CANCEL_BOOKING_HOST) {
+            return `/management/order/${parsedExtras.orderId}`;
         }
     }
 

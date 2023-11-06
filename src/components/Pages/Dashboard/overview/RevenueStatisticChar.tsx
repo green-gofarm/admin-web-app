@@ -1,16 +1,11 @@
 import { ApexOptions } from "apexcharts";
 import ReactApexChart from "react-apexcharts";
-
-const series = [
-    {
-        name: "Sales",
-        data: [32, 15, 63, 51, 136, 62, 99, 42, 178, 76, 32, 180],
-    },
-]
+import { convertToMoney } from "../../../../helpers/stringUtils";
+import { STATUS_COLORS } from "../../../../setting/color";
 
 const options: ApexOptions = {
     chart: {
-        height: 280,
+        height: 400,
         type: "line",
         zoom: {
             enabled: false,
@@ -36,16 +31,15 @@ const options: ApexOptions = {
     },
     stroke: {
         curve: "smooth",
-        width: 3,
+        width: 2,
     },
     grid: {
         borderColor: "#f2f6f7",
     },
-    colors: ['var(--primary-bg-color)' || "#1fc5db"],
-
+    colors: ["#139c7f", STATUS_COLORS.AVAILABLE.textColor, STATUS_COLORS.BANNED.textColor],
     yaxis: {
+        tickAmount: 10,
         title: {
-            text: "Growth",
             style: {
                 color: "#adb5be",
                 fontSize: "14px",
@@ -56,25 +50,25 @@ const options: ApexOptions = {
         },
         labels: {
             formatter: function (y: any) {
-                return y.toFixed(0) + "";
+                return convertToMoney(y) + "";
             },
         },
     },
     xaxis: {
         type: "category",
         categories: [
-            "1",
-            "2",
-            "3",
-            "4",
-            "5",
-            "6",
-            "7",
-            "8",
-            "9",
-            "10",
-            "11",
-            "12",
+            "Thg 1",
+            "Thg 2",
+            "Thg 3",
+            "Thg 4",
+            "Thg 5",
+            "Thg 6",
+            "Thg 7",
+            "Thg 8",
+            "Thg 9",
+            "Thg 10",
+            "Thg 11",
+            "Thg 12",
         ],
         axisBorder: {
             show: true,
@@ -94,11 +88,16 @@ const options: ApexOptions = {
         },
     },
 }
+interface RevenueStatisticCharProps {
+    series: ApexAxisChartSeries,
+}
 
-const RevenueStatisticChar = () => {
+const RevenueStatisticChar = ({
+    series
+}: RevenueStatisticCharProps) => {
     return (
         <div id="chart">
-            <ReactApexChart options={options} series={series} type="line" height={270} />
+            <ReactApexChart options={options} series={series} type="line" height={400} />
         </div>
     );
 };

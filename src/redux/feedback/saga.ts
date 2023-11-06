@@ -41,9 +41,30 @@ function* updateFeedbackStatus(action: IReduxAction): Generator<any, void, any> 
     option?.loading && option.loading(false);
 }
 
+function* hostReportFeedback(action: IReduxAction): Generator<any, void, any> {
+    const option: IReduxActionOption = action.payload?.option
+
+    option?.loading && option.loading(true);
+    try {
+        const response = yield call(
+            apis.hostReportFeedback,
+            action.payload.hostId,
+            action.payload.orderId,
+            action.payload.feedbackId
+        );
+        option?.onSuccess && option.onSuccess(response);
+    } catch (error) {
+        option?.onFailure && option.onFailure(error);
+        console.log(error);
+    }
+
+    option?.loading && option.loading(false);
+}
+
 function* watchSearch() {
     yield takeLatest(types.SEARCH_FEEDBACKS, searchFeedbacks);
     yield takeLatest(types.UPDATE_FEEDBACK_STATUS, updateFeedbackStatus);
+    yield takeLatest(types.HOST_REPORT_FEEDBACK, hostReportFeedback);
 }
 
 function* watchFeedback() {

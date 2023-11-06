@@ -1,20 +1,25 @@
 import { useMemo } from "react";
-import json from "./order.json";
 import { Box } from "@mui/material";
 import MuiTables from "../../../Mui-Table/MuiTable";
-import AvatarWrapper from "../../../General/Wrapper/AvatarWrapper";
 import { convertToMoney, createCodeString } from "../../../../helpers/stringUtils";
 import { formatTimeString } from "../../../../helpers/dateUtils";
 import { useNavigate } from "react-router-dom";
 import { Status } from "../../../../setting/Status";
 import { findOrderStatus } from "../../../../setting/order-setting";
+import useOrders from "../../Management/Order/hooks/useOrders";
+import UserLinkTag from "../../../General/Wrapper/UserLinkTag";
+import useAllCustomers from "../../Management/Account/hooks/useAllCustomers";
+import { getCustomerFromList } from "../../../../setting/customer-setting";
 
-const dataObject = JSON.parse(JSON.stringify(json));
-const data = dataObject.data;
 
 export default function OrderTable() {
 
     const navigate = useNavigate();
+    const { allCustomers } = useAllCustomers();
+
+    const {
+        data
+    } = useOrders();
 
     const columns = useMemo(() => [
         {
@@ -23,20 +28,12 @@ export default function OrderTable() {
             render: (row: any) => createCodeString("OD", row.id)
         },
         {
-            key: "user",
+            key: "customerId",
             label: "Khách hàng",
             render: (row: any) => (
-                <Box
-                    display="flex"
-                    alignItems="center"
-                    gap="8px"
-                >
-                    <AvatarWrapper
-                        src={row.customer.avatarURL}
-                        name={row.customer.name}
-                    />
-                    {row.customer.name}
-                </Box>
+                <UserLinkTag
+                    user={getCustomerFromList(allCustomers, row.customerId)}
+                />
             )
         },
         {
@@ -57,7 +54,7 @@ export default function OrderTable() {
                 <Status statusObject={findOrderStatus(row.status)} />
             )
         }
-    ], []);
+    ], [allCustomers]);
 
     return (
         <>

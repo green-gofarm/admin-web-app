@@ -73,7 +73,7 @@ function FarmstayPreview() {
     const { tab, handleChangeTab } = useFarmstayDetailTab();
     const { getBackUrl } = useBackUrl();
 
-    const { farmstayDetail, loading } = useFarmstayDetail(id);
+    const { farmstayDetail, loading, refresh } = useFarmstayDetail(id);
 
     return (
         <Box marginBottom="1.3rem">
@@ -85,7 +85,7 @@ function FarmstayPreview() {
                         gap="8px"
                     >
                         <DetailPageHeaderTitle
-                            backUrl={getBackUrl() ?? "/management/farmstay"}
+                            backUrl={getBackUrl() ?? "/management/farmstay/preview"}
                             title="Chi tiết farmstay"
                             code={createCodeString("FR", id)}
                         />
@@ -99,6 +99,7 @@ function FarmstayPreview() {
                     <FarmstayPreviewHeader
                         detail={farmstayDetail}
                         loading={loading}
+                        refresh={refresh}
                     />
                     <div className="profile-tab tab-menu-heading">
                         <Tab.Container

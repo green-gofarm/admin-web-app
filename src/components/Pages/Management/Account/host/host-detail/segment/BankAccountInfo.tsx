@@ -18,7 +18,7 @@ function BankAccountInfo({
                             <div className="media-body">
                                 <div>
                                     <label>Tên ngân hàng :</label>{" "}
-                                    <span className="tx-medium">{user?.bankAccountName ?? "-"}</span>
+                                    <span className="tx-medium">{user?.bankName ?? "-"}</span>
                                 </div>
                                 <div>
                                     <label>Tài khoản</label>{" "}
@@ -31,7 +31,7 @@ function BankAccountInfo({
                                 <div>
                                     <label>Chủ tài khoản</label>{" "}
                                     <span className="tx-medium">
-                                        {user?.bankAccountOwner ?? "-"}
+                                        {user?.bankAccountName ?? "-"}
                                     </span>
                                 </div>
                                 <div>

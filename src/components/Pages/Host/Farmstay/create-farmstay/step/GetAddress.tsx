@@ -8,8 +8,7 @@ import { Address } from '../CreateFarmstay';
 import useProvinces from '../../hooks/useProvinces';
 import useDistricts from '../../hooks/useDistricts';
 import useWards from '../../hooks/useWards';
-import VALIDATOR from '../validator';
-
+import VALIDATOR from '../../FarmstayDetail/action/validator';
 
 const useStyles = makeStyles({
     header: {

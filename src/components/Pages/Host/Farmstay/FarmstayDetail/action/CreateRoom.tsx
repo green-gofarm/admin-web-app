@@ -15,6 +15,7 @@ import useAllRoomCategories from '../../../../Management/RoomCategory/hooks/useA
 import Select from "react-select";
 import CustomizedDialogTitle from '../../../../../General/Dialog/CustomizedDialogTitle';
 import InvalidFeedback from '../../../../../General/InvalidFeedback';
+import { ROOM_STATUSES } from '../../../../../../setting/room-setting';
 
 interface CreateRoomProps {
     open?: boolean,
@@ -56,9 +57,11 @@ function CreateRoom({
     const dispatch = useDispatch();
     const categories = useAllRoomCategories();
 
-    const categoryOptions = useMemo(() => {
+    const categoryOptions: any[] = useMemo(() => {
         if (!isAvailableArray(categories)) return [];
-        return categories.map((item: any) => ({ label: item.name, value: item.id }));
+        return categories
+            .filter(item => item.status === ROOM_STATUSES.ACTIVE)
+            .map((item: any) => ({ label: item.name, value: item.id }));
     }, [categories]);
 
     // State
@@ -93,9 +96,9 @@ function CreateRoom({
 
     const validate = (room: Room, file: File | null) => {
         const tempErrors: Errors = {
-            name: VALIDATOR.isRequired(room.name),
-            description: VALIDATOR.isRequired(room.description),
-            price: VALIDATOR.isValidPrice(room.price),
+            name: VALIDATOR.isRequired(room.name) || VALIDATOR.isValidNameLength(room.name),
+            description: VALIDATOR.isRequired(room.description) || VALIDATOR.isValidContentLength(room.description),
+            price: VALIDATOR.isValidRoomPrice(room.price),
             roomCategory: VALIDATOR.isRequired(room.roomCategory?.value) || VALIDATOR.isNumberString(room.roomCategory?.value),
             file: file != null ? VALIDATOR.NO_ERROR : VALIDATOR.REQUIRED_MESSAGE,
         }
@@ -228,7 +231,7 @@ function CreateRoom({
                                 onChange={(e) => handleOnChange("name", e.target.value ?? "")}
                             />
                             {errors.name
-                                ? <InvalidFeedback />
+                                ? <InvalidFeedback message={errors.name} />
                                 : null
                             }
                         </FormGroup>
@@ -295,7 +298,7 @@ function CreateRoom({
                                 onChange={(e) => handleOnChange("description", e.target.value ?? "")}
                             />
                             {errors.description
-                                ? <InvalidFeedback />
+                                ? <InvalidFeedback message={errors.description} />
                                 : null
                             }
                         </FormGroup>

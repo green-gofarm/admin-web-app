@@ -87,9 +87,9 @@ function UpdateRoomBasic({
 
     const validate = (data: Room) => {
         const tempErrors: Errors = {
-            name: VALIDATOR.isRequired(data.name),
-            description: VALIDATOR.isRequired(data.description),
-            price: VALIDATOR.isValidPrice(data.price),
+            name: VALIDATOR.isRequired(data.name) || VALIDATOR.isValidNameLength(data.name),
+            description: VALIDATOR.isRequired(data.description) || VALIDATOR.isValidContentLength(data.description),
+            price: VALIDATOR.isValidRoomPrice(data.price),
             roomCategory: VALIDATOR.isRequired(data.roomCategory?.value) || VALIDATOR.isNumberString(data.roomCategory?.value),
         }
 
@@ -169,7 +169,7 @@ function UpdateRoomBasic({
                                 onChange={(e) => handleOnChange("name", e.target.value ?? "")}
                             />
                             {errors.name
-                                ? <InvalidFeedback />
+                                ? <InvalidFeedback message={errors.name} />
                                 : null
                             }
                         </FormGroup>
@@ -236,7 +236,7 @@ function UpdateRoomBasic({
                                 onChange={(e) => handleOnChange("description", e.target.value ?? "")}
                             />
                             {errors.description
-                                ? <InvalidFeedback />
+                                ? <InvalidFeedback message={errors.description} />
                                 : null
                             }
                         </FormGroup>

@@ -6,6 +6,7 @@ import { useState } from 'react';
 import bigLogo from '../../../../../../assets/img/brand/big-logo.png';
 import SingleImageUpdate from '../../FarmstayDetail/ui-segment/SingleImageUpdate';
 import InvalidFeedback from '../../../../../General/InvalidFeedback';
+import VALIDATOR from '../../FarmstayDetail/action/validator';
 
 const useStyles = makeStyles({
     root: {
@@ -73,6 +74,16 @@ const useStyles = makeStyles({
     },
 });
 
+interface Errors {
+    name: string,
+    file: string,
+}
+
+const initialErrors: Errors = {
+    name: '',
+    file: ''
+};
+
 interface GetNameStepProps {
     defaultFileAvatar: any,
     defaultName: string | null,
@@ -90,8 +101,26 @@ function GetNameStep({
     const [name, setName] = useState<string>(defaultName ?? "");
     const [file, setFile] = useState<any>(defaultFileAvatar ?? null);
 
+    const [errors, setErrors] = useState<Errors>(initialErrors);
+
+    const hasErrors = (errors: { [key in keyof Errors]: string }): boolean => {
+        return Object.values(errors).some(error => error !== VALIDATOR.NO_ERROR);
+    };
+
+    const validate = (data: Errors) => {
+        const temp: { [key in keyof Errors]: string } = {
+            name: VALIDATOR.isRequired(data.name) || VALIDATOR.isValidNameLength(data.name),
+            file: file != null ? VALIDATOR.NO_ERROR : VALIDATOR.REQUIRED_MESSAGE,
+        };
+
+        setErrors(temp);
+        return !hasErrors(temp);
+    };
+
     const handleContinue = () => {
-        onContinue(name, file);
+        if (validate({ name, file })) {
+            onContinue(name, file);
+        }
     }
 
     return (
@@ -125,6 +154,10 @@ function GetNameStep({
                                 }}
                             />
                         </Box>
+                        {errors.name
+                            ? <InvalidFeedback message={errors.name} />
+                            : null
+                        }
 
                         <h4 className='mt-4'>
                             Ảnh đại diện
@@ -135,7 +168,10 @@ function GetNameStep({
                                 setFile={setFile}
                             />
                         </Box>
-                        {file?.error ? <InvalidFeedback message={file.error} /> : null}
+                        {file?.error || errors.file
+                            ? <InvalidFeedback message={file.error || errors.name} />
+                            : null
+                        }
 
                         <footer className={classes.footer}>
                             <Button

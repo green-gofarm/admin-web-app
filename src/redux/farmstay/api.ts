@@ -1,5 +1,5 @@
 import { AxiosRequestConfig } from "axios";
-import { ENP, METHOD } from "../../helpers/api";
+import { ENP, ENP_V2, METHOD } from "../../helpers/api";
 import { axiosRequest } from "../../helpers/axios";
 
 export function searchFarmstays(params: any) {
@@ -30,6 +30,23 @@ export function getFarmstayDetail(id: any) {
     return axiosRequest(url, option);
 }
 
+export function getFarmstaySchedule(farmstayId: any, date: any, limit: any) {
+    const option: AxiosRequestConfig = {
+        method: METHOD.GET,
+        headers: {
+            "Content-Type": "application/json"
+        },
+    }
+
+    const _params: Record<string, string> = {
+        date,
+        limit,
+    }
+
+    const url = `${ENP_V2.FARMSTAY}/${farmstayId}/schedule`;
+    return axiosRequest(url, option, _params);
+}
+
 
 export function getActivityDetail(farmstayId: any, activityId: any) {
     const option: AxiosRequestConfig = {
@@ -43,7 +60,7 @@ export function getActivityDetail(farmstayId: any, activityId: any) {
     return axiosRequest(url, option);
 }
 
-export function getActivitySchedule(farmstayId: any, activityId: any, date: any) {
+export function getActivitySchedule(farmstayId: any, activityId: any, date: any, limit: any) {
     const option: AxiosRequestConfig = {
         method: METHOD.GET,
         headers: {
@@ -53,9 +70,10 @@ export function getActivitySchedule(farmstayId: any, activityId: any, date: any)
 
     const _params: Record<string, string> = {
         date,
+        limit,
     }
 
-    const url = `${ENP.FARMSTAY}/${farmstayId}/activities/${activityId}/schedule`;
+    const url = `${ENP_V2.FARMSTAY}/${farmstayId}/activities/${activityId}/schedule`;
     return axiosRequest(url, option, _params);
 }
 
@@ -73,7 +91,7 @@ export function getRoomDetail(farmstayId: any, room: any) {
     return axiosRequest(url, option);
 }
 
-export function getRoomSchedule(farmstayId: any, roomId: any, date: any) {
+export function getRoomSchedule(farmstayId: any, roomId: any, date: any, limit: any) {
     const option: AxiosRequestConfig = {
         method: METHOD.GET,
         headers: {
@@ -83,9 +101,10 @@ export function getRoomSchedule(farmstayId: any, roomId: any, date: any) {
 
     const _params: Record<string, string> = {
         date,
+        limit,
     }
 
-    const url = `${ENP.FARMSTAY}/${farmstayId}/rooms/${roomId}/schedule`;
+    const url = `${ENP_V2.FARMSTAY}/${farmstayId}/rooms/${roomId}/schedule`;
     return axiosRequest(url, option, _params);
 }
 
@@ -278,4 +297,20 @@ export function uploadImage(formData: any) {
 
     const url = ENP.IMAGES
     return axiosRequest(url, option);
+}
+
+
+export function getBankList() {
+    const url = ENP.BANK
+    return axiosRequest(url);
+}
+
+export function getMonthlyReport() {
+    const url = `${ENP.ADMIN}/system-monthly-report`
+    return axiosRequest(url);
+}
+
+export function getYearlyReport() {
+    const url = `${ENP.ADMIN}/system-yearly-report`
+    return axiosRequest(url);
 }

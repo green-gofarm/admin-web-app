@@ -8,7 +8,7 @@ const breadcrumb: Array<IBreadcrumbItem> = [
         href: "/management"
     },
     {
-        text: "Duyệt đơn",
+        text: "Đơn cần duyệt",
         active: true,
         props: {
             "aria-current": "page"
@@ -21,7 +21,7 @@ const BookingRequestManagement = () => {
     return (
         <Box marginBottom="1.3rem">
             <PageHeader
-                title="Duyệt đơn"
+                title="Danh sách đơn cần duyệt"
                 breadcrumb={breadcrumb}
             />
 

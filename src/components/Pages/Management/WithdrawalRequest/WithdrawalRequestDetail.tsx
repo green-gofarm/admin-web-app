@@ -2,17 +2,22 @@ import { Link, useParams } from "react-router-dom";
 import PageHeader, { IBreadcrumbItem } from "../../../General/PageHeader";
 import { Box, Grid } from "@mui/material";
 import DetailPageHeaderTitle from "../../../General/DetailPageHeaderTitle";
-import { Card, Table } from "react-bootstrap";
+import { Button, Card, Table } from "react-bootstrap";
 import { convertToMoney, createCodeString } from "../../../../helpers/stringUtils";
 import { convertISOToNaturalFormat } from "../../../../helpers/dateUtils";
 import IconLabelDetail from "../../../General/Item/IconLabelDetail";
 import { Status } from "../../../../setting/Status";
 import useBackUrl from "../../../../hooks/useBackUrl";
-import { findWithdrawalRequestStatus, getWithdrawalRequestTypeLabel } from "../../../../setting/withdrawl-request-setting";
-import useDisbursementDetail from "./hooks/useDisbursementDetail";
-import UserTag from "../../../General/Wrapper/UserTag";
-import { useMemo } from "react";
+import { WITHDRAWAL_REQUEST_STATUSES, findWithdrawalRequestStatus, getWithdrawalRequestTypeLabel } from "../../../../setting/withdrawl-request-setting";
+import { useMemo, useState } from "react";
 import { isAvailableArray } from "../../../../helpers/arrayUtils";
+import useDisbursementDetail from "../../Management/WithdrawalRequest/hooks/useDisbursementDetail";
+import useUserDetail from "../../Management/Account/hooks/useUserDetail";
+import { ROLES } from "../../../../setting/setting";
+import useBanks from "../../../../hooks/useBanks";
+import UserLinkTag from "../../../General/Wrapper/UserLinkTag";
+import ConditionWrapper from "../../../General/Wrapper/ConditionWrapper";
+import ConfirmDisbursement from "./action/ConfirmDisbursement";
 
 const breadcrumb: Array<IBreadcrumbItem> = [
     {
@@ -32,11 +37,50 @@ const breadcrumb: Array<IBreadcrumbItem> = [
     }
 ]
 
+const customFormatBankLabel = (option: any) => (
+    <Box
+        display="flex"
+        alignItems="center"
+        gap="8px"
+        width="fit-content"
+        marginLeft="auto"
+    >
+        <Box
+            width="100px"
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+        >
+            <Box
+                component="img"
+                src={option?.logo}
+                height="24px"
+            />
+        </Box>
+        <Box
+            className="text-muted"
+        >
+            {`${option?.bankName} (${option?.bankCode})`}
+        </Box>
+    </Box>
+)
+
 function WithdrawalRequestDetail() {
 
+    const [openConfirm, setOpenConfirm] = useState<boolean>(false);
+
     const { id } = useParams();
-    const { detail } = useDisbursementDetail(id);
+    const { detail, refresh } = useDisbursementDetail(id);
     const { getBackUrl, createBackUrl } = useBackUrl();
+
+    const { detail: hostDetail } = useUserDetail(detail?.hostId, ROLES.HOST);
+    const { banks } = useBanks();
+
+    const bank = useMemo(() => {
+        if (!hostDetail?.bankName) return null;
+        if (!isAvailableArray(banks)) return null;
+        return banks.find(item => item.bankCode === hostDetail.bankName);
+    }, [banks, hostDetail?.bankName]);
 
     const feeExtras = useMemo(() => {
         if (!detail?.feeExtras) return [];
@@ -102,7 +146,7 @@ function WithdrawalRequestDetail() {
                                     <IconLabelDetail
                                         icon={<i className="fa fa-user"></i>}
                                         label="Người nhận:"
-                                        value={<UserTag user={{ name: detail?.hostName }} />}
+                                        value={<UserLinkTag user={hostDetail} />}
                                     />
                                 </Grid>
 
@@ -131,19 +175,22 @@ function WithdrawalRequestDetail() {
                                             <tr>
                                                 <td className="tx-right">Tên ngân hàng</td>
                                                 <td className="tx-right" colSpan={2}>
-
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td className="tx-right">Tài khoản</td>
-                                                <td className="tx-right" colSpan={2}>
-
+                                                    {bank
+                                                        ? customFormatBankLabel(bank)
+                                                        : "-"
+                                                    }
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td className="tx-right">Chủ tài khoản</td>
                                                 <td className="tx-right" colSpan={2}>
-
+                                                    {hostDetail?.bankAccountName ?? "-"}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td className="tx-right">Số tài khoản</td>
+                                                <td className="tx-right" colSpan={2}>
+                                                    {hostDetail?.bankAccountNumber ?? "-"}
                                                 </td>
                                             </tr>
                                             <tr>
@@ -155,7 +202,7 @@ function WithdrawalRequestDetail() {
                                                     <td className="tx-right">{item.type}</td>
                                                     <td className="tx-right">{`${item.percent * 100}%`}</td>
                                                     <td className="tx-right">
-                                                        - {convertToMoney(item.amount)}
+                                                        {convertToMoney(item.amount)}
                                                     </td>
                                                 </tr>
                                             )}
@@ -173,9 +220,39 @@ function WithdrawalRequestDetail() {
                                 </Grid>
                             </Grid>
                         </Card.Body>
+                        <ConditionWrapper isRender={detail?.status === WITHDRAWAL_REQUEST_STATUSES.PENDING}>
+                            <Card.Footer>
+                                <Box
+                                    display="flex"
+                                    width="100%"
+                                    justifyContent="flex-end"
+                                >
+                                    <Button
+                                        variant=''
+                                        type="button"
+                                        className="btn ripple btn-primary mb-1 me-2"
+                                        onClick={() => setOpenConfirm(true)}
+                                    >
+                                        <i className="fe fe-thumbs-up me-1"></i> Xác nhận đã giải ngân
+                                    </Button>
+                                </Box>
+                            </Card.Footer>
+                        </ConditionWrapper>
                     </Card>
                 </Grid>
             </Grid>
+
+            {openConfirm
+                ? <ConfirmDisbursement
+                    onClose={() => {
+                        setOpenConfirm(false);
+                    }}
+                    disbursement={detail}
+                    open={openConfirm}
+                    refresh={refresh}
+                />
+                : null
+            }
         </Box >
     )
 }

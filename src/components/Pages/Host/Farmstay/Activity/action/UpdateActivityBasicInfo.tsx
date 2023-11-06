@@ -78,9 +78,9 @@ function UpdateActivityBasicInfo({
 
     const validate = (data: Activity) => {
         const tempActivityError: Errors = {
-            name: VALIDATOR.isRequired(data.name),
-            description: VALIDATOR.isRequired(data.description),
-            price: VALIDATOR.isValidPrice(data.price),
+            name: VALIDATOR.isRequired(data.name) || VALIDATOR.isValidNameLength(data.name),
+            description: VALIDATOR.isRequired(data.description) || VALIDATOR.isValidContentLength(data.description),
+            price: VALIDATOR.isValidActivityPrice(data.price),
             slot: VALIDATOR.isValidActivitySlotNumber(data.slot),
         }
 
@@ -163,7 +163,7 @@ function UpdateActivityBasicInfo({
                                 onChange={(e) => handleOnChangeAddress("name", e.target.value ?? "")}
                             />
                             {errors.name
-                                ? <InvalidFeedback />
+                                ? <InvalidFeedback message={errors.name} />
                                 : null
                             }
                         </FormGroup>
@@ -228,7 +228,7 @@ function UpdateActivityBasicInfo({
                                 onChange={(e) => handleOnChangeAddress("description", e.target.value ?? "")}
                             />
                             {errors.description
-                                ? <InvalidFeedback />
+                                ? <InvalidFeedback message={errors.description} />
                                 : null
                             }
                         </FormGroup>

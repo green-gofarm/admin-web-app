@@ -19,6 +19,7 @@ import useFarmstayDetail from '../../../Management/Farmstay/FarmstayDetail/hooks
 import FeedbackTab from '../../../Management/Farmstay/FarmstayDetail/tab/FeedbackTab';
 import OrderHistoryTab from '../../../Management/Farmstay/FarmstayDetail/tab/OrderHistoryTab';
 import useBackUrl from '../../../../../hooks/useBackUrl';
+import ScheduleTab from '../../../Management/Farmstay/FarmstayDetail/tab/ScheduleTab';
 
 const breadcrumb: Array<IBreadcrumbItem> = [
     {
@@ -42,6 +43,10 @@ const tabOptions: NavigationItem[] = [
     {
         label: "Thông tin",
         eventKey: TAB_KEYS.About
+    },
+    {
+        label: "Lịch trình hoạt động",
+        eventKey: TAB_KEYS.Schedule
     },
     {
         label: "Hoạt động",
@@ -173,12 +178,21 @@ function FarmstayDetail() {
                                             <FeedbackTab
                                                 detail={farmstayDetail}
                                                 loading={loading}
+                                                refresh={refresh}
+                                                hasReport
                                             />
 
                                         </Tab.Pane>
 
                                         <Tab.Pane eventKey={TAB_KEYS.OrderHistory}>
                                             <OrderHistoryTab
+                                                detail={farmstayDetail}
+                                                loading={loading}
+                                            />
+                                        </Tab.Pane>
+
+                                        <Tab.Pane eventKey={TAB_KEYS.Schedule}>
+                                            <ScheduleTab
                                                 detail={farmstayDetail}
                                                 loading={loading}
                                             />

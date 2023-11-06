@@ -82,3 +82,29 @@ export function updateAdminMyProfile(data: any) {
     const url = `${ENP.ADMIN}/my-profile`;
     return axiosRequest(url, option);
 }
+
+export function updateHostStatus(id: any, data: any) {
+    const option: AxiosRequestConfig = {
+        method: METHOD.PATCH,
+        headers: {
+            "Content-Type": "application/json"
+        },
+        data: JSON.stringify(data ?? {})
+    }
+
+    const url = `${ENP.ADMIN}/hosts/${id}/status`;
+    return axiosRequest(url, option);
+}
+
+export function updateCustomerStatus(id: any, data: any) {
+    const option: AxiosRequestConfig = {
+        method: METHOD.PATCH,
+        headers: {
+            "Content-Type": "application/json"
+        },
+        data: JSON.stringify(data ?? {})
+    }
+
+    const url = `${ENP.ADMIN}/customers/${id}/status`;
+    return axiosRequest(url, option);
+}

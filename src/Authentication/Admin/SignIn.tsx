@@ -11,6 +11,8 @@ import { toast } from 'react-toastify';
 import useBackUrl from '../../hooks/useBackUrl';
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import useDelayLoading from '../../hooks/useDelayLoading';
+import { AxiosError } from 'axios';
+import { ResultCode } from '../../setting/response-result-code';
 
 const SignIn = () => {
 
@@ -60,9 +62,27 @@ const SignIn = () => {
                         toast.success("Đăng nhập thành công");
                         navigate(getBackUrl() ?? "/");
                     },
-                    onFailure: (error: any) => {
+                    onFailure: (error: AxiosError | any) => {
                         auth.signOut();
-                        toast.error("Đăng nhập thất bại");
+
+                        const resultCode = error?.response?.data?.resultCode;
+                        if (resultCode === ResultCode.ACCOUNT_LOCKED_EXCEPTION) {
+                            setErrorMessage("Tài khoản đã bị khóa.");
+                            return;
+                        }
+                        if (resultCode === ResultCode.ACCOUNT_INACTIVE_EXCEPTION) {
+                            setErrorMessage("Tài khoản chưa kích hoạt, vui lòng liên hệ admin để kích hoạt.");
+                            return;
+                        }
+                        if (resultCode === ResultCode.RESOURCE_NOT_FOUND) {
+                            setErrorMessage("Tài khoản không có quyền đăng nhập vào trang web này.");
+                            return;
+                        }
+                        if (resultCode === ResultCode.ACCOUNT_NOT_FOUND_EXCEPTION) {
+                            setErrorMessage("Tài khoản không tồn tại. Vui lòng đến đăng ký hoặc đang nhập lại bằng tài khoản khác.");
+                            return;
+                        }
+                        setErrorMessage("Đăng nhập thất bại");
                     }
                 }));
             }

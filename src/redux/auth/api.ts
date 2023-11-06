@@ -2,7 +2,21 @@ import { AxiosRequestConfig } from "axios";
 import { ENP, METHOD } from "../../helpers/api";
 import { axiosRequest } from "../../helpers/axios";
 
-export function signUpHost(token: string) {
+export function signUpHost(data: any) {
+
+    const option: AxiosRequestConfig = {
+        method: METHOD.POST,
+        headers: {
+            "Content-Type": "application/json"
+        },
+        data: JSON.stringify(data ?? {})
+    }
+
+    const url = `${ENP.SIGN_UP}/host`;
+    return axiosRequest(url, option);
+}
+
+export function signUpAdmin(token: string) {
 
     const option: AxiosRequestConfig = {
         method: METHOD.POST,
@@ -14,7 +28,7 @@ export function signUpHost(token: string) {
         })
     }
 
-    const url = `${ENP.SIGN_UP}/host`;
+    const url = `${ENP.SIGN_UP}/admin`;
     return axiosRequest(url, option);
 }
 
@@ -71,7 +85,7 @@ export function markAsRedNotification(id: any) {
     return axiosRequest(url, option);
 }
 
-export function checkNewlySignupAccount(token: any) {
+export function checkNewlySignUpAccount(token: any) {
     const option: AxiosRequestConfig = {
         method: METHOD.POST,
         headers: {

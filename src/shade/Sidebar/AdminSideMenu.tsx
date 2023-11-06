@@ -90,7 +90,7 @@ const MENUITEMS = [
             type: "link",
             active: false,
             selected: false,
-            title: "Danh sách farmstays",
+            title: "Danh sách farmstay",
           },
         ],
       },

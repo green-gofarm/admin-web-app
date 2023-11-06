@@ -1,18 +1,15 @@
 {
   "projects": {
-    "default": "go-gofarm"
+    "default": "green-gofarm"
   },
   "targets": {
-    "go-gofarm": {
+    "green-gofarm": {
       "hosting": {
-        "gofarm-center": [
-          "gofarm-center.web.app"
-        ],
         "host": [
-          "gofarm-center"
+          "green-gofarm"
         ],
         "admin": [
-          "go-gofarm"
+          "manage-gofarm"
         ]
       }
     }

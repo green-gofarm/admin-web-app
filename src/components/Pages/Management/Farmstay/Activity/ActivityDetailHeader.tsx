@@ -4,7 +4,7 @@ import { Status } from '../../../../../setting/Status';
 import { findActivityStatus } from '../../../../../setting/activity-status-setting';
 import { convertToMoney } from '../../../../../helpers/stringUtils';
 import GeneralAvatar from '../../../../General/GeneralAvatar';
-import { formatTimeString, getTimeAgoString } from '../../../../../helpers/dateUtils';
+import { convertISOToNaturalFormat, getTimeAgoString } from '../../../../../helpers/dateUtils';
 
 interface IActivityDetailHeader {
     detail?: any,
@@ -48,7 +48,10 @@ function ActivityDetailHeader({
                 <IconLabelDetail
                     icon={<i className="fa fa-clock"></i>}
                     label="Ngày tạo:"
-                    value={formatTimeString(detail?.createdDate) ?? "-"}
+                    value={detail?.createdDate
+                        ? convertISOToNaturalFormat(detail.createdDate)
+                        : ""
+                    }
                 />
             </Grid>
 
@@ -64,7 +67,11 @@ function ActivityDetailHeader({
                 <IconLabelDetail
                     icon={<i className="fa fa-clock"></i>}
                     label="Lần cập nhật cuối:"
-                    value={`${formatTimeString(detail?.updatedDate)} (${getTimeAgoString(detail?.updatedDate)})` ?? "-"}
+                    value={
+                        detail?.updatedDate
+                            ? `${convertISOToNaturalFormat(detail?.updatedDate)} (${getTimeAgoString(detail?.updatedDate)})`
+                            : "-"
+                    }
                 />
             </Grid>
         </Grid>

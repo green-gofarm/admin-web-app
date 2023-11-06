@@ -221,6 +221,44 @@ function* updateHostMyProfile(action: IReduxAction): Generator<any, void, any> {
     option?.loading && option.loading(false);
 }
 
+function* updateHostStatus(action: IReduxAction): Generator<any, void, any> {
+    const option: IReduxActionOption = action.payload?.option
+
+    option?.loading && option.loading(true);
+    try {
+        const response = yield call(
+            apis.updateHostStatus,
+            action.payload.id,
+            action.payload.data
+        );
+        option?.onSuccess && option.onSuccess(response);
+    } catch (error) {
+        option?.onFailure && option.onFailure(error);
+        console.log(error);
+    }
+
+    option?.loading && option.loading(false);
+}
+
+function* updateCustomerStatus(action: IReduxAction): Generator<any, void, any> {
+    const option: IReduxActionOption = action.payload?.option
+
+    option?.loading && option.loading(true);
+    try {
+        const response = yield call(
+            apis.updateCustomerStatus,
+            action.payload.id,
+            action.payload.data
+        );
+        option?.onSuccess && option.onSuccess(response);
+    } catch (error) {
+        option?.onFailure && option.onFailure(error);
+        console.log(error);
+    }
+
+    option?.loading && option.loading(false);
+}
+
 
 function* watchAll() {
     yield takeLatest(types.SEARCH_USERS, searchUsers);
@@ -239,6 +277,9 @@ function* watchAll() {
 
     yield takeLatest(types.UPDATE_ADMIN_MY_PROFILE, updateAdminMyProfile);
     yield takeLatest(types.UPDATE_HOST_MY_PROFILE, updateHostMyProfile);
+
+    yield takeLatest(types.UPDATE_HOST_STATUS, updateHostStatus);
+    yield takeLatest(types.UPDATE_CUSTOMER_STATUS, updateCustomerStatus);
 }
 
 function* watchUser() {

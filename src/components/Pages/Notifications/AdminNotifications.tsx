@@ -145,7 +145,7 @@ function AdminNotifications() {
 											}
 											<div className={"main-img-user avatar-md main-avatar me-3 shadow " + classes.noAfter}>
 												<MessageIcon
-													fontFamily="large"
+													fontSize="large"
 												/>
 											</div>
 											<div className="media-body">

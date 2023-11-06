@@ -1,30 +1,38 @@
 import { Box, CircularProgress, Grid } from '@mui/material'
 import Select from 'react-select';
 import MuiTables from '../../../../../Mui-Table/MuiTable';
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import AvatarWrapper from '../../../../../General/Wrapper/AvatarWrapper';
+import { CSSProperties, useCallback, useEffect, useMemo, useState } from 'react';
 import { Status } from '../../../../../../setting/Status';
 import ViewIconAction from '../../../../../General/Action/IconAction/ViewIconAction';
 import { LIST_ORDER_STATUS, findOrderStatus } from '../../../../../../setting/order-setting';
 import { convertToMoney, createCodeString } from '../../../../../../helpers/stringUtils';
-import { formatTimeString } from '../../../../../../helpers/dateUtils';
+import { formatTimeString, getTimeAgoString } from '../../../../../../helpers/dateUtils';
 import SearchIcon from '@mui/icons-material/Search';
 import useFarmstayOrders from '../hooks/useFarmstayOrders';
 import useDelayLoading from '../../../../../../hooks/useDelayLoading';
 import { removeNullProps } from '../../../../../../setting/general-props';
 import { useNavigate } from 'react-router-dom';
 import useBackUrl from '../../../../../../hooks/useBackUrl';
+import useAllCustomers from '../../../Account/hooks/useAllCustomers';
+import UserTag from '../../../../../General/Wrapper/UserTag';
+import { getCustomerFromList } from '../../../../../../setting/customer-setting';
 
 interface OrderHistoryTabProps {
     detail?: any,
     loading?: boolean,
 }
 
+const customControlStyles: CSSProperties = {
+    minWidth: 180
+};
+
 
 function OrderHistoryTab({
     detail,
     loading
 }: OrderHistoryTabProps) {
+
+    const { allCustomers } = useAllCustomers();
 
     const [filters, setFilters] = useState<{ status: any }>({
         status: null,
@@ -79,20 +87,12 @@ function OrderHistoryTab({
             render: (row: any) => createCodeString("OD", row.id)
         },
         {
-            key: "user",
+            key: "customerId",
             label: "Khách hàng",
             render: (row: any) => (
-                <Box
-                    display="flex"
-                    alignItems="center"
-                    gap="8px"
-                >
-                    <AvatarWrapper
-                        src={"Trọng"}
-                        name={"Trọng"}
-                    />
-                    {"Trọng"}
-                </Box>
+                <UserTag
+                    user={getCustomerFromList(allCustomers, row.customerId)}
+                />
             )
         },
         {
@@ -103,8 +103,10 @@ function OrderHistoryTab({
         },
         {
             key: "createdDate",
-            label: "Ngày tạo đơn",
-            render: (row: any) => formatTimeString(row.createdDate)
+            label: "Thời gian tạo đơn",
+            render: (row: any) => row.createdDate
+                ? `${formatTimeString(row.createdDate)} (${getTimeAgoString(row.createdDate)})`
+                : "-"
         },
         {
             key: "status",
@@ -130,7 +132,7 @@ function OrderHistoryTab({
                 </Box>
             )
         },
-    ], [createBackUrl, navigate]);
+    ], [allCustomers, createBackUrl, navigate]);
 
     const renderFilter = () => (
         <Box
@@ -181,6 +183,7 @@ function OrderHistoryTab({
             <Grid item xs="auto">
                 <Grid container spacing={2}>
                     <Grid item xs="auto">
+
                         <Select
                             value={filters.status}
                             onChange={(option) => handleOnChange(option, "status")}
@@ -188,6 +191,14 @@ function OrderHistoryTab({
                             placeholder="Trạng thái"
                             isSearchable
                             isClearable
+                            styles={{
+                                container(base, props) {
+                                    return {
+                                        ...base,
+                                        ...customControlStyles,
+                                    }
+                                },
+                            }}
                         />
                     </Grid>
                 </Grid>

@@ -3,7 +3,7 @@ import * as type from "./type";
 
 export interface RoomState {
     roomCategories: any,
-    allRoomCategories: [],
+    allRoomCategories: any[],
     roomCategoryDetail: any,
 }
 

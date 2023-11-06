@@ -86,7 +86,7 @@ function BasicInfoTab({
 
             <Grid item xs={12}>
                 <CustomizedCard
-                    title="Location"
+                    title="Vị trí"
                     content={
                         <LeafletViewMap
                             location={{

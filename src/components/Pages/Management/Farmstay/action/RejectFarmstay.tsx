@@ -50,7 +50,7 @@ function RejectFarmstay({
                     onSuccessCallback && onSuccessCallback();
                 },
                 onFailure: () => {
-                    toast.error("Cập nhật thành công thất bại");
+                    toast.error("Cập nhật thất bại");
                 }
             })
         )

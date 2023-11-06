@@ -4,25 +4,25 @@ import { styled } from '@mui/system';
 import TablePaginationUnstyled, { tablePaginationUnstyledClasses as classes } from '@mui/base/TablePaginationUnstyled';
 
 const blue = {
-	200: '#A5D8FF',
-	400: '#3399FF',
+  200: '#A5D8FF',
+  400: '#3399FF',
 };
 
 const grey = {
-	50: '#f6f8fa',
-	100: '#eaeef2',
-	200: '#d0d7de',
-	300: '#afb8c1',
-	400: '#8c959f',
-	500: '#6e7781',
-	600: '#57606a',
-	700: '#424a53',
-	800: '#32383f',
-	900: '#24292f',
+  50: '#f6f8fa',
+  100: '#eaeef2',
+  200: '#d0d7de',
+  300: '#afb8c1',
+  400: '#8c959f',
+  500: '#6e7781',
+  600: '#57606a',
+  700: '#424a53',
+  800: '#32383f',
+  900: '#24292f',
 };
 
 const CustomTablePagination = styled(TablePaginationUnstyled)(
-	({ theme }) => `
+  ({ theme }) => `
     & .${classes.spacer} {
       display: none;
     }
@@ -93,44 +93,44 @@ const CustomTablePagination = styled(TablePaginationUnstyled)(
     `,
 );
 
-interface IPagination {
-	count: number;
-	page: number;
-	rowsPerPage: number;
-	rowsPerPageOptions: number[];
-	handleChangePage: (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => void;
-	handleChangeRowsPerPage: (event: React.ChangeEvent<HTMLInputElement>) => void;
+interface CustomizedTablePaginationProps {
+  count: number;
+  page: number;
+  rowsPerPage: number;
+  rowsPerPageOptions: number[];
+  handleChangePage: (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => void;
+  handleChangeRowsPerPage: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 export default function CustomizedTablePagination({
-	count,
-	page,
-	rowsPerPage,
-	handleChangePage,
-	handleChangeRowsPerPage,
-	rowsPerPageOptions
-}: IPagination) {
+  count,
+  page,
+  rowsPerPage,
+  handleChangePage,
+  handleChangeRowsPerPage,
+  rowsPerPageOptions
+}: CustomizedTablePaginationProps) {
 
-	return (
-		<CustomTablePagination
-			rowsPerPageOptions={rowsPerPageOptions || DEFAULT_PAGINATION.rowsPerPageOptions}
-			rowsPerPage={rowsPerPage || DEFAULT_PAGINATION.rowsPerPage}
-			count={count || 0}
-			page={page - 1}
-			onPageChange={handleChangePage}
-			onRowsPerPageChange={handleChangeRowsPerPage}
-			slots={{
-				root: "div"
-			}}
-			slotProps={{
-				select: {
-					'aria-label': 'rows per page',
-				},
-				actions: {
-					lang: ""
-				},
-			}}
-			labelRowsPerPage="Số hàng mỗi trang"
-		/>
-	);
+  return (
+    <CustomTablePagination
+      rowsPerPageOptions={rowsPerPageOptions || DEFAULT_PAGINATION.rowsPerPageOptions}
+      rowsPerPage={rowsPerPage || DEFAULT_PAGINATION.rowsPerPage}
+      count={count || 0}
+      page={page - 1}
+      onPageChange={handleChangePage}
+      onRowsPerPageChange={handleChangeRowsPerPage}
+      slots={{
+        root: "div"
+      }}
+      slotProps={{
+        select: {
+          'aria-label': 'rows per page',
+        },
+        actions: {
+          lang: ""
+        },
+      }}
+      labelRowsPerPage="Số hàng mỗi trang"
+    />
+  );
 }

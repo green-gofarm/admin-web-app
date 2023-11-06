@@ -264,11 +264,13 @@ export default function CustomerTable() {
                 open={openBan}
                 onClose={handleCloseBan}
                 customer={selectedCustomer}
+                refresh={refresh}
             />
             <UnbanCustomer
                 open={openUnban}
                 onClose={handleCloseUnban}
                 customer={selectedCustomer}
+                refresh={refresh}
             />
         </>
     );

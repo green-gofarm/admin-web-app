@@ -11,13 +11,23 @@ export const signInHost = (option?: IReduxActionOption): IReduxAction => ({
     payload: { option: option ?? getEmptyOption() }
 })
 
-export const signUpHost = (token: string, option?: IReduxActionOption): IReduxAction => ({
+export const signUpHost = (data: any, option?: IReduxActionOption): IReduxAction => ({
     type: type.SIGN_UP_HOST,
-    payload: { token, option: option ?? getEmptyOption() }
+    payload: { data, option: option ?? getEmptyOption() }
 })
 
 export const signUpHostSuccess = (data: any): IReduxAction => ({
     type: type.SIGN_UP_HOST_SUCCESS,
+    payload: data
+})
+
+export const signUpAdmin = (token: string, option?: IReduxActionOption): IReduxAction => ({
+    type: type.SIGN_UP_ADMIN,
+    payload: { token, option: option ?? getEmptyOption() }
+})
+
+export const signUpAdminSuccess = (data: any): IReduxAction => ({
+    type: type.SIGN_UP_ADMIN_SUCCESS,
     payload: data
 })
 
@@ -60,7 +70,7 @@ export const markAsRedNotification = (id: any, option?: IReduxActionOption): IRe
 })
 
 
-export const checkNewlySignupAccount = (token: any, option?: IReduxActionOption): IReduxAction => ({
+export const checkNewlySignUpAccount = (token: any, option?: IReduxActionOption): IReduxAction => ({
     type: type.CHECK_NEWLY_SIGNUP_ACCOUNT,
     payload: { token, option: option ?? getEmptyOption() }
 })

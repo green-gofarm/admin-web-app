@@ -5,6 +5,7 @@ export interface FarmstayState {
     farmstays: any,
     allFarmstays: any[],
     farmstayDetail: any,
+    schedule: any,
 
     activityDetail: any,
     activitySchedule: any,
@@ -15,12 +16,15 @@ export interface FarmstayState {
     provinces: any[],
     districts: any[],
     wards: any[],
+
+    banks: any[],
 }
 
 const initialState: FarmstayState = {
     farmstays: null,
     allFarmstays: [],
     farmstayDetail: null,
+    schedule: null,
 
     activityDetail: null,
     activitySchedule: null,
@@ -31,6 +35,8 @@ const initialState: FarmstayState = {
     provinces: [],
     districts: [],
     wards: [],
+
+    banks: []
 };
 
 function farmstayReducer(state = initialState, action: IReduxAction) {
@@ -51,6 +57,11 @@ function farmstayReducer(state = initialState, action: IReduxAction) {
             return { ...state, farmstayDetail: null };
         case type.CLEAR_FARMSTAY_DETAIL:
             return { ...state, farmstayDetail: null };
+
+        case type.GET_FARMSTAY_SCHEDULE_SUCCESS:
+            return { ...state, schedule: action.payload.data };
+        case type.GET_FARMSTAY_SCHEDULE_FAILED:
+            return { ...state, schedule: null };
 
         case type.GET_ACTIVITY_DETAIL_SUCCESS:
             return { ...state, activityDetail: action.payload.data };
@@ -82,6 +93,11 @@ function farmstayReducer(state = initialState, action: IReduxAction) {
             return { ...state, districts: action.payload };
         case type.STORE_WARDS:
             return { ...state, wards: action.payload };
+
+        case type.GET_BANK_LIST_SUCCESS:
+            return { ...state, banks: action.payload.data };
+        case type.GET_BANK_LIST_FAILED:
+            return { ...state, banks: null };
         default:
             return state
     }

@@ -53,6 +53,22 @@ export const clearFarmstayDetail = (): IReduxAction => ({
     type: type.CLEAR_FARMSTAY_DETAIL
 })
 
+export const getFarmstaySchedule = (data: any, option?: IReduxActionOption): IReduxAction => ({
+    type: type.GET_FARMSTAY_SCHEDULE,
+    payload: { data, option: option ?? getEmptyOption() }
+})
+
+export const getFarmstayScheduleSuccess = (data: any): IReduxAction => ({
+    type: type.GET_FARMSTAY_SCHEDULE_SUCCESS,
+    payload: data
+})
+
+export const getFarmstayScheduleFailed = (): IReduxAction => ({
+    type: type.GET_FARMSTAY_SCHEDULE_FAILED
+})
+
+
+
 
 //Activity
 export const getActivityDetail = (farmstayId: any, activityId: any, option?: IReduxActionOption): IReduxAction => ({
@@ -211,4 +227,28 @@ export const storeWards = (data: any): IReduxAction => ({
 export const uploadImage = (data: any, option?: ReduxActionOption): IReduxAction => ({
     type: type.UPLOAD_IMAGE,
     payload: { data, option: option ?? getEmptyOption() }
+})
+
+export const getBankList = (option?: ReduxActionOption): IReduxAction => ({
+    type: type.GET_BANK_LIST,
+    payload: { option: option ?? getEmptyOption() }
+})
+
+export const getBankListSuccess = (data: any): IReduxAction => ({
+    type: type.GET_BANK_LIST_SUCCESS,
+    payload: data
+})
+
+export const getBankListFailed = (): IReduxAction => ({
+    type: type.GET_BANK_LIST_FAILED
+})
+
+export const getMonthlyReport = (option?: ReduxActionOption): IReduxAction => ({
+    type: type.GET_MONTHLY_REPORT,
+    payload: { option: option ?? getEmptyOption() }
+})
+
+export const getYearlyReport = (option?: ReduxActionOption): IReduxAction => ({
+    type: type.GET_YEARLY_REPORT,
+    payload: { option: option ?? getEmptyOption() }
 })

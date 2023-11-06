@@ -49,7 +49,7 @@ function RoomTab({
                                         onClick={() => setOpenAddNew(true)}
                                     />
                                 </Box>
-                                <i>Chưa có hoạt động nào</i>
+                                <i>Chưa có phòng nào</i>
                             </Card.Body>
                         </Card>
                     </Grid>

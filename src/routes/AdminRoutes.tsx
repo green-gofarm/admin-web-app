@@ -7,7 +7,7 @@ import AutoSignIn from "../Authentication/Admin/AutoSignIn";
 
 //Auth
 const AuthSignIn = React.lazy(() => import("../Authentication/Admin/SignIn"));
-// const AuthSignUp = React.lazy(() => import("../Authentication/SignUp"))
+const AuthSignUp = React.lazy(() => import("../Authentication/Admin/SignUp"));
 
 // Profile
 const AdminProfile = React.lazy(() => import("../components/Pages/Profile/Admin/Profile"));
@@ -100,6 +100,11 @@ function AdminRoutes() {
                                 <Route
                                     path="/authentication/sign-in"
                                     element={<AuthSignIn />}
+                                />
+                                {/* TODO: remove */}
+                                <Route
+                                    path="/authentication/sign-up"
+                                    element={<AuthSignUp />}
                                 />
                             </Route>
                             <Route path="/" element={<Auth />}>

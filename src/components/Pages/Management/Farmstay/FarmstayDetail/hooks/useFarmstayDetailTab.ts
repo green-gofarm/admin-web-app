@@ -3,6 +3,7 @@ import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 
 export enum TAB_KEYS {
     About = "About",
+    Schedule = "Schedule",
     Activity = "Activity",
     Room = "Room",
     Service = "Service",

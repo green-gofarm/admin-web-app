@@ -1,64 +1,141 @@
-import { useEffect, useState } from 'react'
-import { Form, FormGroup } from 'react-bootstrap'
+import { useCallback, useEffect, useMemo, useState } from 'react'
+import { Form, FormGroup, InputGroup } from 'react-bootstrap'
 import { Box, CircularProgress, Grid } from '@mui/material'
 import CustomizedCard from '../../../../General/Card/CustomizedCard';
-import { useForm } from 'react-hook-form';
 import InvalidFeedback from '../../../../General/InvalidFeedback';
 import { useDispatch } from 'react-redux';
 import { updateHostMyProfile } from '../../../../../redux/user/action';
 import { toast } from 'react-toastify';
 import useDelayLoading from '../../../../../hooks/useDelayLoading';
+import useBanks from '../../../../../hooks/useBanks';
+import { isAvailableArray } from '../../../../../helpers/arrayUtils';
+import Select from "react-select";
+import { formatBankLabel } from '../../../../../Authentication/Host/sign-up-step/GetBankInfo';
+import VALIDATOR from '../../../Host/Farmstay/FarmstayDetail/action/validator';
 
-
-type Host = {
-    bankAccountOwner: string | null,
-    bankAccountName: string | null
-    bankAccountNumber: string | null
-    contactInformation: string | null
+type HostBankInfo = {
+    bank: any,
+    bankAccountName: string,
+    bankAccountNumber: string,
+    contactInformation: string,
 }
 
-const getValuesFromHost = (user: any): Host => ({
-    bankAccountOwner: user?.bankAccountOwner ?? "",
-    bankAccountName: user?.bankAccountName ?? "",
-    bankAccountNumber: user?.bankAccountNumber ?? "",
-    contactInformation: user?.contactInformation ?? "",
-})
+const initialBankAccount: HostBankInfo = {
+    bank: null,
+    bankAccountName: "",
+    bankAccountNumber: "",
+    contactInformation: "",
+}
+
+type Error = {
+    bank: string,
+    bankAccountName: string,
+    bankAccountNumber: string,
+    contactInformation: string,
+}
+
+const initialError: Error = {
+    bank: "",
+    bankAccountName: "",
+    bankAccountNumber: "",
+    contactInformation: "",
+}
+
+const getHostBankInfo = (user: any, bankOptions: any[]): HostBankInfo => {
+    if (!user) return initialBankAccount;
+    return {
+        bank: bankOptions.find(item => item.value === user.bankName) ?? null,
+        bankAccountName: user?.bankAccountName,
+        bankAccountNumber: user?.bankAccountNumber,
+        contactInformation: user?.contactInformation,
+    }
+}
 
 interface BankAccountInfoProps {
     user: any,
+    refresh: () => void
 }
 
 function BankAccountInfo({
     user,
+    refresh,
 }: BankAccountInfoProps) {
 
     const dispatch = useDispatch();
-
     const [openEdit, setOpenEdit] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
-
     const delay = useDelayLoading(loading);
 
-    const { register, handleSubmit, reset, formState: { errors } } = useForm<Host>({
-        defaultValues: getValuesFromHost(user)
-    });
+
+    const isDisabled: boolean = useMemo(() => !openEdit || !!delay, [delay, openEdit]);
+
+    const { banks } = useBanks();
+
+    const bankOptions: any[] = useMemo(() => {
+        if (!isAvailableArray(banks)) return [];
+        return banks.map((bank) => ({
+            ...bank,
+            value: bank.bankCode,
+            label: bank.bankName,
+        }))
+    }, [banks]);
+
+    const [bankAccount, setBankAccount] = useState<HostBankInfo>(initialBankAccount);
+    const [errors, setErrors] = useState<Error>(initialError);
+
 
     useEffect(() => {
-        reset(getValuesFromHost(user));
-    }, [reset, user]);
+        if (user) {
+            setBankAccount(getHostBankInfo(user, bankOptions));
+        }
+    }, [bankOptions, user]);
 
-    const handleOnUpdate = (data: any) => {
-        dispatch(updateHostMyProfile(
-            data,
-            {
+    const handleOnChange = useCallback((key: keyof HostBankInfo, value: any) => {
+        setBankAccount(prev => ({
+            ...prev,
+            [key]: value,
+        }));
+
+        setErrors(prev => ({
+            ...prev,
+            [key]: "",
+        }));
+    }, []);
+
+    const validate = (data: HostBankInfo) => {
+        const tempActivityError: Error = {
+            bank: VALIDATOR.isRequired(data.bank?.value),
+            bankAccountName: VALIDATOR.isRequired(data.bankAccountName),
+            bankAccountNumber: VALIDATOR.isRequired(data.bankAccountNumber) || VALIDATOR.isNumberString(data.bankAccountNumber),
+            contactInformation: VALIDATOR.isRequired(data.contactInformation) || VALIDATOR.isNumberString(data.contactInformation),
+        }
+
+        setErrors(tempActivityError);
+
+        return Object.values(tempActivityError).every(i => i === VALIDATOR.NO_ERROR);
+    }
+
+    const handleSubmit = () => {
+        if (validate(bankAccount)) {
+            const payload = {
+                bankName: bankAccount.bank.value,
+                bankAccountName: bankAccount.bankAccountName.trim(),
+                bankAccountNumber: bankAccount.bankAccountNumber.trim(),
+                contactInformation: bankAccount.contactInformation.trim(),
+            }
+
+            dispatch(updateHostMyProfile(payload, {
                 loading: setLoading,
                 onSuccess: () => {
-                    toast.success("Cập nhật thành công")
                     setOpenEdit(false);
+                    toast.success("Cập nhật thành công");
+                    refresh();
                 },
-                onFailure: () => toast.error("Cập nhật thất bại"),
-            }
-        ))
+                onFailure: () => {
+                    toast.success("Cập nhật thất bại");
+                }
+            }));
+        }
     }
 
     return (
@@ -80,18 +157,20 @@ function BankAccountInfo({
                                 title="Hủy"
                                 onClick={() => {
                                     setOpenEdit(false);
-                                    reset(getValuesFromHost(user));
+                                    setBankAccount(getHostBankInfo(user, bankOptions));
                                 }}
                             >
                                 <i className="fe fe-x"></i>
                             </Box>
                             <Box
+                                component="button"
                                 className="btn ripple border btn-icon"
                                 width="32px !important"
                                 height="32px !important"
                                 padding="0"
                                 title="Lưu"
-                                onClick={handleSubmit(handleOnUpdate)}
+                                onClick={handleSubmit}
+                                disabled={delay}
                             >
                                 {delay
                                     ? <CircularProgress size={16} thickness={4} />
@@ -114,22 +193,31 @@ function BankAccountInfo({
 
                 content={
                     <>
-                        <Form className="form-horizontal" onSubmit={handleSubmit(handleOnUpdate)}>
+                        <Form
+                            className="form-horizontal"
+                            onSubmit={(e) => {
+                                e.stopPropagation();
+                                e.preventDefault();
+                                handleSubmit();
+                            }}
+                        >
                             <FormGroup className="form-group ">
                                 <Grid container>
                                     <Grid item xs={12} md={3}>
                                         <Form.Label className="form-label">
-                                            Ngân hàng (*)
+                                            Tên chủ tài khoản (*)
                                         </Form.Label>
 
                                     </Grid>
 
                                     <Grid item xs={12} md={9}>
                                         <Form.Control
+                                            value={bankAccount.bankAccountName}
                                             type="text"
                                             className="form-control"
-                                            {...register("bankAccountName", { required: true })}
-                                            disabled={!openEdit}
+                                            id="name12"
+                                            disabled={isDisabled}
+                                            onChange={(e) => handleOnChange("bankAccountName", e.target.value)}
                                         />
                                         {errors.bankAccountName
                                             ? <InvalidFeedback />
@@ -143,19 +231,24 @@ function BankAccountInfo({
                                 <Grid container>
                                     <Grid item xs={12} md={3}>
                                         <Form.Label className="form-label">
-                                            Tài khoản (*)
+                                            Ngân hàng (*)
                                         </Form.Label>
 
                                     </Grid>
 
                                     <Grid item xs={12} md={9}>
-                                        <Form.Control
-                                            type="number"
-                                            className="form-control"
-                                            {...register("bankAccountNumber")}
-                                            disabled={!openEdit}
-                                        />
-                                        {errors.bankAccountNumber
+                                        <InputGroup className="input-group">
+                                            <Select
+                                                value={bankAccount.bank}
+                                                options={bankOptions}
+                                                placeholder="Tìm kiếm"
+                                                className='w-100'
+                                                isDisabled={isDisabled}
+                                                formatOptionLabel={formatBankLabel}
+                                                onChange={(newValue) => handleOnChange("bank", newValue)}
+                                            />
+                                        </InputGroup>
+                                        {errors.bank
                                             ? <InvalidFeedback />
                                             : null
                                         }
@@ -167,20 +260,22 @@ function BankAccountInfo({
                                 <Grid container>
                                     <Grid item xs={12} md={3}>
                                         <Form.Label className="form-label">
-                                            Tên chủ tài khoản (*)
+                                            Số tài khoản (*)
                                         </Form.Label>
 
                                     </Grid>
 
                                     <Grid item xs={12} md={9}>
                                         <Form.Control
-                                            type="text"
+                                            value={bankAccount.bankAccountNumber}
+                                            type="number"
                                             className="form-control"
-                                            {...register("bankAccountOwner", { required: true })}
-                                            disabled={!openEdit}
+                                            placeholder="Nhập tài khoản ngân hàng"
+                                            disabled={isDisabled}
+                                            onChange={(e) => handleOnChange("bankAccountNumber", e.target.value)}
                                         />
-                                        {errors.bankAccountOwner
-                                            ? <InvalidFeedback />
+                                        {errors.bankAccountNumber
+                                            ? <InvalidFeedback message={errors.bankAccountNumber} />
                                             : null
                                         }
                                     </Grid>
@@ -198,13 +293,15 @@ function BankAccountInfo({
 
                                     <Grid item xs={12} md={9}>
                                         <Form.Control
-                                            type="phone"
+                                            value={bankAccount.contactInformation}
+                                            type="number"
                                             className="form-control"
-                                            {...register("contactInformation", { required: true })}
-                                            disabled={!openEdit}
+                                            id="name12"
+                                            disabled={isDisabled}
+                                            onChange={(e) => handleOnChange("contactInformation", e.target.value)}
                                         />
                                         {errors.contactInformation
-                                            ? <InvalidFeedback />
+                                            ? <InvalidFeedback message={errors.contactInformation} />
                                             : null
                                         }
                                     </Grid>

@@ -15,7 +15,6 @@ import { removeNullProps } from "../../../../setting/general-props";
 import { Card, FormGroup } from "react-bootstrap";
 import useBackUrl from "../../../../hooks/useBackUrl";
 import { getCustomerFromList } from "../../../../setting/customer-setting";
-import DisplayLinkUser from "../../../General/DisplayLinkUser";
 import useAllCustomers from "../../Management/Account/hooks/useAllCustomers";
 import DisplayLinkFarmstay from "../../../General/Link/DisplayLinkFarmstay";
 import useAllFarmstays from "../../Management/Farmstay/hooks/useAllFarmstay";

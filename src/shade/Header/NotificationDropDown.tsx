@@ -13,6 +13,7 @@ import { useDispatch } from 'react-redux';
 import { markAsRedNotification } from '../../redux/auth/action';
 import { NOTIFICATION_STATUSES, getNotificationOnlyUnreadState, getRedirectPathFromNotification, setNotificationOnlyUnreadState, useNotificationStyles } from '../../setting/notification-setting';
 import { toast } from 'react-toastify';
+import { getNotificationIcon } from '../../setting/notification-icon';
 
 function NotificationDropDown() {
 
@@ -69,7 +70,7 @@ function NotificationDropDown() {
     const handleScroll = (event: React.UIEvent<HTMLDivElement>) => {
         const element = event.currentTarget;
         if (element.scrollTop + element.offsetHeight >= element.scrollHeight) {
-            if (!loading && pagination.totalItem > data.length) {
+            if (!delay && pagination.totalItem > data.length) {
                 refresh({
                     ...pagination,
                     pageSize: pagination.pageSize + rowsPerPage
@@ -122,7 +123,14 @@ function NotificationDropDown() {
     )
 
     return (
-        <Dropdown className=" nav-item main-header-notification d-flex">
+        <Dropdown
+            className=" nav-item main-header-notification d-flex"
+            onToggle={(show) => {
+                if (show) {
+                    refresh();
+                }
+            }}
+        >
             <Dropdown.Toggle className="new nav-link" variant="">
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -178,7 +186,7 @@ function NotificationDropDown() {
                                 onClick={() => handleOnClickItem(item)}
                             >
                                 <div className="notifyimg bg-pink">
-                                    <i className="far fa-folder-open text-white"></i>
+                                    {getNotificationIcon(item.extras)}
                                 </div>
                                 <div className="ms-3">
                                     <h5 className="notification-label mb-1">
@@ -186,6 +194,17 @@ function NotificationDropDown() {
                                             {item.header ?? ""}
                                         </EllipsisWrapper>
                                     </h5>
+                                    <Box
+                                        component="p"
+                                        whiteSpace="pre-wrap"
+                                        sx={{
+                                            wordBreak: "break-word"
+                                        }}
+                                        textAlign="justify"
+                                        fontSize="11px"
+                                    >
+                                        {item.content ?? ""}
+                                    </Box>
                                     <div className="notification-subtext">
                                         {getTimeAgoString(item.createdDate)}
                                     </div>

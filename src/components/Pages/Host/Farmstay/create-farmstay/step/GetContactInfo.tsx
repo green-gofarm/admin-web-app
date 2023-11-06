@@ -169,7 +169,12 @@ function GetContactInfo({
                                         placeholder=""
                                     />
                                 </Box>
-                                <Box className="btn btn-secondary shadow" onClick={() => handleRemove(index)}>
+                                <Box
+                                    component="button"
+                                    className="btn btn-secondary shadow"
+                                    onClick={() => handleRemove(index)}
+                                    disabled={contactInfo.length <= 1}
+                                >
                                     <DeleteForeverIcon />
                                 </Box>
                             </Box>

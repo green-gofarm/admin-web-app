@@ -1,9 +1,8 @@
 import AppsIcon from '@mui/icons-material/Apps';
-import { Box, IconTypeMap } from "@mui/material";
-import { OverridableComponent } from '@mui/material/OverridableComponent';
+import { Box } from "@mui/material";
 
 interface IMuiIcon {
-    Icon?: OverridableComponent<IconTypeMap>,
+    Icon?: any,
 }
 
 const DefaultIcon = AppsIcon;

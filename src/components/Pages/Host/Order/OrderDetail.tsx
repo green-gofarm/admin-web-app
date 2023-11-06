@@ -13,7 +13,7 @@ import useBackUrl from "../../../../hooks/useBackUrl";
 import StringWrapper from "../../../General/Wrapper/StringWrapper";
 import ConditionWrapper from "../../../General/Wrapper/ConditionWrapper";
 import { useMemo } from "react";
-import { getFarmstayFromList } from "../../../../setting/farmstay-setting";
+import { getFarmstayFromList, renderAddress } from "../../../../setting/farmstay-setting";
 import { isAvailableArray } from "../../../../helpers/arrayUtils";
 import useContactInfo from "../../Management/Farmstay/FarmstayDetail/hooks/useContactInfo";
 import { ROLES } from "../../../../setting/setting";
@@ -22,6 +22,7 @@ import useAllFarmstays from "../../Management/Farmstay/hooks/useAllFarmstay";
 import UserTag from "../../../General/Wrapper/UserTag";
 import useOrderDetail from "../../Management/Order/hooks/useOrderDetail";
 import FeedbackItem from "../Farmstay/FarmstayDetail/ui-segment/FeedbackItem";
+import useFarmstayAddress from "../../Management/Farmstay/FarmstayDetail/hooks/useFarmstayAddress";
 
 const breadcrumb: Array<IBreadcrumbItem> = [
     {
@@ -64,6 +65,7 @@ function OrderDetail() {
         [allFarmstays, detail?.farmstayId]
     );
     const contactInfo = useContactInfo(farmstay);
+    const address = useFarmstayAddress(farmstay);
 
     const activities: any[] = useMemo(() => {
         if (!isAvailableArray(detail?.activities)) return [];
@@ -182,7 +184,7 @@ function OrderDetail() {
                                                 <Box
                                                     component={Link}
                                                     className="tag tag-rounded btn"
-                                                    to={`/management/farmstay/all/${detail?.farmstayId}?backUrl=${createBackUrl()}`}
+                                                    to={`/management/farmstay/${detail?.farmstayId}?backUrl=${createBackUrl()}`}
                                                 >
                                                     <Box
                                                         display="flex"
@@ -234,7 +236,17 @@ function OrderDetail() {
                                         </Grid>
 
                                         <Grid item xs={3}>
-                                            <Box className="h6" margin="2px 0 !important">Ngày hoàn thành (dự kiến)</Box>
+                                            <Box className="h6" margin="2px 0 !important">Ngày check-out</Box>
+                                        </Grid>
+                                        <Grid item xs={9}>
+                                            {convertISOToNaturalFormat(detail?.checkoutDate)}
+                                        </Grid>
+                                        <Grid item xs={12}>
+                                            <Divider />
+                                        </Grid>
+
+                                        <Grid item xs={3}>
+                                            <Box className="h6" margin="2px 0 !important">Ngày kết thúc (dự kiến)</Box>
                                         </Grid>
                                         <Grid item xs={9}>
                                             {convertISOToNaturalFormat(detail?.completedDate)}
@@ -270,7 +282,7 @@ function OrderDetail() {
                                             <Box className="h6" margin="2px 0 !important">Địa chỉ</Box>
                                         </Grid>
                                         <Grid item xs={9}>
-                                            {detail?.farmstay?.address}
+                                            {renderAddress(address)}
                                         </Grid>
                                         <Grid item xs={12}>
                                             <Divider />
@@ -296,7 +308,7 @@ function OrderDetail() {
                                         <tr key={item.roomId}>
                                             <td>{createCodeString("R", item.roomId)}</td>
                                             <td>Phòng</td>
-                                            <td className="tx-12">{item.roomName ?? "UN_KNOWN"}</td>
+                                            <td className="tx-12">{item.room?.name ?? "UN_KNOWN"}</td>
                                             <td className="tx-center">{formatDate(item.date)}</td>
                                             <td className="tx-right">{convertToMoney(item.price)}</td>
                                         </tr>
@@ -305,7 +317,7 @@ function OrderDetail() {
                                         <tr key={item.activityId}>
                                             <td>{createCodeString("AC", item.activityId)}</td>
                                             <td>Hoạt động</td>
-                                            <td className="tx-12">{item.activityName ?? "UN_KNOWN"}</td>
+                                            <td className="tx-12">{item.activity?.name ?? "UN_KNOWN"}</td>
                                             <td className="tx-center">{formatDate(item.date)}</td>
                                             <td className="tx-right">{convertToMoney(item.price)}</td>
                                         </tr>

@@ -1,30 +1,32 @@
 import { Box, Button, Grid } from '@mui/material'
 import { Card } from 'react-bootstrap'
-import AvatarWrapper from '../../../../General/Wrapper/AvatarWrapper'
 import IconLabelDetail from '../../../../General/Item/IconLabelDetail'
-import { Link, useNavigate } from 'react-router-dom'
 import useBackUrl from '../../../../../hooks/useBackUrl'
 import useContactInfo from './hooks/useContactInfo'
 import StringWrapper from '../../../../General/Wrapper/StringWrapper'
 import useFarmstayImages from './hooks/useFarmstayImages'
-import { ThumbDownAlt, ThumbUpAlt } from '@mui/icons-material'
 import { useState } from 'react'
 import ApproveFarmstay from '../action/ApproveFarmstay'
-import RejectFarmstay from '../action/RejectFarmstay'
 import useFarmstayAddress from './hooks/useFarmstayAddress'
 import { FARMSTAY_STATUSES, renderAddress } from '../../../../../setting/farmstay-setting'
-interface IFarmstayDetailHeader {
+import GradingIcon from '@mui/icons-material/Grading';
+import UserLinkTag from '../../../../General/Wrapper/UserLinkTag'
+import { useNavigate } from 'react-router-dom'
+
+interface FarmstayPreviewHeaderProps {
     detail?: any,
     loading?: boolean,
+    refresh: () => void
 }
 
 function FarmstayPreviewHeader({
     detail,
+    refresh,
     loading
-}: IFarmstayDetailHeader) {
+}: FarmstayPreviewHeaderProps) {
 
     const navigate = useNavigate();
-    const { createBackUrl, getBackUrl } = useBackUrl();
+    const { getBackUrl } = useBackUrl();
 
     const contactInfo = useContactInfo(detail);
     const images = useFarmstayImages(detail);
@@ -32,7 +34,6 @@ function FarmstayPreviewHeader({
 
     // State
     const [openApprove, setOpenApprove] = useState<boolean>(false);
-    const [openReject, setOpenReject] = useState<boolean>(false);
 
     return (
         <>
@@ -72,24 +73,9 @@ function FarmstayPreviewHeader({
                                     icon={<i className="fa fa-user me-2"></i>}
                                     label="Chủ sở hữu:"
                                     value={
-                                        <Box
-                                            component={Link}
-                                            to={`/management/account/host/${detail?.host?.userId}?backUrl=${createBackUrl()}`}
-                                            display="flex"
-                                            alignItems="center"
-                                            gap="8px"
-                                            className="tag tag-rounded"
-                                        >
-                                            <AvatarWrapper
-                                                name={detail?.host.name}
-                                                avatarProps={{
-                                                    width: "22px !important",
-                                                    height: "22px !important",
-                                                    fontSize: "12px !important"
-                                                }}
-                                            />
-                                            {detail?.host.name}
-                                        </Box>
+                                        <UserLinkTag
+                                            user={detail?.host}
+                                        />
                                     }
                                 />
                                 <IconLabelDetail
@@ -118,18 +104,16 @@ function FarmstayPreviewHeader({
                                         <Button
                                             variant="contained"
                                             color="primary"
-                                            startIcon={<ThumbUpAlt />}
+                                            startIcon={<GradingIcon sx={{ color: "#fff" }} />}
                                             onClick={() => setOpenApprove(true)}
                                         >
-                                            Phê duyệt
-                                        </Button>
-                                        <Button
-                                            variant="contained"
-                                            color="error"
-                                            startIcon={<ThumbDownAlt />}
-                                            onClick={() => setOpenReject(true)}
-                                        >
-                                            Từ chối
+                                            <Box
+                                                color="#fff"
+                                                textTransform="uppercase"
+                                                fontWeight="600"
+                                            >
+                                                Thực hiện phê duyệt
+                                            </Box>
                                         </Button>
                                     </Box>
                                 </Grid>
@@ -139,20 +123,16 @@ function FarmstayPreviewHeader({
                     </Box>
                 </Card.Body>
             </Card>
-
-            <ApproveFarmstay
-                open={openApprove && !!detail}
-                farmstay={detail}
-                onClose={() => setOpenApprove(false)}
-                onSuccessCallback={() => navigate(getBackUrl() ?? "/management/farmstay/preview")}
-            />
-
-            <RejectFarmstay
-                open={openReject && !!detail}
-                farmstay={detail}
-                onClose={() => setOpenReject(false)}
-                onSuccessCallback={() => navigate(getBackUrl() ?? "/management/farmstay/preview")}
-            />
+            {openApprove
+                ? <ApproveFarmstay
+                    open={openApprove && !!detail}
+                    farmstay={detail}
+                    refresh={refresh}
+                    onClose={() => setOpenApprove(false)}
+                    onSuccessCallback={() => navigate(getBackUrl() ?? "/management/farmstay/preview")}
+                />
+                : null
+            }
         </>
     )
 }

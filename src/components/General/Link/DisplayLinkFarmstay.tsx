@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { useMemo } from 'react';
 import useBackUrl from '../../../hooks/useBackUrl';
 import HomeIcon from "@mui/icons-material/Home";
-import EllipsisWrapper from '../Wrapper/EllipsisWrapper';
 
 interface DisplayLinkFarmstayProps {
     farmstayPath: string,
@@ -31,11 +30,10 @@ function DisplayLinkFarmstay({
             alignItems="center"
             gap="8px"
             className="tag tag-rounded"
+            overflow="hidden"
         >
             <HomeIcon />
-            <EllipsisWrapper breakWidth={200}>
-                {name}
-            </EllipsisWrapper>
+            {name}
         </Box>
     )
 }

@@ -150,11 +150,17 @@ export default function Header() {
                         display="flex"
                         className="wd-100p"
                       >
-                        <Box className="main-img-user" minWidth="fit-content">
+                        <Box
+                          className="main-img-user"
+                          maxHeight="36px"
+                          maxWidth="36px"
+                        >
                           <img
                             alt=""
                             src={user?.avatar ?? require("../../assets/img/faces/2.jpg")}
                             className=""
+                            width="36px"
+                            height="36px"
                           />
                         </Box>
                         <div className="ms-3 my-auto">
@@ -163,8 +169,10 @@ export default function Header() {
                               {user?.name}
                             </EllipsisWrapper>
                           </h6>
-                          <span className="dropdown-title-text subtext op-6  tx-12">
-                            {user?.email}
+                          <span className="dropdown-title-text subtext op-6 tx-12">
+                            <EllipsisWrapper>
+                              {user?.email}
+                            </EllipsisWrapper>
                           </span>
                         </div>
                       </Box>

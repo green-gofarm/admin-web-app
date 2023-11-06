@@ -10,6 +10,7 @@ import { toast } from 'react-toastify';
 import useRoomCategoryDetail from '../hooks/useRoomCategoryDetail';
 import { updateRoomCategory } from '../../../../../redux/room/action';
 import InvalidFeedback from '../../../../General/InvalidFeedback';
+import VALIDATOR from '../../../Host/Farmstay/FarmstayDetail/action/validator';
 interface EditRoomCategoryProps {
     open?: boolean,
     roomCategory?: any,
@@ -78,7 +79,7 @@ function EditRoomCategory({
     )
 
     const renderContent = () => (
-        <Form className="">
+        <Form onSubmit={handleSubmit(handleUpdate)}>
             <FormGroup
                 className={`form-group ${errors.name ? "has-danger" : ""}`}
             >
@@ -90,25 +91,47 @@ function EditRoomCategory({
                     autoFocus
                     type="text"
                     className={`form-control ${errors.name ? "is-invalid" : ""}`}
-                    {...register("name", { required: true })}
+                    {...register("name", {
+                        validate: {
+                            length: (value) => {
+                                const message = VALIDATOR.isRequired(value) || VALIDATOR.isValidNameLength(value);
+
+                                return message === VALIDATOR.NO_ERROR ? true : message;
+                            }
+                        }
+                    })}
                 />
                 {errors.name
-                    ? <InvalidFeedback />
+                    ? <InvalidFeedback message={errors.name.message} />
                     : null
                 }
             </FormGroup>
 
-            <FormGroup className="form-group ">
+            <FormGroup
+                className={`form-group ${errors.description ? "has-danger" : ""}`}
+            >
                 <Form.Label className="form-label">
                     Mô tả
                 </Form.Label>
 
 
                 <textarea
-                    className="form-control"
                     rows={4}
-                    {...register("description")}
+                    className={`form-control ${errors.description ? "is-invalid" : ""}`}
+                    {...register("description", {
+                        validate: {
+                            length: (value) => {
+                                const message = VALIDATOR.isValidContentLength(value);
+
+                                return message === VALIDATOR.NO_ERROR ? true : message;
+                            }
+                        }
+                    })}
                 />
+                {errors.description
+                    ? <InvalidFeedback message={errors.description.message} />
+                    : null
+                }
             </FormGroup>
         </Form>
     )
@@ -150,7 +173,7 @@ function EditRoomCategory({
                             ? <CircularProgress size={16} thickness={4} sx={{ color: "#fff" }} />
                             : null
                         }
-                        Xác nhận
+                        Lưu
                     </Box>
 
                 </Button>

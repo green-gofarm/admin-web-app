@@ -1,8 +1,13 @@
 import { memo, useState } from 'react'
 import ConfirmModel from '../../../../../General/Model/ConfirmModel';
 import { Box } from '@mui/material';
+import { useDispatch } from 'react-redux';
+import useDelayLoading from '../../../../../../hooks/useDelayLoading';
+import { updateCustomerStatus } from '../../../../../../redux/user/action';
+import { CUSTOMER_STATUSES } from '../../../../../../setting/customer-setting';
+import { toast } from 'react-toastify';
 
-interface _IBanCustomer {
+interface BanCustomerProps {
     open?: boolean,
     customer?: any,
     refresh?: any,
@@ -14,13 +19,29 @@ function BanCustomer({
     customer,
     refresh,
     onClose,
-}: _IBanCustomer) {
-    const [loading] = useState(false);
+}: BanCustomerProps) {
+
+    const dispatch = useDispatch();
+    const [loading, setLoading] = useState<boolean>(false);
+    const delay = useDelayLoading(loading);
 
     const handleSubmit = () => {
         if (!customer?.id) return;
-        onClose && onClose();
-        refresh && refresh();
+        dispatch(updateCustomerStatus(
+            customer.id,
+            { status: CUSTOMER_STATUSES.BANNED },
+            {
+                loading: setLoading,
+                onSuccess: () => {
+                    toast.success("Cập nhật thành công");
+                    onClose && onClose();
+                    refresh && refresh();
+                },
+                onFailure: () => {
+                    toast.error("Cập nhật thất bại");
+                }
+            }
+        ))
     }
 
     return (
@@ -29,11 +50,11 @@ function BanCustomer({
             title="Khóa tài khoản"
             description={(
                 <Box display="inline-block">
-                    Bạn có chắc chắn muốn khóa tài khoản
+                    Xác nhận khóa tài khoản
                     <b>{` ${customer?.email ?? ""}`}</b> ?
                 </Box>
             )}
-            loading={loading}
+            loading={delay}
             onCancel={onClose}
             onConfirm={handleSubmit}
         />

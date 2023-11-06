@@ -1,19 +1,22 @@
 import { getFarmstayDetail } from './../../../../../../redux/farmstay/action';
 import { useEffect, useState, useCallback } from 'react';
-import { RootState } from './../../../../../../redux/redux-setting';
-import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux'
 
 function useFarmstayDetail(id: any) {
 
     const dispatch = useDispatch();
-    const farmstayDetail = useSelector((state: RootState) => state.farmstay.farmstayDetail);
-
+    const [farmstayDetail, setFarmstayDetail] = useState(null);
     const [loading, setLoading] = useState<boolean>(false);
 
     const refresh = useCallback(() => {
         if (id) {
-            dispatch(getFarmstayDetail(id, { loading: setLoading }));
+            const onSuccess = (response: any) => {
+                setFarmstayDetail(response?.data);
+            }
+            const onFailure = () => {
+                setFarmstayDetail(null);
+            }
+            dispatch(getFarmstayDetail(id, { loading: setLoading, onSuccess, onFailure }));
         }
     }, [dispatch, id])
 

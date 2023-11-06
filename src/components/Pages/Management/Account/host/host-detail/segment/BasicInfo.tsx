@@ -23,7 +23,12 @@ function BasicInfo({
                                 </div>
                                 <div>
                                     <label>Ngày sinh :</label>{" "}
-                                    <span className="tx-medium">{convertISOToNaturalFormat(user?.dateOfBirth)}</span>
+                                    <span className="tx-medium">
+                                        {user?.dateOfBirth
+                                            ? convertISOToNaturalFormat(user?.dateOfBirth)
+                                            : "-"
+                                        }
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -76,7 +81,7 @@ function BasicInfo({
                                     <span className="tx-medium">
                                         {user?.createdDate
                                             ? convertISOToNaturalFormat(user.createdDate)
-                                            : ""
+                                            : "-"
                                         }
                                     </span>
                                 </div>
@@ -85,7 +90,7 @@ function BasicInfo({
                                     <span className="tx-medium">
                                         {user?.updatedDate
                                             ? convertISOToNaturalFormat(user.updatedDate)
-                                            : ""
+                                            : "-"
                                         }
                                     </span>
                                 </div>

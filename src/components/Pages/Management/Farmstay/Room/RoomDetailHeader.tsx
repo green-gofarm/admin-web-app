@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../redux/redux-setting';
 import { getRoomCategoryLabel } from '../../../../../setting/room-category-setting';
 import { convertToMoney } from '../../../../../helpers/stringUtils';
-import { formatTimeString, getTimeAgoString } from '../../../../../helpers/dateUtils';
+import { convertISOToNaturalFormat, formatTimeString, getTimeAgoString } from '../../../../../helpers/dateUtils';
 
 interface RoomDetailHeaderProps {
     detail?: any,
@@ -52,7 +52,10 @@ function RoomDetailHeader({
                 <IconLabelDetail
                     icon={<i className="fa fa-clock"></i>}
                     label="Ngày tạo:"
-                    value={formatTimeString(detail?.createdDate) ?? "-"}
+                    value={detail?.createdDate
+                        ? convertISOToNaturalFormat(detail.createdDate)
+                        : ""
+                    }
                 />
             </Grid>
 
@@ -68,7 +71,11 @@ function RoomDetailHeader({
                 <IconLabelDetail
                     icon={<i className="fa fa-clock"></i>}
                     label="Lần cập nhật cuối:"
-                    value={`${formatTimeString(detail?.updatedDate)} (${getTimeAgoString(detail?.updatedDate)})` ?? "-"}
+                    value={
+                        detail?.updatedDate
+                            ? `${formatTimeString(detail?.updatedDate)} (${getTimeAgoString(detail?.updatedDate)}`
+                            : "-"
+                    }
                 />
             </Grid>
         </Grid>

@@ -268,11 +268,13 @@ export default function HostTable() {
                 open={openBan}
                 onClose={handleCloseBan}
                 host={selectedHost}
+                refresh={refresh}
             />
             <UnbanHost
                 open={openUnban}
                 onClose={handleCloseUnban}
                 host={selectedHost}
+                refresh={refresh}
             />
         </>
     );

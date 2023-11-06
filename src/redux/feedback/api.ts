@@ -28,6 +28,19 @@ export function updateFeedbackStatus(feedbackId: any, data: any) {
         data: JSON.stringify(data ?? {})
     }
 
-    const url = `${ENP.ADMIN}/feedbacks/${feedbackId}/search`;
+    const url = `${ENP.ADMIN}/feedbacks/${feedbackId}/status`;
+    return axiosRequest(url, option);
+}
+
+export function hostReportFeedback(hostId: any, orderId: any, feedbackId: any) {
+    const option: AxiosRequestConfig = {
+        method: METHOD.PATCH,
+        headers: {
+            "Content-Type": "application/json"
+        },
+        data: JSON.stringify({})
+    }
+
+    const url = `${ENP.HOST}/${hostId}/bookings/${orderId}/feedbacks/${feedbackId}/report`;
     return axiosRequest(url, option);
 }

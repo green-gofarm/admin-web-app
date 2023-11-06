@@ -19,6 +19,8 @@ import { Link } from "react-router-dom";
 import useBackUrl from "../../../../../hooks/useBackUrl";
 import { getCustomerFromList } from "../../../../../setting/customer-setting";
 import useAllCustomers from "../../Account/hooks/useAllCustomers";
+import UnlockIconAction from "../../../../General/Action/IconAction/UnlockIconAction";
+import UnbanFeedback from "../action/UnbanFeedback";
 
 export default function FeedbackTable() {
 
@@ -28,6 +30,7 @@ export default function FeedbackTable() {
     // State
     const [openView, setOpenView] = useState<boolean>(false);
     const [openBan, setOpenBan] = useState<boolean>(false);
+    const [openUnban, setOpenUnban] = useState<boolean>(false);
     const [selectedFeedback, setSelectedFeedback] = useState<any>(null);
 
 
@@ -131,6 +134,13 @@ export default function FeedbackTable() {
                         }}
                     />
 
+                    <UnlockIconAction
+                        onClick={() => {
+                            setOpenUnban(true);
+                            setSelectedFeedback(row);
+                        }}
+                    />
+
                     <LockIconAction
                         onClick={() => {
                             setOpenBan(true);
@@ -144,6 +154,7 @@ export default function FeedbackTable() {
 
     const handleCloseView = useCallback(() => setOpenView(false), []);
     const handleCloseBan = useCallback(() => setOpenBan(false), []);
+    const handleCloseUnban = useCallback(() => setOpenUnban(false), []);
 
     return (
         <>
@@ -234,6 +245,13 @@ export default function FeedbackTable() {
                 open={openBan}
                 feedback={selectedFeedback}
                 onClose={handleCloseBan}
+                refresh={refresh}
+            />
+
+            <UnbanFeedback
+                open={openUnban}
+                feedback={selectedFeedback}
+                onClose={handleCloseUnban}
                 refresh={refresh}
             />
         </>

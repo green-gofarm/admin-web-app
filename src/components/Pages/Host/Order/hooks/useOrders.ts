@@ -61,6 +61,18 @@ function useOrders(preventFirstCall?: boolean) {
             {
                 loading: setLoading,
                 onSuccess: (response: any) => {
+                    if (_pagination.page > response.data.totalPage && _pagination.page !== 1) {
+                        const newPagination = {
+                            ..._pagination,
+                            page: 1,
+                            totalPage: response.data?.totalPage,
+                            totalItem: response.data?.totalItem,
+                        }
+
+                        refresh(newPagination, newParams);
+                        return;
+                    }
+
                     setPagination(pre => ({
                         ...pre,
                         totalPage: response.data?.totalPage ?? defaultOrdersPagination.totalPage,
