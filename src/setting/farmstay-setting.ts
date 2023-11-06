@@ -79,6 +79,6 @@ export const renderAddress = (address: any) => {
 
         if (!prev) return currentString ?? "";
         if (!currentString) return prev;
-        return prev + "," + currentString;
+        return prev + ", " + currentString;
     }, "");
 }

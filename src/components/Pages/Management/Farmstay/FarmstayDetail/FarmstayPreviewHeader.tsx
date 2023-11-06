@@ -1,8 +1,6 @@
 import { Box, Button, Grid } from '@mui/material'
 import { Card } from 'react-bootstrap'
-import AvatarWrapper from '../../../../General/Wrapper/AvatarWrapper'
 import IconLabelDetail from '../../../../General/Item/IconLabelDetail'
-import { Link, useNavigate } from 'react-router-dom'
 import useBackUrl from '../../../../../hooks/useBackUrl'
 import useContactInfo from './hooks/useContactInfo'
 import StringWrapper from '../../../../General/Wrapper/StringWrapper'
@@ -12,8 +10,10 @@ import ApproveFarmstay from '../action/ApproveFarmstay'
 import useFarmstayAddress from './hooks/useFarmstayAddress'
 import { FARMSTAY_STATUSES, renderAddress } from '../../../../../setting/farmstay-setting'
 import GradingIcon from '@mui/icons-material/Grading';
+import UserLinkTag from '../../../../General/Wrapper/UserLinkTag'
+import { useNavigate } from 'react-router-dom'
 
-interface IFarmstayDetailHeader {
+interface FarmstayPreviewHeaderProps {
     detail?: any,
     loading?: boolean,
     refresh: () => void
@@ -23,10 +23,10 @@ function FarmstayPreviewHeader({
     detail,
     refresh,
     loading
-}: IFarmstayDetailHeader) {
+}: FarmstayPreviewHeaderProps) {
 
     const navigate = useNavigate();
-    const { createBackUrl, getBackUrl } = useBackUrl();
+    const { getBackUrl } = useBackUrl();
 
     const contactInfo = useContactInfo(detail);
     const images = useFarmstayImages(detail);
@@ -73,24 +73,9 @@ function FarmstayPreviewHeader({
                                     icon={<i className="fa fa-user me-2"></i>}
                                     label="Chủ sở hữu:"
                                     value={
-                                        <Box
-                                            component={Link}
-                                            to={`/management/account/host/${detail?.host?.userId}?backUrl=${createBackUrl()}`}
-                                            display="flex"
-                                            alignItems="center"
-                                            gap="8px"
-                                            className="tag tag-rounded"
-                                        >
-                                            <AvatarWrapper
-                                                name={detail?.host.name}
-                                                avatarProps={{
-                                                    width: "22px !important",
-                                                    height: "22px !important",
-                                                    fontSize: "12px !important"
-                                                }}
-                                            />
-                                            {detail?.host.name}
-                                        </Box>
+                                        <UserLinkTag
+                                            user={detail?.host}
+                                        />
                                     }
                                 />
                                 <IconLabelDetail
