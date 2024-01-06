@@ -940,7 +940,7 @@ export default function Header() {
                           </Dropdown.Item>
                           <Dropdown.Item
                             className="d-flex p-3 border-bottom"
-                            to={`${process.env.PUBLIC_URL}/pages/mail/mail`}
+                            href={`${process.env.PUBLIC_URL}/pages/mail/mail`}
                           >
                             <div className="notifyimg bg-warning">
                               <i className="far fa-envelope-open text-white"></i>
@@ -959,7 +959,7 @@ export default function Header() {
                           </Dropdown.Item>
                           <Dropdown.Item
                             className="d-flex p-3 border-bottom"
-                            to={`${process.env.PUBLIC_URL}/pages/mail/mail`}
+                            href={`${process.env.PUBLIC_URL}/pages/mail/mail`}
                           >
                             <div className="notifyimg bg-danger">
                               <i className="fab fa-wpforms text-white"></i>
@@ -978,7 +978,7 @@ export default function Header() {
                           </Dropdown.Item>
                           <Dropdown.Item
                             className="d-flex p-3 border-bottom"
-                            to={`${process.env.PUBLIC_URL}/pages/mail/mail`}
+                            href={`${process.env.PUBLIC_URL}/pages/mail/mail`}
                           >
                             <div className="">
                               <i className="far fa-check-square text-white notifyimg bg-success"></i>
@@ -1123,7 +1123,7 @@ export default function Header() {
                       </Dropdown.Item>
                       <Dropdown.Item
                         className="dropdown-item"
-                        to={`${process.env.PUBLIC_URL}/pages/mail/readmail`}
+                        href={`${process.env.PUBLIC_URL}/pages/mail/readmail`}
                       >
                         <i className="far fa-envelope "></i>Inbox
                       </Dropdown.Item>
@@ -1132,7 +1132,7 @@ export default function Header() {
                       </Dropdown.Item>
                       <Dropdown.Item
                         className="dropdown-item"
-                        to={`${process.env.PUBLIC_URL}/pages/mail/mailsettings`}
+                        href={`${process.env.PUBLIC_URL}/pages/mail/mailsettings`}
                       >
                         <i className="far fa-sun"></i> Settings
                       </Dropdown.Item>

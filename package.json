@@ -94,7 +94,11 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "start:admin": "env-cmd -f .env.admin.local react-scripts start",
+    "start:host": "env-cmd -f .env.host.local react-scripts start",
     "build": "react-scripts build",
+    "build:admin": "env-cmd -f .env.admin.local react-scripts build",
+    "build:host": "env-cmd -f .env.host.local react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -117,6 +121,7 @@
     ]
   },
   "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@types/draftjs-to-html": "^0.8.1",
     "@types/google.maps": "^3.52.3",
     "@types/leaflet": "^1.7.11",

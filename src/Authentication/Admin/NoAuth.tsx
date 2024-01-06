@@ -4,13 +4,13 @@ import { RootState } from "../../redux/redux-setting";
 import useBackUrl from "../../hooks/useBackUrl";
 
 const NoAuth = () => {
-    const user = useSelector((state: RootState) => state.auth.user);
+    // const user = useSelector((state: RootState) => state.auth.user);
 
-    const { getBackUrl } = useBackUrl();
+    // const { getBackUrl } = useBackUrl();
 
-    if (user) {
-        return <Navigate to={getBackUrl() ?? "/"} replace />
-    }
+    // if (user) {
+    //     return <Navigate to={getBackUrl() ?? "/"} replace />
+    // }
 
     return (
         <Outlet />

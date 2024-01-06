@@ -119,10 +119,10 @@ export default function CustomizedTablePagination({
       page={page - 1}
       onPageChange={handleChangePage}
       onRowsPerPageChange={handleChangeRowsPerPage}
-      slots={{
-        root: "div"
+      components={{
+        Root: "div"
       }}
-      slotProps={{
+      componentsProps={{
         select: {
           'aria-label': 'rows per page',
         },

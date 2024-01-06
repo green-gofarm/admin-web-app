@@ -10,76 +10,76 @@ import Loader from '../../shade/Loaders/Loaders';
 
 function AutoSignIn() {
 
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
-    const location = useLocation();
+    // const dispatch = useDispatch();
+    // const navigate = useNavigate();
+    // const location = useLocation();
 
-    // State
-    const [loading, setLoading] = useState(true);
+    // // State
+    // const [loading, setLoading] = useState(true);
 
-    // Redux
-    const user = useSelector((state: RootState) => state.auth.user);
+    // // Redux
+    // const user = useSelector((state: RootState) => state.auth.user);
 
-    const signOut = useCallback(() => {
-        dispatch(signOutUser());
-        if (!location.pathname.startsWith("/authentication")) {
-            const newPath = location.pathname !== "/"
-                ? `/authentication/sign-in?backUrl=${location.pathname + location.search}`
-                : "/authentication/sign-in";
-            navigate(newPath);
-        }
-        auth.signOut();
-    }, [dispatch, location.pathname, location.search, navigate]);
+    // const signOut = useCallback(() => {
+    //     dispatch(signOutUser());
+    //     if (!location.pathname.startsWith("/authentication")) {
+    //         const newPath = location.pathname !== "/"
+    //             ? `/authentication/sign-in?backUrl=${location.pathname + location.search}`
+    //             : "/authentication/sign-in";
+    //         navigate(newPath);
+    //     }
+    //     auth.signOut();
+    // }, [dispatch, location.pathname, location.search, navigate]);
 
-    useEffect(() => {
-        const unregisterAuthObserver = auth.onAuthStateChanged(async (currentUser) => {
-            if (!currentUser) {
-                setLoading(false);
-                signOut();
-                return;
-            }
+    // useEffect(() => {
+    //     const unregisterAuthObserver = auth.onAuthStateChanged(async (currentUser) => {
+    //         if (!currentUser) {
+    //             setLoading(false);
+    //             signOut();
+    //             return;
+    //         }
 
-            const token = await currentUser.getIdToken();
-            setLoading(false);
+    //         const token = await currentUser.getIdToken();
+    //         setLoading(false);
 
-            if (!token) {
-                signOut();
-                return;
-            }
-        });
+    //         if (!token) {
+    //             signOut();
+    //             return;
+    //         }
+    //     });
 
-        return () => unregisterAuthObserver();
-    }, [dispatch, signOut, user]);
+    //     return () => unregisterAuthObserver();
+    // }, [dispatch, signOut, user]);
 
-    useEffect(() => {
-        async function signIn() {
-            const token = await getFirebaseToken();
+    // useEffect(() => {
+    //     async function signIn() {
+    //         const token = await getFirebaseToken();
 
-            const subscribe = async () => {
-                const messageToken = await getMessagingToken();
-                if (messageToken) {
-                    dispatch(subscribeMessageToken(messageToken));
-                }
-            }
+    //         const subscribe = async () => {
+    //             const messageToken = await getMessagingToken();
+    //             if (messageToken) {
+    //                 dispatch(subscribeMessageToken(messageToken));
+    //             }
+    //         }
 
-            if (token) {
-                dispatch(signInAdmin({
-                    loading: setLoading,
-                    onSuccess: () => subscribe(),
-                    onFailure: (error: any) => {
-                        toast.error("Không thể lấy thông tin tài khoản. Vui lòng đăng nhập lại");
-                    }
-                }));
-            }
-        }
+    //         if (token) {
+    //             dispatch(signInAdmin({
+    //                 loading: setLoading,
+    //                 onSuccess: () => subscribe(),
+    //                 onFailure: (error: any) => {
+    //                     toast.error("Không thể lấy thông tin tài khoản. Vui lòng đăng nhập lại");
+    //                 }
+    //             }));
+    //         }
+    //     }
 
-        signIn();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    //     signIn();
+    //     // eslint-disable-next-line react-hooks/exhaustive-deps
+    // }, []);
 
-    if (loading) {
-        return <Loader />
-    }
+    // if (loading) {
+    //     return <Loader />
+    // }
 
     return (
         <Outlet />

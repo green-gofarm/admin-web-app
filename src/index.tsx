@@ -1,5 +1,5 @@
 import reportWebVitals from './reportWebVitals';
-import React from 'react';
+import React, { useEffect } from 'react';
 import ReactDOM from "react-dom/client";
 import { ThemeProvider, StyledEngineProvider } from "@mui/material/styles";
 import theme from "./assets/theme/theme.js";
@@ -11,13 +11,25 @@ import { CURRENT_ROLE, ROLES } from './setting/setting';
 import HostRoutes from './routes/HostRoutes';
 import Toastify from './components/General/Toastify';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
+import { toast } from 'react-toastify';
 
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement
 );
 
-root.render(
-    <React.Fragment>
+const App = () => {
+
+    useEffect(() => {
+        toast.info(
+            "Our system undergoing maintenance. Website UI available, some features temporarily disabled. Apologies for the inconvenience. Thank you for your understanding.",
+            {
+                autoClose: false,
+                position: 'top-center',
+            }
+        )
+    })
+
+    return (
         <Provider store={store}>
             <StyledEngineProvider injectFirst>
                 <ThemeProvider theme={theme}>
@@ -33,6 +45,12 @@ root.render(
                 </ThemeProvider>
             </StyledEngineProvider>
         </Provider>
+    )
+}
+
+root.render(
+    <React.Fragment>
+        <App />
     </React.Fragment>
 );
 
